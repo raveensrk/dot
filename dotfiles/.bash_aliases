@@ -24,6 +24,13 @@ shopt -s checkwinsize # check the window size after each command and, if necessa
 # bind 'TAB':menu-complete # If there are multiple matches for completion, Tab should cycle through them
 # set completion-ignore-case on
 # bind "set menu-complete-display-prefix on" # Perform partial completion on the first Tab press, only start cycling full results on the second Tab press
+bind 'TAB':menu-complete # If there are multiple matches for completion, Tab should cycle through them
+bind "set show-all-if-ambiguous on" # Display a list of the matching files
+bind "set menu-complete-display-prefix on" # Perform partial completion on the first Tab press, only start cycling full results on the second Tab press
+bind '"\e[A":history-search-backward' # Cycle through history based on characters already typed on the line
+bind '"\e[B":history-search-forward'
+set show-all-if-ambiguous on
+set completion-ignore-case on
 # }}}
 # {{{ INTERFACE
 xset r rate 300 50
@@ -31,9 +38,9 @@ xset m 10 1
 # }}}
 # ALIASES {{{
 alias ..="cd .."
+alias ,top='top -d 0.125'
 alias ,sync="~/repos/my_scripts/src/sync_all_repos.bash ~/repos/"
 alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
-alias cp="cp -vi"
 alias dam="sudo !!"
 alias date1="date +%Y%m%d%H%M%S"
 alias date2="date +%Y-%m-%d_%H:%M:%S"
@@ -43,6 +50,7 @@ alias gr='grep --color -r'
 alias h="history"
 alias l="ls -a"
 alias mkdir="mkdir -v"
+alias cp="cp -vi"
 alias mv="mv -vi"
 alias rm="rm -vi"
 alias r='ranger'
@@ -57,6 +65,18 @@ alias vimrc="vim ~/.vimrc"
 ff () {
     find -name "*$1*"
 }
+
+# This will cd and do ls but sometimes it gets broken
+
+# cd () {
+#     if [ -f $1 ]; then
+#         dir=${1%/*}
+#     else
+#         dir=$1
+#     fi
+#     builtin cd $dir
+#     ls
+# }
 
 convert-softlinks () {
     link_name="$1"
@@ -126,3 +146,30 @@ sl () {
     locate -d "$updatedb_home" .* | fzf
 }
 # }}}
+
+
+# {{{ VIFM not used any more
+
+# vicd()
+# {
+#     local dst="$(command vifm --choose-dir - "$@")"
+#     if [ -z "$dst" ]; then
+#         echo 'Directory picking cancelled/failed'
+#         return 1
+#     fi
+#     cd "$dst"
+# }
+
+
+if [ -f /etc/bash_completion ]; then
+     . /etc/bash_completion
+fi
+
+alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
+
+alias hg="hg --pager=off"
+alias rsync="rsync -azhPvu" # -C
+alias rp="realpath"
+
+oalias d='pushd'
+alias dv='dirs -v'
