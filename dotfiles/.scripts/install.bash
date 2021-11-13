@@ -123,3 +123,22 @@ sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o $HOME/.local/bin/y
 sudo chmod a+rx $HOME/.local/bin/youtube-dl
 
 popd
+
+# pip install tldr
+# Other useful repos
+motivate || git clone https://github.com/mubaris/motivate.git && cd motivate/motivate && sudo ./install.sh && source ~/.bashrc
+
+# git clone https://github.com/mubaris/motivate.git
+# cd motivate
+# ln -s $PWD/motivate/motivate.py moti
+# ln -s $PWD/dummy.sh mmoti
+
+# export PATH=$PWD:$PATH
+# echo 'export PATH=$PWD:$PATH' >> ~/.zshrc
+
+# Other
+#--------------
+mkdir -p ~/.local/bin/
+curl https://cht.sh/:cht.sh > ~/.local/bin/cht.sh
+chmod +x ~/.local/bin/cht.sh
+
