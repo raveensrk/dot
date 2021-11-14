@@ -71,5 +71,15 @@ motivate || git clone https://github.com/mubaris/motivate.git && cd motivate/mot
 
 # export PATH=$PWD:$PATH
 # echo 'export PATH=$PWD:$PATH' >> ~/.zshrc
+
+git clone https://github.com/universal-ctags/ctags.git
+pushd ctags || exit 1
+./autogen.sh
+./configure --prefix=$HOME/.local # defaults to /usr/local
+make
+make install # may require extra privileges depending on where to install
 popd
+
+popd
+
 
