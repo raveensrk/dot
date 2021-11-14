@@ -1,7 +1,5 @@
 # BASH ALIASES
-
 set -o vi
-
 # {{{ ENVIRONMENT VARIABLES
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
@@ -9,7 +7,6 @@ export PATH="~/repos/my_scripts/src:$PATH"
 export VISUAL=vim
 export EDITOR=vim
 # }}}
-
 # {{{ BASH SHOPTS
 shopt -s direxpand
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
@@ -33,8 +30,10 @@ set show-all-if-ambiguous on
 set completion-ignore-case on
 # }}}
 # {{{ INTERFACE
-xset r rate 300 50
-xset m 10 1
+if [ -v xset ]; then
+    xset r rate 300 50
+    xset m 10 1
+fi
 # }}}
 # ALIASES {{{
 alias ..="cd .."
@@ -62,6 +61,12 @@ alias e="emacs -nw"
 alias em="emacs"
 alias v="vim"
 alias vimrc="vim ~/.vimrc"
+alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
+alias hg="hg --pager=off"
+alias rsync="rsync -azhPvu" # -C
+alias rp="realpath"
+alias d='pushd'
+alias dv='dirs -v'
 ff () {
     find -name "*$1*"
 }
@@ -118,11 +123,8 @@ man() {
         command man "$@"
     }
 # }}}
-# OTHER SOURCES {{{
-# MY SCRIPTS
-source ~/repos/my_scripts/src/bash_aliases.bash
-# PROMPT AND COLORS
-source ~/.bash_prompthe
+# {{{ PROMPT AND COLORS
+source ~/.bash_prompt
 # }}}
 # {{{ LOCATE FILES AND DIRS
 updatedb_path="~/.local/locate_db"
@@ -146,8 +148,6 @@ sl () {
     locate -d "$updatedb_home" .* | fzf
 }
 # }}}
-
-
 # {{{ VIFM not used any more
 
 # vicd()
@@ -159,17 +159,9 @@ sl () {
 #     fi
 #     cd "$dst"
 # }
-
-
+# }}}
+# {{{ UBUNTU SPECIFIC
 if [ -f /etc/bash_completion ]; then
      . /etc/bash_completion
 fi
-
-alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
-
-alias hg="hg --pager=off"
-alias rsync="rsync -azhPvu" # -C
-alias rp="realpath"
-
-oalias d='pushd'
-alias dv='dirs -v'
+# }}}
