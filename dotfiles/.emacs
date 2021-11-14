@@ -8,7 +8,7 @@
  '(package-selected-packages
    '(folding multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
- '(tab-width 48))
+ '(tab-width 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -58,7 +58,6 @@
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
-
 ;; (and
 ;;  (require 'centered-cursor-mode)
 ;;  (global-centered-cursor-mode +1))
@@ -74,8 +73,6 @@
 (setq org-src-tab-acts-natively t)
 (put 'narrow-to-region 'disabled nil)
 (recentf-mode 1)
-
-
 
 (org-babel-do-load-languages 'org-babel-load-languages
                              '(
@@ -98,7 +95,7 @@
 
 (set-face-attribute 'default nil :height 200)
 ;; IDO Mode
-(ido-mode 1)
+;; (ido-mode 1)
 (org-superstar-mode 1)
 
 (require 'expand-region)
@@ -163,7 +160,7 @@
   ;; This will add this file to buffer list when opening emacs
   (find-file "~/repos/raveenkumar.xyz/src/index.org")
   (find-file "/home/raveensrk/repos/jorunal-personal/src/index.org")
-  (find-file "/home/raveensrk/repos/.emacs/emacs/.emacs")
+  (find-file "~/.emacs")
   )
 
 (with-system windows-nt
@@ -182,8 +179,8 @@
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 
-(add-to-list 'load-path "~/.emacs.d/vendor")
-(require 'guru-mode)
+;; (add-to-list 'load-path "~/.emacs.d/vendor")
+;; (require 'guru-mode)
 
 (if (require 'folding nil 'noerror)
     (folding-mode-add-find-file-hook)
