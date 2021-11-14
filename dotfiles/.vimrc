@@ -173,10 +173,7 @@ nnoremap <silent> <Leader>- :vertical resize -5<CR>
 vnoremap <leader><Up>   :'<,'>move -2<CR>gv=gv
 vnoremap <leader><Down> :'<,'>move +2<CR>gv=gv
 
-" Move singlen lines in normal mode
+" Move single lines in normal mode
 nnoremap <leader><Up>   :move -2<CR>
 nnoremap <leader><Down> :move +1<CR>
-
-" nnoremap <leader>rss :norm I"<ESC>A"<CR>
-nnoremap <leader>ns :sort/^".*" \+/<CR>
 " }}}

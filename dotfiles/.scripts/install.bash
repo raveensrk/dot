@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script will install all application for my system after cloning
+# my repo and symlinking my dotfiles. Supports fedora and ubuntu.
+
 set -e
 # set -x
 

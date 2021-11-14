@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script will change spaces to _ in a file
+# This script will change spaces,(,) to _ in a file
 
 orig_name="$1"
 echo $orig_name

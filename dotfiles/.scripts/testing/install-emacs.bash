@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Custom emacs packages installation without using the inbuilt package
+# manager.
+
 if [ ! -d .emacs.d/vendor ]; then
     mkdir .emacs.d/vendor
 fi

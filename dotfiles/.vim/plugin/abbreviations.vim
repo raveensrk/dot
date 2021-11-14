@@ -1,3 +1,5 @@
+" Contains all my abbreviations
+
 ab red ${RED}
 ab green ${GREEN}
 ab yellow ${YELLOW}
