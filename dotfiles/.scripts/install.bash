@@ -5,47 +5,15 @@ set -e
 
 read -p "Enter f for fedora or u for ubuntu: [f/u]" distro
 
-pkg_list_common="
-             bat \
-             curl \
-             ffmpeg \
-             ffmpegthumbnailer \
-             gnuplot \
-             htop \ 
-             kdialog \
-             kdiff3 \
-             mediainfo \
-             mlocate \
-             mpv \
-             neofetch \
-             newsboat \
-             python \
-             python3 \
-             python3-pip \
-             ranger \
-             shellcheck \
-             stow \
-             tldr \
-             vim \
-             vim-gtk \
-             yank \
-             pandoc \
-             obs-studio
-             "
-pkg_list_ubuntu_only="
-             shellcheck \
-             imagemagick \
-                 "
-pkg_list_fedora_only="
-             ShellCheck \
-             ImageMagick \
-                 "
+pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio"
+pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk"
+pkg_list_fedora_only="ShellCheck ImageMagick vim-X11"
 
 case $distro in
     f)
         sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-        sudo dnf install  "$pkg_list_common"
-        sudo dnf install  "$pkg_list_fedora_only"
+        sudo dnf install  $pkg_list_common
+        sudo dnf install  $pkg_list_fedora_only
         ;;
     u)
         sudo apt  update
@@ -53,8 +21,8 @@ case $distro in
         sudo apt  autoremove
         sudo apt  autoclean
         sudo apt  autopurge
-        sudo apt  install "$pkg_list_common"
-        sudo apt  install "$pkg_list_ubuntu_only"
+        sudo apt  install $pkg_list_common
+        sudo apt  install $pkg_list_ubuntu_only
         ;;
     *)
         echo "Unknown Distro! 😠"
