@@ -29,11 +29,10 @@ case $distro in
         ;;
     *)
         echo "Unknown Distro! 😠"
-        exit 2
         ;;
 esac
 
-python3 -m pip install bdfr --upgrade
+# python3 -m pip install bdfr --upgrade
 
 [ -d ~/tmp ] || mkdir $HOME/tmp
 [ -d ~/.local/bin ] || mkdir -p ~/.local/bin
@@ -54,10 +53,10 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 curl https://cht.sh/:cht.sh >$HOME/.local/bin/cht.sh
 chmod +x $HOME/.local/bin/cht.sh
 
-curl -sL "https://raw.githubusercontent.com/pystardust/ytfzf/master/ytfzf" | sudo tee $HOME/.local/bin/ytfzf >/dev/null && sudo chmod 755 $HOME/.local/bin/ytfzf
+# curl -sL "https://raw.githubusercontent.com/pystardust/ytfzf/master/ytfzf" | sudo tee $HOME/.local/bin/ytfzf >/dev/null && sudo chmod 755 $HOME/.local/bin/ytfzf
 
-sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o $HOME/.local/bin/youtube-dl
-sudo chmod a+rx $HOME/.local/bin/youtube-dl
+# sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o $HOME/.local/bin/youtube-dl
+# sudo chmod a+rx $HOME/.local/bin/youtube-dl
 
 [ ! -v tldr ] && pip install tldr || echo -e ${YELLOW} tldr install failed ${NC}
 
@@ -72,7 +71,7 @@ motivate || git clone https://github.com/mubaris/motivate.git && cd motivate/mot
 # export PATH=$PWD:$PATH
 # echo 'export PATH=$PWD:$PATH' >> ~/.zshrc
 
-git clone https://github.com/universal-ctags/ctags.git
+[ ! -d ctags ] && git clone https://github.com/universal-ctags/ctags.git
 pushd ctags || exit 1
 ./autogen.sh
 ./configure --prefix=$HOME/.local # defaults to /usr/local
