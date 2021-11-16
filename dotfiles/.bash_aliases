@@ -1,4 +1,4 @@
-# BASH ALIASES
+# BASH ALIASES sourced at ~/.bashrc
 set -o vi
 # {{{ ENVIRONMENT VARIABLES
 # export DISPLAY=:0
@@ -41,7 +41,7 @@ fi
 # ALIASES {{{
 alias ..="cd .."
 alias ,top='top -d 0.125'
-alias ,sync="~/repos/my_scripts/src/sync_all_repos.bash ~/repos/"
+alias ,sync="~/repos/my-scripts-main/src/sync_all_repos.bash ~/repos/"
 alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
 alias dam="sudo !!"
 alias date1="date +%Y%m%d%H%M%S"
