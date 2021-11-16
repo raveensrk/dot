@@ -1,6 +1,2 @@
-
-dotfiles/.vimrc~
-*.bash~
-dotfiles/.vim/autoload/**
-dotfiles/.vim/undo
-dotfiles/.vim/backup
+*~
+dotfiles/.vim
