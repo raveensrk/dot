@@ -40,6 +40,11 @@ export LIGHT_RED="\e[91m"
 export LIGHT_YELLOW="\e[93m"
 export WHITE="\e[97m"
 
+export NC='\033[0m'       # No color
+export GREEN='\033[0;32m' 
+export YELLOW='\033[0;33m' 
+export BLUE='\033[0;34m' 
+export RED='\033[0;31m'   
 
 # export PS1="$RED\u $GREEN@ $LIGHT_CYAN\h $LIGHT_GRAY: $YELLOW\W $NO_COLOR$"
 export PS1="\u @ \h : \W $ "

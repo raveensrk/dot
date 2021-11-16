@@ -23,7 +23,6 @@ case $distro in
         sudo apt  upgrade
         sudo apt  autoremove
         sudo apt  autoclean
-        sudo apt  autopurge
         sudo apt  install $pkg_list_common
         sudo apt  install $pkg_list_ubuntu_only
         ;;
