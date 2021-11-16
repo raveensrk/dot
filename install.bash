@@ -6,7 +6,7 @@
 set -e
 # set -x
 
-read -p "Enter f for fedora or u for ubuntu: [f/u]" distro
+read -p "Enter f/u/n fedora/ubuntu/none: " distro
 
 pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio"
 pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk"
@@ -26,12 +26,18 @@ case $distro in
         sudo apt  install $pkg_list_common
         sudo apt  install $pkg_list_ubuntu_only
         ;;
+	n)
+		echo "Skipping install.."
+        ;;
     *)
         echo "Unknown Distro! 😠"
         ;;
 esac
 
 # python3 -m pip install bdfr --upgrade
+
+stow dotfiles -t ~/
+echo "source ~/.bash_aliases" >> ~/.bashrc
 
 [ -d ~/tmp ] || mkdir $HOME/tmp
 [ -d ~/.local/bin ] || mkdir -p ~/.local/bin
@@ -45,8 +51,9 @@ fi
 [ ! -d ~/.vim/backup ] && mkdir -p ~/.vim/backup
 [ ! -d ~/.vim/swap ] && mkdir -p ~/.vim/undo
 
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+[ ! -f ~/.vim/autoload/plug.vim ] && \
+	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+		 https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 [ -f ~/.local/bin/cht.sh ] && rm ~/.local/bin/cht.sh
 curl https://cht.sh/:cht.sh >$HOME/.local/bin/cht.sh
