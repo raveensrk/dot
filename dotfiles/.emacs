@@ -62,8 +62,8 @@
 ;;  (require 'centered-cursor-mode)
 ;;  (global-centered-cursor-mode +1))
 
-(require 'beacon)
-(beacon-mode 1)
+;; (require 'beacon)
+;; (beacon-mode 1)
 
 (add-hook 'find-file-hook
           (lambda ()

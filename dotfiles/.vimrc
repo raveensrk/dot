@@ -94,11 +94,6 @@ set nobackup
 set undofile
 set undodir=~/.vim/undo
 " }}}
-" {{{ COLOR / THEME
-colo gruvbox
-" colo default
-set background=dark
-" }}}
 " TRIM WHITE SPACE AFTER EXIT - DISBALED {{{
 fun! TrimWhitespace()
     let l:save = winsaveview()
