@@ -187,3 +187,4 @@
   (message "Library `folding' not found"))
 
 (folding-add-to-marks-list 'shell-script-mode "# {{{" "# }}}" nil t)
+(setq backup-directory-alist       `((".*" . , "~/.dotfiles/.config/emacs/auto-backups")))
