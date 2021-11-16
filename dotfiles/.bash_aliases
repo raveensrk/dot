@@ -130,7 +130,7 @@ man() {
 source ~/.bash_prompt
 # }}}
 # {{{ LOCATE FILES AND DIRS
-updatedb_path="~/.local/locate_db"
+updatedb_path="$HOME/.local/locate_db"
 updatedb_home="$updatedb_path/home.db"
 ,updatedb () {
     [[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
