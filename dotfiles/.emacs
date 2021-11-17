@@ -119,9 +119,10 @@
 
 (with-system gnu/linux
   ;; This will add this file to buffer list when opening emacs
+  ;; TODO file-exists-p
   (find-file "~/repos/raveenkumar.xyz/src/index.org")
-  (find-file "/home/raveensrk/repos/jorunal-personal/src/index.org")
-  (find-file "/home/raveensrk/repos/.emacs/emacs/.emacs")
+  (find-file "~/repos/jorunal-personal/src/index.org")
+  (find-file "~/repos/journal-work/src/index.org")
   )
 
 (with-system windows-nt
