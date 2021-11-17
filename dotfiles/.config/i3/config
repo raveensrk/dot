@@ -110,14 +110,14 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:HOME"
-set $ws2 "2:EMACS"
-set $ws3 "3:TYPING_PRACTICE"
-set $ws4 "4:RSS_AND_READING"
-set $ws5 "5:INTERNET"
-set $ws6 "6:REPO_MANAGE"
-set $ws7 "7"
-set $ws8 "8"
+set $ws1 "1-HOME"
+set $ws2 "2-EMACS"
+set $ws3 "3-TYPING_PRACTICE"
+set $ws4 "4-RSS_AND_READING"
+set $ws5 "5-BROWSER"
+set $ws6 "6-REPO_MANAGE"
+set $ws7 "7-MEDIA"
+set $ws8 "8-MUSIC"
 set $ws9 "9"
 set $ws10 "10"
 
@@ -187,6 +187,7 @@ bar {
 
 assign [class="emacs"] 2
 assign [class="chrome"] 5
-assign [class="lifrea"] 4
+assign [class="Lifrea"] 4
 assign [class="obs"] 3
 assign [class="keybr"] 3
+assign [class="mpv"] 7
