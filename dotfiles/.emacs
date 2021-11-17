@@ -119,9 +119,10 @@
 
 (with-system gnu/linux
   ;; This will add this file to buffer list when opening emacs
+  ;; TODO file-exists-p
   (find-file "~/repos/raveenkumar.xyz/src/index.org")
-  (find-file "/home/raveensrk/repos/jorunal-personal/src/index.org")
-  (find-file "/home/raveensrk/repos/.emacs/emacs/.emacs")
+  (find-file "~/repos/jorunal-personal/src/index.org")
+  (find-file "~/repos/journal-work/src/index.org")
   )
 
 (with-system windows-nt
@@ -138,3 +139,18 @@
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+
+
+;; set default tab char's display width to 4 spaces
+(setq-default tab-width 4) ; emacs 23.1 to 26 default to 8
+
+;; set current buffer's tab char's display width to 4 spaces
+(setq tab-width 4)
+
+
+(progn
+  ;; make indent commands use space only (never tab character)
+  (setq-default indent-tabs-mode nil)
+  ;; emacs 23.1 to 26, default to t
+  ;; if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
+  )
