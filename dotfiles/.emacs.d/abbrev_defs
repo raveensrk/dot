@@ -1,0 +1,25 @@
+;;-*-coding: utf-8;-*-
+(define-abbrev-table 'global-abbrev-table
+  '(
+    ("ba" "bash" nil :count 1)
+    ("blue" "${BLUE}" nil :count 1)
+    ("dl" "download" nil :count 1)
+    ("ec" "echo" nil :count 1)
+    ("ecb" "echo -e ${BLUE} ❕ ${NC}" nil :count 13)
+    ("ecg" "echo -e ${GREEN} ✅ ${NC}" nil :count 2)
+    ("ecr" "echo -e ${RED} ❌ ${NC}" nil :count 1)
+    ("ecy" "echo -e ${YELLOW} 🛑 ${NC}" nil :count 1)
+    ("efail" "❌" nil :count 1)
+    ("enote" "❕" nil :count 1)
+    ("epass" "✅" nil :count 1)
+    ("g" "grep" nil :count 1)
+    ("green" "${GREEN}" nil :count 1)
+    ("nc" "${NC}" nil :count 1)
+    ("pf" "printf" nil :count 1)
+    ("red" "${RED}" nil :count 1)
+    ("t" "the" nil :count 1)
+    ("tn" "then" nil :count 1)
+    ("ul" "upload" nil :count 1)
+    ("yellow" "${YELLOW}" nil :count 1)
+   ))
+
