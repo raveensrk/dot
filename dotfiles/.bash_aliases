@@ -1,5 +1,5 @@
 # BASH ALIASES sourced at ~/.bashrc
-set -o vi
+set -o emacs
 # {{{ ENVIRONMENT VARIABLES
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
@@ -60,8 +60,8 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias e="emacs -nw"
-alias em="emacs"
+alias e="emacsclient -nw"
+alias em="emacs --daemon"
 alias v="vim"
 alias vimrc="vim ~/.vimrc"
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
