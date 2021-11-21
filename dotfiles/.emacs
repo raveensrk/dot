@@ -123,6 +123,7 @@
   (find-file "~/repos/raveenkumar.xyz/src/index.org")
   (find-file "~/repos/jorunal-personal/src/index.org")
   (find-file "~/repos/journal-work/src/index.org")
+  (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
   )
 
 (with-system windows-nt
@@ -154,3 +155,8 @@
   ;; emacs 23.1 to 26, default to t
   ;; if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
   )
+
+
+;; Modes
+(add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
+
