@@ -112,12 +112,25 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:🏡"
+# 2: Internet
 set $ws2 "2:🌏"
+assign [class="Firefox"] $ws2
+assign [class="qBittorrent"] $ws2
+# 3: Recording
 set $ws3 "3:🖮"
+assign [class="obs"]          $ws3
+assign [class="keybr"]        $ws3
+# 4: News
 set $ws4 "4:📰"
+assign [class="Liferea"]      $ws4
+# 5: Media
 set $ws5 "5:📺"
+assign [class="mpv"]          $ws5
+# 6: Music
 set $ws6 "6:🎵"
-set $ws7 "7"
+# 7: Gaming
+set $ws7 "7:🎮"
+assign [class="Steam"]        $ws7
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
@@ -182,12 +195,6 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-assign [class="Firefox"]      $ws2
-assign [class="qBittorrent"]  $ws2
-assign [class="obs"]          $ws3
-assign [class="keybr"]        $ws3
-assign [class="Liferea"]      $ws4
-assign [class="mpv"]          $ws5
 
 # class                 border  bground text    indicator child_border
 client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
@@ -215,3 +222,12 @@ bar {
 }
 
 bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
+
+# Startup applications
+exec --no-startup-id firefox
+exec --no-startup-id /var/lib/flatpak/exports/bin/org.qbittorrent.qBittorrent
+exec --no-startup-id /var/lib/flatpak/exports/bin/net.sourceforge.liferea
+exec --no-startup-id /var/lib/flatpak/exports/bin/com.valvesoftware.Steam
+exec --no-startup-id /var/lib/flatpak/exports/bin/com.github.johnfactotum.Foliate
+exec --no-startup-id /var/lib/flatpak/exports/bin/io.github.shiftey.Desktop
+
