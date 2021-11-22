@@ -6,7 +6,7 @@
  '(blink-cursor-mode t)
  '(custom-enabled-themes '(wombat))
  '(package-selected-packages
-   '(multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
