@@ -133,7 +133,8 @@ set $ws7 "7:🎮"
 assign [class="Steam"]        $ws7
 set $ws8 "8"
 set $ws9 "9"
-set $ws10 "10"
+set $ws10 "10:📙"
+assign [class="Com.github.johnfactotum.Foliate"]        $ws10
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -229,5 +230,4 @@ exec --no-startup-id /var/lib/flatpak/exports/bin/org.qbittorrent.qBittorrent
 exec --no-startup-id /var/lib/flatpak/exports/bin/net.sourceforge.liferea
 exec --no-startup-id /var/lib/flatpak/exports/bin/com.valvesoftware.Steam
 exec --no-startup-id /var/lib/flatpak/exports/bin/com.github.johnfactotum.Foliate
-exec --no-startup-id /var/lib/flatpak/exports/bin/io.github.shiftey.Desktop
 
