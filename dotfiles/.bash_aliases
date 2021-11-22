@@ -168,3 +168,8 @@ if [ -f /etc/bash_completion ]; then
      . /etc/bash_completion
 fi
 # }}}
+
+if [ $HOSTNAME = "my-fedora" ]; then
+    ~/repos/my-scripts-main/src/my_change_colemak.bash
+    ~/repos/my-scripts-main/src/my_mouse_settings.bash
+fi
