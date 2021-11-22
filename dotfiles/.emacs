@@ -129,7 +129,7 @@
 (with-system windows-nt
   (find-file "c:/Github/raveenkumar.xyz/src/index.org")
   (find-file "c:/Github/journal-work/src/index.org")
-  (find-file "c:/Github/.emacs/emacs/.emacs")
+  (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
   )
 
 
