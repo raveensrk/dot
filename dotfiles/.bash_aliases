@@ -170,6 +170,20 @@ fi
 # }}}
 
 if [ $HOSTNAME = "my-fedora" ]; then
-    ~/repos/my-scripts-main/src/my_change_colemak.bash
-    ~/repos/my-scripts-main/src/my_mouse_settings.bash
+    source ~/repos/my-scripts-main/src/my_change_colemak.bash
+    source ~/repos/my-scripts-main/src/my_mouse_settings.bash
 fi
+
+[ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
+touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
+for f in ~/.my_bash_aliases/*; do
+    source "$f"
+done
+
+[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
+export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
+
+
+             
+
+
