@@ -114,7 +114,7 @@ bindsym $mod+a focus parent
 set $ws1 "1:🏡"
 # 2: Internet
 set $ws2 "2:🌏"
-assign [class="Firefox"] $ws2
+# assign [class="Firefox"] $ws2
 assign [class="qBittorrent"] $ws2
 # 3: Recording
 set $ws3 "3:🖮"
@@ -126,6 +126,7 @@ assign [class="Liferea"]      $ws4
 # 5: Media
 set $ws5 "5:📺"
 assign [class="mpv"]          $ws5
+assign [class="generic"]      $ws5 # Haruna
 # 6: Music
 set $ws6 "6:🎵"
 # 7: Gaming
