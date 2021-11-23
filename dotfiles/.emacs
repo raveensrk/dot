@@ -6,7 +6,7 @@
  '(blink-cursor-mode t)
  '(custom-enabled-themes '(wombat))
  '(package-selected-packages
-   '(multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -123,12 +123,13 @@
   (find-file "~/repos/raveenkumar.xyz/src/index.org")
   (find-file "~/repos/jorunal-personal/src/index.org")
   (find-file "~/repos/journal-work/src/index.org")
+  (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
   )
 
 (with-system windows-nt
   (find-file "c:/Github/raveenkumar.xyz/src/index.org")
   (find-file "c:/Github/journal-work/src/index.org")
-  (find-file "c:/Github/.emacs/emacs/.emacs")
+  (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
   )
 
 
@@ -154,3 +155,8 @@
   ;; emacs 23.1 to 26, default to t
   ;; if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
   )
+
+
+;; Modes
+(add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
+

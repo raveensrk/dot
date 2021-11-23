@@ -15,6 +15,7 @@
     ("g" "grep" nil :count 1)
     ("green" "${GREEN}" nil :count 1)
     ("nc" "${NC}" nil :count 1)
+    ("orgex" "#+begin_example\\\\n#+end_example" nil :count 1)
     ("pf" "printf" nil :count 1)
     ("red" "${RED}" nil :count 1)
     ("t" "the" nil :count 1)

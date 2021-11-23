@@ -7,8 +7,8 @@ export PATH="~/repos/my_scripts/src:$PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
-export VISUAL=vim
-export EDITOR=vim
+export VISUAL="emacsclient -a emacs"
+export EDITOR="emacsclient -a emacs"
 # }}}
 # {{{ BASH SHOPTS
 shopt -s direxpand
@@ -168,3 +168,8 @@ if [ -f /etc/bash_completion ]; then
      . /etc/bash_completion
 fi
 # }}}
+
+if [ $HOSTNAME = "my-fedora" ]; then
+    ~/repos/my-scripts-main/src/my_change_colemak.bash
+    ~/repos/my-scripts-main/src/my_mouse_settings.bash
+fi

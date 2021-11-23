@@ -59,10 +59,10 @@ bindsym $mod+Shift+q kill
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+# bindsym $mod+j focus left
+# bindsym $mod+k focus down
+# bindsym $mod+l focus up
+# bindsym $mod+semicolon focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -71,10 +71,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+# bindsym $mod+Shift+j move left
+# bindsym $mod+Shift+k move down
+# bindsym $mod+Shift+l move up
+# bindsym $mod+Shift+semicolon move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -86,7 +86,8 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+h split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+# bindsym $mod+v split v
+bindsym $mod+Shift+h split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -110,16 +111,30 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1-HOME"
-set $ws2 "2"
-set $ws3 "3-TYPING_PRACTICE"
-set $ws4 "4-RSS_AND_READING"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7-MEDIA"
-set $ws8 "8-MUSIC"
+set $ws1 "1:🏡"
+# 2: Internet
+set $ws2 "2:🌏"
+assign [class="Firefox"] $ws2
+assign [class="qBittorrent"] $ws2
+# 3: Recording
+set $ws3 "3:🖮"
+assign [class="obs"]          $ws3
+assign [class="keybr"]        $ws3
+# 4: News
+set $ws4 "4:📰"
+assign [class="Liferea"]      $ws4
+# 5: Media
+set $ws5 "5:📺"
+assign [class="mpv"]          $ws5
+# 6: Music
+set $ws6 "6:🎵"
+# 7: Gaming
+set $ws7 "7:🎮"
+assign [class="Steam"]        $ws7
+set $ws8 "8"
 set $ws9 "9"
-set $ws10 "10"
+set $ws10 "10:📙"
+assign [class="Com.github.johnfactotum.Foliate"]        $ws10
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -181,14 +196,6 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command i3status
-}
-
-assign [class="Lifrea"] 4
-assign [class="obs"] 3
-assign [class="keybr"] 3
-assign [class="mpv"] 7
 
 # class                 border  bground text    indicator child_border
 client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
@@ -200,6 +207,8 @@ client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
 bar {
+  # status_command i3status
+  status_command ~/.config/i3status/my_i3status.bash
   colors {
     background #282A36
     statusline #F8F8F2
@@ -214,3 +223,11 @@ bar {
 }
 
 bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
+
+# Startup applications
+exec --no-startup-id firefox
+exec --no-startup-id /var/lib/flatpak/exports/bin/org.qbittorrent.qBittorrent
+exec --no-startup-id /var/lib/flatpak/exports/bin/net.sourceforge.liferea
+exec --no-startup-id /var/lib/flatpak/exports/bin/com.valvesoftware.Steam
+exec --no-startup-id /var/lib/flatpak/exports/bin/com.github.johnfactotum.Foliate
+
