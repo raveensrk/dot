@@ -1,0 +1,35 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("build.bash"
+ (filename . "~/repos/my-scripts-work/src/run_cmds/vp150/build.bash")
+ (front-context-string . "\n		echo Wrong mo")
+ (rear-context-string . "\n		popd\n		;;\n	*)")
+ (position . 942))
+("run_vp150.bash"
+ (filename . "~/repos/my-scripts-work/src/run_cmds/vp150/run_vp150.bash")
+ (front-context-string . "nvrx=96\n        ")
+ (rear-context-string . "   local test_a_")
+ (position . 15541))
+("dumps"
+ (filename . "/mnt/ufile-server/uhnder-nas/digital/GOST/config_files/vp150/dumps/")
+ (front-context-string . "20211116042812_d")
+ (rear-context-string . "96 Nov 16 04:41 ")
+ (position . 302))
+("GOST"
+ (filename . "/mnt/ufile-server/uhnder-nas/digital/GOST/")
+ (front-context-string . "config_files\n  d")
+ (rear-context-string . "96 Oct  7 05:45 ")
+ (position . 289))
+("repos"
+ (filename . "~/repos/")
+ (front-context-string . "dotfiles-main\n  ")
+ (rear-context-string . "96 Nov 16 03:03 ")
+ (position . 261))
+("vp150"
+ (filename . "~/repos/my-scripts-work/src/run_cmds/vp150/")
+ (front-context-string . "build.bash\n  -rw")
+ (rear-context-string . "99 Nov 17 05:28 ")
+ (position . 297))
+)
