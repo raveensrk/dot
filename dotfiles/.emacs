@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode t)
  '(custom-enabled-themes '(wombat))
+ '(org-startup-folded t)
  '(package-selected-packages
    '(org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
@@ -173,3 +174,5 @@ same directory as the org-buffer and insert a link to this file."
   (call-process "import" nil nil nil filename)
   (insert (concat "[[" filename "]]"))
   (org-display-inline-images))
+
+;; (setq org-startup-folded t)
