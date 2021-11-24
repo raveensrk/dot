@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("build.bash"
+(("org-refile-last-stored"
+ (filename . "~/repos/raveenkumar.xyz/src/linux_and_programming/linux.org")
+ (front-context-string . "** [[file:awk.or")
+ (rear-context-string . ":cat.org][cat]]\n")
+ (position . 5816))
+("build.bash"
  (filename . "~/repos/my-scripts-work/src/run_cmds/vp150/build.bash")
  (front-context-string . "\n		echo Wrong mo")
  (rear-context-string . "\n		popd\n		;;\n	*)")
