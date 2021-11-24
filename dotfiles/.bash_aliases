@@ -150,6 +150,12 @@ sd () {
 sl () {
     locate -d "$updatedb_home" .* | fzf
 }
+
+sx () {
+    local file=$(locate -d "$updatedb_home" .* | fzf)
+    source $file
+}
+
 # }}}
 # {{{ VIFM not used any more
 
