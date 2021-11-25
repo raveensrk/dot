@@ -4,7 +4,7 @@
     ("ba" "bash" nil :count 1)
     ("blue" "${BLUE}" nil :count 1)
     ("dl" "download" nil :count 1)
-    ("ec" "echo" nil :count 1)
+    ("ec" "echo" nil :count 2)
     ("ecb" "echo -e ${BLUE} ❕ ${NC}" nil :count 13)
     ("ecg" "echo -e ${GREEN} ✅ ${NC}" nil :count 2)
     ("ecr" "echo -e ${RED} ❌ ${NC}" nil :count 1)
@@ -15,7 +15,8 @@
     ("g" "grep" nil :count 1)
     ("green" "${GREEN}" nil :count 1)
     ("nc" "${NC}" nil :count 1)
-    ("orgex" "#+begin_example\\\\n#+end_example" nil :count 1)
+    ("orgex" "#+begin_example
+#+end_example" nil :count 4)
     ("pf" "printf" nil :count 1)
     ("red" "${RED}" nil :count 1)
     ("t" "the" nil :count 1)

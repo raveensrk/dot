@@ -176,3 +176,4 @@ same directory as the org-buffer and insert a link to this file."
   (org-display-inline-images))
 
 ;; (setq org-startup-folded t)
+(abbrev-mode 1)
