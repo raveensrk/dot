@@ -176,10 +176,10 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 
-if [ $HOSTNAME = "my-fedora" ]; then
-    source ~/repos/my-scripts-main/src/my_change_colemak.bash
-    source ~/repos/my-scripts-main/src/my_mouse_settings.bash
-fi
+# if [ $HOSTNAME = "my-fedora" ]; then
+#     source ~/repos/my-scripts-main/src/my_change_colemak.bash
+#     source ~/repos/my-scripts-main/src/my_mouse_settings.bash
+# fi
 
 [ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
 touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
