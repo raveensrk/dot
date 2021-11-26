@@ -62,6 +62,7 @@ alias tree="tree -C"
 alias xo="xdg-open"
 alias e="emacsclient -nw"
 alias em="emacs --daemon"
+alias emk="emacsclient -e \"(server-force-delete)\""
 alias v="vim"
 alias vimrc="vim ~/.vimrc"
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
