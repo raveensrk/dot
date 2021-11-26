@@ -7,7 +7,7 @@
  '(custom-enabled-themes '(wombat))
  '(org-startup-folded t)
  '(package-selected-packages
-   '(org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -15,7 +15,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 203 :width normal :foundry "ADBO" :family "Source Code Pro")))))
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
@@ -176,4 +176,5 @@ same directory as the org-buffer and insert a link to this file."
   (org-display-inline-images))
 
 ;; (setq org-startup-folded t)
-(abbrev-mode 1)
+(setq-default abbrev-mode 1)
+(set-face-attribute 'default nil :height 200)

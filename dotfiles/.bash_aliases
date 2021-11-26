@@ -60,7 +60,7 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias e="emacsclient -nw"
+alias e="emacsclient -nw -a emacs"
 alias em="emacs --daemon"
 alias emk="emacsclient -e \"(server-force-delete)\""
 alias v="vim"
@@ -139,13 +139,17 @@ updatedb_home="$updatedb_path/home.db"
 }
 
 se () {
-    file=$(locate -d "$updatedb_home" .* | fzf)
+    local file=$(locate -d "$updatedb_home" .* | fzf)
+    echo -e ${BLUE} The following command is executed... ${NC}
+    echo -e ${YELLOW} 'e' "$file" ${NC} 
     e "$file"
 }
 
 sd () {
-    dir=$(locate -d "$updatedb_home" .* | fzf)
-    pushd "$dir" || exit 1
+    local dir=$(locate -d "$updatedb_home" .* | fzf)
+    echo -e ${BLUE} The following command is executed... ${NC}
+    echo -e ${YELLOW} 'pushd' "$dir" ${NC} 
+    pushd "$dir"
 }
 
 sl () {
@@ -154,7 +158,9 @@ sl () {
 
 sx () {
     local file=$(locate -d "$updatedb_home" .* | fzf)
-    source $file
+    echo -e ${BLUE} The following command is executed... ${NC}
+    echo -e ${YELLOW} 'source' "$file" ${NC} 
+    source "$file"
 }
 
 # }}}
