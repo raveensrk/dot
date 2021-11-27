@@ -5,9 +5,11 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode t)
  '(custom-enabled-themes '(wombat))
+ '(org-agenda-files
+   '("/home/raveensrk/repos/raveenkumar.xyz/src/index.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/General Programming Notes.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/Windows WSL.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/awk.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/bash.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/bc.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/c++.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/cat.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/cp.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/ctags.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/cut.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/less.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/linux.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/locate.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/mercurial_hg.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/networking_and_it_notes.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/paste.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/pstree.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/python-brownbag.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/python.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/ranger.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/rsync.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/sed.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/sos.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/ssh.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/tmux.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/vifm.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/vim.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/zip.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/octave/octave.org" "/home/raveensrk/repos/raveenkumar.xyz/src/emacs/emacs.org" "/home/raveensrk/repos/jorunal-personal/src/index.org" "/home/raveensrk/repos/jorunal-personal/src/journal.org" "/home/raveensrk/repos/jorunal-personal/src/lists.org" "/home/raveensrk/repos/jorunal-personal/src/random.org"))
  '(org-startup-folded t)
  '(package-selected-packages
-   '(noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -177,4 +179,5 @@ same directory as the org-buffer and insert a link to this file."
 
 ;; (setq org-startup-folded t)
 (setq-default abbrev-mode 1)
+;; (evil-mode 1)
 (set-face-attribute 'default nil :height 200)

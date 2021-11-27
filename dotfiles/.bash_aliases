@@ -60,7 +60,7 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias e="emacsclient -nw -a emacs"
+alias e="emacsclient -nw -a emacs || emacs -nw"
 alias em="emacs --daemon"
 alias emk="emacsclient -e \"(server-force-delete)\""
 alias v="vim"
@@ -71,6 +71,7 @@ alias rsync="rsync -azhPvu" # -C
 alias rp="realpath"
 alias d='pushd'
 alias dv='dirs -v'
+
 ff () {
     find -name "*$1*"
 }
@@ -194,7 +195,9 @@ for f in ~/.my_bash_aliases/*; do
 done
 
 [ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
-export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
+#export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
+#echo $PATH
+export PATH="$HOME/.local/scripts/my-scripts-personal:${PATH}"
 
 
              
