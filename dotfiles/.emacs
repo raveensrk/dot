@@ -181,3 +181,6 @@ same directory as the org-buffer and insert a link to this file."
 (setq-default abbrev-mode 1)
 ;; (evil-mode 1)
 (set-face-attribute 'default nil :height 200)
+
+(setq org-todo-keywords
+      '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "DELEGATED" "SKIPPED")))
