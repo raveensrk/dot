@@ -205,3 +205,5 @@ same directory as the org-buffer and insert a link to this file."
 
 ;; Mark current hunk
 (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
+
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
