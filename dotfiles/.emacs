@@ -7,7 +7,7 @@
  '(custom-enabled-themes '(wombat))
  '(org-startup-folded t)
  '(package-selected-packages
-   '(git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -121,11 +121,11 @@
 (with-system gnu/linux
   ;; This will add this file to buffer list when opening emacs
   ;; TODO file-exists-p
-  (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
+  ;; (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
   )
 
 (with-system windows-nt
-  (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
+  ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
   )
 
 

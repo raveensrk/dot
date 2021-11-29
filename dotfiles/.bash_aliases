@@ -1,6 +1,7 @@
 # BASH ALIASES sourced at ~/.bashrc
 set -o emacs
 # {{{ ENVIRONMENT VARIABLES
+
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="~/repos/my_scripts/src:$PATH"
@@ -9,6 +10,7 @@ if [ -d /var/lib/flatpak/exports/bin ]; then
 fi
 export VISUAL="emacsclient -a emacs"
 export EDITOR="emacsclient -a emacs"
+
 # }}}
 # {{{ BASH SHOPTS
 shopt -s direxpand
@@ -38,7 +40,7 @@ if [ -v xset ]; then
     xset m 10 1
 fi
 # }}}
-# ALIASES {{{
+# {{{ ALIASES
 alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync="~/repos/my-scripts-main/src/sync_all_repos.bash ~/repos/"
@@ -60,7 +62,7 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias e="emacsclient -nw -a emacs || emacs -nw"
+alias e="emacsclient -nw -a emacs -nw"
 alias em="emacs --daemon"
 alias emk="emacsclient -e \"(server-force-delete)\""
 alias v="vim"
@@ -99,7 +101,7 @@ convert-softlinks () {
     unset link_name orig 
 }
 # }}}
-# WSL {{{
+# {{{ WSL
 alias ,e="explorer.exe ."
 # }}}
 # {{{ PAGERS
@@ -165,39 +167,20 @@ sx () {
 }
 
 # }}}
-# {{{ VIFM not used any more
-
-# vicd()
-# {
-#     local dst="$(command vifm --choose-dir - "$@")"
-#     if [ -z "$dst" ]; then
-#         echo 'Directory picking cancelled/failed'
-#         return 1
-#     fi
-#     cd "$dst"
-# }
-# }}}
 # {{{ UBUNTU SPECIFIC
 if [ -f /etc/bash_completion ]; then
      . /etc/bash_completion
 fi
 # }}}
-
-# if [ $HOSTNAME = "my-fedora" ]; then
-#     source ~/repos/my-scripts-main/src/my_change_colemak.bash
-#     source ~/repos/my-scripts-main/src/my_mouse_settings.bash
-# fi
-
+# {{{ Other Sources
+[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
+#export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
 [ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
 touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
-
-[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
-#export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
-#echo $PATH
-export PATH="$HOME/.local/scripts/my-scripts-personal:${PATH}"
+# }}}
 
 
              
