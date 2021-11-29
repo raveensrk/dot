@@ -5,11 +5,9 @@
  ;; If there is more than one, they won't work right.
  '(blink-cursor-mode t)
  '(custom-enabled-themes '(wombat))
- '(org-agenda-files
-   '("/home/raveensrk/repos/raveenkumar.xyz/src/index.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/General Programming Notes.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/Windows WSL.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/awk.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/bash.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/bc.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/c++.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/cat.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/cp.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/ctags.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/cut.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/less.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/linux.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/locate.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/mercurial_hg.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/networking_and_it_notes.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/paste.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/pstree.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/python-brownbag.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/python.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/ranger.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/rsync.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/sed.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/sos.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/ssh.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/tmux.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/vifm.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/vim.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/zip.org" "/home/raveensrk/repos/raveenkumar.xyz/src/linux_and_programming/octave/octave.org" "/home/raveensrk/repos/raveenkumar.xyz/src/emacs/emacs.org" "/home/raveensrk/repos/jorunal-personal/src/index.org" "/home/raveensrk/repos/jorunal-personal/src/journal.org" "/home/raveensrk/repos/jorunal-personal/src/lists.org" "/home/raveensrk/repos/jorunal-personal/src/random.org"))
  '(org-startup-folded t)
  '(package-selected-packages
-   '(org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -123,15 +121,10 @@
 (with-system gnu/linux
   ;; This will add this file to buffer list when opening emacs
   ;; TODO file-exists-p
-  (find-file "~/repos/raveenkumar.xyz/src/index.org")
-  (find-file "~/repos/jorunal-personal/src/index.org")
-  (find-file "~/repos/journal-work/src/index.org")
   (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
   )
 
 (with-system windows-nt
-  (find-file "c:/Github/raveenkumar.xyz/src/index.org")
-  (find-file "c:/Github/journal-work/src/index.org")
   (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
   )
 
@@ -184,3 +177,31 @@ same directory as the org-buffer and insert a link to this file."
 
 (setq org-todo-keywords
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "DELEGATED" "SKIPPED")))
+
+;; Git gutter mode
+(require 'git-gutter)
+
+;; If you enable global minor mode
+(global-git-gutter-mode t)
+
+;; If you would like to use git-gutter.el and linum-mode
+(git-gutter:linum-setup)
+
+;; If you enable git-gutter-mode for some modes
+(add-hook 'ruby-mode-hook 'git-gutter-mode)
+
+(global-set-key (kbd "C-x C-g") 'git-gutter)
+(global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+
+;; Jump to next/previous hunk
+(global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
+(global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+
+;; Stage current hunk
+(global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
+
+;; Revert current hunk
+(global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
+
+;; Mark current hunk
+(global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
