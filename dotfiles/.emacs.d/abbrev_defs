@@ -1,10 +1,11 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'global-abbrev-table
   '(
+    ("21" "2>&1" nil :count 2)
     ("ba" "bash" nil :count 1)
     ("blue" "${BLUE}" nil :count 1)
     ("dl" "download" nil :count 1)
-    ("ec" "echo" nil :count 2)
+    ("ec" "echo" nil :count 3)
     ("ecb" "echo -e ${BLUE} ❕ ${NC}" nil :count 13)
     ("ecg" "echo -e ${GREEN} ✅ ${NC}" nil :count 2)
     ("ecr" "echo -e ${RED} ❌ ${NC}" nil :count 1)
