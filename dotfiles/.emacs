@@ -7,7 +7,7 @@
  '(custom-enabled-themes '(wombat))
  '(org-startup-folded t)
  '(package-selected-packages
-   '(folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -58,8 +58,9 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") the)
+;; (package-initialize)
+;; (package-refresh-contents)
 
 (when (require 'beacon nil 'noerror)
   (beacon-mode 1))
@@ -221,3 +222,14 @@ same directory as the org-buffer and insert a link to this file."
 	      (dired-do-kill-lines))
 	  (progn (revert-buffer) ; otherwise just revert to re-show
 	         (set (make-local-variable 'dired-dotfiles-show-p) t)))))
+
+;; Download Evil
+;; (unless (package-installed-p 'evil)
+;;   (package-install 'evil))
+
+(when (package-installed-p 'evil)
+  (require 'evil)
+  (evil-mode 1)
+  (evil-goggles-mode 1)
+  (evil-vimish-fold-mode 1)
+  )
