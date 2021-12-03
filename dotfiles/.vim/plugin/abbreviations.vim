@@ -16,3 +16,7 @@ ab ba bash
 ab t the
 ab tn then
 ab g grep
+ab mmo # {{{
+ab mmc # }}}
+ab cc $((count ++))
+ab tcc term_$((count ++)).log
