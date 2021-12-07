@@ -54,16 +54,6 @@ set smartindent
 " }}}
 " FOLDING AND WRAPPING {{{
 set foldmethod=marker
-function! VimHeadingOpen()
-	normal O" {{{
-endfunction
-
-function! VimHeadingClose()
-	normal o" }}}
-endfunction
-
-nnoremap <leader>h :call VimHeadingOpen()<CR>a 
-nnoremap <leader>H :call VimHeadingClose()<CR>
 " }}}
 " {{{ NUMBERING
 set nonumber norelativenumber
@@ -158,7 +148,6 @@ nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
 nnoremap <leader>e   :Ex<CR>jj
 nnoremap <leader>pi :PlugClean<CR>:PlugInstall<CR>
 nnoremap <leader>vrc :e $MYVIMRC<CR>
-nnoremap <leader>s   :sp<CR>
 nnoremap <leader>s :w<CR>:source $MYVIMRC<CR>
 nnoremap <leader>src :p ~/.vimrc<CR>:w<CR>:source ~/.vimrc<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
