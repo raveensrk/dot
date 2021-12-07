@@ -28,6 +28,7 @@ Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-misc'
 Plug 'preservim/tagbar'
 Plug 'mhinz/vim-signify'
+Plug 'https://github.com/azabiong/vim-highlighter'
 call plug#end()
 
 set updatetime=100 " For gitgutter
