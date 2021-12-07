@@ -8,8 +8,8 @@ export PATH="~/repos/my_scripts/src:$PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
-export VISUAL="emacsclient -a emacs"
-export EDITOR="emacsclient -a emacs"
+export VISUAL="vim"
+export EDITOR="vim"
 
 # }}}
 # {{{ BASH SHOPTS
@@ -44,7 +44,7 @@ fi
 alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync="~/repos/my-scripts-main/src/sync_all_repos.bash ~/repos/"
-alias bashal="e ~/.bash_aliases && source ~/.bash_aliases"
+alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
 alias dam="sudo !!"
 alias date1="date +%Y%m%d%H%M%S"
 alias date2="date +%Y-%m-%d_%H:%M:%S"
