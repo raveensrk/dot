@@ -161,3 +161,10 @@ vnoremap <leader><Down> :'<,'>move +2<CR>gv=gv
 nnoremap <leader><Up>   :move -2<CR>
 nnoremap <leader><Down> :move +1<CR>
 " }}}
+
+" This is done so the plugin directory is sourced again at the end of this
+" vimrc file. This will make plugins work properly
+
+for f in split(glob('~/.vim/plugin/*.vim'), '\n')
+    exe 'source' f
+endfor
