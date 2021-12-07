@@ -145,8 +145,8 @@ updatedb_home="$updatedb_path/home.db"
 se () {
     local file=$(locate -d "$updatedb_home" .* | fzf)
     echo -e ${BLUE} The following command is executed... ${NC}
-    echo -e ${YELLOW} 'e' "$file" ${NC} 
-    e "$file"
+    echo -e ${YELLOW} 'vim' "$file" ${NC} 
+    vim "$file"
 }
 
 sd () {

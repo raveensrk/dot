@@ -81,9 +81,18 @@ motivate || git clone https://github.com/mubaris/motivate.git && cd motivate/mot
 pushd ctags || exit 1
 ./autogen.sh
 ./configure --prefix=$HOME/.local # defaults to /usr/local
-make
-make install # may require extra privileges depending on where to install
+make -j
+make install -j # may require extra privileges depending on where to install
 popd
+
+# https://www.vim.org/git.php
+
+git clone https://github.com/vim/vim.git
+cd vim
+./configure --prefix=$HOME/.local # defaults to /usr/local
+make -j
+make install -j
+cd ..
 
 popd
 
