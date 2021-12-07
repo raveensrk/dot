@@ -1,22 +1,39 @@
 " Contains all my abbreviations
+" --------------------------------
 
-ab red ${RED}
-ab green ${GREEN}
-ab yellow ${YELLOW}
-ab blue ${LIGHT_BLUE}
-ab nc ${NC}
-ab efail ❌
-ab epass ✅
-ab enote ❕
-ab dl download
-ab ul upload
-ab ec echo
-ab pf printf
+" Bash {{{
+ab 21  2>&1
 ab ba bash
-ab t the
-ab tn then
-ab g grep
-ab mmo # {{{
-ab mmc # }}}
+
+ab blue ${LIGHT_BLUE}
+ab green ${GREEN}
+ab red ${RED}
+ab yellow ${YELLOW}
+ab nc ${NC}
+
 ab cc $((count++))
 ab tcc term_$((count++)).log
+
+ab ecb echo -e ${BLUE} ❕ ${NC}
+ab ecg echo -e ${GREEN} ✅ ${NC}
+ab ecr echo -e ${RED} ❌ ${NC}
+ab ecy echo -e ${YELLOW} 🛑 ${NC}
+ab pf printf
+ab g grep
+ab ec echo
+" }}}
+" Emojis {{{
+ab efail ❌
+ab enote ❕
+ab epass ✅
+" }}}
+" Vim {{{
+ab mmo # {{{
+ab mmc # }}}
+" }}}
+" Words {{{
+ab t the
+ab tn then
+ab dl download
+ab ul upload
+" }}}
