@@ -182,8 +182,3 @@ for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
 # }}}
-
-
-             
-
-
