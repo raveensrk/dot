@@ -66,7 +66,13 @@ alias e="emacsclient -nw -a emacs -nw"
 alias einit="e ~/.emacs"
 alias em="emacs --daemon"
 alias emk="emacsclient -e \"(server-force-delete)\""
-alias v="vim"
+v () {
+     if [[ $# -ge 1 ]]; then
+         vim $@
+     else
+         vim -c "History"
+     fi
+ }
 alias vimrc="vim ~/.vimrc"
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
@@ -181,4 +187,42 @@ touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
+# }}}
+# RANGER {{{
+# shellcheck shell=sh
+
+# Compatible with ranger 1.4.2 through 1.9.*
+#
+# Automatically change the current working directory after closing ranger
+#
+# This is a shell function to automatically change the current working
+# directory to the last visited one after ranger quits. Either put it into your
+# .zshrc/.bashrc/etc or source this file from your shell configuration.
+# To undo the effect of this function, you can type "cd -" to return to the
+# original directory.
+
+ranger_cd() {
+    temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"
+    ranger --choosedir="$temp_file" -- "${@:-$PWD}"
+    if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
+        cd -- "$chosen_dir"
+    fi
+    rm -f -- "$temp_file"
+}
+
+alias r="ranger_cd"
+
+# This binds Ctrl-O to ranger-cd:
+bind '"\C-o":"ranger-cd\C-m"'
+
+# shellcheck shell=sh
+
+# Compatible with ranger 1.5.3 through 1.9.*
+#
+# Change the prompt when you open a shell from inside ranger
+#
+# Source this file from your shell startup file (.bashrc, .zshrc etc) for it to
+# work.
+
+[ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 # }}}

@@ -118,7 +118,7 @@ let mapleader = " "
 "noremap <Right> <NOP>
 
 " Browse recent files
-nnoremap <leader>r :bro ol<CR>
+nnoremap <leader>h :History<CR>
 
 " Navigate previous and next buffers respectively
 nnoremap <leader><Left> :bp<CR>
@@ -160,6 +160,8 @@ vnoremap <leader><Down> :'<,'>move +2<CR>gv=gv
 " Move single lines in normal mode
 nnoremap <leader><Up>   :move -2<CR>
 nnoremap <leader><Down> :move +1<CR>
+
+nnoremap <leader>ac :s/ --/\r--/g<CR>
 " }}}
 
 " This is done so the plugin directory is sourced again at the end of this
