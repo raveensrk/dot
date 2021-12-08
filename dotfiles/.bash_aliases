@@ -1,10 +1,10 @@
 # BASH ALIASES sourced at ~/.bashrc
-set -o emacs
+set -o vi
 # {{{ ENVIRONMENT VARIABLES
 
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="~/repos/my_scripts/src:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
