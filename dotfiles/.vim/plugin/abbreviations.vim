@@ -19,7 +19,6 @@ ab ecg echo -e ${GREEN} ✅ ${NC}
 ab ecr echo -e ${RED} ❌ ${NC}
 ab ecy echo -e ${YELLOW} 🛑 ${NC}
 ab pf printf
-ab g grep
 ab ec echo
 " }}}
 " Emojis {{{

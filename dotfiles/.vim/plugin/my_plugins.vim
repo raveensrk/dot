@@ -29,6 +29,7 @@ Plug 'xolox/vim-misc'
 Plug 'preservim/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'https://github.com/azabiong/vim-highlighter'
+Plug 'https://github.com/vim-syntastic/syntastic'
 call plug#end()
 
 set updatetime=100 " For gitgutter
@@ -47,6 +48,16 @@ nmap ga <Plug>(EasyAlign)
 " Vim Expand Region
 map K <Plug>(expand_region_expand)
 map J <Plug>(expand_region_shrink)
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 "}}}
 " {{{ COLOR / THEME
 colo gruvbox
