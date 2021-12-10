@@ -8,7 +8,7 @@ set -e
 
 read -p "Enter f/u/n fedora/ubuntu/none: " distro
 
-pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio"
+pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview"
 pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk"
 pkg_list_fedora_only="ShellCheck ImageMagick vim-X11"
 
