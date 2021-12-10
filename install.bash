@@ -131,11 +131,3 @@ command -v vim || {
 # }}} 
 
 popd
-
-# {{{ Facebook path picker softlink
-fpp_path=$(realpath "$csd/dotfiles/.local/packages/PathPicker-main/fpp")
-pushd "$HOME/.local/bin"
-ln -s "$fpp_path" .
-popd
-# }}}
-
