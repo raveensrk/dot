@@ -1,11 +1,13 @@
 $include  /etc/inputrc
 
-set completion-map-case on
-set colored-stats on
-set completion-display-width 0
+set completion-map-case On
+set colored-stats On
+set completion-display-width -1
 set bell-style visible
 set editing-mode vi
 set keymap vi
-set show-mode-in-prompt on
+set show-mode-in-prompt On
+set vi-cmd-mode-string (:)
+set vi-ins-mode-string (+)
 
 
