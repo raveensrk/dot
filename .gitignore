@@ -1,4 +1,5 @@
 *#*
 *~
-dotfiles/.vim
+dotfiles/.vim/*
+!*/
 !dotfiles/.vim/plugin/*
