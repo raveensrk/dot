@@ -131,3 +131,8 @@ command -v vim || {
 # }}} 
 
 popd
+# TODO add urlview as a manual install
+
+# {{{ TMUX PLUGIN MANAGER - TPM
+git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
+# }}}
