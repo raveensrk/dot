@@ -47,6 +47,7 @@ esac
 
 # {{{ Stow packages
 pushd "$csd"
+rm -iv "$HOME/.inputrc"
 stow dotfiles -R -t "$HOME/"
 popd
 # }}}
