@@ -1,5 +1,7 @@
 *#*
 *~
-dotfiles/.vim/*
-!*/
-!dotfiles/.vim/plugin/*
+dotfiles/.vim/backup/*
+dotfiles/.vim/pack/*
+dotfiles/.vim/plugged/*
+dotfiles/.vim/undo/*
+dotfiles/.vim/.netrwhist
