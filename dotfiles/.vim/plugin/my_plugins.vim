@@ -30,6 +30,7 @@ Plug 'preservim/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'https://github.com/azabiong/vim-highlighter'
 Plug 'https://github.com/vim-syntastic/syntastic'
+Plug 'jceb/vim-orgmode'
 call plug#end()
 
 set updatetime=100 " For gitgutter
