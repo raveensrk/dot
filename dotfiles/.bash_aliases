@@ -44,6 +44,7 @@ fi
 alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync="~/repos/my-scripts-main/src/sync_all_repos.bash ~/repos/"
+alias ,my_sync="~/my_repos/my-scripts-main/src/sync_all_repos.bash ~/my_repos/"
 alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
 alias dam="sudo !!"
 alias date1="date +%Y%m%d%H%M%S"

@@ -47,7 +47,7 @@ esac
 
 # {{{ Stow packages
 pushd "$csd"
-rm -iv "$HOME/.inputrc"
+[ -f "$HOME/.inputrc" ] && rm -iv "$HOME/.inputrc"
 stow dotfiles -R -t "$HOME/"
 popd
 # }}}
@@ -80,11 +80,11 @@ fi
 		 "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 # }}}
 
-# {{{ CHEAT
-[ -f "$HOME/.local/bin/cht.sh" ] && rm "$HOME/.local/bin/cht.sh"
-curl "https://cht.sh/:cht.sh" > "$HOME/.local/bin/cht.sh"
-chmod +x "$HOME/.local/bin/cht.sh"
-# }}}
+# # {{{ CHEAT
+# [ -f "$HOME/.local/bin/cht.sh" ] && rm "$HOME/.local/bin/cht.sh"
+# curl "https://cht.sh/:cht.sh" > "$HOME/.local/bin/cht.sh"
+# chmod +x "$HOME/.local/bin/cht.sh"
+# # }}}
 
 # curl -sL "https://raw.githubusercontent.com/pystardust/ytfzf/master/ytfzf" | sudo tee $HOME/.local/bin/ytfzf >/dev/null && sudo chmod 755 $HOME/.local/bin/ytfzf
 
@@ -95,10 +95,11 @@ chmod +x "$HOME/.local/bin/cht.sh"
 
 pushd "$HOME/tmp"
 
- # {{{ ctags
- command -v ctags || {
-    git clone "https://github.com/universal-ctags/ctags.git"
-    pushd ctags || exit 2
+# {{{ ctags
+command -v ctags || {
+    sudo apt install autoconf pkg-config automake
+    [ ! -d ctags ] && git clone "https://github.com/universal-ctags/ctags.git"
+    pushd ctags
     ./autogen.sh
     ./configure --prefix="$HOME/.local" # defaults to /usr/local
     make -j
