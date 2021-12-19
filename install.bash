@@ -138,3 +138,9 @@ popd
 # {{{ TMUX PLUGIN MANAGER - TPM
 git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
 # }}}
+
+# {{{ Cleanup
+sudo apt autoclean
+sudo apt autopurge
+sudo apt autoremove
+# }}}

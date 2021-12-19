@@ -1,3 +1,3 @@
-imap nn <Esc>
+imap nnn <Esc>
 nnoremap ; :
 nnoremap : ;

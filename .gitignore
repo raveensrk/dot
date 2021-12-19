@@ -5,3 +5,4 @@ dotfiles/.vim/pack/*
 dotfiles/.vim/plugged/*
 dotfiles/.vim/undo/*
 dotfiles/.vim/.netrwhist
+wslu

@@ -5,6 +5,7 @@ set -o vi
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
+[ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
