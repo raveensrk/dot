@@ -52,6 +52,13 @@ stow dotfiles -R -t "$HOME/"
 popd
 # }}}
 
+# {{{ INDEPENDENT SOFTLINKS
+pushd "$csd"
+rm ~/.local/bin/fpp
+ln -s $(realpath ./dotfiles/.local/packages/PathPicker-main/fpp) ~/.local/bin/fpp
+popd
+# }}} 
+
 # {{{ Sourcing aliases
 set +e
 grep -q "source \"$HOME/.bash_aliases\"" "$HOME/.bashrc"
