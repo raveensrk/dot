@@ -14,7 +14,7 @@ csd=$(dirname "$0")
 echo -e "${YELLOW}Enter f/u/n fedora/ubuntu/none (Choose n if you have no root access):${NC}"
 read -r distro
 
-pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview"
+pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview ruby"
 pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk"
 pkg_list_fedora_only="ShellCheck ImageMagick vim-X11"
 
@@ -138,6 +138,13 @@ popd
 # {{{ TMUX PLUGIN MANAGER - TPM
 git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
 # }}}
+
+# {{{ RUBY
+
+[ -v gem ] && gem install jekyll bundler
+
+# }}}
+
 
 # {{{ Cleanup
 sudo apt autoclean
