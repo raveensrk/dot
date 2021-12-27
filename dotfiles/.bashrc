@@ -115,10 +115,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-source "/home/raveensrk/.bash_aliases"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
-source "/home/raveen/.bash_aliases"

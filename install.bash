@@ -48,25 +48,20 @@ esac
 # {{{ Stow packages
 pushd "$csd"
 [ -f "$HOME/.inputrc" ] && rm -iv "$HOME/.inputrc"
-stow dotfiles -R -t "$HOME/"
+stow stow -R -t "$HOME/"
+popd
+
+pushd "$HOME/repos"
+bash "dotfiles-main/dotfiles/.scripts/,stow_find_targets.bash"
 popd
 # }}}
 
 # {{{ INDEPENDENT SOFTLINKS
 pushd "$csd"
 rm ~/.local/bin/fpp
-ln -s $(realpath ./dotfiles/.local/packages/PathPicker-main/fpp) ~/.local/bin/fpp
+ln -s "$(realpath "./dotfiles/.local/packages/PathPicker-main/fpp")" ~/.local/bin/fpp
 popd
 # }}} 
-
-# {{{ Sourcing aliases
-set +e
-grep -q "source \"$HOME/.bash_aliases\"" "$HOME/.bashrc"
-if [ $? != 0 ]; then
-    echo "source \"$HOME/.bash_aliases\"" >> "$HOME/.bashrc"
-fi
-set -e
-# }}}
 
 # {{{ FZF
 
