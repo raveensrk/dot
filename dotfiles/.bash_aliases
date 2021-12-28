@@ -154,7 +154,7 @@ updatedb_home="$updatedb_path/home.db"
 
 unset -f se
 se () {
-    local file=$(fd . ~/repos | fzf)
+    local file=$(fd --hidden --exclude '.git' . ~/repos | fzf)
     if [ "$file" = "" ]; then
         echo -e "${RED}❌ERROR! Empty string${NC}"
     else
