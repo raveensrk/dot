@@ -14,7 +14,7 @@ csd=$(dirname "$0")
 echo -e "${YELLOW}Enter f/u/n fedora/ubuntu/none (Choose n if you have no root access):${NC}"
 read -r distro
 
-pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview"
+pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview ruby"
 pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk"
 pkg_list_fedora_only="ShellCheck ImageMagick vim-X11"
 
@@ -48,18 +48,20 @@ esac
 # {{{ Stow packages
 pushd "$csd"
 [ -f "$HOME/.inputrc" ] && rm -iv "$HOME/.inputrc"
-stow dotfiles -R -t "$HOME/"
+stow stow -R -t "$HOME/"
+popd
+
+pushd "$HOME/repos"
+bash "dotfiles-main/dotfiles/.scripts/,stow_find_targets.bash"
 popd
 # }}}
 
-# {{{ Sourcing aliases
-set +e
-grep -q "source \"$HOME/.bash_aliases\"" "$HOME/.bashrc"
-if [ $? != 0 ]; then
-    echo "source \"$HOME/.bash_aliases\"" >> "$HOME/.bashrc"
-fi
-set -e
-# }}}
+# {{{ INDEPENDENT SOFTLINKS
+pushd "$csd"
+rm ~/.local/bin/fpp
+ln -s "$(realpath "./dotfiles/.local/packages/PathPicker-main/fpp")" ~/.local/bin/fpp
+popd
+# }}} 
 
 # {{{ FZF
 
@@ -136,11 +138,17 @@ popd
 # TODO add urlview as a manual install
 
 # {{{ TMUX PLUGIN MANAGER - TPM
-git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
+[ ! -d "$HOME/.tmux/plugins/tpm" ] && git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
 # }}}
+
+# {{{ RUBY
+
+[ -v gem ] && gem install jekyll bundler
+
+# }}}
+
 
 # {{{ Cleanup
 sudo apt autoclean
-sudo apt autopurge
 sudo apt autoremove
 # }}}

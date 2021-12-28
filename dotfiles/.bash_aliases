@@ -45,8 +45,10 @@ fi
 alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync="~/repos/my-scripts-main/src/sync_all_repos.bash ~/repos/"
-alias ,my_sync="~/my_repos/my-scripts-main/src/sync_all_repos.bash ~/my_repos/"
+alias ,sync_vcad="~/repos_vcad_sync/my-scripts-main/src/sync_all_repos.bash ~/repos_vcad_sync"
+alias ,sync_my="~/my_repos/my-scripts-main/src/sync_all_repos.bash ~/my_repos/"
 alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
+alias csh_aliases="vim ~/.aliases"
 alias dam="sudo !!"
 alias date1="date +%Y%m%d%H%M%S"
 alias date2="date +%Y-%m-%d_%H:%M:%S"
@@ -78,7 +80,7 @@ v () {
 alias vimrc="vim ~/.vimrc"
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
-alias rsync="rsync -azhPvu" # -C
+alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
 alias d='pushd'
 alias dv='dirs -v'
@@ -150,11 +152,16 @@ updatedb_home="$updatedb_path/home.db"
     updatedb -l 0 -o "$updatedb_home" -U ~/
 }
 
+unset -f se
 se () {
-    local file=$(locate -d "$updatedb_home" .* | fzf)
-    echo -e ${BLUE} The following command is executed... ${NC}
-    echo -e ${YELLOW} 'vim' "$file" ${NC} 
-    vim "$file"
+    local file=$(fd . ~/repos | fzf)
+    if [ "$file" = "" ]; then
+        echo -e "${RED}❌ERROR! Empty string${NC}"
+    else
+        echo -e ${BLUE} The following command is executed... ${NC}
+        echo -e ${YELLOW} 'vim' "$file" ${NC} 
+        vim "$file"
+    fi
 }
 
 sd () {
