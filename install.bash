@@ -11,12 +11,25 @@ csd=$(dirname "$0")
 
 # {{{ Packages installed with package manager
 
-echo -e "${YELLOW}Enter f/u/n fedora/ubuntu/none (Choose n if you have no root access):${NC}"
-read -r distro
+while [ "$1" ]; do
+    case "$1" in
+        --distro)
+            shift
+            distro="$1"
+            ;;
+        *)
+            echo -e "${RED}❌ ERROR! WRONG Argument!${NC}"
+            exit 2
+            ;;
+    esac
+    shift
+done
+
+echo -e "${YELLOW} Installing for distro $distro...${NC}"
 
 pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview ruby"
-pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk"
-pkg_list_fedora_only="ShellCheck ImageMagick vim-X11"
+pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk libssl-dev"
+pkg_list_fedora_only="ShellCheck ImageMagick vim-X11 openssl-devel"
 
 case $distro in
     f)
@@ -47,19 +60,19 @@ esac
 
 # {{{ Stow packages
 pushd "$csd"
-[ -f "$HOME/.inputrc" ] && rm -iv "$HOME/.inputrc"
+[ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow stow -R -t "$HOME/"
 popd
 
-pushd "$HOME/repos"
-bash "dotfiles-main/dotfiles/.scripts/,stow_find_targets.bash"
-popd
+# pushd "$HOME/repos"
+# bash "dotfiles-main/stow/.scripts/,stow_find_targets.bash" # FIXME
+# popd
 # }}}
 
 # {{{ INDEPENDENT SOFTLINKS
 pushd "$csd"
-rm ~/.local/bin/fpp
-ln -s "$(realpath "./dotfiles/.local/packages/PathPicker-main/fpp")" ~/.local/bin/fpp
+[ -f "$HOME/.local/bin/fpp" ] && rm "$HOME/.local/bin/fpp"
+ln -s "$(realpath "./stow/.local/packages/PathPicker-main/fpp")" "$HOME/.local/bin/fpp"
 popd
 # }}} 
 
@@ -147,6 +160,38 @@ popd
 
 # }}}
 
+# {{{ Installing CURL with SFTP support
+
+# https://github.com/moparisthebest/static-curl/releases/tag/v7.80.0 static binary
+
+# https://andrewberls.com/blog/post/adding-sftp-support-to-curl
+repos_for_compile="$HOME/repos_for_compile"
+[ ! -d "$repos_for_compile" ] && mkdir "$repos_for_compile"
+
+if [ "$distro" = "u" ]; then
+    pushd "$repos_for_compile"
+
+    # wget https://www.libssh2.org/download/libssh2-1.10.0.tar.gz
+    # tar xvf libssh2-1.10.0.tar.gz
+    # pushd libssh2-1.10.0
+    # ./configure
+    # make
+    # sudo make install
+    # popd
+    #
+    # wget https://curl.se/download/curl-7.80.0.tar.gz
+    # tar xvf curl-7.80.0.tar.gz
+    # pushd curl-7.80.0
+    # ./configure --with-libssh2=/usr/local --with-openssl
+    # make # Error
+    # sudo make install
+    # popd
+
+    popd
+
+fi
+
+# }}}
 
 # {{{ Cleanup
 sudo apt autoclean
