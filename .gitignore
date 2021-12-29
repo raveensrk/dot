@@ -1,8 +1,8 @@
 *#*
 *~
-dotfiles/.vim/backup/*
-dotfiles/.vim/pack/*
-dotfiles/.vim/plugged/*
-dotfiles/.vim/undo/*
-dotfiles/.vim/.netrwhist
+stow/.vim/backup/*
+stow/.vim/pack/*
+stow/.vim/plugged/*
+stow/.vim/undo/*
+stow/.vim/.netrwhist
 wslu
