@@ -7,20 +7,19 @@ Plug 'vim/killersheep'
 Plug 'frazrepo/vim-rainbow'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'junegunn/vim-easy-align'
-Plug 'godlygeek/tabular'
-Plug 'mattn/emmet-vim'
+" Plug 'mattn/emmet-vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 " https://github.com/mg979/vim-visual-multi
 Plug 'airblade/vim-gitgutter'
 Plug 'terryma/vim-expand-region'
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 Plug 'tommcdo/vim-exchange'
 " Plug 'svermeulen/vim-yoink'
 Plug 'tpope/vim-fugitive'
@@ -33,7 +32,7 @@ Plug 'https://github.com/vim-syntastic/syntastic'
 Plug 'jceb/vim-orgmode'
 
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
 
 call plug#end()
 
