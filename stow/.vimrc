@@ -80,9 +80,10 @@ set textwidth=0 wrapmargin=0
 " }}}
 " {{{ BACKUPS AND UNDO
 set noswapfile
-set nobackup
+set backup writebackup
 set undofile
 set undodir=~/.vim/undo
+set backupdir=~/.vim/backup
 " }}}
 " TRIM WHITE SPACE AFTER EXIT - DISBALED {{{
 fun! TrimWhitespace()
