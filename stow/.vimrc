@@ -97,6 +97,7 @@ set tags=tags
 " }}}
 " {{{ PATH
 set path+=**
+set autochdir
 " }}}
 " FILE SPECIFIC {{{
 autocmd BufRead .vimrc :set foldmethod=marker
