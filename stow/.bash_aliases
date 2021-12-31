@@ -1,5 +1,8 @@
 # BASH ALIASES sourced at ~/.bashrc
 set -o vi
+
+export MY_REPOS="$HOME/my_repos"
+
 # {{{ ENVIRONMENT VARIABLES
 
 # export DISPLAY=:0
@@ -45,9 +48,7 @@ fi
 # {{{ ALIASES
 alias ..="cd .."
 alias ,top='top -d 0.125'
-alias ,sync="~/repos/my-scripts-main/src/sync_all_repos.bash ~/repos/"
-alias ,sync_vcad="~/repos_vcad_sync/my-scripts-main/src/sync_all_repos.bash ~/repos_vcad_sync"
-alias ,sync_my="~/my_repos/my-scripts-main/src/sync_all_repos.bash ~/my_repos/"
+alias ,sync="$MY_REPOS/my-scripts-main/src/sync_all_repos.bash $MY_REPOS"
 alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
 alias csh_aliases="vim ~/.aliases"
 alias dam="sudo !!"

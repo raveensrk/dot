@@ -26,5 +26,6 @@ for d in $(find -name "stow"); do
 			rm -v "$HOME/${BASH_REMATCH[1]}"
 		fi
 	done < ".stow.log"
+    rm ".stow.log"
 	popd
 done
