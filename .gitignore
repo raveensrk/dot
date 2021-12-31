@@ -6,3 +6,5 @@ stow/.vim/plugged/*
 stow/.vim/undo/*
 stow/.vim/.netrwhist
 wslu
+.stow.log
+packages
