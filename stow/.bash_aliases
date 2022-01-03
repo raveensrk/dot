@@ -1,7 +1,11 @@
 # BASH ALIASES sourced at ~/.bashrc
 set -o vi
 
-export MY_REPOS="$HOME/my_repos"
+if [ -d "$HOME/my_repos" ]; then
+    export MY_REPOS="$HOME/my_repos"
+elif [ -d "$HOME/repos" ]; then
+    export MY_REPOS="$HOME/repos"
+fi
 
 # {{{ ENVIRONMENT VARIABLES
 
@@ -239,7 +243,7 @@ bind '"\C-o":"ranger-cd\C-m"'
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 # }}}
 # {{{ FD
-source "$HOME/.local/packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
+source "/home/raveen/.packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
 # }}}
 # {{{ FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
