@@ -5,6 +5,7 @@
 install_dotfiles:
 	mkdir ~/.vim/backup
 	stow -R stow -t "$(HOME)"
+	arst
 
 install_tpm: install_dotfiles
 	git clone "https://github.com/tmux-plugins/tpm" "$(HOME)/.tmux/plugins/tpm"
