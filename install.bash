@@ -90,18 +90,12 @@ ln -sf $(realpath ~/.packages/PathPicker-main/fpp) ~/.local/bin
 # https://github.com/tmux/tmux/wiki/Installing#building-dependencies
 popd
 
+git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
+"$HOME/.fzf/install"
+
 if [ "$distro" = "m" ]; then
 
-    if [ ! -d "$HOME/.fzf" ]; then
-        #git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
-        # "$HOME/.fzf/install"
-        tar xf ./stow/.packages/fzf.tar.gz --directory="$HOME"
-        mv ~/fzf ~/.fzf
-    fi
-
     if [ ! -d "$HOME/.packages/ranger-stable" ]; then
-        #git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
-        # "$HOME/.fzf/install"
         pushd "$HOME/.packages"
         tar xf ranger-stable.tar.gz
         popd
