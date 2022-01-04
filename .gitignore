@@ -8,3 +8,6 @@ stow/.vim/.netrwhist
 wslu
 .stow.log
 packages
+.validfiles
+.remote_timestamp
+.local_timestamp
