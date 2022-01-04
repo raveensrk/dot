@@ -1,8 +1,6 @@
-*#*
-*~
 stow/.vim/backup/*
 stow/.vim/undo/*
 stow/.vim/swap/*
 stow/.vim/.netrwhist
 stow_vim_plugins/.vim/plugged/*
-wslu
+stow_vim_plugins/.tmux/plugins/*

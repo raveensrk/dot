@@ -107,12 +107,6 @@ if [ "$distro" = "m" ]; then
         popd
     fi
 
-    pushd "$HOME/.tmux/plugins"
-    for file in *.tar.gz; do
-        tar xf "$file"
-    done
-    popd
-
     pushd "$HOME/.packages"
 
     if [ "$rebuild" = "1" ]; then
@@ -140,12 +134,6 @@ if [ "$distro" = "m" ]; then
         popd
     fi
 
-    popd
-
-    pushd ~/.vim/plugged
-    for file in *.tar.gz; do
-        tar xf "$file"
-    done
     popd
 
 elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
