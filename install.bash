@@ -63,10 +63,10 @@ pushd "$csd"
 stow -R stow -t "$HOME" --no-folding
 popd
 
-pushd "$csd"
-[ -f "$HOME/.local/bin/fpp" ] && rm "$HOME/.local/bin/fpp"
-ln -s "$(realpath "./stow/.packages/PathPicker-main/fpp")" "$HOME/.local/bin/fpp"
-popd
+# pushd "$csd"
+# [ -f "$HOME/.local/bin/fpp" ] && rm "$HOME/.local/bin/fpp"
+# ln -s "$(realpath "./stow/.packages/PathPicker-main/fpp")" "$HOME/.local/bin/fpp"
+# popd
 
 if [ ! -d "$HOME/.fzf" ]; then
     #git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
