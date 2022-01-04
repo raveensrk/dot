@@ -29,7 +29,7 @@ Plug 'preservim/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'https://github.com/azabiong/vim-highlighter'
 Plug 'https://github.com/vim-syntastic/syntastic'
-Plug 'jceb/vim-orgmode'
+"Plug 'jceb/vim-orgmode'
 
 Plug 'godlygeek/tabular'
 " Plug 'plasticboy/vim-markdown'
