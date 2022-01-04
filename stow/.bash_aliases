@@ -54,6 +54,7 @@ fi
 alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync=",sync_all_repos.bash $MY_REPOS"
+
 ,reinstall () {
     pushd "$MY_REPOS"
     local f
@@ -65,6 +66,17 @@ alias ,sync=",sync_all_repos.bash $MY_REPOS"
     done
     popd
 }
+
+,reinstall_from_tar () {
+    pushd "$MY_REPOS"
+    local f
+    for f in *.tar.gz; do
+        tar xf "$f"
+    done
+    popd
+    ,reinstall
+}
+
 alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
 alias csh_aliases="vim ~/.aliases"
 alias dam="sudo !!"

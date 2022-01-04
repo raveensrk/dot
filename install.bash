@@ -85,51 +85,36 @@ stow -R stow_vim_plugins -t "$HOME"
 popd
 
 pushd "$HOME/.packages"
-tar xf "path-picker.tar.gz"
 ln -sf $(realpath ~/.packages/PathPicker-main/fpp) ~/.local/bin
-# https://github.com/tmux/tmux/wiki/Installing#building-dependencies
 popd
 
-git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
-"$HOME/.fzf/install"
+git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf" || echo -e "${YELLOW}Not cloning. $HOME/.fzf already present...${NC}"
+"$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
 
 if [ "$distro" = "m" ]; then
 
-    if [ ! -d "$HOME/.packages/ranger-stable" ]; then
-        pushd "$HOME/.packages"
-        tar xf ranger-stable.tar.gz
-        popd
-    fi
-
     pushd "$HOME/.packages"
-
     if [ "$rebuild" = "1" ]; then
-        tar -zxf libevent-*.tar.gz
         pushd libevent-*/
         ./configure --prefix=$HOME/.local --enable-shared
         make -j
         make install -j
         pushd
 
-        tar xf "tmux-2.6.tar.gz"
+        # https://github.com/tmux/tmux/wiki/Installing#building-dependencies
         pushd tmux-2.6
         PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig ./configure --prefix=$HOME/.local
         make -j
         make install -j
         popd
 
-        pushd ~/.packages
-        tar xf vim.tar.gz
         pushd vim
         ./configure --prefix="$(HOME)/.local" # defaults to /usr/local
         make -j
         make install -j
         popd
-        popd
     fi
-
     popd
-
 elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
 
     gem install jekyll bundler
@@ -142,7 +127,6 @@ elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
     sudo chmod a+rx $HOME/.local/bin/youtube-dl
 
 fi
-
 
 if [ "$rebuild" = "y" ]; then
     pushd ~/.packages
