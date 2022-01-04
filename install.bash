@@ -10,7 +10,6 @@ set -e
 csd=$(dirname "$0")
 
 # {{{ Packages installed with package manager
-
 while [ "$1" ]; do
     case "$1" in
         --distro)
@@ -61,7 +60,7 @@ esac
 
 pushd "$csd"
 [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
-stow stow -R -t "$HOME/"
+stow -R stow -t "$HOME" --no-folding
 popd
 
 pushd "$csd"
