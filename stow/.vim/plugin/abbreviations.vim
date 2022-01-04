@@ -20,6 +20,7 @@ ab ecr echo -e "${RED}${NC}"
 ab ecy echo -e "${YELLOW}${NC}"
 ab pf printf
 ab ec echo
+ab if, if [ ]; then<CR>elif [ ]; then<CR>else<CR>fi
 " }}}
 " Emojis {{{
 ab efail ❌

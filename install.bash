@@ -9,7 +9,6 @@ set -e
 # Current script dir csd
 csd=$(dirname "$0")
 
-# {{{ Packages installed with package manager
 while [ "$1" ]; do
     case "$1" in
         --distro)
@@ -17,7 +16,7 @@ while [ "$1" ]; do
             distro="$1"
             ;;
         --rebuild)
-            rebuild="1"
+            rebuild="y"
             ;;
         *)
             echo -e "${RED}❌ ERROR! WRONG Argument!${NC}"
@@ -27,9 +26,22 @@ while [ "$1" ]; do
     shift
 done
 
+echo -e "${YELLOW}Override options [y/n]...${NC}"
+read -e choice
+if [ "$choice" = "y" ]; then
+    echo -e "${YELLOW}Choose distro [f/u/m/*]...${NC}"
+    read -e choice
+    distro="$choice"
+    echo -e "${YELLOW}Choose rebuild [y/n]...${NC}"
+    read -e choice
+    rebuild="$choice"
+fi 
+
 echo -e "${YELLOW} Installing for distro $distro...${NC}"
 
-pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview ruby"
+# {{{ Packages installed with package manager
+
+pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview ruby autoconf pkg-config automake"
 pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk libssl-dev"
 pkg_list_fedora_only="ShellCheck ImageMagick vim-X11 openssl-devel"
 
@@ -60,7 +72,6 @@ esac
 
 # }}} 
 
-
 [ -d "$HOME/tmp" ] || mkdir "$HOME/tmp"
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ ! -d "$HOME/.vim/undo" ] && mkdir -p "$HOME/.vim/undo"
@@ -70,6 +81,12 @@ esac
 pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding
+popd
+
+pushd "$HOME/.packages"
+tar xf "path-picker.tar.gz"
+ln -sf $(realpath ~/.packages/PathPicker-main/fpp) ~/.local/bin
+# https://github.com/tmux/tmux/wiki/Installing#building-dependencies
 popd
 
 if [ "$distro" = "m" ]; then
@@ -97,10 +114,6 @@ if [ "$distro" = "m" ]; then
 
     pushd "$HOME/.packages"
 
-    tar xf "path-picker.tar.gz"
-    ln -sf $(realpath ~/.packages/PathPicker-main/fpp) ~/.local/bin
-    # https://github.com/tmux/tmux/wiki/Installing#building-dependencies
-
     if [ "$rebuild" = "1" ]; then
         tar -zxf libevent-*.tar.gz
         pushd libevent-*/
@@ -115,6 +128,15 @@ if [ "$distro" = "m" ]; then
         make -j
         make install -j
         popd
+
+        pushd ~/.packages
+        tar xf vim.tar.gz
+        pushd vim
+        ./configure --prefix="$(HOME)/.local" # defaults to /usr/local
+        make -j
+        make install -j
+        popd
+        popd
     fi
 
     popd
@@ -125,19 +147,30 @@ if [ "$distro" = "m" ]; then
     done
     popd
 
+elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
+
+    gem install jekyll bundler
+
+    git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" || echo -e "${YELLOW}TPM already exists...${NC}"
+
+    curl -sL "https://raw.githubusercontent.com/pystardust/ytfzf/master/ytfzf" | sudo tee $HOME/.local/bin/ytfzf >/dev/null && sudo chmod 755 $HOME/.local/bin/ytfzf
+
+    sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o $HOME/.local/bin/youtube-dl
+    sudo chmod a+rx $HOME/.local/bin/youtube-dl
+
 fi
 
-# pushd "$csd"
-# [ -f "$HOME/.local/bin/fpp" ] && rm "$HOME/.local/bin/fpp"
-# ln -s "$(realpath "./stow/.packages/PathPicker-main/fpp")" "$HOME/.local/bin/fpp"
-# popd
 
+if [ "$rebuild" = "y" ]; then
+    pushd ~/.packages
+    tar xf ctags.tar.gz
+    pushd ctags
+    ./autogen.sh
+    ./configure --prefix="$(HOME)/.local" # defaults to /usr/local
+    make -j
+    make install -j # may require extra privileges depending on where to install
+    popd
+    popd
+fi
 
-# [ ! -f "$HOME/.vim/autoload/plug.vim" ] && \
-#	curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs \
-#		 "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-
-# curl -sL "https://raw.githubusercontent.com/pystardust/ytfzf/master/ytfzf" | sudo tee $HOME/.local/bin/ytfzf >/dev/null && sudo chmod 755 $HOME/.local/bin/ytfzf
-
-# sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o $HOME/.local/bin/youtube-dl
-# sudo chmod a+rx $HOME/.local/bin/youtube-dl
+# TODO add urlview as a manual install
