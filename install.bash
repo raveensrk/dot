@@ -93,11 +93,9 @@ if [ "$distro" = "m" ]; then
     popd
 
     pushd "$HOME/.packages"
+
     tar xf "path-picker.tar.gz"
     ln -sf $(realpath ~/.packages/PathPicker-main/fpp) ~/.local/bin
-    popd
-
-    pushd "$HOME/.packages"
     # https://github.com/tmux/tmux/wiki/Installing#building-dependencies
     tar -zxf libevent-*.tar.gz
     pushd libevent-*/
@@ -112,6 +110,12 @@ if [ "$distro" = "m" ]; then
     make -j
     make install -j
     popd
+    popd
+
+    pushd ~/.vim/plugged
+    for file in *.tar.gz; do
+        tar xf "$file"
+    done
     popd
 
 fi
