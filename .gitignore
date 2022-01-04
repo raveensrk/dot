@@ -4,5 +4,4 @@ stow/.vim/backup/*
 stow/.vim/undo/*
 stow/.vim/swap/*
 stow/.vim/.netrwhist
-.git
 wslu

@@ -81,6 +81,7 @@ esac
 pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding
+stow -R stow_vim_plugins -t "$HOME"
 popd
 
 pushd "$HOME/.packages"
