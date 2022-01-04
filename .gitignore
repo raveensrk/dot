@@ -1,8 +1,8 @@
 *#*
 *~
 stow/.vim/backup/*
-stow/.vim/pack/*
 stow/.vim/undo/*
+stow/.vim/swap/*
 stow/.vim/.netrwhist
 .git
 wslu
