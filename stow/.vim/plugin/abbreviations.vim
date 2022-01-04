@@ -14,10 +14,10 @@ ab nc ${NC}
 ab cc $((count++))
 ab tcc term_$((count++)).log
 
-ab ecb echo -e ${BLUE} ❕ ${NC}
-ab ecg echo -e ${GREEN} ✅ ${NC}
-ab ecr echo -e ${RED} ❌ ${NC}
-ab ecy echo -e ${YELLOW} 🛑 ${NC}
+ab ecb echo -e "${BLUE}${NC}"
+ab ecg echo -e "${GREEN}${NC}"
+ab ecr echo -e "${RED}${NC}"
+ab ecy echo -e "${YELLOW}${NC}"
 ab pf printf
 ab ec echo
 " }}}

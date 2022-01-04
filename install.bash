@@ -44,8 +44,11 @@ case $distro in
         sudo apt  install $pkg_list_common
         sudo apt  install $pkg_list_ubuntu_only
         ;;
-	n)
-		echo "Skipping install.."
+    n)
+        echo "Skipping install.."
+        ;;
+    m)
+        echo -e "${BLUE}Manual install...${NC}"
         ;;
     *)
         echo "Unknown Distro! 😠"
@@ -57,26 +60,66 @@ esac
 
 [ -d "$HOME/tmp" ] || mkdir "$HOME/tmp"
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
+[ ! -d "$HOME/.vim/undo" ] && mkdir -p "$HOME/.vim/undo"
+[ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
+[ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
 
 pushd "$csd"
-[ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
+# [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding
 popd
+
+if [ "$distro" = "m" ]; then
+
+    if [ ! -d "$HOME/.fzf" ]; then
+        #git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
+        # "$HOME/.fzf/install"
+        tar xf ./stow/.packages/fzf.tar.gz --directory="$HOME"
+        mv ~/fzf ~/.fzf
+    fi
+
+    if [ ! -d "$HOME/.packages/ranger-stable" ]; then
+        #git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
+        # "$HOME/.fzf/install"
+        pushd "$HOME/.packages"
+        tar xf ranger-stable.tar.gz
+        popd
+    fi
+
+    pushd "$HOME/.tmux/plugins"
+    for file in *.tar.gz; do
+        tar xf "$file"
+    done
+    popd
+
+    pushd "$HOME/.packages"
+    tar xf "path-picker.tar.gz"
+    ln -sf $(realpath ~/.packages/PathPicker-main/fpp) ~/.local/bin
+    popd
+
+    pushd "$HOME/.packages"
+    # https://github.com/tmux/tmux/wiki/Installing#building-dependencies
+    tar -zxf libevent-*.tar.gz
+    pushd libevent-*/
+    ./configure --prefix=$HOME/.local --enable-shared
+    make -j
+    make install -j
+    pushd
+
+    tar xf "tmux-2.6.tar.gz"
+    pushd tmux-2.6
+    PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig ./configure --prefix=$HOME/.local
+    make -j
+    make install -j
+    popd
+    popd
+
+fi
 
 # pushd "$csd"
 # [ -f "$HOME/.local/bin/fpp" ] && rm "$HOME/.local/bin/fpp"
 # ln -s "$(realpath "./stow/.packages/PathPicker-main/fpp")" "$HOME/.local/bin/fpp"
 # popd
-
-if [ ! -d "$HOME/.fzf" ]; then
-    #git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf"
-    tar xf ./stow/.packages/fzf.tar.gz --directory "$HOME/.fzf"
-    "$HOME/.fzf/install"
-fi
-
-[ ! -d "$HOME/.vim/undo" ] && mkdir -p "$HOME/.vim/undo"
-[ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
-[ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/undo"
 
 
 # [ ! -f "$HOME/.vim/autoload/plug.vim" ] && \
@@ -87,5 +130,3 @@ fi
 
 # sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o $HOME/.local/bin/youtube-dl
 # sudo chmod a+rx $HOME/.local/bin/youtube-dl
-
-# [ ! -v tldr ] && pip install tldr || echo -e "${YELLOW} tldr install failed ${NC}"

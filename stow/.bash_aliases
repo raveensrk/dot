@@ -13,6 +13,7 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/.scripts:$PATH"
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
