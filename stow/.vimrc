@@ -145,7 +145,6 @@ nnoremap <leader>Y  "+P<CR>
 
 " Other time savers
 " -------------------------------
-nnoremap <leader>=   ggVG=``
 nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
 nnoremap <leader>e   :Ex<CR>jj
 nnoremap <leader>pi :PlugClean<CR>:PlugInstall<CR>

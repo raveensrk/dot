@@ -54,6 +54,19 @@ fi
 alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync="$MY_REPOS/my-scripts-main/src/sync_all_repos.bash $MY_REPOS"
+,reinstall () {
+    set -e
+    pushd "$MY_REPOS"
+    local f
+    for f in $(find -name install.bash); do
+        pushd $(dirname $f)
+        chmod +x ./install.bash
+        ./install.bash
+        popd
+    done
+    popd
+    set +e
+}
 alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
 alias csh_aliases="vim ~/.aliases"
 alias dam="sudo !!"
