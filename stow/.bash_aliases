@@ -53,7 +53,7 @@ fi
 # {{{ ALIASES
 alias ..="cd .."
 alias ,top='top -d 0.125'
-alias ,sync="$MY_REPOS/my-scripts-main/src/sync_all_repos.bash $MY_REPOS"
+alias ,sync=",sync_all_repos.bash $MY_REPOS"
 ,reinstall () {
     pushd "$MY_REPOS"
     local f

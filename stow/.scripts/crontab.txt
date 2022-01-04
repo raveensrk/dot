@@ -1,0 +1,9 @@
+* * * * * /home/raveensrk/repos/my-scripts-main/src/auto_shutdown_computer.bash
+* * * * * /home/raveensrk/repos/my-scripts-main/src/pomodoro_notifier.bash
+* * * * * echo hello1 $(date) >> ~/tmp.cron
+20 * * * * play ~/repos/my-scripts-main/src/sounds/school-bell.wav
+30 * * * * play ~/repos/my-scripts-main/src/sounds/school-bell.wav
+50 * * * * play ~/repos/my-scripts-main/src/sounds/school-bell.wav
+0 * * * * play ~/repos/my-scripts-main/src/sounds/school-bell.wav
+* * * * * echo hello2 $(date) >> ~/tmp.cron
+
