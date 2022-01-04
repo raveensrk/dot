@@ -16,6 +16,9 @@ while [ "$1" ]; do
             shift
             distro="$1"
             ;;
+        --rebuild)
+            rebuild="1"
+            ;;
         *)
             echo -e "${RED}❌ ERROR! WRONG Argument!${NC}"
             exit 2
@@ -97,19 +100,23 @@ if [ "$distro" = "m" ]; then
     tar xf "path-picker.tar.gz"
     ln -sf $(realpath ~/.packages/PathPicker-main/fpp) ~/.local/bin
     # https://github.com/tmux/tmux/wiki/Installing#building-dependencies
-    tar -zxf libevent-*.tar.gz
-    pushd libevent-*/
-    ./configure --prefix=$HOME/.local --enable-shared
-    make -j
-    make install -j
-    pushd
 
-    tar xf "tmux-2.6.tar.gz"
-    pushd tmux-2.6
-    PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig ./configure --prefix=$HOME/.local
-    make -j
-    make install -j
-    popd
+    if [ "$rebuild" = "1" ]; then
+        tar -zxf libevent-*.tar.gz
+        pushd libevent-*/
+        ./configure --prefix=$HOME/.local --enable-shared
+        make -j
+        make install -j
+        pushd
+
+        tar xf "tmux-2.6.tar.gz"
+        pushd tmux-2.6
+        PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig ./configure --prefix=$HOME/.local
+        make -j
+        make install -j
+        popd
+    fi
+
     popd
 
     pushd ~/.vim/plugged
