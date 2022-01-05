@@ -5,3 +5,4 @@ stow/.vim/.netrwhist
 stow_vim_plugins/.vim/plugged/**
 stow_vim_plugins/.tmux/plugins/**
 stow_vim_plugins/.packages/*
+stow_vim_plugins/.fzf
