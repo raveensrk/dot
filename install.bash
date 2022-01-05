@@ -26,14 +26,14 @@ while [ "$1" ]; do
     shift
 done
 
-echo -e "${YELLOW}Override options [y/n]...${NC}"
+echo -e "${YELLOW}Override options [Y/n]...${NC}"
 read -r choice
 if [ "$choice" = "Y" ]; then
     echo -e "${YELLOW}Choose distro [f/u/m/*]...${NC}"
     read -r choice
     distro="$choice"
     unset choice
-    echo -e "${YELLOW}Choose rebuild [y/n]...${NC}"
+    echo -e "${YELLOW}Choose rebuild [Y/n]...${NC}"
     read -r choice
     rebuild="$choice"
     unset choice
