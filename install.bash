@@ -93,7 +93,23 @@ popd
 
 if [ "$distro" = "m" ]; then
 
+
     pushd "$HOME/.packages"
+
+    if [ "$rebuild" = "y" ]; then
+
+        for f in *.tar*; do
+            tar xf "$f" --directory="$HOME/.packages_extracted"
+        done
+
+        for f in *.zip; do
+            unzip "$f" -d ~/.packages_extracted
+        done
+    fi
+    popd
+
+    pushd "$HOME/.packages_extracted"
+
     if [ "$rebuild" = "y" ]; then
         pushd libevent-*/
         ./configure --prefix=$HOME/.local --enable-shared
@@ -120,6 +136,7 @@ if [ "$distro" = "m" ]; then
         make -j
         make install -j # may require extra privileges depending on where to install
         popd
+
     fi
     popd
 elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
@@ -127,7 +144,6 @@ elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
     pushd "$HOME/.packages"
     ./clone.bash
     popd
-
 
     git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" || echo -e "${YELLOW}TPM already exists...${NC}"
 
