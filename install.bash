@@ -78,15 +78,16 @@ esac
 [ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
 [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
 
+if [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
+    git clone --depth 1 "https://github.com/junegunn/fzf.git" "$csd/stow_vim_plugins/.fzf" || echo -e "${YELLOW}Not cloning. $HOME/.fzf already present...${NC}"
+fi
+
 pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding
 stow -R stow_vim_plugins -t "$HOME"
 popd
 
-
-git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf" || echo -e "${YELLOW}Not cloning. $HOME/.fzf already present...${NC}"
-"$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
 
 if [ "$distro" = "m" ]; then
 
@@ -136,6 +137,7 @@ elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
 
 fi
 
+"$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
 ln -sf $(realpath ~/.packages/PathPicker/fpp) ~/.local/bin
 
 # TODO add urlview as a manual install

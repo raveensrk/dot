@@ -29,3 +29,5 @@ for f in *.tar*; do
 done
 
 rm -v ./*.tar*
+
+# TODO should i add fzf here
