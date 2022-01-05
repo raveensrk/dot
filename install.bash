@@ -84,9 +84,6 @@ stow -R stow -t "$HOME" --no-folding
 stow -R stow_vim_plugins -t "$HOME"
 popd
 
-pushd "$HOME/.packages"
-ln -sf $(realpath ~/.packages/PathPicker-main/fpp) ~/.local/bin
-popd
 
 git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf" || echo -e "${YELLOW}Not cloning. $HOME/.fzf already present...${NC}"
 "$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
@@ -108,7 +105,7 @@ if [ "$distro" = "m" ]; then
         make install -j
         popd
 
-        pushd vim
+        pushd vim82
         ./configure --prefix="$(HOME)/.local" # defaults to /usr/local
         make -j
         make install -j
@@ -116,6 +113,11 @@ if [ "$distro" = "m" ]; then
     fi
     popd
 elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
+
+    pushd "$HOME/.packages"
+    ./clone.bash
+    ln -sf $(realpath ~/.packages/PathPicker/fpp) ~/.local/bin
+    popd
 
     gem install jekyll bundler
 
