@@ -14,6 +14,7 @@ wget -nc https://github.com/libevent/libevent/releases/download/release-2.1.12-s
 wget -nc https://github.com/sharkdp/fd/releases/download/v8.3.0/fd-v8.3.0-i686-unknown-linux-musl.tar.gz
 wget -nc https://github.com/tmux/tmux/releases/download/2.6/tmux-2.6.tar.gz
 wget -nc https://ranger.github.io/ranger-stable.tar.gz
+wget -nc https://github.com/scop/bash-completion/releases/download/2.11/bash-completion-2.11.tar.xz
 
 [ ! -d ~/.packages_extracted ] && mkdir ~/.packages_extracted
 

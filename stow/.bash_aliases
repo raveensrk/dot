@@ -272,5 +272,8 @@ source "$HOME/.packages_extracted/fd-v8.3.0-i686-unknown-linux-musl/autocomplete
 # {{{ FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
+
+[ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
+
 # Colors
 LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" # TODO not working.

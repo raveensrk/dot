@@ -94,7 +94,6 @@ stow -R stow -t "$HOME" --no-folding
 stow -R stow_vim_plugins -t "$HOME"
 popd
 
-
 if [ "$distro" = "m" ]; then
 
     [ ! -d "$HOME/.packages_extracted" ] && mkdir "$HOME/.packages_extracted"
@@ -116,6 +115,7 @@ if [ "$distro" = "m" ]; then
     pushd "$HOME/.packages_extracted"
 
     if [ "$rebuild" = "y" ]; then
+
         pushd libevent-*/
         ./configure --prefix=$HOME/.local --enable-shared
         make -j
@@ -143,6 +143,18 @@ if [ "$distro" = "m" ]; then
         popd
 
     fi
+
+    echo -e "${BLUE}INSTALL BASH Completions? [Y/n] [Default n]:${NC}"
+    read -e choice
+    if [ "$choice" = "y" ]; then
+        autoreconf -i  # if not installing from prepared release tarball
+        ./configure --prefix="$HOME/.local"
+        make -j         # GNU make required
+        make check -j     # optional, requires python3 with pytest >= 3.6, pexpect
+        make install -j   # as root
+    fi 
+    unset choice
+
     popd
 elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
 
