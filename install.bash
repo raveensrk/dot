@@ -60,7 +60,7 @@ case $distro in
         sudo apt  autoclean
         sudo apt  install -y $pkg_list_common
         sudo apt  install -y $pkg_list_ubuntu_only
-        sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades
+        sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
         sudo gem install jekyll bundler || echo -e "${YELLOW}Warning: Jekyll installer failed.${NC}"
         ;;
     n)
