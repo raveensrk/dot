@@ -182,8 +182,8 @@ updatedb_home="$updatedb_path/home.db"
     updatedb -l 0 -o "$updatedb_home" -U ~/
 }
 
-unset -f se
-se () {
+unset -f ,find_file
+,find_file () {
     local file=$(fd --hidden --exclude '.git' . ~/repos | fzf)
     if [ "$file" = "" ]; then
         echo -e "${RED}❌ERROR! Empty string${NC}"

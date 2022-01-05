@@ -2,7 +2,7 @@
 
 set -e
 
-item=$(grep -H -n -r . | fzf)
+item=$(grep -H -n -r . | fzf -e )
 file=$(echo "$item" | awk -F ':' '{print $1}')
 line=$(echo "$item" | awk -F ':' '{print $2}')
 file_absolute_path="$file"
