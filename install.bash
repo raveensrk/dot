@@ -86,7 +86,7 @@ esac
 if [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
     git clone --depth 1 "https://github.com/junegunn/fzf.git" "$csd/stow_vim_plugins/.fzf" || echo -e "${YELLOW}Not cloning. $csd/.fzf already present...${NC}"
     pushd "$HOME/.packages"
-    ./clone.bash
+    ./clone.bash || echo -e "${YELLOW}Packages already present...${NC}"
     popd
 fi
 
