@@ -2,5 +2,5 @@ stow/.vim/backup/*
 stow/.vim/undo/*
 stow/.vim/swap/*
 stow/.vim/.netrwhist
-stow_vim_plugins/.vim/plugged/*
-stow_vim_plugins/.tmux/plugins/*
+#stow_vim_plugins/.vim/plugged/*
+#stow_vim_plugins/.tmux/plugins/*
