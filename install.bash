@@ -91,7 +91,7 @@ git clone --depth 1 "https://github.com/junegunn/fzf.git" "$HOME/.fzf" || echo -
 if [ "$distro" = "m" ]; then
 
     pushd "$HOME/.packages"
-    if [ "$rebuild" = "1" ]; then
+    if [ "$rebuild" = "y" ]; then
         pushd libevent-*/
         ./configure --prefix=$HOME/.local --enable-shared
         make -j
@@ -110,13 +110,19 @@ if [ "$distro" = "m" ]; then
         make -j
         make install -j
         popd
+
+        pushd ctags
+        ./autogen.sh
+        ./configure --prefix="$(HOME)/.local" # defaults to /usr/local
+        make -j
+        make install -j # may require extra privileges depending on where to install
+        popd
     fi
     popd
 elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
 
     pushd "$HOME/.packages"
     ./clone.bash
-    ln -sf $(realpath ~/.packages/PathPicker/fpp) ~/.local/bin
     popd
 
     gem install jekyll bundler
@@ -130,16 +136,6 @@ elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
 
 fi
 
-if [ "$rebuild" = "y" ]; then
-    pushd ~/.packages
-    tar xf ctags.tar.gz
-    pushd ctags
-    ./autogen.sh
-    ./configure --prefix="$(HOME)/.local" # defaults to /usr/local
-    make -j
-    make install -j # may require extra privileges depending on where to install
-    popd
-    popd
-fi
+ln -sf $(realpath ~/.packages/PathPicker/fpp) ~/.local/bin
 
 # TODO add urlview as a manual install
