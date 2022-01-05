@@ -82,6 +82,10 @@ esac
 
 if [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
     git clone --depth 1 "https://github.com/junegunn/fzf.git" "$csd/stow_vim_plugins/.fzf" || echo -e "${YELLOW}Not cloning. $csd/.fzf already present...${NC}"
+
+    pushd "$HOME/.packages"
+    ./clone.bash
+    popd
 fi
 
 pushd "$csd"
@@ -93,6 +97,7 @@ popd
 
 if [ "$distro" = "m" ]; then
 
+    [ ! -d "$HOME/.packages_extracted" ] && mkdir "$HOME/.packages_extracted"
 
     pushd "$HOME/.packages"
 
@@ -125,14 +130,14 @@ if [ "$distro" = "m" ]; then
         popd
 
         pushd vim82
-        ./configure --prefix="$(HOME)/.local" # defaults to /usr/local
+        ./configure --prefix="$HOME/.local" # defaults to /usr/local
         make -j
         make install -j
         popd
 
         pushd ctags
         ./autogen.sh
-        ./configure --prefix="$(HOME)/.local" # defaults to /usr/local
+        ./configure --prefix="$HOME/.local" # defaults to /usr/local
         make -j
         make install -j # may require extra privileges depending on where to install
         popd
@@ -140,10 +145,6 @@ if [ "$distro" = "m" ]; then
     fi
     popd
 elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
-
-    pushd "$HOME/.packages"
-    ./clone.bash
-    popd
 
     git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" || echo -e "${YELLOW}TPM already exists...${NC}"
 
@@ -155,6 +156,8 @@ elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
 fi
 
 "$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
-ln -sf "$(realpath "$HOME/.packages/PathPicker/fpp")" ~/.local/bin
+ln -sf "$HOME/.packages_extracted/PathPicker-main/fpp" ~/.local/bin
 
 # TODO add urlview as a manual install
+
+# tar cf stow_vim_plugins.tar.gz stow_vim_plugins
