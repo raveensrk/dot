@@ -56,9 +56,10 @@ case $distro in
         sudo apt  upgrade
         sudo apt  autoremove
         sudo apt  autoclean
-        sudo apt  install $pkg_list_common
-        sudo apt  install $pkg_list_ubuntu_only
-        sudo apt-get install lftp=4.8.1-1ubuntu0.1 --allow-downgrades
+        sudo apt  install -y $pkg_list_common
+        sudo apt  install -y $pkg_list_ubuntu_only
+        sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades
+        sudo gem install jekyll bundler || echo -e "${YELLOW}Warning: Jekyll installer failed.${NC}"
         ;;
     n)
         echo "Skipping install.."
@@ -127,7 +128,6 @@ elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
     ./clone.bash
     popd
 
-    gem install jekyll bundler
 
     git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" || echo -e "${YELLOW}TPM already exists...${NC}"
 
