@@ -138,6 +138,6 @@ elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
 fi
 
 "$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
-ln -sf $(realpath ~/.packages/PathPicker/fpp) ~/.local/bin
+ln -sf "$(realpath "$HOME/.packages/PathPicker/fpp")" ~/.local/bin
 
 # TODO add urlview as a manual install
