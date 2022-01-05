@@ -169,7 +169,12 @@ elif [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
 
 fi
 
-"$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
+echo -e "${BLUE}Do you want to install fzf? [Y/n]:${NC}"
+read -r choice
+if [ "$choice" = "Y" ]; then
+    "$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
+fi 
+
 ln -sf "$HOME/.packages_extracted/PathPicker-main/fpp" ~/.local/bin
 
 # TODO add urlview as a manual install

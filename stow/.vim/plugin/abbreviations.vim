@@ -20,7 +20,8 @@ ab ecr echo -e "${RED}${NC}"
 ab ecy echo -e "${YELLOW}${NC}"
 ab pf printf
 ab ec echo
-ab if, if [ ]; then<CR>elif [ ]; then<CR>else<CR>fi
+ab if, if [ "$choice" = "Y" ]; then<CR>elif [ ]; then<CR>else<CR>fi
+iab ask, echo -e "${BLUE}Do you want to ? [Y/n]:${NC}"<CR>read -r choice<CR>unset choice<CR>
 " }}}
 " Emojis {{{
 ab efail ❌
