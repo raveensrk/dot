@@ -146,12 +146,14 @@ if [ "$distro" = "m" ]; then
 
     echo -e "${BLUE}INSTALL BASH Completions? [Y/n] [Default n]:${NC}"
     read -e choice
-    if [ "$choice" = "y" ]; then
+    if [ "$choice" = "Y" ]; then
+        pushd ~/.packages_extracted/bash-completion-2.11
         autoreconf -i  # if not installing from prepared release tarball
         ./configure --prefix="$HOME/.local"
         make -j         # GNU make required
         make check -j     # optional, requires python3 with pytest >= 3.6, pexpect
         make install -j   # as root
+        popd
     fi 
     unset choice
 
