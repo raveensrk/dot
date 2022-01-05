@@ -58,6 +58,7 @@ case $distro in
         sudo apt  autoclean
         sudo apt  install $pkg_list_common
         sudo apt  install $pkg_list_ubuntu_only
+        sudo apt-get install lftp=4.8.1-1ubuntu0.1 --allow-downgrades
         ;;
     n)
         echo "Skipping install.."
@@ -79,7 +80,7 @@ esac
 [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
 
 if [ "$distro" = "u" ] || [ "$distro" = "f" ]; then
-    git clone --depth 1 "https://github.com/junegunn/fzf.git" "$csd/stow_vim_plugins/.fzf" || echo -e "${YELLOW}Not cloning. $HOME/.fzf already present...${NC}"
+    git clone --depth 1 "https://github.com/junegunn/fzf.git" "$csd/stow_vim_plugins/.fzf" || echo -e "${YELLOW}Not cloning. $csd/.fzf already present...${NC}"
 fi
 
 pushd "$csd"
