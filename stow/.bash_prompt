@@ -46,5 +46,5 @@ export YELLOW='\033[0;33m'
 export BLUE='\033[0;34m' 
 export RED='\033[0;31m'   
 
-# export PS1="$RED\u $GREEN@ $LIGHT_CYAN\h $LIGHT_GRAY: $YELLOW\W $NO_COLOR$"
-export PS1="\u @ \h : \W\n $ "
+export PS1="[$SHLVL] ${RED}\u ${GREEN}@ ${LIGHT_CYAN}\h ${LIGHT_GRAY}: ${YELLOW}\W ${NO_COLOR}$ "
+# export PS1="\u @ \h : \W\n $ "
