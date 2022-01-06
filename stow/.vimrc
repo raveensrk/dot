@@ -168,7 +168,7 @@ nnoremap <leader>ac :s/ --/\r--/g<CR>
 " This is done so the plugin directory is sourced again at the end of this
 " vimrc file. This will make plugins work properly
 
-# ~/.vim/plugin
+" ~/.vim/plugin
 for f in split(glob('~/.vim/plugin/*.vim'), '\n')
     exe 'source' f
 endfor
