@@ -36,7 +36,7 @@ set title
 "set splitbelow splitright
 " }}}
 " GRAMMAR AND SEARCHING {{{
-set spell spelllang=en_us
+" set spell spelllang=en_us
 set textwidth=80
 set isk+=-
 set ignorecase
