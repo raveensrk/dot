@@ -36,7 +36,7 @@ set title
 "set splitbelow splitright
 " }}}
 " GRAMMAR AND SEARCHING {{{
-set spell spelllang=en_us
+" set spell spelllang=en_us
 set textwidth=80
 set isk+=-
 set ignorecase
@@ -168,6 +168,7 @@ nnoremap <leader>ac :s/ --/\r--/g<CR>
 " This is done so the plugin directory is sourced again at the end of this
 " vimrc file. This will make plugins work properly
 
+" ~/.vim/plugin
 for f in split(glob('~/.vim/plugin/*.vim'), '\n')
     exe 'source' f
 endfor
