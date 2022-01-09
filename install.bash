@@ -92,8 +92,8 @@ fi
 
 pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
-stow -R stow -t "$HOME" --no-folding
-stow -R stow_vim_plugins -t "$HOME"
+stow -R stow -t "$HOME" --no-folding || exit 2
+stow -R stow_vim_plugins -t "$HOME" || exit 2
 popd
 
 if [ "$distro" = "m" ]; then
@@ -185,8 +185,7 @@ ln -sf "$HOME/.packages_extracted/PathPicker-main/fpp" ~/.local/bin
 
 echo -e "${BLUE}Do you want to install fzf? [Y/n]:${NC}"
 read -r choice
-if [ "$choice" = "Y" ]; then
-    "$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
-fi 
+[ "$choice" = "Y" ] && "$HOME/.fzf/install" || echo -e "${YELLOW}FZF install failed...${NC}"
 unset choice
 
+exit 0
