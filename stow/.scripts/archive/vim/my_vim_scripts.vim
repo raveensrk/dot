@@ -3,7 +3,6 @@
 function! Display2Info()
     normal mm
     s/$display/`uvm_info(get_name(), $psprintf/
-    " TODO: Fix duplicate UVM_NONE created if there is error
     s/);/, UVM_NONE);/
     normal `m
 endfunction
@@ -29,7 +28,6 @@ nnoremap <leader>vi2d :call Info2Display()<cr>
 nnoremap <leader>vx   :call SwapDisplayAndInfo()<cr>
 
 
-" TODO:
 
 function! SwapSelectX()
     " Select first swap seection
