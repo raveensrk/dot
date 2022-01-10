@@ -184,7 +184,13 @@ updatedb_home="$updatedb_path/home.db"
 
 unset -f ,find_file
 ,find_file () {
-    local file=$(fd --hidden --exclude '.git' . ~/repos | fzf)
+    local path
+    path="$1"
+    if [ "$path" = "" ]; then
+        path="$HOME/repos"
+    fi
+
+    local file=$(fd --hidden --exclude '.git' --exclude '.hg' . "$path" | fzf)
     if [ "$file" = "" ]; then
         echo -e "${RED}❌ERROR! Empty string${NC}"
     else
