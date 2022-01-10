@@ -34,6 +34,8 @@ Plug 'https://github.com/vim-syntastic/syntastic'
 
 " Plug 'godlygeek/tabular'
 " Plug 'plasticboy/vim-markdown'
+"
+Plug 'https://github.com/tpope/vim-markdown'
 
 call plug#end()
 
