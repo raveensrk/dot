@@ -37,6 +37,17 @@ Plug 'https://github.com/vim-syntastic/syntastic'
 "
 Plug 'https://github.com/tpope/vim-markdown'
 
+Plug 'liuchengxu/vim-which-key'
+
+" On-demand lazy load
+" Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+"
+" " To register the descriptions when using the on-demand load feature,
+" " use the autocmd hook to call which_key#register(), e.g., register for the
+" Space key:
+" " autocmd! User vim-which-key call which_key#register('<Space>',
+" 'g:which_key_map')
+
 call plug#end()
 
 set updatetime=100 " For gitgutter
@@ -64,6 +75,9 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+
 
 "}}}
 " {{{ COLOR / THEME
