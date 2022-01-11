@@ -1,0 +1,6 @@
+# /etc/lftp.conf
+
+set mirror:parallel-transfer-count 10
+set mirror:use-pget-n 10
+
+
