@@ -47,12 +47,12 @@ case $distro in
         sudo dnf install  $pkg_list_fedora_only
         ;;
     u)
-        sudo apt  update
-        sudo apt  upgrade
-        sudo apt  autoremove
-        sudo apt  autoclean
-        sudo apt  install -y $pkg_list_common
-        sudo apt  install -y $pkg_list_ubuntu_only
+        # sudo apt-get update
+        # sudo apt-get upgrade
+        # sudo apt-get autoremove
+        # sudo apt-get autoclean
+        sudo apt-get install -y $pkg_list_common
+        sudo apt-get install -y $pkg_list_ubuntu_only
         sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
         sudo gem install jekyll bundler || echo -e "${YELLOW}Warning: Jekyll installer failed.${NC}"
         ;;

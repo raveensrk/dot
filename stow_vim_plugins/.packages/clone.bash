@@ -6,7 +6,7 @@ get () {
     wget -nc $1 $2 || echo -e "${YELLOW}Not able to get package $1 ${NC}" 
 }
 
-get  "https://github.com/facebook/PathPicker/archive/refs/heads/main.zip" -O PathPicker.zip
+get  "https://github.com/facebook/PathPicker/archive/refs/heads/main.zip" "-O PathPicker.zip"
 get  "https://ftp.gnu.org/gnu/stow/stow-2.2.0.tar.gz"
 get  "https://ftp.gnu.org/gnu/texinfo/texinfo-6.8.tar.gz"
 get  "https://ftp.nluug.nl/pub/vim/unix/vim-8.2.tar.bz2"
@@ -18,7 +18,7 @@ get  "https://ranger.github.io/ranger-stable.tar.gz"
 get  "https://github.com/scop/bash-completion/releases/download/2.11/bash-completion-2.11.tar.xz"
 
 for f in *.tar*; do
-    tar xf -u "$f"
+    tar xf "$f"
 done
 
 for f in *.zip; do
