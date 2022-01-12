@@ -98,6 +98,4 @@ else
     echo -e "${YELLOW}youtube-dl not installed...${NC}" 
 fi
 
-tar cf stow_vim_plugins.tar.gz stow_vim_plugins
-
 exit 0
