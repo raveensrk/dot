@@ -78,6 +78,9 @@ esac
 pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding || exit 2
+if [ $(uname -a | awk '{print $3}') = "5.10.60.1-microsoft-standard-WSL2" ]; then
+    stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
+fi
 stow -R stow_vim_plugins -t "$HOME" || exit 2
 popd
 
@@ -92,8 +95,8 @@ ln -sf "$HOME/.packages/PathPicker-main/fpp" ~/.local/bin
 
 git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" || echo -e "${YELLOW}TPM already exists...${NC}"
 
-if sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o "$HOME/.local/bin/youtube-dl"; then
-    sudo chmod a+rx "$HOME/.local/bin/youtube-dl"
+if curl -L https://yt-dl.org/downloads/latest/youtube-dl -o "$HOME/.local/bin/youtube-dl"; then
+   chmod a+rx "$HOME/.local/bin/youtube-dl"
 else
     echo -e "${YELLOW}youtube-dl not installed...${NC}" 
 fi
