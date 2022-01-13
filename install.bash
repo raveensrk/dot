@@ -81,7 +81,7 @@ stow -R stow -t "$HOME" --no-folding || exit 2
 if [ $(uname -a | awk '{print $3}') = "5.10.60.1-microsoft-standard-WSL2" ]; then
     stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
 fi
-stow -R stow_vim_plugins -t "$HOME" || exit 2
+[ -d stow_vim_plugins ] && stow -R stow_vim_plugins -t "$HOME" || exit 2
 popd
 
 git clone --depth 1 "https://github.com/junegunn/fzf.git" "$csd/stow_vim_plugins/.fzf" || echo -e "${YELLOW}Not cloning. $csd/.fzf already present...${NC}"
