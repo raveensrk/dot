@@ -6,6 +6,7 @@ get () {
     wget -nc $1 $2 || echo -e "${YELLOW}Not able to get package $1 ${NC}" 
 }
 
+get  "https://github.com/universal-ctags/ctags/archive/refs/heads/master.zip" "-O ctags.zip"
 get  "https://github.com/facebook/PathPicker/archive/refs/heads/main.zip" "-O PathPicker.zip"
 get  "https://ftp.gnu.org/gnu/stow/stow-2.2.0.tar.gz"
 get  "https://ftp.gnu.org/gnu/texinfo/texinfo-6.8.tar.gz"
@@ -34,52 +35,61 @@ if [ "$rebuild" = "Y" ]; then
     echo -e "${BLUE}Do you want to install libevent? [Y/n]:${NC}"
     read -r choice
     if [ "$choice" = "Y" ]; then
-        pushd libevent-*/ || exit 2
+        tar xf libevent-2.1.12-stable.tar.gz
+        pushd libevent-2.1.12-stable || exit 2
         ./configure --prefix="$HOME/.local" --enable-shared
         make -j
         make install -j
-        pushd || exit 2
+        popd || exit 2
+        rm -rf libevent-2.1.12-stable
     fi 
     unset choice
 
     echo -e "${BLUE}Do you want to install tmux? [Y/n]:${NC}"
     read -r choice
     if [ "$choice" = "Y" ]; then
+        tar xf tmux-2.6.tar.gz
         # https://github.com/tmux/tmux/wiki/Installing#building-dependencies
         pushd tmux-2.6 || exit 2
         PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig ./configure --prefix="$HOME/.local"
         make -j
         make install -j
         popd || exit 2
+        rm -rf tmux-2.6
     fi 
     unset choice
 
     echo -e "${BLUE}Do you want to install vim82? [Y/n]:${NC}"
     read -r choice
     if [ "$choice" = "Y" ]; then
+        tar xf vim-8.2.tar.bz2
         pushd vim82 || exit 2
         ./configure --prefix="$HOME/.local" # defaults to /usr/local
         make -j
         make install -j
         popd || exit 2
+        rm -rf vim82
     fi 
     unset choice
 
     echo -e "${BLUE}Do you want to install ctags? [Y/n]:${NC}"
     read -r choice
     if [ "$choice" = "Y" ]; then
+        unzip -u ctags.zip
         pushd ctags || exit 2
         ./autogen.sh
         ./configure --prefix="$HOME/.local" # defaults to /usr/local
         make -j
         make install -j # may require extra privileges depending on where to install
         popd || exit 2
+        rm -rf ctags
     fi 
     unset choice
 
     echo -e "${BLUE}INSTALL BASH Completions? [Y/n] [Default n]:${NC}"
     read -r choice
     if [ "$choice" = "Y" ]; then
+        tar -xf bash-completion-2.11.tar.xz
         pushd ~/.packages_extracted/bash-completion-2.11 || exit 2
         autoreconf -i  # if not installing from prepared release tarball
         ./configure --prefix="$HOME/.local"
@@ -87,6 +97,7 @@ if [ "$rebuild" = "Y" ]; then
         make check -j     # optional, requires python3 with pytest >= 3.6, pexpect
         make install -j   # as root
         popd || exit 2
+        rm -rf bash-completion-2.11
     fi 
     unset choice
 
