@@ -11,9 +11,9 @@ csd=$(dirname "$0")
 
 while [ "$1" ]; do
     case "$1" in
-        --distro)
+        --machine)
             shift
-            distro="$1"
+            machine="$1"
             ;;
         *)
             echo -e "${RED}❌ ERROR! WRONG Argument!${NC}"
@@ -26,13 +26,18 @@ done
 echo -e "${YELLOW}Override options [Y/n]...${NC}"
 read -r choice
 if [ "$choice" = "Y" ]; then
-    echo -e "${YELLOW}Choose distro [f/u/m/*]...${NC}"
+    echo -e "${YELLOW}Choose machine...
+    1. Work machine with internet
+    2. Work machine with upload access only
+    3. Personal machine with internet
+    Enter option... 1, 2, 3
+    ${NC}"
     read -r choice
-    distro="$choice"
+    machine="$choice"
     unset choice
 fi 
 
-echo -e "${YELLOW} Installing for distro $distro...${NC}"
+echo -e "${YELLOW} Installing for machine $machine...${NC}"
 
 # {{{ Packages installed with package manager
 
@@ -40,30 +45,32 @@ pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 
 pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk libssl-dev"
 pkg_list_fedora_only="ShellCheck ImageMagick vim-X11 openssl-devel"
 
-case $distro in
+case $machine in
     f)
         sudo dnf install "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
         sudo dnf install  $pkg_list_common
         sudo dnf install  $pkg_list_fedora_only
         ;;
-    u)
+    1|3)
         # sudo apt-get update
         # sudo apt-get upgrade
         # sudo apt-get autoremove
         # sudo apt-get autoclean
-        sudo apt-get install -y $pkg_list_common
-        sudo apt-get install -y $pkg_list_ubuntu_only
-        sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
-        sudo gem install jekyll bundler || echo -e "${YELLOW}Warning: Jekyll installer failed.${NC}"
+        echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
+        read -r choice
+        if [ "$choice" = "Y" ]; then
+            sudo apt-get install -y $pkg_list_common
+            sudo apt-get install -y $pkg_list_ubuntu_only
+            sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
+            sudo gem install jekyll bundler || echo -e "${YELLOW}Warning: Jekyll installer failed.${NC}"
+        fi
+        unset choice
         ;;
-    n)
-        echo "Skipping install.."
-        ;;
-    m)
-        echo -e "${BLUE}Manual install...${NC}"
+    2)
+        echo -e "${YELLOW}Skipping internet based install..${NC}"
         ;;
     *)
-        echo "Unknown Distro! 😠"
+        echo "Unknown machine! 😠"
         ;;
 esac
 
@@ -95,8 +102,8 @@ ln -sf "$HOME/.packages/PathPicker-main/fpp" ~/.local/bin
 
 git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" || echo -e "${YELLOW}TPM already exists...${NC}"
 
-if curl -L https://yt-dl.org/downloads/latest/youtube-dl -o "$HOME/.local/bin/youtube-dl"; then
-   chmod a+rx "$HOME/.local/bin/youtube-dl"
+if sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o "$HOME/.local/bin/youtube-dl"; then
+    sudo chmod a+rx "$HOME/.local/bin/youtube-dl"
 else
     echo -e "${YELLOW}youtube-dl not installed...${NC}" 
 fi
