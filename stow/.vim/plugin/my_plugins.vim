@@ -41,6 +41,8 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'https://github.com/xolox/vim-misc'
 Plug 'https://github.com/xolox/vim-session'
 
+Plug 'https://github.com/tpope/vim-speeddating'
+
 " On-demand lazy load
 " Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 "
