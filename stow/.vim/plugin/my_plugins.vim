@@ -38,6 +38,8 @@ Plug 'https://github.com/vim-syntastic/syntastic'
 Plug 'https://github.com/tpope/vim-markdown'
 
 Plug 'liuchengxu/vim-which-key'
+Plug 'https://github.com/xolox/vim-misc'
+Plug 'https://github.com/xolox/vim-session'
 
 " On-demand lazy load
 " Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
