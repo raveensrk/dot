@@ -29,13 +29,14 @@ if [ "$choice" = "Y" ]; then
     echo -e "${YELLOW}Choose machine...
     1. Work machine with internet
     2. Work machine with upload access only
-    3. Personal machine with internet
-    Enter option... 1, 2, 3
+    3. Personal machine with internet - ubuntu
+    4. Personal machine with internet - fedora
+    Enter option...
     ${NC}"
     read -r choice
     machine="$choice"
-    unset choice
 fi 
+unset choice
 
 echo -e "${YELLOW} Installing for machine $machine...${NC}"
 
@@ -46,16 +47,16 @@ pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk libssl-dev"
 pkg_list_fedora_only="ShellCheck ImageMagick vim-X11 openssl-devel"
 
 case $machine in
-    f)
+    4)
         sudo dnf install "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
         sudo dnf install  $pkg_list_common
         sudo dnf install  $pkg_list_fedora_only
         ;;
     1|3)
-        # sudo apt-get update
+        sudo apt-get update
         # sudo apt-get upgrade
-        # sudo apt-get autoremove
-        # sudo apt-get autoclean
+        sudo apt-get autoremove
+        sudo apt-get autoclean
         echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
         read -r choice
         if [ "$choice" = "Y" ]; then
@@ -85,9 +86,14 @@ esac
 pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding || exit 2
-if [ $(uname -a | awk '{print $3}') = "5.10.60.1-microsoft-standard-WSL2" ]; then
+
+echo -e "${YELLOW}Install Display environment for WSL2? [Y/n]...${NC}"
+read -r choice
+if [ "$choice" = "Y" ]; then
     stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
-fi
+fi 
+unset choice
+
 [ -d stow_vim_plugins ] && stow -R stow_vim_plugins -t "$HOME" || exit 2
 popd
 
