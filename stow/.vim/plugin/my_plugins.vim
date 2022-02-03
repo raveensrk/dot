@@ -43,6 +43,10 @@ Plug 'https://github.com/xolox/vim-session'
 
 Plug 'https://github.com/tpope/vim-speeddating'
 
+" Plug 'nmaiti/fzf_cscope.vim' " This doesnot work
+" @TODO try Rg or Ag with fzf
+" @TODO Check for better fzf cscope plugins
+
 " On-demand lazy load
 " Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 "
