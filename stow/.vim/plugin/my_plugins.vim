@@ -56,6 +56,8 @@ Plug 'https://github.com/tpope/vim-speeddating'
 " " autocmd! User vim-which-key call which_key#register('<Space>',
 " 'g:which_key_map')
 
+Plug 'https://github.com/mechatroner/rainbow_csv'
+
 call plug#end()
 
 set updatetime=100 " For gitgutter

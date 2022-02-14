@@ -73,8 +73,12 @@ set colorcolumn=80
 "highlight ColorColumn ctermbg=0 guibg=lightgrey
 set wildmode=longest,list,full
 set wildmenu
-set scrolloff=999
-set sidescrolloff=999
+
+" These 2 settings will force the cursor line to always be at the center of
+" the screen
+" set scrolloff=999
+" set sidescrolloff=999
+
 " set virtualedit=all
 set textwidth=0 wrapmargin=0
 " }}}
