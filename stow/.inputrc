@@ -9,5 +9,11 @@ set keymap vi
 set show-mode-in-prompt On
 set vi-cmd-mode-string (:)
 set vi-ins-mode-string (+)
-
+set skip-completed-text On
+set show-all-if-ambiguous On
+set completion-ignore-case On
+set menu-complete-display-prefix On # Perform partial completion on the first Tab press, only start cycling full results on the second Tab press
+"TAB": menu-complete # If there are multiple matches for completion, Tab should cycle through them
+"\e[A":history-search-backward # Cycle through history based on characters already typed on the line
+"\e[B":history-search-forward
 
