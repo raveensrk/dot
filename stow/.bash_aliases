@@ -33,16 +33,6 @@ export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_history # Change the file location because certain bash sessions truncate .bash_history file upon close. # http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND" # Force prompt to write history after every command. http://superuser.com/questions/20900/bash-history-loss
 shopt -s checkwinsize # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
-# bind 'TAB':menu-complete # If there are multiple matches for completion, Tab should cycle through them
-# set completion-ignore-case on
-# bind "set menu-complete-display-prefix on" # Perform partial completion on the first Tab press, only start cycling full results on the second Tab press
-bind 'TAB':menu-complete # If there are multiple matches for completion, Tab should cycle through them
-bind "set show-all-if-ambiguous on" # Display a list of the matching files
-bind "set menu-complete-display-prefix on" # Perform partial completion on the first Tab press, only start cycling full results on the second Tab press
-bind '"\e[A":history-search-backward' # Cycle through history based on characters already typed on the line
-bind '"\e[B":history-search-forward'
-set show-all-if-ambiguous on
-set completion-ignore-case on
 # }}}
 # {{{ INTERFACE
 if [ -v xset ]; then
