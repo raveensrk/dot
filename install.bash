@@ -27,9 +27,9 @@ echo -e "${YELLOW}Override options [Y/n]...${NC}"
 read -r choice
 if [ "$choice" = "Y" ]; then
     echo -e "${YELLOW}Choose machine...
-    1. Work machine with internet
+    1. Work machine with internet (WSL)
     2. Work machine with upload access only
-    3. Personal machine with internet - ubuntu
+    3. Personal machine with internet - ubuntu (WSL)
     4. Personal machine with internet - fedora
     Enter option...
     ${NC}"
@@ -87,12 +87,9 @@ pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding || exit 2
 
-echo -e "${YELLOW}Install Display environment for WSL2? [Y/n]...${NC}"
-read -r choice
-if [ "$choice" = "Y" ]; then
+if [ "$machine" = "1" ] || [ "$machine" = "3" ]; then
     stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
-fi 
-unset choice
+fi
 
 [ -d stow_vim_plugins ] && stow -R stow_vim_plugins -t "$HOME" || exit 2
 popd
@@ -108,10 +105,12 @@ ln -sf "$HOME/.packages/PathPicker-main/fpp" ~/.local/bin
 
 git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" || echo -e "${YELLOW}TPM already exists...${NC}"
 
-if sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o "$HOME/.local/bin/youtube-dl"; then
-    sudo chmod a+rx "$HOME/.local/bin/youtube-dl"
-else
-    echo -e "${YELLOW}youtube-dl not installed...${NC}" 
+if ! command -v youtube-dl; then
+    if sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o "$HOME/.local/bin/youtube-dl"; then
+        sudo chmod a+rx "$HOME/.local/bin/youtube-dl"
+    else
+        echo -e "${YELLOW}youtube-dl not installed...${NC}" 
+    fi
 fi
 
 exit 0
