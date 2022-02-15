@@ -42,7 +42,7 @@ echo -e "${YELLOW} Installing for machine $machine...${NC}"
 
 # {{{ Packages installed with package manager
 
-pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview ruby autoconf pkg-config automake"
+pkg_list_common="bat curl ffmpeg ffmpegthumbnailer gnuplot htop  kdialog kdiff3 mediainfo mlocate mpv neofetch newsboat python python3 python3-pip ranger stow tldr vim yank pandoc obs-studio urlview ruby autoconf pkg-config automake ripgrep"
 pkg_list_ubuntu_only="shellcheck imagemagick vim-gtk libssl-dev"
 pkg_list_fedora_only="ShellCheck ImageMagick vim-X11 openssl-devel"
 
