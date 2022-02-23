@@ -6,7 +6,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'morhetz/gruvbox'
 " Plug 'vim/killersheep'
 Plug 'frazrepo/vim-rainbow'
-Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
 " Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
@@ -94,4 +94,5 @@ nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 colo gruvbox
 " colo default
 set background=dark
+set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 " }}}
