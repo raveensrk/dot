@@ -113,4 +113,9 @@ if ! command -v youtube-dl; then
     fi
 fi
 
+if ! command -v yt-dlp; then
+    sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+    sudo chmod a+rx /usr/local/bin/yt-dlp
+fi
+
 exit 0
