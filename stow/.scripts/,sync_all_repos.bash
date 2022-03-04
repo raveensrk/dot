@@ -14,7 +14,7 @@ dir="$(realpath "$1")"
 echo "$dir" is top dir
 pushd "$dir"
 for d in $(find ./* -maxdepth 0 -type d); do
-    clear
+    # clear
     ,dotfiles_sync.bash "$d"
 done
 popd
