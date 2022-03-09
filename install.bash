@@ -87,6 +87,8 @@ pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding || exit 2
 
+vim -c "source packages/Align.vba.gz | q"
+
 if [ "$machine" = "1" ] || [ "$machine" = "3" ]; then
     stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
 fi
