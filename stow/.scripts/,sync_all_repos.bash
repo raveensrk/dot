@@ -10,6 +10,8 @@ set -e
 
 # script_dir=$(dirname "$0")
 
+git config --global pull.rebase false
+
 dir="$(realpath "$1")"
 echo "$dir" is top dir
 pushd "$dir"
