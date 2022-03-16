@@ -265,3 +265,20 @@ source "$HOME/.packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
 
 # Colors
 LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" # TODO not working.
+
+# MACOS Specific {{{
+if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # https://github.com/platformio/platformio-atom-ide-terminal/issues/196
+    update_terminal_cwd() {
+        # Identify the directory using a "file:" scheme URL,
+        # including the host name to disambiguate local vs.
+        # remote connections. Percent-escape spaces.
+        local SEARCH=' '
+        local REPLACE='%20'
+        local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
+        printf '\e]7;%s\a' "$PWD_URL"
+    }
+fi 
+
+# }}}
