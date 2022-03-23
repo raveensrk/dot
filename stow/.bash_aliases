@@ -270,7 +270,6 @@ fi
 # {{{ COMMA ALIASES
 unset -f ,
 , () {
-    # TODO: Autocomplete dirs only
     local tmp="/tmp/.dirs_stack_tmp_$$"
     pushd $1 || return
     dirs -v | awk '{print $2}' >> ~/.dirs_stack
