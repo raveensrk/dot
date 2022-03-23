@@ -2,8 +2,10 @@
 
 set -e
 
+# Wget operates in quiet mode
+
 get () {
-    wget -nc $@ || echo -e "${YELLOW}Not able to get package $1 ${NC}" 
+    wget -qnc $@
 }
 
 get https://github.com/universal-ctags/ctags/archive/refs/heads/master.zip -O ctags.zip
@@ -24,11 +26,13 @@ for f in *.tar*; do
 done
 
 for f in *.zip; do
-    unzip -u "$f"
+    unzip -qu "$f"
 done
 
 if [ "$1" = "--rebuild" ]; then
     rebuild="Y"
+else
+    rebuild="n"
 fi
 
 if [ "$rebuild" = "Y" ]; then
@@ -108,3 +112,5 @@ if [ "$rebuild" = "Y" ]; then
 fi # rebuild
 
 unset rebuild
+
+exit 0

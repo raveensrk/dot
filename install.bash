@@ -23,17 +23,15 @@ while [ "$1" ]; do
     shift
 done
 
-echo -e "${YELLOW}Choose machine...
-1. Work machine with internet (WSL)
-2. Work machine with upload access only
-3. Personal machine with internet - ubuntu (WSL)
-4. Personal machine with internet - fedora
-5. Personal machine - Macbook Air
-Enter option...
-${NC}"
-read -r choice
-machine="$choice"
-unset choice
+while read -r line; do
+    if [[ "$USER@$HOSTNAME" == "$(echo "$line" | awk -F , '{print $2}')" ]]; then
+        machine="$(echo "$line" | awk -F , '{print $1}')"
+    fi
+done < hostlist.txt
+
+if [[ "$machine" == "" ]]; then
+    echo -e "${RED}Machine variable unset. Add your machine to the hostlist.txt file.${NC}"
+fi
 
 echo -e "${YELLOW} Installing for machine $machine...${NC}"
 
@@ -83,7 +81,9 @@ pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding || exit 2
 
-vim -c "source packages/Align.vba.gz | q"
+pushd packages
+vim -c "source install.vim | q"
+popd
 
 if [ "$machine" = "1" ] || [ "$machine" = "3" ]; then
     stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
@@ -92,20 +92,24 @@ fi
 [ -d stow_vim_plugins ] && stow -R stow_vim_plugins -t "$HOME" || exit 2
 popd
 
-git clone --depth 1 "https://github.com/junegunn/fzf.git" \
-	"$csd/stow_vim_plugins/.fzf" || \
-	echo -e "${YELLOW}Not cloning. $csd/.fzf already present...${NC}"
+if [[ ! -d "$HOME/.fzf/.git" ]]; then
+    git clone --depth 1 "https://github.com/junegunn/fzf.git" \
+        "$csd/stow_vim_plugins/.fzf"
+fi
 
-"$HOME/.fzf/install" --all || echo -e "${YELLOW}FZF install failed...${NC}"
+if ! command -v fzf; then
+    "$HOME/.fzf/install" --all || echo -e "${YELLOW}FZF install failed...${NC}"
+fi
 
 pushd "$HOME/.packages"
-./clone.bash || echo -e "${YELLOW}Packages already present...${NC}"
+./clone.bash
 popd
 
 ln -sf "$HOME/.packages/PathPicker-main/fpp" ~/.local/bin
 
-git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm" || \
-	echo -e "${YELLOW}TPM already exists...${NC}"
+if [[ ! -d "$HOME/.tmux/plugins/tpm/.git" ]]; then
+    git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
+fi
 
 if ! command -v yt-dlp; then
     sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
