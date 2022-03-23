@@ -245,7 +245,6 @@ source "$HOME/.packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
 # {{{ FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
-
 [ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
 
 # Colors
@@ -266,4 +265,29 @@ if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
     }
 fi 
 
+# }}}
+
+# {{{ COMMA ALIASES
+unset -f ,
+, () {
+    local tmp="/tmp/.dirs_stack_tmp_$$"
+    pushd $1 || return
+    dirs -v | awk '{print $2}' >> ~/.dirs_stack
+    cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
+    cat "$tmp" > ~/.dirs_stack_uniq
+    command rm "$tmp"
+}
+complete -o dirnames ,
+
+unset -f ,,
+,, () {
+    local pushd_stack_index
+    pushd_stack_index=$(dirs -v | fzf | awk '{print $1}')
+    pushd +"$pushd_stack_index" || return
+}
+
+unset -f ,,,
+,,, () {
+    , "$(fzf < ~/.dirs_stack_uniq | sed "s|^~|${HOME}|")" || return
+}
 # }}}
