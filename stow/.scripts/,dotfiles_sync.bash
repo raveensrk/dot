@@ -20,7 +20,7 @@ git status | tee /tmp/dotfiles_sync.bash.tmp
 grep "nothing to commit, working tree clean" /tmp/dotfiles_sync.bash.tmp
 
 if [[ $? == 0 ]]; then
-    echo -e "${GREEN} Nothing to commit ${NC} ✅"
+    echo "Nothing to commit"
 else
     git diff
     git status
@@ -46,6 +46,6 @@ fi
 echo -e "${YELLOW} Preparing to pull, merge and push... ${NC} "
 git pull
 git push
-echo -e ${GREEN} Done ${NC} ✅ 
+echo -e "${GREEN}Done${NC}✅" 
 
 popd
