@@ -7,3 +7,5 @@ stow_vim_plugins/.tmux/plugins/**
 stow_vim_plugins/.packages/*
 stow_vim_plugins/.fzf
 stow_vim_plugins.tar.gz
+.DS_Store
+**/.DS_Store

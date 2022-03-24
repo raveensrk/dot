@@ -1,0 +1,7 @@
+category,user@hostname
+1,Work machine with internet (WSL)
+2,Work machine with upload access only
+3,Personal machine with internet - ubuntu (WSL)
+4,Personal machine with internet - fedora
+5,Personal machine - Macbook Air
+5,raveenkumar@Raveens-MacBook-Air.local

@@ -44,21 +44,6 @@ fi
 alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync=",sync_all_repos.bash $MY_REPOS"
-
-,reinstall () {
-    pushd "$MY_REPOS"
-    local f
-    for f in $(find -name install.bash); do
-        pushd $(dirname $f)
-        chmod +x ./install.bash
-        ./install.bash
-        popd
-    done
-    popd
-}
-export -f ,reinstall
-
-
 alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
 alias csh_aliases="vim ~/.aliases"
 alias dam="sudo !!"
@@ -260,8 +245,49 @@ source "$HOME/.packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
 # {{{ FZF
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
-
 [ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
 
 # Colors
 LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" # TODO not working.
+
+# MACOS Specific {{{
+if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # https://github.com/platformio/platformio-atom-ide-terminal/issues/196
+    update_terminal_cwd() {
+        # Identify the directory using a "file:" scheme URL,
+        # including the host name to disambiguate local vs.
+        # remote connections. Percent-escape spaces.
+        local SEARCH=' '
+        local REPLACE='%20'
+        local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
+        printf '\e]7;%s\a' "$PWD_URL"
+    }
+fi 
+
+# }}}
+
+# {{{ COMMA ALIASES
+unset -f ,
+, () {
+    local tmp="/tmp/.dirs_stack_tmp_$$"
+    pushd $1 || return
+    dirs -v | awk '{print $2}' >> ~/.dirs_stack
+    cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
+    cat "$tmp" > ~/.dirs_stack_uniq
+    command rm "$tmp"
+}
+complete -o dirnames ,
+
+unset -f ,,
+,, () {
+    local pushd_stack_index
+    pushd_stack_index=$(dirs -v | fzf | awk '{print $1}')
+    pushd +"$pushd_stack_index" || return
+}
+
+unset -f ,,,
+,,, () {
+    , "$(fzf < ~/.dirs_stack_uniq | sed "s|^~|${HOME}|")" || return
+}
+# }}}

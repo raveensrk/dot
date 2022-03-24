@@ -116,11 +116,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f "$HOME/.fzf.bash" ] && . "$HOME/.fzf.bash"
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
 
-# fnm
-export PATH=/home/raveen/.fnm:$PATH
-eval "`fnm env`"
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
