@@ -149,23 +149,6 @@ updatedb_home="$updatedb_path/home.db"
     updatedb -l 0 -o "$updatedb_home" -U ~/
 }
 
-unset -f ,find_file
-,find_file () {
-    local path
-    path="$1"
-    if [ "$path" = "" ]; then
-        path="$HOME/repos"
-    fi
-
-    local file=$(fd --hidden --exclude '.git' --exclude '.hg' . "$path" | fzf)
-    if [ "$file" = "" ]; then
-        echo -e "${RED}❌ERROR! Empty string${NC}"
-    else
-        echo -e ${BLUE} The following command is executed... ${NC}
-        echo -e ${YELLOW} 'vim' "$file" ${NC} 
-        vim "$file"
-    fi
-}
 
 sd () {
     local dir=$(locate -d "$updatedb_home" .* | fzf)
