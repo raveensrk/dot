@@ -1,5 +1,12 @@
 #!/bin/bash
 
+help () {
+    echo "
+    -i input directory path for tag generation
+    --help|-h for help
+    "
+}
+
 while [ "$1" ]; do
     case "$1" in
         -i)
@@ -21,5 +28,5 @@ done
 [ "$dir" = "" ] && echo -e "${RED}-i option is mandatory...${NC}" && exit 2
 
 pushd "$dir" || exit 2
-ctags --verbose -R ./*
+ctags --exclude="stow_vim_plugins" -R ./*
 popd || exit 2
