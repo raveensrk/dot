@@ -77,6 +77,10 @@ esac
 [ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
 [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
 
+stow () {
+    command stow --ignore=.DS_Store $@
+}
+
 pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding || exit 2
@@ -85,11 +89,17 @@ pushd packages
 vim -c "source install.vim | q"
 popd
 
-if [ "$machine" = "1" ] || [ "$machine" = "3" ]; then
-    stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
-fi
+case "$machine" in
+    1|3)
+        stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
+        ;;
+    5)
+        stow -R stow_macos -t "$HOME" --no-folding || exit 2
+        ;;
+esac
 
 [ -d stow_vim_plugins ] && stow -R stow_vim_plugins -t "$HOME" || exit 2
+
 popd
 
 if [[ ! -d "$HOME/.fzf/.git" ]]; then

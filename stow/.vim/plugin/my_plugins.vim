@@ -60,6 +60,8 @@ Plug 'https://github.com/mechatroner/rainbow_csv'
 
 call plug#end()
 
+let g:session_autoload = 'no'
+
 set updatetime=100 " For gitgutter
 
 nmap <F8> :TagbarToggle<CR>

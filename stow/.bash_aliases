@@ -63,19 +63,6 @@ alias e="emacsclient -nw -a emacs -nw"
 alias einit="e ~/.emacs"
 alias em="emacs --daemon"
 alias emk="emacsclient -e \"(server-force-delete)\""
-export VISUAL="vim"
-export EDITOR="vim"
-v () {
-     if [[ $# -ge 1 ]]; then
-         vim --servername VIM --remote $@
-     else
-         vim --servername VIM --remote-send ":History<CR>"
-     fi
-}
-alias bashal="v ~/.bash_aliases && source ~/.bash_aliases"
-alias csh_aliases="v ~/.aliases"
-alias vimrc="v ~/.vimrc"
-
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
@@ -184,6 +171,29 @@ touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
+# }}}
+# {{{ VIM STUFF
+export VISUAL="vim"
+export EDITOR="vim"
+v () {
+    local servername
+    servername=$(vim --serverlist)
+
+    if [ "$servername" = "" ]; then
+        vim --servername VIM
+        sleep 1
+    fi
+
+    if [[ $# -ge 1 ]]; then
+        vim --servername VIM --remote $@
+    else
+        vim --servername VIM --remote-send ":History<CR>"
+    fi
+
+}
+alias bashal="v ~/.bash_aliases && source ~/.bash_aliases"
+alias csh_aliases="v ~/.aliases"
+alias vimrc="v ~/.vimrc"
 # }}}
 # RANGER {{{
 # shellcheck shell=sh
