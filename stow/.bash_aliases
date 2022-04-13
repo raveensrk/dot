@@ -18,8 +18,6 @@ export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
-export VISUAL="vim"
-export EDITOR="vim"
 
 # }}}
 # {{{ BASH SHOPTS
@@ -44,8 +42,6 @@ fi
 alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync=",sync_all_repos.bash $MY_REPOS"
-alias bashal="vim ~/.bash_aliases && source ~/.bash_aliases"
-alias csh_aliases="vim ~/.aliases"
 alias dam="sudo !!"
 alias date1="date +%Y%m%d%H%M%S"
 alias date2="date +%Y-%m-%d_%H:%M:%S"
@@ -67,14 +63,19 @@ alias e="emacsclient -nw -a emacs -nw"
 alias einit="e ~/.emacs"
 alias em="emacs --daemon"
 alias emk="emacsclient -e \"(server-force-delete)\""
+export VISUAL="vim"
+export EDITOR="vim"
 v () {
      if [[ $# -ge 1 ]]; then
-         vim $@
+         vim --servername VIM --remote $@
      else
-         vim -c "History"
+         vim --servername VIM --remote-send ":History<CR>"
      fi
- }
-alias vimrc="vim ~/.vimrc"
+}
+alias bashal="v ~/.bash_aliases && source ~/.bash_aliases"
+alias csh_aliases="v ~/.aliases"
+alias vimrc="v ~/.vimrc"
+
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
@@ -82,7 +83,7 @@ alias rp="realpath"
 alias d='pushd'
 alias dv='dirs -v'
 
-ff () {
+,ff () {
     find -name "*$1*"
 }
 
