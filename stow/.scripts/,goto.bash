@@ -55,6 +55,7 @@ while read -r -u5 item; do
 
     servername=$(vim --serverlist | head -1)
 
+    set -x
     if [ "$servername" = "" ]; then
         vim --servername VIM --remote "$file_absolute_path"
         vim --servername VIM --remote-send ":$line<CR>"
@@ -62,6 +63,7 @@ while read -r -u5 item; do
         vim --servername $servername --remote "$file_absolute_path"
         vim --servername $servername --remote-send ":$line<CR>"
     fi 
+    set +x
 
     unset servername
 
