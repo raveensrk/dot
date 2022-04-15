@@ -51,7 +51,7 @@ while read -r -u5 item; do
     file_absolute_path="$file"
     # echo -e "${YELLOW}Selection: \"$item\"${NC}" 
     # echo -e "${YELLOW}Command: vim -c \":$line\" \"$file_absolute_path\"${NC}" 
-    vim -c ":$line" "$file_absolute_path"
+    vim --remote -c ":$line" "$file_absolute_path"
 done 5< "$selection"
 
 rm "$selection"
