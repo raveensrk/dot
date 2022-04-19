@@ -7,7 +7,7 @@
  '(custom-enabled-themes '(wombat))
  '(org-startup-folded t)
  '(package-selected-packages
-   '(evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -59,6 +59,11 @@
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") the)
+
+
+
+
+
 ;; (package-initialize)
 ;; (package-refresh-contents)
 
@@ -180,7 +185,9 @@ same directory as the org-buffer and insert a link to this file."
       '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "DELEGATED" "SKIPPED")))
 
 ;; Git gutter mode
-(require 'git-gutter)
+(when (require 'git-gutter nil 'noerror)
+  (require 'git-gutter)
+  )
 
 ;; If you enable global minor mode
 (global-git-gutter-mode t)

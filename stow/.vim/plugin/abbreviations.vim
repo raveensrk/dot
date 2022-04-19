@@ -22,7 +22,7 @@ ab pf printf
 ab ec echo
 ab if, if [ "$choice" = "Y" ]; then<CR>elif [ ]; then<CR>else<CR>fi
 iab ask, echo -e "${BLUE}Do you want to ? [Y/n]:${NC}"<CR>read -r choice<CR>unset choice<CR>
-iab while, while [ "$1" ]; do<CR>case "$1" in<CR>*)<CR>echo -e "${RED}Wrong option!${NC}"<CR>exit 2<CR>;;<CR>--help\|-h)<CR>help<CR>exit 0<CR>;;<CR>esac<CR>done
+iab while, while [ "$1" ]; do<CR>case "$1" in<CR>--help\|-h)<CR>help<CR>exit 0<CR>;;<CR>*)<CR>echo -e "${RED}Wrong option!${NC}"<CR>exit 2<CR>;;<CR>esac<CR>shift<CR>done
 " }}}
 " Emojis {{{
 ab efail ❌

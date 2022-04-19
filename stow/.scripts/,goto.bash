@@ -42,6 +42,7 @@ else
     rg -L -n --no-heading -. . --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e > "$selection"
 fi
 
+
 while read -r -u5 item; do
     # echo "$item"
     file=$(echo "$item" | awk -F ':' '{print $1}')
@@ -51,7 +52,21 @@ while read -r -u5 item; do
     file_absolute_path="$file"
     # echo -e "${YELLOW}Selection: \"$item\"${NC}" 
     # echo -e "${YELLOW}Command: vim -c \":$line\" \"$file_absolute_path\"${NC}" 
-    vim -c ":$line" "$file_absolute_path"
+
+    servername=$(vim --serverlist | head -1)
+
+    set -x
+    if [ "$servername" = "" ]; then
+        vim --servername VIM --remote "$file_absolute_path"
+        vim --servername VIM --remote-send ":$line<CR>"
+    else
+        vim --servername $servername --remote "$file_absolute_path"
+        vim --servername $servername --remote-send ":$line<CR>"
+    fi 
+    set +x
+
+    unset servername
+
 done 5< "$selection"
 
 rm "$selection"
