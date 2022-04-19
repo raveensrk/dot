@@ -115,6 +115,8 @@ esac
 
 popd
 
+vim -c ":PlugInstall | PlugClean"
+
 if [[ ! -d "$HOME/.fzf/.git" ]]; then
     git clone --depth 1 "https://github.com/junegunn/fzf.git" \
         "$csd/stow_vim_plugins/.fzf"
