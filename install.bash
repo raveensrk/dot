@@ -61,6 +61,19 @@ case $machine in
         fi
         unset choice
         ;;
+    6)
+        sudo apt-get update
+        # sudo apt-get upgrade
+        sudo apt-get autoremove
+        sudo apt-get autoclean
+        echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
+        read -r choice
+        if [ "$choice" = "Y" ]; then
+            sudo apt-get install -y $(xargs < packages_list_ubuntu_20.txt)
+            sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
+        fi
+        unset choice
+        ;;
     2)
         echo -e "${YELLOW}Skipping internet based install..${NC}"
         ;;
@@ -101,6 +114,8 @@ esac
 [ -d stow_vim_plugins ] && stow -R stow_vim_plugins -t "$HOME" || exit 2
 
 popd
+
+vim -c ":PlugInstall | PlugClean"
 
 if [[ ! -d "$HOME/.fzf/.git" ]]; then
     git clone --depth 1 "https://github.com/junegunn/fzf.git" \

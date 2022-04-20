@@ -42,6 +42,7 @@ Plug 'https://github.com/xolox/vim-misc'
 Plug 'https://github.com/xolox/vim-session'
 
 Plug 'https://github.com/tpope/vim-speeddating'
+Plug 'https://github.com/yoshi1123/vim-linebox'
 
 " Plug 'nmaiti/fzf_cscope.vim' " This doesnot work
 " @TODO try Rg or Ag with fzf
@@ -57,8 +58,35 @@ Plug 'https://github.com/tpope/vim-speeddating'
 " 'g:which_key_map')
 
 Plug 'https://github.com/mechatroner/rainbow_csv'
+Plug 'https://github.com/yegappan/taglist'
+" Plug 'https://github.com/fholgado/minibufexpl.vim'
+Plug 'https://github.com/ervandew/supertab'
 
 call plug#end()
+
+" MBE
+" MiniBufExpl Colors
+" hi MBENormal               guifg=#808080 guibg=fg
+" hi MBEChanged              guifg=#CD5907 guibg=fg
+" hi MBEVisibleNormal        guifg=#5DC2D6 guibg=fg
+" hi MBEVisibleChanged       guifg=#F1266F guibg=fg
+" hi MBEVisibleActiveNormal  guifg=#A6DB29 guibg=fg
+" hi MBEVisibleActiveChanged guifg=#F1266F guibg=fg
+
+
+" Linebox
+
+let g:linebox_default_maps = 0
+let g:linebox_marks = ["'a", "'b"]
+let g:linebox_animation = 1
+
+nnoremap <leader><leader>L :call linebox#lines#line(g:linebox_marks[0], g:linebox_marks[1])<cr>
+nnoremap <leader><leader>b :call linebox#boxes#box()<cr>
+vnoremap <leader><leader>b :call linebox#boxes#box()<cr>
+nnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
+vnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
+
+
 
 let g:session_autoload = 'no'
 
