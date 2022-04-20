@@ -115,7 +115,7 @@ esac
 
 popd
 
-vim -c ":PlugInstall | PlugClean"
+vim -c "PlugInstall | PlugClean | qa"
 
 if [[ ! -d "$HOME/.fzf/.git" ]]; then
     git clone --depth 1 "https://github.com/junegunn/fzf.git" \
