@@ -175,21 +175,28 @@ done
 # {{{ VIM STUFF
 export VISUAL="vim"
 export EDITOR="vim"
+alias vs="command vim --servername VIM"
 v () {
     local servername
+    local nservers
+
+    nservers=$(vim --serverlist | wc -l)
+    if [ "$nservers" -gt 1 ]; then
+        echo -e "${RED}More than one vim server found... Open manually...${NC}"
+        command vim --serverlist
+        echo -e "${YELLOW}vim --servername \$servername --remote filename${NC}"
+        return
+    elif [ "$nservers" -eq 0 ]; then
+        echo -e "${RED}No vim servers found...${NC}"
+        return
+    fi 
+
     servername=$(vim --serverlist)
-
-    if [ "$servername" = "" ]; then
-        vim --servername VIM
-        sleep 1
-    fi
-
     if [[ $# -ge 1 ]]; then
-        vim --servername VIM --remote $@
+        command vim --servername $servername --remote $@
     else
-        vim --servername VIM --remote-send ":History<CR>"
+        command vim --servername $servername --remote-send ":History<CR>"
     fi
-
 }
 alias bashal="v ~/.bash_aliases && source ~/.bash_aliases"
 alias csh_aliases="v ~/.aliases"
