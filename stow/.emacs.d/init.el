@@ -7,7 +7,7 @@
  '(custom-enabled-themes '(wombat))
  '(org-startup-folded t)
  '(package-selected-packages
-   '(## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4))
 (custom-set-faces
@@ -59,10 +59,6 @@
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") the)
-
-
-
-
 
 ;; (package-initialize)
 ;; (package-refresh-contents)
@@ -187,35 +183,30 @@ same directory as the org-buffer and insert a link to this file."
 ;; Git gutter mode
 (when (require 'git-gutter nil 'noerror)
   (require 'git-gutter)
+  ;; If you enable global minor mode
+  (global-git-gutter-mode the)
+  ;; If you would like to use git-gutter.el and linum-mode
+  (git-gutter:linum-setup)
+  ;; If you enable git-gutter-mode for some modes
+  (add-hook 'ruby-mode-hook 'git-gutter-mode)
+  (global-set-key (kbd "C-x C-g") 'git-gutter)
+  (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+
+  ;; Jump to next/previous hunk
+  (global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
+  (global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+
+  ;; Stage current hunk
+  (global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
+
+  ;; Revert current hunk
+  (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
+
+  ;; Mark current hunk
+  (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
   )
 
-;; If you enable global minor mode
-(global-git-gutter-mode t)
-
-;; If you would like to use git-gutter.el and linum-mode
-(git-gutter:linum-setup)
-
-;; If you enable git-gutter-mode for some modes
-(add-hook 'ruby-mode-hook 'git-gutter-mode)
-
-(global-set-key (kbd "C-x C-g") 'git-gutter)
-(global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
-
-;; Jump to next/previous hunk
-(global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
-(global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
-
-;; Stage current hunk
-(global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
-
-;; Revert current hunk
-(global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
-
-;; Mark current hunk
-(global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
-
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
-
 
 (defun dired-dotfiles-toggle ()
   "Show/hide dot-files"
