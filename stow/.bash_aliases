@@ -293,3 +293,5 @@ unset -f ,,,
     , "$(fzf < ~/.dirs_stack_uniq | sed "s|^~|${HOME}|")" || return
 }
 # }}}
+
+eval $(lesspipe)
