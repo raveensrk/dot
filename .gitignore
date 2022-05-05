@@ -10,3 +10,10 @@ stow_vim_plugins.tar.gz
 .DS_Store
 **/.DS_Store
 stow/.emacs~
+stow/.emacs.d/recentf
+stow/.emacs.d/recentf~
+stow/.emacs.d/history
+stow/.emacs.d/auto-save-list/*
+*.el~
+stow/.emacs.d/transient/history.el
+stow/.emacs.d/elpa

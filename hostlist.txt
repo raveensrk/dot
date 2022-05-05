@@ -4,6 +4,8 @@ category,user@hostname
 3,Personal machine with internet - ubuntu (WSL)
 4,Personal machine with internet - fedora
 5,Personal machine - Macbook Air
+6,Same as 1 with ubuntu 20
 5,raveenkumar@Raveens-MacBook-Air.local
 1,raveen@UhIN-LT-142
 2,raveen@sc07lo04
+6,raveen@work-ubuntu-20

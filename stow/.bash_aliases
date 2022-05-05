@@ -43,9 +43,9 @@ alias ..="cd .."
 alias ,top='top -d 0.125'
 alias ,sync=",sync_all_repos.bash $MY_REPOS"
 alias dam="sudo !!"
-alias date1="date +%Y%m%d%H%M%S"
-alias date2="date +%Y-%m-%d_%H:%M:%S"
-alias date3="date +%d%b%y"
+alias ,date_sshort="date +%Y%m%d%H%M%S"
+alias ,date='date -I'
+alias ,dates='date -Iseconds | sed "s/:/-/g"'
 alias g='grep --color'
 alias gr='grep --color -r'
 alias h="history"
@@ -175,21 +175,28 @@ done
 # {{{ VIM STUFF
 export VISUAL="vim"
 export EDITOR="vim"
+alias vs="command vim --servername VIM"
 v () {
     local servername
+    local nservers
+
+    nservers=$(vim --serverlist | wc -l)
+    if [ "$nservers" -gt 1 ]; then
+        echo -e "${RED}More than one vim server found... Open manually...${NC}"
+        command vim --serverlist
+        echo -e "${YELLOW}vim --servername \$servername --remote filename${NC}"
+        return
+    elif [ "$nservers" -eq 0 ]; then
+        echo -e "${RED}No vim servers found...${NC}"
+        return
+    fi 
+
     servername=$(vim --serverlist)
-
-    if [ "$servername" = "" ]; then
-        vim --servername VIM
-        sleep 1
-    fi
-
     if [[ $# -ge 1 ]]; then
-        vim --servername VIM --remote $@
+        command vim --servername $servername --remote $@
     else
-        vim --servername VIM --remote-send ":History<CR>"
+        command vim --servername $servername --remote-send ":History<CR>"
     fi
-
 }
 alias bashal="v ~/.bash_aliases && source ~/.bash_aliases"
 alias csh_aliases="v ~/.aliases"
@@ -212,7 +219,8 @@ ranger_cd() {
     temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"
     ranger --choosedir="$temp_file" -- "${@:-$PWD}"
     if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
-        cd -- "$chosen_dir"
+        # cd -- "$chosen_dir"
+        , "$chosen_dir"
     fi
     rm -f -- "$temp_file"
 }
@@ -285,3 +293,5 @@ unset -f ,,,
     , "$(fzf < ~/.dirs_stack_uniq | sed "s|^~|${HOME}|")" || return
 }
 # }}}
+
+eval $(lesspipe)

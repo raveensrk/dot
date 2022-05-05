@@ -14,8 +14,11 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles))
- '(word-wrap t))
+   '(flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+ '(word-wrap t)
+ '(show-paren-mode t)
+ '(tab-width 4))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -66,10 +69,6 @@
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") the)
-
-
-
-
 
 ;; (package-initialize)
 ;; (package-refresh-contents)
@@ -141,7 +140,6 @@
   ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
   )
 
-
 ;; https://stackoverflow.com/questions/6515009/how-to-configure-emacs-to-have-it-complete-the-path-automatically-like-vim#6556788
 
 (when (require 'multiple-cursors nil 'noerror)
@@ -150,13 +148,11 @@
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
-
 ;; set default tab char's display width to 4 spaces
 (setq-default tab-width 4) ; emacs 23.1 to 26 default to 8
 
 ;; set current buffer's tab char's display width to 4 spaces
 (setq tab-width 4)
-
 
 (progn
   ;; make indent commands use space only (never tab character)
@@ -164,7 +160,6 @@
   ;; emacs 23.1 to 26, default to t
   ;; if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
   )
-
 
 ;; Modes
 (add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
@@ -194,35 +189,30 @@ same directory as the org-buffer and insert a link to this file."
 ;; Git gutter mode
 (when (require 'git-gutter nil 'noerror)
   (require 'git-gutter)
+  ;; If you enable global minor mode
+  (global-git-gutter-mode the)
+  ;; If you would like to use git-gutter.el and linum-mode
+  (git-gutter:linum-setup)
+  ;; If you enable git-gutter-mode for some modes
+  (add-hook 'ruby-mode-hook 'git-gutter-mode)
+  (global-set-key (kbd "C-x C-g") 'git-gutter)
+  (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+
+  ;; Jump to next/previous hunk
+  (global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
+  (global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+
+  ;; Stage current hunk
+  (global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
+
+  ;; Revert current hunk
+  (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
+
+  ;; Mark current hunk
+  (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
   )
 
-;; If you enable global minor mode
-(global-git-gutter-mode t)
-
-;; If you would like to use git-gutter.el and linum-mode
-(git-gutter:linum-setup)
-
-;; If you enable git-gutter-mode for some modes
-(add-hook 'ruby-mode-hook 'git-gutter-mode)
-
-(global-set-key (kbd "C-x C-g") 'git-gutter)
-(global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
-
-;; Jump to next/previous hunk
-(global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
-(global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
-
-;; Stage current hunk
-(global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
-
-;; Revert current hunk
-(global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
-
-;; Mark current hunk
-(global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
-
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
-
 
 (defun dired-dotfiles-toggle ()
   "Show/hide dot-files"
@@ -241,14 +231,12 @@ same directory as the org-buffer and insert a link to this file."
 ;; (unless (package-installed-p 'evil)
 ;;   (package-install 'evil))
 
-;; (when (package-installed-p 'evil)
-;;   (require 'evil)
-;;   (evil-mode 1)
-;;   (evil-goggles-mode 1)
-;;   (evil-vimish-fold-mode 1)
-;;   )
-;; 
-
+(when (package-installed-p 'evil)
+  (require 'evil)
+  (evil-mode 1)
+  (evil-goggles-mode 1)
+  (evil-vimish-fold-mode 1)
+  )
 
 ;; This will enable spell checker
 ;; https://www.tenderisthebyte.com/blog/2019/06/09/spell-checking-emacs/
