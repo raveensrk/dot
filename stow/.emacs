@@ -3,19 +3,25 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(blink-cursor-mode t)
- '(custom-enabled-themes '(wombat))
- '(org-startup-folded t)
+ '(custom-enabled-themes '(tango-dark))
+ '(custom-safe-themes
+   '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+ '(org-agenda-files "~/.agenda_files")
+ '(org-export-backends '(ascii html icalendar latex md odt))
+ '(org-habit-show-all-today t)
+ '(org-habit-show-done-always-green nil)
+ '(org-log-into-drawer t)
+ '(org-modules
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
- '(show-paren-mode t)
- '(tab-width 4))
+   '(flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles))
+ '(word-wrap t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 203 :width normal :foundry "ADBO" :family "Source Code Pro")))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 200 :width normal :foundry "nil" :family "monospace")))))
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
@@ -39,6 +45,7 @@
 (setq org-src-tab-acts-natively t)
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
+(setq org-agenda-files '("~/Journals/daily_journal"))
 (global-set-key (kbd "C-c c") #'org-capture)
 (org-babel-do-load-languages 'org-babel-load-languages 
                              '(
@@ -234,9 +241,25 @@ same directory as the org-buffer and insert a link to this file."
 ;; (unless (package-installed-p 'evil)
 ;;   (package-install 'evil))
 
-(when (package-installed-p 'evil)
-  (require 'evil)
-  (evil-mode 1)
-  (evil-goggles-mode 1)
-  (evil-vimish-fold-mode 1)
-  )
+;; (when (package-installed-p 'evil)
+;;   (require 'evil)
+;;   (evil-mode 1)
+;;   (evil-goggles-mode 1)
+;;   (evil-vimish-fold-mode 1)
+;;   )
+;; 
+
+
+;; This will enable spell checker
+;; https://www.tenderisthebyte.com/blog/2019/06/09/spell-checking-emacs/
+
+(dolist (hook '(text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+
+(eval-after-load "flyspell"
+  '(progn
+     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+     (define-key flyspell-mouse-map [mouse-3] #'undefined)))
+
+(dolist (hook '(org-mode-hook))
+  (add-hook hook (lambda () (visual-line-mode 1))))
