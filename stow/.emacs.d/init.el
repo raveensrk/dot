@@ -3,19 +3,28 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(blink-cursor-mode t)
- '(custom-enabled-themes '(wombat))
- '(org-startup-folded t)
+ '(custom-enabled-themes '(tango-dark))
+ '(custom-safe-themes
+   '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+ '(org-agenda-files "~/.agenda_files")
+ '(org-export-backends '(ascii html icalendar latex md odt))
+ '(org-habit-show-all-today t)
+ '(org-habit-show-done-always-green nil)
+ '(org-log-into-drawer t)
+ '(org-modules
+   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+ '(word-wrap t)
  '(show-paren-mode t)
  '(tab-width 4))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 203 :width normal :foundry "ADBO" :family "Source Code Pro")))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 200 :width normal :foundry "nil" :family "monospace")))))
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
@@ -39,6 +48,7 @@
 (setq org-src-tab-acts-natively t)
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
+(setq org-agenda-files '("~/Journals/daily_journal"))
 (global-set-key (kbd "C-c c") #'org-capture)
 (org-babel-do-load-languages 'org-babel-load-languages 
                              '(
@@ -130,7 +140,6 @@
   ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
   )
 
-
 ;; https://stackoverflow.com/questions/6515009/how-to-configure-emacs-to-have-it-complete-the-path-automatically-like-vim#6556788
 
 (when (require 'multiple-cursors nil 'noerror)
@@ -139,13 +148,11 @@
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
-
 ;; set default tab char's display width to 4 spaces
 (setq-default tab-width 4) ; emacs 23.1 to 26 default to 8
 
 ;; set current buffer's tab char's display width to 4 spaces
 (setq tab-width 4)
-
 
 (progn
   ;; make indent commands use space only (never tab character)
@@ -153,7 +160,6 @@
   ;; emacs 23.1 to 26, default to t
   ;; if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
   )
-
 
 ;; Modes
 (add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
@@ -232,7 +238,6 @@ same directory as the org-buffer and insert a link to this file."
   (evil-vimish-fold-mode 1)
   )
 
-
 (cond
  ((find-font (font-spec :name "Cascadia Code"))
   (set-frame-font "Cascadia Code-12"))
@@ -242,3 +247,18 @@ same directory as the org-buffer and insert a link to this file."
   (set-frame-font "DejaVu Sans Mono-12"))
  ((find-font (font-spec :name "Inconsolata"))
   (set-frame-font "Inconsolata-12")))
+
+
+;; This will enable spell checker
+;; https://www.tenderisthebyte.com/blog/2019/06/09/spell-checking-emacs/
+
+(dolist (hook '(text-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+
+(eval-after-load "flyspell"
+  '(progn
+     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+     (define-key flyspell-mouse-map [mouse-3] #'undefined)))
+
+(dolist (hook '(org-mode-hook))
+  (add-hook hook (lambda () (visual-line-mode 1))))
