@@ -62,7 +62,6 @@
 ;; Interface
 (global-set-key (kbd "ESC m") #'menu-bar-open)
 (put 'narrow-to-region 'disabled nil)
-(recentf-mode 1)
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -212,6 +211,7 @@ same directory as the org-buffer and insert a link to this file."
   (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
   )
 
+(recentf-mode 1)
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 (defun dired-dotfiles-toggle ()
