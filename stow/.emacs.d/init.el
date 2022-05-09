@@ -28,7 +28,6 @@
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
-(recentf-mode)
 (setq dired-kill-when-opening-new-dired-buffer t)
 
 ;; Better copy and cut
@@ -211,7 +210,7 @@ same directory as the org-buffer and insert a link to this file."
   (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
   )
 
-(recentf-mode 1)
+;; (recentf-mode 1)
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 (defun dired-dotfiles-toggle ()
