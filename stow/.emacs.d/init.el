@@ -231,3 +231,14 @@ same directory as the org-buffer and insert a link to this file."
   (evil-goggles-mode 1)
   (evil-vimish-fold-mode 1)
   )
+
+
+(cond
+ ((find-font (font-spec :name "Cascadia Code"))
+  (set-frame-font "Cascadia Code-12"))
+ ((find-font (font-spec :name "Menlo"))
+  (set-frame-font "Menlo-12"))
+ ((find-font (font-spec :name "DejaVu Sans Mono"))
+  (set-frame-font "DejaVu Sans Mono-12"))
+ ((find-font (font-spec :name "Inconsolata"))
+  (set-frame-font "Inconsolata-12")))

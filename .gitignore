@@ -16,3 +16,4 @@ stow/.emacs.d/auto-save-list/.saves-17384-UHIN-LT-142~
 *.el~
 stow/.emacs.d/transient/history.el
 stow/.emacs.d/elpa
+stow/.emacs.d/eshell/history
