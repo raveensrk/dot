@@ -14,10 +14,10 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
- '(word-wrap t)
+   '(load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
- '(tab-width 4))
+ '(tab-width 4)
+ '(word-wrap t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -264,3 +264,6 @@ same directory as the org-buffer and insert a link to this file."
 
 (dolist (hook '(org-mode-hook))
   (add-hook hook (lambda () (visual-line-mode 1))))
+
+
+(load-dir "~/.emacs.d/my_elisp")
