@@ -190,7 +190,7 @@ same directory as the org-buffer and insert a link to this file."
 (when (require 'git-gutter nil 'noerror)
   (require 'git-gutter)
   ;; If you enable global minor mode
-  (global-git-gutter-mode the)
+  (global-git-gutter-mode t)
   ;; If you would like to use git-gutter.el and linum-mode
   (git-gutter:linum-setup)
   ;; If you enable git-gutter-mode for some modes
@@ -237,6 +237,8 @@ same directory as the org-buffer and insert a link to this file."
   (evil-goggles-mode 1)
   (evil-vimish-fold-mode 1)
   )
+
+;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
 
 (cond
  ((find-font (font-spec :name "Cascadia Code"))
