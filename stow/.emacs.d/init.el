@@ -210,8 +210,6 @@ same directory as the org-buffer and insert a link to this file."
   (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
   )
 
-;; (recentf-mode 1)
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 (defun dired-dotfiles-toggle ()
   "Show/hide dot-files"
@@ -265,4 +263,7 @@ same directory as the org-buffer and insert a link to this file."
   (add-hook hook (lambda () (visual-line-mode 1))))
 
 
-(load-dir "~/.emacs.d/my_elisp")
+(recentf-mode 1)
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+(evil-mode 1)
+(global-company-mode 1)  
