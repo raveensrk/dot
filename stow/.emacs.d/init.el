@@ -14,10 +14,10 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
- '(word-wrap t)
+   '(load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
- '(tab-width 4))
+ '(tab-width 4)
+ '(word-wrap t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -28,7 +28,6 @@
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
-(recentf-mode)
 (setq dired-kill-when-opening-new-dired-buffer t)
 
 ;; Better copy and cut
@@ -211,7 +210,7 @@ same directory as the org-buffer and insert a link to this file."
   (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
   )
 
-(recentf-mode 1)
+;; (recentf-mode 1)
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 (defun dired-dotfiles-toggle ()
