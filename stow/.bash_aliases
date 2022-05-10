@@ -294,4 +294,4 @@ unset -f ,,,
 }
 # }}}
 
-eval $(lesspipe)
+# eval $(lesspipe)

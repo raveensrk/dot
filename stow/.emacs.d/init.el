@@ -6,6 +6,7 @@
  '(custom-enabled-themes '(tango-dark))
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+ '(default-input-method "rfc1345")
  '(org-agenda-files "~/.agenda_files")
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-habit-show-all-today t)
@@ -13,18 +14,19 @@
  '(org-log-into-drawer t)
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
+ '(org-support-shift-select t)
  '(package-selected-packages
-   '(flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
- '(word-wrap t)
+   '(evil-leader flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
- '(tab-width 4))
+ '(tab-width 4)
+ '(word-wrap t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 200 :width normal :foundry "nil" :family "monospace")))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 200 :width normal :foundry "nil" :family "Americal typewriter regular")))))
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
@@ -190,7 +192,7 @@ same directory as the org-buffer and insert a link to this file."
 (when (require 'git-gutter nil 'noerror)
   (require 'git-gutter)
   ;; If you enable global minor mode
-  (global-git-gutter-mode the)
+  (global-git-gutter-mode t)
   ;; If you would like to use git-gutter.el and linum-mode
   (git-gutter:linum-setup)
   ;; If you enable git-gutter-mode for some modes
@@ -238,6 +240,11 @@ same directory as the org-buffer and insert a link to this file."
   (evil-vimish-fold-mode 1)
   )
 
+(when (package-installed-p 'company)
+  (require 'company)
+  (global-company-mode 1)
+  )
+
 ;; This will enable spell checker
 ;; https://www.tenderisthebyte.com/blog/2019/06/09/spell-checking-emacs/
 
@@ -251,3 +258,6 @@ same directory as the org-buffer and insert a link to this file."
 
 (dolist (hook '(org-mode-hook))
   (add-hook hook (lambda () (visual-line-mode 1))))
+
+
+(winner-mode 1)
