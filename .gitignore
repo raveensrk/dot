@@ -16,4 +16,8 @@ stow/.emacs.d/history
 stow/.emacs.d/auto-save-list/*
 *.el~
 stow/.emacs.d/transient/history.el
-stow/.emacs.d/elpa
+stow/.emacs.d/elpa/*
+stow/.emacs.d/eshell/history
+stow/.emacs.d/\#init.el\#
+stow/.emacs.d/.\#init.el
+stow/.emacs.d/eshell/*

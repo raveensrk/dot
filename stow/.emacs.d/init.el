@@ -16,7 +16,7 @@
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(org-support-shift-select t)
  '(package-selected-packages
-   '(evil-leader flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(load-dir evil-leader flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(word-wrap t))
@@ -30,7 +30,6 @@
 (setq inhibit-startup-screen t)
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
-(recentf-mode)
 (setq dired-kill-when-opening-new-dired-buffer t)
 
 ;; Better copy and cut
@@ -64,7 +63,6 @@
 ;; Interface
 (global-set-key (kbd "ESC m") #'menu-bar-open)
 (put 'narrow-to-region 'disabled nil)
-(recentf-mode 1)
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -214,7 +212,6 @@ same directory as the org-buffer and insert a link to this file."
   (global-set-key (kbd "C-x v SPC") #'git-gutter:mark-hunk)
   )
 
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 (defun dired-dotfiles-toggle ()
   "Show/hide dot-files"
@@ -243,7 +240,19 @@ same directory as the org-buffer and insert a link to this file."
 (when (package-installed-p 'company)
   (require 'company)
   (global-company-mode 1)
-  )
+)
+
+;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
+
+(cond
+ ((find-font (font-spec :name "Cascadia Code"))
+  (set-frame-font "Cascadia Code-12"))
+ ((find-font (font-spec :name "Menlo"))
+  (set-frame-font "Menlo-12"))
+ ((find-font (font-spec :name "DejaVu Sans Mono"))
+  (set-frame-font "DejaVu Sans Mono-12"))
+ ((find-font (font-spec :name "Inconsolata"))
+  (set-frame-font "Inconsolata-12")))
 
 ;; This will enable spell checker
 ;; https://www.tenderisthebyte.com/blog/2019/06/09/spell-checking-emacs/
@@ -261,3 +270,6 @@ same directory as the org-buffer and insert a link to this file."
 
 
 (winner-mode 1)
+(recentf-mode 1)
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+(global-company-mode 1)  
