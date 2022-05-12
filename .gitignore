@@ -21,3 +21,4 @@ stow/.emacs.d/eshell/history
 stow/.emacs.d/\#init.el\#
 stow/.emacs.d/.\#init.el
 stow/.emacs.d/eshell/*
+stow/.emacs.d/data/minimal-session-saver/minimal-session-saver-data.el
