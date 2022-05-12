@@ -111,11 +111,16 @@ case "$machine" in
         ;;
 esac
 
+
 [ -d stow_vim_plugins ] && stow -R stow_vim_plugins -t "$HOME" || exit 2
 
 popd
 
 vim -c "PlugInstall | PlugClean | qa"
+
+if [ "$machine" != "2" ]; then
+    emacs -nw -f package-refresh-contents -f package-install-selected-packages -f package-autoremove --kill
+fi 
 
 if [[ ! -d "$HOME/.fzf/.git" ]]; then
     git clone --depth 1 "https://github.com/junegunn/fzf.git" \
