@@ -108,6 +108,7 @@ if [ "$rebuild" = "Y" ]; then
 
     # TODO add urlview as a manual install
     # TODO install stow manual
+    # TODO Install EMACS instructions
 
 fi # rebuild
 

@@ -25,3 +25,4 @@ urlview
 vim
 yank
 wget
+lesspipe

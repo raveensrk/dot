@@ -29,4 +29,5 @@ done
 
 pushd "$dir" || exit 2
 ctags --exclude="stow_vim_plugins" -R ./*
+find . | etags -
 popd || exit 2
