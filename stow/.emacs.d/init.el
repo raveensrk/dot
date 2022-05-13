@@ -276,3 +276,4 @@ same directory as the org-buffer and insert a link to this file."
 (require 'minimal-session-saver)
 (minimal-session-saver-install-aliases)
 
+(global-set-key (kbd "C-c m") 'menu-bar-open)
