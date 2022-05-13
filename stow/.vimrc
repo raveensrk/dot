@@ -176,3 +176,5 @@ nnoremap <leader>ac :s/ --/\r--/g<CR>
 for f in split(glob('~/.vim/plugin/*.vim'), '\n')
     exe 'source' f
 endfor
+
+" let b:systemverilog_indent_ifdef_off

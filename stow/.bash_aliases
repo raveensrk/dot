@@ -49,7 +49,7 @@ alias ,dates='date -Iseconds | sed "s/:/-/g"'
 alias g='grep --color'
 alias gr='grep --color -r'
 alias h="history"
-alias l="ls -Al"
+alias l="ls -A"
 alias mkdir="mkdir -v"
 alias cp="cp -vi"
 alias mv="mv -vi"
@@ -185,10 +185,11 @@ v () {
         echo -e "${RED}More than one vim server found... Open manually...${NC}"
         command vim --serverlist
         echo -e "${YELLOW}vim --servername \$servername --remote filename${NC}"
-        return
+        return 1
     elif [ "$nservers" -eq 0 ]; then
         echo -e "${RED}No vim servers found...${NC}"
-        return
+        vim $@
+        return 1
     fi 
 
     servername=$(vim --serverlist)

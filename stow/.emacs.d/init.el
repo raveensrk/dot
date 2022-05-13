@@ -17,6 +17,7 @@
    '(vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
+ '(verilog-indent-level 4)
  '(word-wrap t))
 
 (custom-set-faces
@@ -275,3 +276,4 @@ same directory as the org-buffer and insert a link to this file."
 (require 'minimal-session-saver)
 (minimal-session-saver-install-aliases)
 
+(global-set-key (kbd "C-c m") 'menu-bar-open)
