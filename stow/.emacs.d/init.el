@@ -6,7 +6,7 @@
  '(custom-enabled-themes '(tango-dark))
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
- '(org-agenda-files '("./"))
+ '(org-agenda-files '("~/Journals/daily_journal"))
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-habit-show-all-today t)
  '(org-habit-show-done-always-green nil)
@@ -14,7 +14,7 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(word-wrap t))
