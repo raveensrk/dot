@@ -61,6 +61,7 @@ Plug 'https://github.com/mechatroner/rainbow_csv'
 Plug 'https://github.com/yegappan/taglist'
 " Plug 'https://github.com/fholgado/minibufexpl.vim'
 Plug 'https://github.com/ervandew/supertab'
+Plug 'ledger/vim-ledger'
 
 call plug#end()
 

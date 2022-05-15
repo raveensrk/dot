@@ -173,8 +173,10 @@ for f in ~/.my_bash_aliases/*; do
 done
 # }}}
 # {{{ VIM STUFF
-export VISUAL="vim"
-export EDITOR="vim"
+# export VISUAL="vim"
+# export EDITOR="vim"
+export VISUAL="emacs"
+export EDITOR="emacs"
 alias vs="command vim --servername VIM"
 v () {
     local servername

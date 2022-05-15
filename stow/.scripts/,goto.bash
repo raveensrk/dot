@@ -53,19 +53,13 @@ while read -r -u5 item; do
     # echo -e "${YELLOW}Selection: \"$item\"${NC}" 
     # echo -e "${YELLOW}Command: vim -c \":$line\" \"$file_absolute_path\"${NC}" 
 
-    servername=$(vim --serverlist | head -1)
 
-    set -x
-    if [ "$servername" = "" ]; then
-        vim --servername VIM --remote "$file_absolute_path"
-        vim --servername VIM --remote-send ":$line<CR>"
+    if [ "$EDITOR" = "emacs" ]; then
+        emacsclient -c -a emacs "$file_absolute_path" "+$line"
     else
-        vim --servername $servername --remote "$file_absolute_path"
-        vim --servername $servername --remote-send ":$line<CR>"
-    fi 
-    set +x
-
-    unset servername
+        vim "$file_absolute_path" "+$line"
+    fi
+    
 
 done 5< "$selection"
 
