@@ -119,7 +119,7 @@ popd
 vim -c "PlugInstall | PlugClean | qa"
 
 if [ "$machine" != "2" ]; then
-    emacs -nw -f package-refresh-contents -f package-install-selected-packages -f package-autoremove --kill
+    emacs -nw -f my-package-refresh-and-install-selected-packages --kill
 fi 
 
 if [[ ! -d "$HOME/.fzf/.git" ]]; then
