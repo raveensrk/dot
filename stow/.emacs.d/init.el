@@ -22,7 +22,7 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(evil-leader yasnippet-snippets el-autoyas yasnippet helm counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter org-mind-map noccur consult-dir consult org-roam multiple-cursors mark-multiple elfeed-org elfeed evil expand-region org-superstar magit))
+   '(embark marginalia gruvbox-theme which-key evil-leader yasnippet-snippets el-autoyas yasnippet helm counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(verilog-indent-level 4)
@@ -352,6 +352,16 @@ same directory as the org-buffer and insert a link to this file."
   (interactive)
   (indent-region (point-min) (point-max)))
 
+
+(defun my-package-refresh-and-install-selected-packages ()
+  (interactive)
+  (package-refresh-contents)
+  (package-install-selected-packages))
+
+(defun my-find-init-file ()
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
+
 (global-evil-leader-mode 1)
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
@@ -360,6 +370,41 @@ same directory as the org-buffer and insert a link to this file."
   "f" 'counsel-find-file
   "e" 'eval-buffer
   "\t" 'org-cycle
-  "r" 'restart-emacs)
+  "r" 'restart-emacs
+  "pl" 'package-list-packages
+  "pi" 'my-package-refresh-and-install-selected-packages
+  "h" 'help
+  "<left>" 'winner-undo
+  "<right>" 'winner-redo
+  "d" 'dired
+  "w" 'save-buffer
+  "q" 'save-buffers-kill-terminal
+  "i" 'my-find-init-file
+  "+" 'text-scale-increase
+  "-" 'text-scale-decrease
+  "x" 'counsel-M-x
+  "." 'embark-act
+  ";" 'embark-dwim
+  "B" 'embark-bindings
+  )
 
 (save-place-mode 1)
+(marginalia-mode 1)
+
+;; (load-theme 'gruvbox the)
+
+(global-set-key (kbd "C-.") 'embark-act)
+(global-set-key (kbd "C-;") 'embark-dwim)
+(global-set-key (kbd "C-h B") 'embark-bindings)
+
+
+;; Optionally replace the key help with a completing-read interface
+(setq prefix-help-command #'embark-prefix-help-command)
+
+;; Hide the mode line of the Embark live/completions buffers
+(add-to-list 'display-buffer-alist
+             '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+               nil
+               (window-parameters (mode-line-format . none))))
+
+
