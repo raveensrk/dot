@@ -12,6 +12,8 @@
 " "ledger ")
      ("^assets" "ledger assets liabilities")
      ("bal" "%(binary) -f %(ledger-file) bal")
+     ("Bbal" "%(binary) -f %(ledger-file) bal -B")
+     ("BbalP" "%(binary) -f %(ledger-file) bal -B --price-db prices.db")
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
@@ -23,7 +25,7 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet helm counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
+   '(evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet helm counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(verilog-indent-level 4)
