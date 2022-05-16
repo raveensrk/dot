@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cursor-type 'bar)
  '(custom-enabled-themes '(tango-dark))
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
@@ -356,7 +357,9 @@ same directory as the org-buffer and insert a link to this file."
 (defun my-package-refresh-and-install-selected-packages ()
   (interactive)
   (package-refresh-contents)
-  (package-install-selected-packages))
+  (package-install-selected-packages)
+  (package-autoremove)
+  )
 
 (defun my-find-init-file ()
   (interactive)
@@ -386,6 +389,7 @@ same directory as the org-buffer and insert a link to this file."
   "." 'embark-act
   ";" 'embark-dwim
   "B" 'embark-bindings
+  "s" 'swiper
   )
 
 (save-place-mode 1)
