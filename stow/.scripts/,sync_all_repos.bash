@@ -22,3 +22,6 @@ for d in $(find ./* -maxdepth 0 -type d); do
     ,dotfiles_sync.bash "$d"
 done
 popd
+
+
+,reinstall.bash 
