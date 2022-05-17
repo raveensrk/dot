@@ -23,7 +23,7 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet helm counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
+   '(embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(verilog-indent-level 4)
@@ -296,10 +296,6 @@ same directory as the org-buffer and insert a link to this file."
 
 (toggle-truncate-lines 1)
 
-
-
-(helm-mode 1)
-
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
@@ -369,7 +365,7 @@ same directory as the org-buffer and insert a link to this file."
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
   "=" 'my-indent-whole-buffer
-  "b" 'consult-buffer
+  "b" 'counsel-buffer-or-recentf
   "f" 'counsel-find-file
   "e" 'eval-buffer
   "\t" 'org-cycle
