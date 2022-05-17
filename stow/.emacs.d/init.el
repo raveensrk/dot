@@ -194,7 +194,12 @@ same directory as the org-buffer and insert a link to this file."
 (set-face-attribute 'default nil :height 200)
 
 (setq org-todo-keywords
-      '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "DELEGATED" "SKIPPED")))
+      '((sequence "BACKLOG"
+                  "TODO"
+                  "IN-PROGRESS|CURRENT"
+                  "|"
+                  "DONE"
+                  )))
 
 ;; Git gutter mode
 (when (require 'git-gutter nil 'noerror)
