@@ -375,8 +375,6 @@ same directory as the org-buffer and insert a link to this file."
   "pl" 'package-list-packages
   "pi" 'my-package-refresh-and-install-selected-packages
   "h" 'help
-  "<left>" 'winner-undo
-  "<right>" 'winner-redo
   "d" 'dired
   "w" 'save-buffer
   "q" 'save-buffers-kill-terminal
@@ -398,6 +396,12 @@ same directory as the org-buffer and insert a link to this file."
 (global-set-key (kbd "C-.") 'embark-act)
 (global-set-key (kbd "C-;") 'embark-dwim)
 (global-set-key (kbd "C-h B") 'embark-bindings)
+
+
+(global-set-key (kbd "C-c <C-left>") 'evil-window-left)
+(global-set-key (kbd "C-c <C-right>") 'evil-window-right)
+(global-set-key (kbd "C-c <C-up>") 'evil-window-up)
+(global-set-key (kbd "C-c <C-down>") 'evil-window-down)
 
 
 ;; Optionally replace the key help with a completing-read interface
