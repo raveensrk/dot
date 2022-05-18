@@ -17,7 +17,7 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(org-agenda-files '("~/Journals/daily_journal"))
+ '(org-agenda-files '("./" "~/.agenda_files/"))
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-habit-show-all-today t)
  '(org-habit-show-done-always-green nil)
@@ -25,7 +25,7 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
+   '(helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(verilog-indent-level 4)
@@ -419,3 +419,13 @@ same directory as the org-buffer and insert a link to this file."
                (window-parameters (mode-line-format . none))))
 
 
+
+(defun my-org-daily-notes-file ()
+  (interactive)
+  (format "%d-%02d-%d.org" (calendar-extract-year (calendar-current-date))
+          (calendar-extract-month (calendar-current-date))
+          (calendar-extract-day (calendar-current-date))))
+
+(defun my-open-org-daily-notes-file ()
+  (interactive)
+  (find-file (format "./%s" (my-org-daily-notes-file))))
