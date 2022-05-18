@@ -10,7 +10,7 @@
  '(ledger-reports
    '(("bal
 " "ledger ")
-     ("^assets" "ledger assets liabilities")
+     ("A" "%(binary) -f %(ledger-file) bal -B --price-db prices.db --flat")
      ("bal" "%(binary) -f %(ledger-file) bal")
      ("Bbal" "%(binary) -f %(ledger-file) bal -B")
      ("BbalP" "%(binary) -f %(ledger-file) bal -B --price-db prices.db")
@@ -391,6 +391,7 @@ same directory as the org-buffer and insert a link to this file."
   ";" 'embark-dwim
   "B" 'embark-bindings
   "s" 'swiper
+  "lr" 'ledger-report
   )
 
 (save-place-mode 1)
@@ -429,3 +430,8 @@ same directory as the org-buffer and insert a link to this file."
 (defun my-open-org-daily-notes-file ()
   (interactive)
   (find-file (format "./%s" (my-org-daily-notes-file))))
+
+
+; https://www.masteringemacs.org/article/text-expansion-hippie-expand
+
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
