@@ -10,7 +10,7 @@
  '(ledger-reports
    '(("bal
 " "ledger ")
-     ("A" "%(binary) -f %(ledger-file) bal -B --price-db prices.db --flat")
+     ("A" "%(binary) -f %(ledger-file) -V bal -B --flat ")
      ("bal" "%(binary) -f %(ledger-file) bal")
      ("Bbal" "%(binary) -f %(ledger-file) bal -B")
      ("BbalP" "%(binary) -f %(ledger-file) bal -B --price-db prices.db")
