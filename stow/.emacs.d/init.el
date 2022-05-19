@@ -25,7 +25,7 @@
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(package-selected-packages
-   '(helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
+   '(company-fuzzy evil-snipe evil-numbers helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(verilog-indent-level 4)
@@ -252,11 +252,6 @@ same directory as the org-buffer and insert a link to this file."
   (evil-vimish-fold-mode 1)
   )
 
-(when (package-installed-p 'company)
-  (require 'company)
-  (global-company-mode 1)
-  )
-
 ;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
 
 (cond
@@ -287,7 +282,9 @@ same directory as the org-buffer and insert a link to this file."
 (winner-mode 1)
 (recentf-mode 1)
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
+
 (global-company-mode 1)  
+(global-company-fuzzy-mode 1)
 
 (require 'minimal-session-saver)
 (minimal-session-saver-install-aliases)
@@ -372,7 +369,7 @@ same directory as the org-buffer and insert a link to this file."
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
   "=" 'my-indent-whole-buffer
-  "b" 'counsel-buffer-or-recentf
+  "b" 'ivy-switch-buffer
   "f" 'counsel-find-file
   "e" 'eval-buffer
   "\t" 'org-cycle
@@ -403,7 +400,6 @@ same directory as the org-buffer and insert a link to this file."
 (global-set-key (kbd "C-;") 'embark-dwim)
 (global-set-key (kbd "C-h B") 'embark-bindings)
 
-
 (global-set-key (kbd "C-c <C-left>") 'evil-window-left)
 (global-set-key (kbd "C-c <C-right>") 'evil-window-right)
 (global-set-key (kbd "C-c <C-up>") 'evil-window-up)
@@ -431,7 +427,47 @@ same directory as the org-buffer and insert a link to this file."
   (interactive)
   (find-file (format "./%s" (my-org-daily-notes-file))))
 
+;; TODO: create heaing automatically after i enter todays org file
+;; (format "* %s" (org-date-from-calendar))
 
-; https://www.masteringemacs.org/article/text-expansion-hippie-expand
+;;; Hippie expand
+
+;; https://www.masteringemacs.org/article/text-expansion-hippie-expand
 
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
+
+
+;;; Evil mode
+
+(evil-define-key '(normal visual) 'global (kbd "C-a")
+  'evil-numbers/inc-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "C-x")
+  'evil-numbers/dec-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "g C-a")
+  'evil-numbers/inc-at-pt-incremental)
+(evil-define-key '(normal visual) 'global (kbd "g C-x")
+  'evil-numbers/dec-at-pt-incremental)
+
+(evil-snipe-mode 1)
+(evil-snipe-override-mode 1)
+(evil-mc-mode 1)
+
+
+
+;;; Outline minor mode
+
+;; This is very interesting you can enable outline minor mode and it
+;; can recogonize heading level. Based on the comments documentation.
+;; ;; This is a left indented comment
+;; ;;; This is a heading
+;; ;;;; This is also a heading nested
+
+;;;; Heading 1
+;;;;; Heading 2
+;; something
+;;;;;; Heading 3
+;; something
+
+;;; Elisp
+(dolist (hook '(emacs-lisp-mode-hook))
+  (add-hook hook (lambda () (outline-minor-mode 1))))
