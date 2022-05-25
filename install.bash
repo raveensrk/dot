@@ -54,7 +54,10 @@ case $machine in
         sudo apt-get autoremove
         sudo apt-get autoclean
         echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
+        echo -e "${BLUE}You have 5 seconds to answer!${NC}"
+        TMOUT=5
         read -r choice
+        TMOUT=0
         if [ "$choice" = "Y" ]; then
             sudo apt-get install -y $(xargs < packages_list_ubuntu.txt)
             sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
@@ -67,7 +70,10 @@ case $machine in
         sudo apt-get autoremove
         sudo apt-get autoclean
         echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
+        echo -e "${BLUE}You have 5 seconds to answer!${NC}"
+        TMOUT=5
         read -r choice
+        TMOUT=0
         if [ "$choice" = "Y" ]; then
             sudo apt-get install -y $(xargs < packages_list_ubuntu_20.txt)
             sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
