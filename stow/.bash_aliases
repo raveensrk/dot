@@ -41,12 +41,6 @@ fi
 # {{{ ALIASES
 alias ..="cd .."
 alias ,top='top -d 0.125'
-,sync () {
-    ,sync_all_repos.bash "$MY_REPOS"
-    if [ "$USER@$HOSTNAME" = "raveen@UhIN-LT-142" ]; then
-        ,sync_all_repos.bash "/mnt/c/Github"
-    fi 
-}
 alias dam="sudo !!"
 alias ,date_sshort="date +%Y%m%d%H%M%S"
 alias ,date='date -I'
