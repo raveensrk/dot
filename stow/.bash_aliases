@@ -41,7 +41,6 @@ fi
 # {{{ ALIASES
 alias ..="cd .."
 alias ,top='top -d 0.125'
-alias ,sync=",sync_all_repos.bash $MY_REPOS"
 alias dam="sudo !!"
 alias ,date_sshort="date +%Y%m%d%H%M%S"
 alias ,date='date -I'
@@ -176,8 +175,8 @@ done
 # {{{ VIM STUFF
 # export VISUAL="vim"
 # export EDITOR="vim"
-export VISUAL="emacs"
-export EDITOR="emacs"
+export VISUAL="emacs -nw"
+export EDITOR="emacs -nw"
 alias vs="command vim --servername VIM"
 v () {
     local servername

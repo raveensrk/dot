@@ -49,26 +49,32 @@ case $machine in
         sudo dnf install  $(xargs < ./packages_list_fedora.txt)
         ;;
     1|3)
-        sudo apt-get update
-        # sudo apt-get upgrade
-        sudo apt-get autoremove
-        sudo apt-get autoclean
         echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
+        echo -e "${BLUE}You have 5 seconds to answer!${NC}"
+        TMOUT=5
         read -r choice
+        TMOUT=0
         if [ "$choice" = "Y" ]; then
+            sudo apt-get update
+            # sudo apt-get upgrade
+            sudo apt-get autoremove
+            sudo apt-get autoclean
             sudo apt-get install -y $(xargs < packages_list_ubuntu.txt)
             sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
         fi
         unset choice
         ;;
     6)
-        sudo apt-get update
-        # sudo apt-get upgrade
-        sudo apt-get autoremove
-        sudo apt-get autoclean
         echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
+        echo -e "${BLUE}You have 5 seconds to answer!${NC}"
+        TMOUT=5
         read -r choice
+        TMOUT=0
         if [ "$choice" = "Y" ]; then
+            sudo apt-get update
+            # sudo apt-get upgrade
+            sudo apt-get autoremove
+            sudo apt-get autoclean
             sudo apt-get install -y $(xargs < packages_list_ubuntu_20.txt)
             sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
         fi

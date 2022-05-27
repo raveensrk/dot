@@ -24,3 +24,4 @@ stow/.emacs.d/eshell/*
 stow/.emacs.d/data/minimal-session-saver/minimal-session-saver-data.el
 stow/.emacs.d/places
 **~
+stow/.emacs.d/server/server
