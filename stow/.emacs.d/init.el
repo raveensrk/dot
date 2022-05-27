@@ -478,30 +478,27 @@ same directory as the org-buffer and insert a link to this file."
   (add-hook hook (lambda () (setq imenu-auto-rescan 1)))
   )
 
+;;; While Loop
 
-(require 'ox-publish)
-(setq org-publish-project-alist
-      '(
+;; (setq animals '(gazelle giraffe lion tiger))
+;; 
+;; (defun print-elements-of-list (list)
+;;   "Print each element of LIST on a line of its own."
+;;   (while list
+;;     (print (car list))
+;;     (setq list (cdr list))))
+;; 
+;; (print-elements-of-list animals)
 
-        ;; ... add all the components here (see below)...
-        ("org-notes"
-         :base-directory "~/my_repos/raveenkumar.xyz/Blog"
-         :base-extension "org"
-         :publishing-directory "~/my_repos/raveenkumar.xyz/public_html"
-         :recursive t
-         :publishing-function org-html-publish-to-html
-         :headline-levels 4             ; Just the default for this project.
-         :auto-preamble the
-         )
+;;; Load all elisp files under ~/.emacs.d/site-lisp
 
-        ("org-static"
-         :base-directory "~/my_repos/raveenkumar.xyz/Blog"
-         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-         :publishing-directory "~/my_repos/raveenkumar.xyz/public_html"
-         :recursive t
-         :publishing-function org-publish-attachment
-         )
+(setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
 
-        ("org" :components ("org-notes" "org-static"))
+(defun my-load-elisp-files (list)
+  "Print each element of LIST on a line of its own."
+  (while list
+    (print (car list))
+    (load-file (print (car list)))
+    (setq list (cdr list))))
 
-        ))
+(my-load-elisp-files my-lisp-files)
