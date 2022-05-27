@@ -24,10 +24,12 @@
  '(org-log-into-drawer t)
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
+ '(org-startup-truncated nil)
  '(package-selected-packages
    '(company-fuzzy evil-snipe evil-numbers helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
+ '(vc-follow-symlinks t)
  '(verilog-indent-level 4)
  '(word-wrap t))
 
@@ -284,7 +286,7 @@ same directory as the org-buffer and insert a link to this file."
 (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 (global-company-mode 1)  
-(global-company-fuzzy-mode 1)
+;; (global-company-fuzzy-mode 1)
 
 (require 'minimal-session-saver)
 (minimal-session-saver-install-aliases)
@@ -293,10 +295,8 @@ same directory as the org-buffer and insert a link to this file."
 
 (add-hook 'org-mode-hook
           (lambda ()
-            (define-key org-mode-map "\C-cn" 'org-toggle-narrow-to-subtree)
-            (evil-leader/set-key
-              "<TAB>" 'org-cycle)))
-
+            (define-key org-mode-map "\C-c n" 'org-toggle-narrow-to-subtree)
+            ))
 
 (toggle-truncate-lines 1)
 
@@ -333,7 +333,7 @@ same directory as the org-buffer and insert a link to this file."
 (global-set-key (kbd "C-c L") 'counsel-git-log)
 (global-set-key (kbd "C-c k") 'counsel-rg)
 (global-set-key (kbd "C-c m") 'counsel-linux-app)
-(global-set-key (kbd "C-c n") 'counsel-fzf)
+;;(global-set-key (kbd "C-c n") 'counsel-fzf)
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (global-set-key (kbd "C-c J") 'counsel-file-jump)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
@@ -345,7 +345,6 @@ same directory as the org-buffer and insert a link to this file."
 (global-set-key (kbd "C-c o") 'counsel-outline)
 (global-set-key (kbd "C-c t") 'counsel-load-theme)
 (global-set-key (kbd "C-c F") 'counsel-org-file)
-
 
 (which-key-mode 1)
 
@@ -389,6 +388,7 @@ same directory as the org-buffer and insert a link to this file."
   "B" 'embark-bindings
   "s" 'swiper
   "lr" 'ledger-report
+  "a" 'mark-whole-buffer
   )
 
 (save-place-mode 1)
@@ -471,3 +471,37 @@ same directory as the org-buffer and insert a link to this file."
 ;;; Elisp
 (dolist (hook '(emacs-lisp-mode-hook))
   (add-hook hook (lambda () (outline-minor-mode 1))))
+
+(dolist (hook '(org-mode-hook))
+  (add-hook hook (lambda () (imenu 1)))
+  (add-hook hook (lambda () (imenu-add-menubar-index 1)))
+  (add-hook hook (lambda () (setq imenu-auto-rescan 1)))
+  )
+
+
+(require 'ox-publish)
+(setq org-publish-project-alist
+      '(
+
+        ;; ... add all the components here (see below)...
+        ("org-notes"
+         :base-directory "~/my_repos/raveenkumar.xyz/Blog"
+         :base-extension "org"
+         :publishing-directory "~/my_repos/raveenkumar.xyz/public_html"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :headline-levels 4             ; Just the default for this project.
+         :auto-preamble the
+         )
+
+        ("org-static"
+         :base-directory "~/my_repos/raveenkumar.xyz/Blog"
+         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+         :publishing-directory "~/my_repos/raveenkumar.xyz/public_html"
+         :recursive t
+         :publishing-function org-publish-attachment
+         )
+
+        ("org" :components ("org-notes" "org-static"))
+
+        ))
