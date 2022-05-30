@@ -364,6 +364,13 @@ same directory as the org-buffer and insert a link to this file."
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 
+(defun evil-paste-after-newline ()
+  (interactive)
+    (progn
+      (evil-insert-newline-below)
+      (evil-paste-after 1)
+      ))
+
 (global-evil-leader-mode 1)
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
@@ -389,6 +396,7 @@ same directory as the org-buffer and insert a link to this file."
   "s" 'swiper
   "lr" 'ledger-report
   "a" 'mark-whole-buffer
+  "pp" 'evil-paste-after-newline
   )
 
 (save-place-mode 1)
@@ -502,3 +510,7 @@ same directory as the org-buffer and insert a link to this file."
     (setq list (cdr list))))
 
 (my-load-elisp-files my-lisp-files)
+
+
+
+
