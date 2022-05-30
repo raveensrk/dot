@@ -15,11 +15,19 @@ if [ ! -d .git ]; then
     exit 0
 fi
 
+tmp_file="/tmp/dotfiles_sync_$$.log"
 
-git status | tee /tmp/dotfiles_sync.bash.tmp
-grep "nothing to commit, working tree clean" /tmp/dotfiles_sync.bash.tmp
+git status > "$tmp_file"
 
-if [[ $? == 0 ]]; then
+clean="0"
+while read -r line; do
+    if [[ "$line" =~ "nothing to commit, working tree clean" ]]; then
+        clean="1"
+    fi
+done < "$tmp_file"
+
+
+if [[ "$clean" == "1" ]]; then
     echo "Nothing to commit"
 else
     git diff
@@ -49,3 +57,6 @@ git push
 echo -e "${GREEN}Done${NC}✅" 
 
 popd
+
+
+rm "$tmp_file"
