@@ -44,6 +44,13 @@
 (setq visible-bell 1)
 (setq dired-kill-when-opening-new-dired-buffer t)
 
+(defun my-package-refresh-and-install-selected-packages ()
+  (interactive)
+  (package-refresh-contents)
+  (package-install-selected-packages)
+  (package-autoremove)
+  )
+
 ;; Better copy and cut
 ;; (defadvice kill-ring-save (before slick-copy activate compile) "When called
 ;;   interactively with no active region, copy a single line instead."
@@ -296,6 +303,7 @@ same directory as the org-buffer and insert a link to this file."
 (add-hook 'org-mode-hook
           (lambda ()
             (define-key org-mode-map "\C-c n" 'org-toggle-narrow-to-subtree)
+            (define-key org-mode-map "<tab>" 'org-cycle)
             ))
 
 (toggle-truncate-lines 1)
@@ -353,12 +361,6 @@ same directory as the org-buffer and insert a link to this file."
   (indent-region (point-min) (point-max)))
 
 
-(defun my-package-refresh-and-install-selected-packages ()
-  (interactive)
-  (package-refresh-contents)
-  (package-install-selected-packages)
-  (package-autoremove)
-  )
 
 (defun my-find-init-file ()
   (interactive)
