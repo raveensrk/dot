@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: Check for brew and stow existance first
 
 # This script will install all application for my system after cloning
 # my repo and symlinking my dotfiles. Supports fedora and ubuntu.
@@ -125,6 +126,17 @@ popd
 vim -c "PlugInstall | PlugClean | qa"
 
 if [ "$machine" != "2" ]; then
+    if [ -f ~/.emacs ]; then
+        echo -e "${YELLOW}~/.emacs present. Remove it? [Y/n]${NC}" 
+        read -re choice
+        if [ "$choice" = "Y" ]; then
+            less ~/.emacs
+            rm ~/.emacs
+        else
+            echo -e "${RED}Cannot proceed with ~/.emacs file. It conflicts with my ~/.emacs.d/init.el.${NC}"
+        fi 
+        unset choice
+    fi
     emacs -nw -f my-package-refresh-and-install-selected-packages --kill
 fi 
 

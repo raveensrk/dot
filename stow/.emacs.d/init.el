@@ -7,6 +7,8 @@
  '(custom-enabled-themes '(tango-dark))
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+ '(git-gutter:always-show-separator t)
+ '(global-git-gutter-mode t)
  '(ledger-reports
    '(("bal
 " "ledger ")
@@ -26,7 +28,7 @@
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(org-startup-truncated nil)
  '(package-selected-packages
-   '(company-fuzzy evil-snipe evil-numbers helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
+   '(olivetti company-fuzzy evil-snipe evil-numbers helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(vc-follow-symlinks t)
@@ -43,6 +45,15 @@
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
 (setq dired-kill-when-opening-new-dired-buffer t)
+
+
+
+(defun my-package-refresh-and-install-selected-packages ()
+  (interactive)
+  (package-refresh-contents)
+  (package-install-selected-packages)
+  (package-autoremove)
+  )
 
 (global-set-key (kbd "C-c +") 'dired-create-empty-file)
 
@@ -209,7 +220,7 @@ same directory as the org-buffer and insert a link to this file."
 (when (require 'git-gutter nil 'noerror)
   (require 'git-gutter)
   ;; If you enable global minor mode
-  (global-git-gutter-mode t)
+  (global-git-gutter-mode +1)
   ;; If you would like to use git-gutter.el and linum-mode
   (git-gutter:linum-setup)
   ;; If you enable git-gutter-mode for some modes
@@ -298,6 +309,7 @@ same directory as the org-buffer and insert a link to this file."
 (add-hook 'org-mode-hook
           (lambda ()
             (define-key org-mode-map "\C-c n" 'org-toggle-narrow-to-subtree)
+            (define-key org-mode-map "<tab>" 'org-cycle)
             ))
 
 (toggle-truncate-lines 1)
@@ -357,23 +369,25 @@ same directory as the org-buffer and insert a link to this file."
   (indent-region (point-min) (point-max)))
 
 
-(defun my-package-refresh-and-install-selected-packages ()
-  (interactive)
-  (package-refresh-contents)
-  (package-install-selected-packages)
-  (package-autoremove)
-  )
 
 (defun my-find-init-file ()
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 
+(defun evil-paste-after-newline ()
+  (interactive)
+    (progn
+      (evil-insert-newline-below)
+      (evil-paste-after 1)
+      ))
+
 (global-evil-leader-mode 1)
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
   "=" 'my-indent-whole-buffer
-  "b" 'ivy-switch-buffer
-  "f" 'counsel-find-file
+  "b" 'switch-to-buffer
+  "fr" 'helm-recentf
+  "ff" 'helm-find-files
   "e" 'eval-buffer
   "\t" 'org-cycle
   "r" 'restart-emacs
@@ -386,13 +400,14 @@ same directory as the org-buffer and insert a link to this file."
   "i" 'my-find-init-file
   "+" 'text-scale-increase
   "-" 'text-scale-decrease
-  "x" 'counsel-M-x
+  "x" 'execute-extended-command
   "." 'embark-act
   ";" 'embark-dwim
   "B" 'embark-bindings
   "s" 'swiper
   "lr" 'ledger-report
   "a" 'mark-whole-buffer
+  "pp" 'evil-paste-after-newline
   )
 
 (save-place-mode 1)
@@ -506,3 +521,8 @@ same directory as the org-buffer and insert a link to this file."
     (setq list (cdr list))))
 
 (my-load-elisp-files my-lisp-files)
+
+(olivetti-mode 1)
+
+
+
