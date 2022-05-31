@@ -1,3 +1,4 @@
+;;; Custom set variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -28,7 +29,7 @@
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(org-startup-truncated nil)
  '(package-selected-packages
-   '(olivetti company-fuzzy evil-snipe evil-numbers helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
+   '(swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
  '(show-paren-mode t)
  '(tab-width 4)
  '(vc-follow-symlinks t)
@@ -71,6 +72,14 @@
 ;;            (line-beginning-position 2)))))
 
 ;; Org mode
+(dolist (hook '(org-mode-hook))
+  (add-hook hook (lambda ()
+                   (visual-line-mode 1)
+                   ))
+  (add-hook hook (lambda ()
+                   (olivetti-mode 1)
+                   )))
+
 (setq org-src-tab-acts-natively t)
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -290,8 +299,6 @@ same directory as the org-buffer and insert a link to this file."
      (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
      (define-key flyspell-mouse-map [mouse-3] #'undefined)))
 
-(dolist (hook '(org-mode-hook))
-  (add-hook hook (lambda () (visual-line-mode 1))))
 
 
 (winner-mode 1)
@@ -376,10 +383,10 @@ same directory as the org-buffer and insert a link to this file."
 
 (defun evil-paste-after-newline ()
   (interactive)
-    (progn
-      (evil-insert-newline-below)
-      (evil-paste-after 1)
-      ))
+  (progn
+    (evil-insert-newline-below)
+    (evil-paste-after 1)
+    ))
 
 (global-evil-leader-mode 1)
 (evil-leader/set-leader "<SPC>")
@@ -475,6 +482,8 @@ same directory as the org-buffer and insert a link to this file."
 
 ;;; Outline minor mode
 
+(setq outline-blank-line +1)
+
 ;; This is very interesting you can enable outline minor mode and it
 ;; can recogonize heading level. Based on the comments documentation.
 ;; ;; This is a left indented comment
@@ -522,7 +531,6 @@ same directory as the org-buffer and insert a link to this file."
 
 (my-load-elisp-files my-lisp-files)
 
-(olivetti-mode 1)
 
 
 
