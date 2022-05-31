@@ -7,6 +7,8 @@
  '(custom-enabled-themes '(wombat))
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+ '(git-gutter:always-show-separator t)
+ '(global-git-gutter-mode t)
  '(ledger-reports
    '(("bal
 " "ledger ")
@@ -26,7 +28,7 @@
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(org-startup-truncated nil)
  '(package-selected-packages
-   '(company-fuzzy evil-snipe evil-numbers helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
+   '(olivetti company-fuzzy evil-snipe evil-numbers helm evil-mc embark marginalia which-key evil-leader yasnippet-snippets el-autoyas yasnippet counsel ivy aggressive-indent vterm ledger-mode minimal-session-saver persistent-scratch load-dir flycheck-grammarly flycheck grammarly company languagetool magit doom 2048-game writegood-mode search-web restart-emacs git-gutter flyspell-correct evil-vimish-fold evil-goggles beacon ## evil-vimish-fold evil-goggles folding git-gutter noccur consult-dir consult multiple-cursors mark-multiple evil expand-region org-superstar magit))
  '(show-paren-mode t)
  '(tab-width 4)
  '(vc-follow-symlinks t)
@@ -43,6 +45,17 @@
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
 (setq dired-kill-when-opening-new-dired-buffer t)
+
+
+
+(defun my-package-refresh-and-install-selected-packages ()
+  (interactive)
+  (package-refresh-contents)
+  (package-install-selected-packages)
+  (package-autoremove)
+  )
+
+(global-set-key (kbd "C-c +") 'dired-create-empty-file)
 
 ;; Better copy and cut
 ;; (defadvice kill-ring-save (before slick-copy activate compile) "When called
@@ -207,7 +220,7 @@ same directory as the org-buffer and insert a link to this file."
 (when (require 'git-gutter nil 'noerror)
   (require 'git-gutter)
   ;; If you enable global minor mode
-  (global-git-gutter-mode t)
+  (global-git-gutter-mode +1)
   ;; If you would like to use git-gutter.el and linum-mode
   (git-gutter:linum-setup)
   ;; If you enable git-gutter-mode for some modes
@@ -296,56 +309,59 @@ same directory as the org-buffer and insert a link to this file."
 (add-hook 'org-mode-hook
           (lambda ()
             (define-key org-mode-map "\C-c n" 'org-toggle-narrow-to-subtree)
+            (define-key org-mode-map "<tab>" 'org-cycle)
             ))
 
 (toggle-truncate-lines 1)
 
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(setq ivy-count-format "(%d/%d) ")
-;; enable this if you want `swiper' to use it
-;; (setq search-default-mode #'char-fold-to-regexp)
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "<f2> j") 'counsel-set-variable)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-c v") 'ivy-push-view)
-(global-set-key (kbd "C-c V") 'ivy-pop-view)
-(global-set-key (kbd "C-c c") 'counsel-compile)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c L") 'counsel-git-log)
-(global-set-key (kbd "C-c k") 'counsel-rg)
-(global-set-key (kbd "C-c m") 'counsel-linux-app)
-;;(global-set-key (kbd "C-c n") 'counsel-fzf)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-c J") 'counsel-file-jump)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(global-set-key (kbd "C-c w") 'counsel-wmctrl)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "C-c b") 'counsel-bookmark)
-(global-set-key (kbd "C-c d") 'counsel-descbinds)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c o") 'counsel-outline)
-(global-set-key (kbd "C-c t") 'counsel-load-theme)
-(global-set-key (kbd "C-c F") 'counsel-org-file)
+;; (ivy-mode 1)
+;; (setq ivy-use-virtual-buffers t)
+;; (setq enable-recursive-minibuffers t)
+;; (setq ivy-count-format "(%d/%d) ")
+;; ;; enable this if you want `swiper' to use it
+;; ;; (setq search-default-mode #'char-fold-to-regexp)
+;; (global-set-key "\C-s" 'swiper)
+;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
+;; (global-set-key (kbd "<f6>") 'ivy-resume)
+;; (global-set-key (kbd "M-x") 'counsel-M-x)
+;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+;; (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+;; (global-set-key (kbd "<f1> l") 'counsel-find-library)
+;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+;; (global-set-key (kbd "<f2> j") 'counsel-set-variable)
+;; (global-set-key (kbd "C-c g") 'counsel-git)
+;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
+;; (global-set-key (kbd "C-c k") 'counsel-ag)
+;; (global-set-key (kbd "C-x l") 'counsel-locate)
+;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+;; (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+;; (global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+;; (global-set-key (kbd "C-c v") 'ivy-push-view)
+;; (global-set-key (kbd "C-c V") 'ivy-pop-view)
+;; (global-set-key (kbd "C-c c") 'counsel-compile)
+;; (global-set-key (kbd "C-c g") 'counsel-git)
+;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
+;; (global-set-key (kbd "C-c L") 'counsel-git-log)
+;; (global-set-key (kbd "C-c k") 'counsel-rg)
+;; (global-set-key (kbd "C-c m") 'counsel-linux-app)
+;; ;;(global-set-key (kbd "C-c n") 'counsel-fzf)
+;; (global-set-key (kbd "C-x l") 'counsel-locate)
+;; (global-set-key (kbd "C-c J") 'counsel-file-jump)
+;; (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+;; (global-set-key (kbd "C-c w") 'counsel-wmctrl)
+;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
+;; (global-set-key (kbd "C-c b") 'counsel-bookmark)
+;; (global-set-key (kbd "C-c d") 'counsel-descbinds)
+;; (global-set-key (kbd "C-c g") 'counsel-git)
+;; (global-set-key (kbd "C-c o") 'counsel-outline)
+;; (global-set-key (kbd "C-c t") 'counsel-load-theme)
+;; (global-set-key (kbd "C-c F") 'counsel-org-file)
 
+
+(helm-mode 1)
 (which-key-mode 1)
 
 (defun my-indent-whole-buffer ()
@@ -353,12 +369,6 @@ same directory as the org-buffer and insert a link to this file."
   (indent-region (point-min) (point-max)))
 
 
-(defun my-package-refresh-and-install-selected-packages ()
-  (interactive)
-  (package-refresh-contents)
-  (package-install-selected-packages)
-  (package-autoremove)
-  )
 
 (defun my-find-init-file ()
   (interactive)
@@ -375,8 +385,9 @@ same directory as the org-buffer and insert a link to this file."
 (evil-leader/set-leader "<SPC>")
 (evil-leader/set-key
   "=" 'my-indent-whole-buffer
-  "b" 'ivy-switch-buffer
-  "f" 'counsel-find-file
+  "b" 'switch-to-buffer
+  "fr" 'helm-recentf
+  "ff" 'helm-find-files
   "e" 'eval-buffer
   "\t" 'org-cycle
   "r" 'restart-emacs
@@ -389,7 +400,7 @@ same directory as the org-buffer and insert a link to this file."
   "i" 'my-find-init-file
   "+" 'text-scale-increase
   "-" 'text-scale-decrease
-  "x" 'counsel-M-x
+  "x" 'execute-extended-command
   "." 'embark-act
   ";" 'embark-dwim
   "B" 'embark-bindings
@@ -510,3 +521,8 @@ same directory as the org-buffer and insert a link to this file."
     (setq list (cdr list))))
 
 (my-load-elisp-files my-lisp-files)
+
+(olivetti-mode 1)
+
+
+

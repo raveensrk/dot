@@ -27,3 +27,4 @@ yank
 wget
 lesspipe
 rsync
+grep
