@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(cursor-type 'bar)
- '(custom-enabled-themes '(tango-dark))
+ '(custom-enabled-themes '(wombat))
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
  '(ledger-reports
@@ -510,7 +510,3 @@ same directory as the org-buffer and insert a link to this file."
     (setq list (cdr list))))
 
 (my-load-elisp-files my-lisp-files)
-
-
-
-
