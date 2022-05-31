@@ -21,6 +21,7 @@
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
  '(org-agenda-files '("./" "~/.agenda_files/"))
+ '(org-babel-load-languages '((awk . t) (C . t) (shell . t)))
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-habit-show-all-today t)
  '(org-habit-show-done-always-green nil)
@@ -85,11 +86,6 @@
 (global-set-key (kbd "C-c a") #'org-agenda)
 (setq org-agenda-files '("./"))
 (global-set-key (kbd "C-c c") #'org-capture)
-(org-babel-do-load-languages 'org-babel-load-languages 
-                             '(
-                               (shell . t)
-                               )
-                             )
 (global-set-key (kbd "C-c e") 'org-babel-execute-src-block)
 (setq org-confirm-babel-evaluate nil)
 ;; (org-num-mode)
