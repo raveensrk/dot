@@ -30,7 +30,7 @@
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(org-startup-truncated nil)
  '(package-selected-packages
-   '(swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
+   '(avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
  '(show-paren-mode t)
  '(tab-width 4)
  '(vc-follow-symlinks t)
@@ -287,14 +287,32 @@ same directory as the org-buffer and insert a link to this file."
 ;; This will enable spell checker
 ;; https://www.tenderisthebyte.com/blog/2019/06/09/spell-checking-emacs/
 
-(dolist (hook '(text-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
+(cond
+ ((string-equal system-type "windows-nt")
+  (progn
+    (message "Microsoft Windows")))
+ 
+ ((string-equal system-type "darwin") ;  macOS
+  (progn
+    (message "Mac OS X")
+    (dolist (hook '(text-mode-hook))
+      (add-hook hook (lambda () (flyspell-mode 1))))
+    (eval-after-load "flyspell"
+      '(progn
+         (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+         (define-key flyspell-mouse-map [mouse-3] #'undefined)))))
+ 
+ ((string-equal system-type "gnu/linux")
+  (progn
+    (message "Linux")
+    (dolist (hook '(text-mode-hook))
+      (add-hook hook (lambda () (flyspell-mode 1))))
+    (eval-after-load "flyspell"
+      '(progn
+         (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
+         (define-key flyspell-mouse-map [mouse-3] #'undefined)))
 
-(eval-after-load "flyspell"
-  '(progn
-     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
-     (define-key flyspell-mouse-map [mouse-3] #'undefined)))
-
+    )))
 
 
 (winner-mode 1)
@@ -528,5 +546,10 @@ same directory as the org-buffer and insert a link to this file."
 (my-load-elisp-files my-lisp-files)
 
 
+(when (package-installed-p 'rainbow-delimiters)
+  (require 'rainbow-delimiters)
+  (rainbow-delimiters-mode 1))
 
-
+(when (package-installed-p 'avy)
+  (require 'avy)
+  (global-set-key (kbd "C-:") 'avy-goto-char))
