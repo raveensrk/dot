@@ -38,8 +38,8 @@ Plug 'https://github.com/vim-syntastic/syntastic'
 Plug 'https://github.com/tpope/vim-markdown'
 
 Plug 'liuchengxu/vim-which-key'
-Plug 'https://github.com/xolox/vim-misc'
-Plug 'https://github.com/xolox/vim-session'
+" Plug 'https://github.com/xolox/vim-misc'
+" Plug 'https://github.com/xolox/vim-session'
 
 Plug 'https://github.com/tpope/vim-speeddating'
 Plug 'https://github.com/yoshi1123/vim-linebox'
@@ -87,9 +87,6 @@ vnoremap <leader><leader>b :call linebox#boxes#box()<cr>
 nnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
 vnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
 
-
-
-let g:session_autoload = 'no'
 
 set updatetime=100 " For gitgutter
 
