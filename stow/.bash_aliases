@@ -40,6 +40,7 @@ fi
 # }}}
 # {{{ ALIASES
 alias ..="cd .."
+alias ,.="open ."
 alias ,top='top -d 0.125'
 alias dam="sudo !!"
 alias ,date_sshort="date +%Y%m%d%H%M%S"
