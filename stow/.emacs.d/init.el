@@ -10,6 +10,7 @@
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
  '(git-gutter:always-show-separator t)
  '(global-git-gutter-mode t)
+ '(ledger-default-date-format "%Y-%m-%d")
  '(ledger-reports
    '(("bal
 " "ledger ")
@@ -60,6 +61,13 @@
   (package-install-selected-packages)
   (package-autoremove)
   )
+
+;;; Source after loading
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+
+;;;; Sr Speedbar
+(require 'sr-speedbar)
+
 
 ;;;; Magit
 (when (require 'magit nil 'noerror)
@@ -405,9 +413,6 @@
 ;;; Elisp
 (dolist (hook '(emacs-lisp-mode-hook))
   (add-hook hook (lambda () (outline-minor-mode 1))))
-
-;;; Source after loading
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 ;;; Load all elisp files under ~/.emacs.d/site-lisp
 
