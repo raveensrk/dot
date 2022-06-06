@@ -35,6 +35,7 @@
  '(package-selected-packages
    '(use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
  '(show-paren-mode t)
+ '(speedbar-show-unknown-files t)
  '(tab-width 4)
  '(vc-follow-symlinks t)
  '(verilog-indent-level 4)
