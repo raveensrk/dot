@@ -8,6 +8,8 @@
  '(custom-enabled-themes '(wombat))
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+ '(dired-hide-details-hide-information-lines t)
+ '(dired-hide-details-hide-symlink-targets t)
  '(dynamic-fonts-preferred-monospace-point-size 20)
  '(dynamic-fonts-preferred-proportional-point-size 20)
  '(git-gutter:always-show-separator t)
@@ -36,7 +38,7 @@
  '(org-startup-indented t)
  '(org-startup-truncated nil)
  '(package-selected-packages
-   '(dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
+   '(simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
  '(show-paren-mode t)
  '(speedbar-show-unknown-files t)
  '(tab-width 4)
@@ -264,6 +266,12 @@
 ;; This will set first buffer shown as scratch
 ;; (setq initial-buffer-choice t)
 
+;;;; Mouse Support in Terminal
+;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
+;; For linux use (gpm-mouse-mode 1)
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1))
+
 ;;; Appearence
 
 (toggle-truncate-lines 1)
@@ -470,3 +478,6 @@
  )
 
 (toggle-frame-fullscreen)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+

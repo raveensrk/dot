@@ -112,6 +112,7 @@ popd
 case "$machine" in
     1|3)
         stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
+        stow -R stow_linux -t "$HOME" --no-folding || exit 2
         ;;
     5)
         stow -R stow_macos -t "$HOME" --no-folding || exit 2

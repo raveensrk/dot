@@ -16,6 +16,7 @@ get https://ftp.nluug.nl/pub/vim/unix/vim-8.2.tar.bz2
 get https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz
 get https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
 get https://github.com/sharkdp/fd/releases/download/v8.3.0/fd-v8.3.0-i686-unknown-linux-musl.tar.gz
+get https://github.com/sharkdp/fd/releases/download/v8.4.0/fd-v8.4.0-x86_64-apple-darwin.tar.gz
 get https://github.com/tmux/tmux/releases/download/2.6/tmux-2.6.tar.gz
 get https://ranger.github.io/ranger-stable.tar.gz
 get https://github.com/scop/bash-completion/releases/download/2.11/bash-completion-2.11.tar.xz
