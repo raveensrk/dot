@@ -1,11 +1,13 @@
 # BASH ALIASES sourced at ~/.bashrc
 set -o vi
 
+
 if [ -d "$HOME/my_repos" ]; then
     export MY_REPOS="$HOME/my_repos"
 elif [ -d "$HOME/repos" ]; then
     export MY_REPOS="$HOME/repos"
 fi
+
 
 # {{{ ENVIRONMENT VARIABLES
 
