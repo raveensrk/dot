@@ -41,7 +41,8 @@ else
         exit 0
     fi
 
-    read -p "Enter commit message or leave it empty for default commit message: " commit_msg
+    echo -e "${YELLOW}Enter commit message or leave it empty for default commit message:${NC}"
+    read -re commit_msg
 
     if [[ "$commit_msg" == "" ]]; then
         git commit -m "Sync commit from $USER@$HOSTNAME"

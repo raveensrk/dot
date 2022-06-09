@@ -8,8 +8,11 @@
  '(custom-enabled-themes '(wombat))
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+ '(dynamic-fonts-preferred-monospace-point-size 20)
+ '(dynamic-fonts-preferred-proportional-point-size 20)
  '(git-gutter:always-show-separator t)
  '(global-git-gutter-mode t)
+ '(ledger-default-date-format "%Y-%m-%d")
  '(ledger-reports
    '(("bal
 " "ledger ")
@@ -33,19 +36,13 @@
  '(org-startup-indented t)
  '(org-startup-truncated nil)
  '(package-selected-packages
-   '(use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
+   '(dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
  '(show-paren-mode t)
+ '(speedbar-show-unknown-files t)
  '(tab-width 4)
  '(vc-follow-symlinks t)
  '(verilog-indent-level 4)
  '(word-wrap t))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 200 :width normal :foundry "nil" :family "monospace")))))
 
 ;;; Package Specific
 (require 'package)
@@ -59,6 +56,13 @@
   (package-install-selected-packages)
   (package-autoremove)
   )
+
+;;; Source after loading
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+
+;;;; Sr Speedbar
+(require 'sr-speedbar)
+
 
 ;;;; Magit
 (when (require 'magit nil 'noerror)
@@ -265,6 +269,7 @@
 (toggle-truncate-lines 1)
 
 ;;;; Fonts
+
 ;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
 
 ;; (cond
@@ -276,6 +281,11 @@
 ;;   (set-frame-font "DejaVu Sans Mono-12"))
 ;;  ((find-font (font-spec :name "Inconsolata"))
 ;;   (set-frame-font "Inconsolata-12")))
+
+;;;; Dynamic Fonts
+(require 'dynamic-fonts)
+(dynamic-fonts-setup)     ; finds "best" fonts and sets faces:
+                                        ; default, fixed-pitch, variable-pitch
 
 ;;; Editing
 (setq-default tab-width 4)
@@ -405,9 +415,6 @@
 (dolist (hook '(emacs-lisp-mode-hook))
   (add-hook hook (lambda () (outline-minor-mode 1))))
 
-;;; Source after loading
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
-
 ;;; Load all elisp files under ~/.emacs.d/site-lisp
 
 (setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
@@ -455,3 +462,11 @@
 ;; (print-elements-of-list animals)
 
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(toggle-frame-fullscreen)
