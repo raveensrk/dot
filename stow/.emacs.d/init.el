@@ -1,3 +1,5 @@
+(toggle-debug-on-error)
+
 ;;; Custom set variables
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -30,7 +32,7 @@
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-habit-show-all-today t)
  '(org-habit-show-done-always-green nil)
- '(org-link-descriptive t)
+ '(org-link-descriptive nil)
  '(org-link-file-path-type 'relative)
  '(org-log-into-drawer t)
  '(org-modules
@@ -343,19 +345,21 @@
 (global-set-key (kbd "ESC m") #'menu-bar-open)
 (add-hook 'org-mode-hook
           (lambda ()
-            (define-key org-mode-map "\C-c n" 'org-toggle-narrow-to-subtree)
-            (define-key org-mode-map "<tab>" 'org-cycle)
+            (define-key org-mode-map (kbd "C-c n") 'org-toggle-narrow-to-subtree)
+            (define-key org-mode-map (kbd "<tab>") 'org-cycle)
             ))
 (put 'narrow-to-region 'disabled nil)
 (setq org-agenda-files '("./"))
 (setq org-confirm-babel-evaluate nil)
 (setq org-src-tab-acts-natively t)
 ;; (org-num-mode)
-(dolist (hook '(org-mode-hook))
-  (add-hook hook (lambda () (imenu 1)))
-  (add-hook hook (lambda () (imenu-add-menubar-index 1)))
-  (add-hook hook (lambda () (setq imenu-auto-rescan 1)))
-  )
+
+;; TODO: IMENU hook not working properly
+;; (dolist (hook '(org-mode-hook))
+;;   (add-hook hook (lambda () (imenu 1)))
+;;   (add-hook hook (lambda () (imenu-add-menubar-index 1)))
+;;   (add-hook hook (lambda () (setq imenu-auto-rescan 1)))
+;;   )
 
 ;;; Spellchecker
 ;; https://www.tenderisthebyte.com/blog/2019/06/09/spell-checking-emacs/
@@ -480,4 +484,3 @@
 (toggle-frame-fullscreen)
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
