@@ -6,6 +6,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(compilation-ask-about-save nil nil nil "Save all buffers before compilation")
+ '(compilation-auto-jump-to-first-error t)
+ '(compilation-scroll-output t)
  '(cursor-type 'bar)
  '(custom-enabled-themes '(wombat))
  '(custom-safe-themes
@@ -28,7 +31,7 @@
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
  '(org-agenda-files '("./" "~/.agenda_files/"))
- '(org-babel-load-languages '((awk . t) (C . t) (shell . t)))
+ '(org-babel-load-languages '((awk . t) (C . t) (shell . t) (php . t)))
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-habit-show-all-today t)
  '(org-habit-show-done-always-green nil)
@@ -39,8 +42,12 @@
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
  '(org-startup-indented t)
  '(org-startup-truncated nil)
+ '(outline-minor-mode-cycle t)
+ '(outline-minor-mode-cycle-filter nil)
+ '(outline-minor-mode-highlight 'append)
  '(package-selected-packages
-   '(simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
+   '(php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
+ '(php-mode-coding-style 'php)
  '(show-paren-mode t)
  '(speedbar-show-unknown-files t)
  '(tab-width 4)
@@ -83,6 +90,7 @@
   (evil-goggles-mode 1)
   (evil-vimish-fold-mode 1)
   )
+
 
 ;; (require 'evil)
 ;; (evil-mode 1)
@@ -353,6 +361,8 @@
 (setq org-confirm-babel-evaluate nil)
 (setq org-src-tab-acts-natively t)
 ;; (org-num-mode)
+;;;; PHP org babel
+(require 'ob-php)
 
 ;; TODO: IMENU hook not working properly
 ;; (dolist (hook '(org-mode-hook))
