@@ -1,11 +1,14 @@
 #!/bin/bash
-# TODO: Check for brew and stow existance first
 
 # This script will install all application for my system after cloning
 # my repo and symlinking my dotfiles. Supports fedora and ubuntu.
 
 set -e
 # set -x
+
+requirements=(brew apt stow) # TODO: Check for brew and stow existance first
+
+
 
 # Current script dir csd
 csd=$(dirname "$0")
