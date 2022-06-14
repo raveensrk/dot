@@ -463,7 +463,7 @@
 
 (with-system gnu/linux
   ;; This will add this file to buffer list when opening emacs
-  ;; TODO file-exists-p
+  ;; file-exists-p
   ;; (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
   )
 
