@@ -44,10 +44,6 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'https://github.com/tpope/vim-speeddating'
 Plug 'https://github.com/yoshi1123/vim-linebox'
 
-" Plug 'nmaiti/fzf_cscope.vim' " This doesnot work
-" @TODO try Rg or Ag with fzf
-" @TODO Check for better fzf cscope plugins
-
 " On-demand lazy load
 " Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 "

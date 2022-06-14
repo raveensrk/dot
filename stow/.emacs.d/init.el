@@ -20,6 +20,7 @@
  '(git-gutter:always-show-separator t)
  '(global-git-gutter-mode t)
  '(ledger-default-date-format "%Y-%m-%d")
+ '(ledger-report-auto-refresh nil)
  '(ledger-reports
    '(("bal
 " "ledger ")
@@ -318,6 +319,10 @@
 
 
 
+;;; Backups
+(setq backup-directory-alist 
+  '(("." . "~/.emacs.d/file-backups")))
+
 ;;; Dired
 (setq dired-kill-when-opening-new-dired-buffer t)
 (global-set-key (kbd "C-c +") 'dired-create-empty-file)
@@ -462,7 +467,7 @@
 
 (with-system gnu/linux
   ;; This will add this file to buffer list when opening emacs
-  ;; TODO file-exists-p
+  ;; file-exists-p
   ;; (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
   )
 
