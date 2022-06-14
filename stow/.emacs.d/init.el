@@ -168,6 +168,7 @@
   "lr" 'ledger-report
   "a" 'mark-whole-buffer
   "pp" 'evil-paste-after-newline
+  "c" 'recompile
   )
 (evil-define-key '(normal visual) 'global (kbd "C-a")
   'evil-numbers/inc-at-pt)
@@ -332,6 +333,8 @@
 	      (dired-do-kill-lines))
 	  (progn (revert-buffer) ; otherwise just revert to re-show
 	         (set (make-local-variable 'dired-dotfiles-show-p) t)))))
+
+(add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 
 ;;; Org mode
 ;; (setq org-startup-folded t)
