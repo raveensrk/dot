@@ -307,6 +307,10 @@
 
 
 
+;;; Backups
+(setq backup-directory-alist 
+  '(("." . "~/.emacs.d/file-backups")))
+
 ;;; Dired
 (setq dired-kill-when-opening-new-dired-buffer t)
 (global-set-key (kbd "C-c +") 'dired-create-empty-file)
