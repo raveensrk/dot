@@ -27,10 +27,14 @@ while [ "$1" ]; do
             shift
             input="$1"
             ;;
-        --ext)
-            # HELP: --ext  Only the extension will be filtered, example: md, org, bash
+        --string|-s)
             shift
-            ext="$1"
+            string="$1"
+            ;;
+        --ext)
+            # HELP: --ext  Only the extension will be filtered, example: md, org, bash, multiple --ext options allowed
+            shift
+            ext+=("$1")
             ;;
         --help|-h)
             # HELP: --help|help  prints help
@@ -44,18 +48,24 @@ while [ "$1" ]; do
     shift
 done
 
+string=${string:-.}
+
+for item  in ${ext[@]}; do
+    include="$include --include=*.$item"
+done
+include=${include:-}
+
 if [ "$input" != "" ]; then
     pushd "$input" || exit 2
 fi
 
 selection="/tmp/,goto_selection_$$.txt"
 
-
-if [ "$ext" != "" ]; then
-    grep --include="*.$ext" --exclude-dir=.git --exclude-dir=.hg -H -n -r . | fzf -m -e > "$selection"
+if [ "$include" != "" ]; then
+    grep $include --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.packages -H -n -r $string | fzf -m -e > "$selection"
 else
     # item=$(grep --exclude-dir=.git --exclude-dir=.hg -H -n -r . | fzf -e )
-    rg -L -n --no-heading -. . --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e > "$selection"
+    rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e > "$selection"
 fi
 
 

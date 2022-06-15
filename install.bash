@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# -*- outline-regexp: "### [A-za-z0-9 -_]+"; -*-
+# Local Variables:
+# eval: (outline-minor-mode 1)
+# End:
+
 # This script will install all application for my system after cloning
 # my repo and symlinking my dotfiles. Supports fedora and ubuntu.
 
@@ -7,7 +12,6 @@ set -e
 # set -x
 
 requirements=(brew apt stow) # TODO: Check for brew and stow existance first
-
 
 
 # Current script dir csd
@@ -88,7 +92,7 @@ case $machine in
         echo -e "${YELLOW}Skipping internet based install..${NC}"
         ;;
     *)
-        echo "Unknown machine! 😠"
+        echo "Unknown machine! 😠" 
         ;;
 esac
 
@@ -167,5 +171,13 @@ if ! command -v yt-dlp; then
     sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
     sudo chmod a+rx /usr/local/bin/yt-dlp
 fi
+
+
+### Keyboard Layout
+pushd $csd
+make install_colemak
+popd
+
+### Exit
 
 exit 0

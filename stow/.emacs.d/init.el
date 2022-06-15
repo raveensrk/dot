@@ -1,61 +1,5 @@
 (toggle-debug-on-error)
 
-;;; Custom set variables
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(compilation-ask-about-save nil nil nil "Save all buffers before compilation")
- '(compilation-auto-jump-to-first-error t)
- '(compilation-scroll-output t)
- '(cursor-type 'bar)
- '(custom-enabled-themes '(wombat))
- '(custom-safe-themes
-   '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
- '(dired-hide-details-hide-information-lines t)
- '(dired-hide-details-hide-symlink-targets t)
- '(dynamic-fonts-preferred-monospace-point-size 20)
- '(dynamic-fonts-preferred-proportional-point-size 20)
- '(git-gutter:always-show-separator t)
- '(global-git-gutter-mode t)
- '(ledger-default-date-format "%Y-%m-%d")
- '(ledger-report-auto-refresh nil)
- '(ledger-reports
-   '(("bal
-" "ledger ")
-     ("A" "%(binary) -f %(ledger-file) -V bal -B --flat ")
-     ("bal" "%(binary) -f %(ledger-file) bal")
-     ("Bbal" "%(binary) -f %(ledger-file) bal -B")
-     ("BbalP" "%(binary) -f %(ledger-file) bal -B --price-db prices.db")
-     ("reg" "%(binary) -f %(ledger-file) reg")
-     ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
-     ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(org-agenda-files '("./" "~/.agenda_files/"))
- '(org-babel-load-languages '((awk . t) (C . t) (shell . t) (php . t)))
- '(org-export-backends '(ascii html icalendar latex md odt))
- '(org-habit-show-all-today t)
- '(org-habit-show-done-always-green nil)
- '(org-link-descriptive nil)
- '(org-link-file-path-type 'relative)
- '(org-log-into-drawer t)
- '(org-modules
-   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
- '(org-startup-indented t)
- '(org-startup-truncated nil)
- '(outline-minor-mode-cycle t)
- '(outline-minor-mode-cycle-filter nil)
- '(outline-minor-mode-highlight 'append)
- '(package-selected-packages
-   '(php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
- '(php-mode-coding-style 'php)
- '(show-paren-mode t)
- '(speedbar-show-unknown-files t)
- '(tab-width 4)
- '(vc-follow-symlinks t)
- '(verilog-indent-level 4)
- '(word-wrap t))
-
 ;;; Package Specific
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -365,7 +309,8 @@
             (define-key org-mode-map (kbd "<tab>") 'org-cycle)
             ))
 (put 'narrow-to-region 'disabled nil)
-(setq org-agenda-files '("./"))
+(setq org-agenda-files (directory-files-recursively "~/my_repos" "\\.org$"))
+(add-to-list 'org-agenda-files '"./")
 (setq org-confirm-babel-evaluate nil)
 (setq org-src-tab-acts-natively t)
 ;; (org-num-mode)
@@ -502,3 +447,6 @@
 (toggle-frame-fullscreen)
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
