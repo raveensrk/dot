@@ -115,7 +115,7 @@ if [ "$rebuild" = "Y" ]; then
     read -r choice
     if [ "$choice" = "Y" ]; then
         tar -xf emacs-28.1.tar.gz 
-        pushd emacs-28.0 || exit 2
+        pushd emacs-28.1 || exit 2
         ./configure --prefix="$HOME/.local"
         make              # GNU make required
         make install      # as root
