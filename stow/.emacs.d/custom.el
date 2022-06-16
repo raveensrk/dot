@@ -20,12 +20,8 @@
  '(ledger-default-date-format "%Y-%m-%d")
  '(ledger-report-auto-refresh nil)
  '(ledger-reports
-   '(("bal
-" "ledger ")
-     ("A" "%(binary) -f %(ledger-file) -V bal -B --flat ")
+   '(("A" "%(binary) -f %(ledger-file) -V bal -B --flat ")
      ("bal" "%(binary) -f %(ledger-file) bal")
-     ("Bbal" "%(binary) -f %(ledger-file) bal -B")
-     ("BbalP" "%(binary) -f %(ledger-file) bal -B --price-db prices.db")
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
