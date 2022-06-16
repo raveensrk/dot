@@ -5,7 +5,10 @@ category,user@hostname
 4,Personal machine with internet - fedora
 5,Personal machine - Macbook Air
 6,Same as 1 with ubuntu 20
+7,Work machine with internet but no root access, not wsl
+
 5,raveenkumar@Raveens-MacBook-Air.local
 1,raveen@UhIN-LT-142
 2,raveen@sc07lo04
 6,raveen@work-ubuntu-20
+7,rkumar@ip-10-129-19-85.ec2.internal

@@ -32,8 +32,8 @@
 (when (package-installed-p 'evil)
   (require 'evil)
   (evil-mode 1)
-  (evil-goggles-mode 1)
-  (evil-vimish-fold-mode 1)
+  ;; (evil-goggles-mode 1)
+  ;; (evil-vimish-fold-mode 1)
   )
 
 
@@ -370,6 +370,7 @@
 ;;; Outline minor mode
 
 (setq outline-blank-line +1)
+(global-set-key (kbd "<tab>") 'outline-toggle-children)
 
 ;; This is very interesting you can enable outline minor mode and it
 ;; can recogonize heading level. Based on the comments documentation.
@@ -389,6 +390,9 @@
 ;;; Elisp
 (dolist (hook '(emacs-lisp-mode-hook))
   (add-hook hook (lambda () (outline-minor-mode 1))))
+
+;;; Shell-script-mode
+(add-hook 'shell-script-mode-hook (lambda () (outline-minor-mode 1)))
 
 ;;; Load all elisp files under ~/.emacs.d/site-lisp
 

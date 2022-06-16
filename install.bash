@@ -51,7 +51,7 @@ case $machine in
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         fi 
         brew install $(xargs < ./packages_list_osx.txt)
-	;;
+	    ;;
     4)
         sudo dnf install "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
         sudo dnf install  $(xargs < ./packages_list_fedora.txt)
@@ -91,6 +91,10 @@ case $machine in
     2)
         echo -e "${YELLOW}Skipping internet based install..${NC}"
         ;;
+    7)
+        echo -e "${YELLOW}Installing for work machine with internet but with no root access and no wsl...${NC}"
+        ;;
+
     *)
         echo "Unknown machine! 😠" 
         ;;
@@ -119,13 +123,18 @@ popd
 case "$machine" in
     1|3)
         stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
+        make install_colemak
+        ;;
+    1|2|3|4|6|7)
         stow -R stow_linux -t "$HOME" --no-folding || exit 2
         ;;
     5)
         stow -R stow_macos -t "$HOME" --no-folding || exit 2
         ;;
+    *)
+        echo Unknown machine for stow operation...
+        ;;
 esac
-
 
 [ -d stow_vim_plugins ] && stow -R stow_vim_plugins -t "$HOME" || exit 2
 
@@ -158,7 +167,16 @@ if ! command -v fzf; then
 fi
 
 pushd "$HOME/.packages"
-./clone.bash
+case "$machine" in
+    7)
+        ./clone.bash --rebuild
+        break
+        ;;
+    *)
+        ./clone.bash
+        break
+        ;;
+esac
 popd
 
 ln -sf "$HOME/.packages/PathPicker-main/fpp" ~/.local/bin
@@ -172,11 +190,6 @@ if ! command -v yt-dlp; then
     sudo chmod a+rx /usr/local/bin/yt-dlp
 fi
 
-
-### Keyboard Layout
-pushd $csd
-make install_colemak
-popd
 
 ### Exit
 
