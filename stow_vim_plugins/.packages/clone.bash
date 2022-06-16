@@ -106,7 +106,6 @@ if [ "$rebuild" = "Y" ]; then
         autoreconf -i  # if not installing from prepared release tarball
         ./configure --prefix="$HOME/.local"
         make              # GNU make required
-        make check        # optional, requires python3 with pytest >= 3.6, pexpect
         make install      # as root
         popd || exit 2
     fi 
@@ -119,7 +118,6 @@ if [ "$rebuild" = "Y" ]; then
         pushd emacs-28.0 || exit 2
         ./configure --prefix="$HOME/.local"
         make              # GNU make required
-        make check        # optional, requires python3 with pytest >= 3.6, pexpect
         make install      # as root
         popd || exit 2
     fi 
