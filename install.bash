@@ -174,7 +174,6 @@ case "$machine" in
         ;;
     *)
         ./clone.bash
-        break
         ;;
 esac
 popd
