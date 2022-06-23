@@ -31,3 +31,4 @@ stow/.emacs.d/projectile-bookmarks.eld
 stow/.emacs.d/projectile.cache
 **#
 *.#.*
+stow/.emacs.d/request/curl-cookie-jar

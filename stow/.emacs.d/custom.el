@@ -34,6 +34,9 @@
  '(org-log-into-drawer t)
  '(org-modules
    '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
+ '(org-outline-path-complete-in-steps nil)
+ '(org-refile-allow-creating-parent-nodes 'confirm)
+ '(org-refile-use-outline-path 'file)
  '(org-startup-indented t)
  '(org-startup-truncated nil)
  '(outline-minor-mode-cycle t)
