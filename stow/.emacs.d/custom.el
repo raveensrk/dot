@@ -49,7 +49,6 @@
  '(speedbar-show-unknown-files t)
  '(tab-width 4)
  '(vc-follow-symlinks t)
- '(verilog-indent-level 4)
  '(word-wrap t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
