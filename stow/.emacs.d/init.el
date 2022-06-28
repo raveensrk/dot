@@ -1,5 +1,3 @@
-(toggle-debug-on-error)
-
 ;;; Package Specific
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -295,6 +293,7 @@
                   "IN-PROGRESS|CURRENT"
                   "|"
                   "DONE"
+                  "SKIPPED"
                   )))
 
 
@@ -310,7 +309,30 @@
             ))
 (put 'narrow-to-region 'disabled nil)
 (setq org-agenda-files (directory-files-recursively "~/my_repos" "\\.org$"))
+
+
+;;; Templates and Macros https://stackoverflow.com/questions/1817257/how-to-determine-operating-system-in-elisp
+(defmacro with-system (type &rest body)
+  "Evaluate BODY if `system-type' equals TYPE."
+  (declare (indent defun))
+  `(when (eq system-type ',type)
+     ,@body))
+
+(with-system gnu/linux
+  ;; This will add this file to buffer list when opening emacs
+  ;; file-exists-p
+  ;; (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
+  )
+
+(with-system windows-nt
+  ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
+  )
+
+(with-system windows-nt
+  (setq org-agenda-files (directory-files-recursively "c:Github/journal-work" "\\.org$"))
+  )
 (add-to-list 'org-agenda-files '"./")
+(setq org-agenda-archives-mode t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-src-tab-acts-natively t)
 ;; (org-num-mode)
@@ -407,23 +429,6 @@
 
 (my-load-elisp-files my-lisp-files)
 
-;;; Templates and Macros https://stackoverflow.com/questions/1817257/how-to-determine-operating-system-in-elisp
-(defmacro with-system (type &rest body)
-  "Evaluate BODY if `system-type' equals TYPE."
-  (declare (indent defun))
-  `(when (eq system-type ',type)
-     ,@body))
-
-(with-system gnu/linux
-  ;; This will add this file to buffer list when opening emacs
-  ;; file-exists-p
-  ;; (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
-  )
-
-(with-system windows-nt
-  ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
-  )
-
 
 
 ;;; Notes
@@ -448,9 +453,45 @@
  ;; If there is more than one, they won't work right.
  )
 
-(toggle-frame-fullscreen)
+;; (toggle-frame-fullscreen)
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+
+;;; Open file in external application
+
+(defun xah-open-in-external-app (&optional @fname)
+  "Open the current file or dired marked files in external app.
+When called in emacs lisp, if @fname is given, open that.
+URL `http://xahlee.info/emacs/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2019-11-04 2021-02-16"
+  (interactive)
+  (let* (
+         ($file-list
+          (if @fname
+              (progn (list @fname))
+            (if (string-equal major-mode "dired-mode")
+                (dired-get-marked-files)
+              (list (buffer-file-name)))))
+         ($do-it-p (if (<= (length $file-list) 5)
+                       t
+                     (y-or-n-p "Open more than 5 files? "))))
+    (when $do-it-p
+      (cond
+       ((string-equal system-type "windows-nt")
+        (mapc
+         (lambda ($fpath)
+           (shell-command (concat "PowerShell -Command \"Invoke-Item -LiteralPath\" " "'" (shell-quote-argument (expand-file-name $fpath )) "'")))
+         $file-list))
+       ((string-equal system-type "darwin")
+        (mapc
+         (lambda ($fpath)
+           (shell-command
+            (concat "open " (shell-quote-argument $fpath))))  $file-list))
+       ((string-equal system-type "gnu/linux")
+        (mapc
+         (lambda ($fpath) (let ((process-connection-type nil))
+                            (start-process "" nil "xdg-open" $fpath))) $file-list))))))
