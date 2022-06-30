@@ -1,4 +1,4 @@
-(toggle-debug-on-error)
+;; (toggle-debug-on-error)
 
 ;;; Custom set variables
 (custom-set-variables
@@ -47,7 +47,7 @@
  '(outline-minor-mode-cycle-filter nil)
  '(outline-minor-mode-highlight 'append)
  '(package-selected-packages
-   '(php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
+   '(posframe php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
  '(php-mode-coding-style 'php)
  '(show-paren-mode t)
  '(speedbar-show-unknown-files t)
@@ -414,6 +414,8 @@
 (setq-default abbrev-mode 1)
 (winner-mode 1)
 (recentf-mode 1)
+(setq recentf-max-menu-items 200)
+(setq recentf-max-saved-items 200)
 (save-place-mode 1)
 
 ;;; Hippie expand

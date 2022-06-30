@@ -29,3 +29,4 @@ lesspipe
 rsync
 grep
 bfg
+jq
