@@ -35,3 +35,14 @@ export UNDERLINE=$(tput smul)
 
 export PS1="\[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\W \[${NC}\]$ "
 # export PS1="\u @ \h : \W\n $ "
+
+unset -f red; red () { tput setaf 1; }
+unset -f green; green () { tput setaf 2; }
+unset -f yellow; yellow () { tput setaf 3; }
+unset -f blue; blue () { tput setaf 4; }
+unset -f nc; nc () { tput sgr0; }
+unset -f reset; reset () { tput sgr0; }
+unset -f blink; blink () { tput blink; }
+unset -f bold; bold () { tput bold; }
+unset -f reverse; reverse () { tput smso; }
+unset -f underline; underline () { tput smul; }

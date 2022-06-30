@@ -11,30 +11,12 @@
 set -e
 # set -x
 
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-NC=$(tput sgr0)
-BLUE=$(tput setaf 4)
-red () {
-    tput setaf 1
-}
+# Current script dir csd
+csd=$(dirname "$0")
 
-green () {
-    tput setaf 2
-}
-
-yellow () {
-    tput setaf 3
-}
-
-blue () {
-    tput setaf 4
-}
-
-nc () {
-    tput sgr0
-}
+pushd "$csd"
+bash add_sources.bash 
+popd
 
 
 requirements=(stow)
@@ -42,17 +24,14 @@ requirements=(stow)
 for item in "${requirements[@]}"; do
     echo checking if $item is present...
     if command -v $item; then
-	echo -e "$GREEN$item present...$NC"
+	    echo -e "$GREEN$item present...$NC"
     else
-	echo -e "$RED$item not present...$NC"
-	echo -e "$RED$Script exitting...$NC"
-	exit 2
+	    echo -e "$RED$item not present...$NC"
+	    echo -e "$RED$Script exitting...$NC"
+	    exit 2
     fi
 done
 
-
-# Current script dir csd
-csd=$(dirname "$0")
 
 while [ "$1" ]; do
     case "$1" in
@@ -130,16 +109,16 @@ case $machine in
         ;;
     7)
         echo -e "${YELLOW}Installing for work machine with internet but with no root access and no wsl...${NC}"
-	yellow
-	echo "Setting the emacs and vim as flatpak version..."
-	nc
-	emacs () {
-	    flatpak run org.gnu.emacs --display $DISPLAY
-	}
+	    yellow
+	    echo "Setting the emacs and vim as flatpak version..."
+	    nc
+	    emacs () {
+	        flatpak run org.gnu.emacs --display $DISPLAY
+	    }
 
-	vim () {
-	    flatpak run org.vim.Vim
-	}
+	    vim () {
+	        flatpak run org.vim.Vim
+	    }
         ;;
     *)
         echo "Unknown machine! 😠" 
@@ -168,12 +147,12 @@ if [ -f "~/.emacs" ]; then
     
     read -re choice
     if [ $choice = "Y" ]; then
-	rm -iv ~/.emacs
+	    rm -iv ~/.emacs
     else
-	red
-	echo Cannot proceed without removing ~/.emacs file.
-	exit 2
-	nc
+	    red
+	    echo Cannot proceed without removing ~/.emacs file.
+	    exit 2
+	    nc
     fi
 fi
 
