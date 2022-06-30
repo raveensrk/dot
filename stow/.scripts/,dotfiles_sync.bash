@@ -11,6 +11,10 @@ DOTFILES=$1 # Can also sync other repos not just dotfiles. DOTFILES variable inp
 
 pushd $DOTFILES
 
+if [ -f "./Makefile" ]; then
+  make clean  
+fi
+
 if [ ! -d .git ]; then
     exit 0
 fi

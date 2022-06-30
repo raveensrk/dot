@@ -1,60 +1,9 @@
-;; (toggle-debug-on-error)
 
-;;; Custom set variables
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(compilation-ask-about-save nil nil nil "Save all buffers before compilation")
- '(compilation-auto-jump-to-first-error t)
- '(compilation-scroll-output t)
- '(cursor-type 'bar)
- '(custom-enabled-themes '(wombat))
- '(custom-safe-themes
-   '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
- '(dired-hide-details-hide-information-lines t)
- '(dired-hide-details-hide-symlink-targets t)
- '(dynamic-fonts-preferred-monospace-point-size 20)
- '(dynamic-fonts-preferred-proportional-point-size 20)
- '(git-gutter:always-show-separator t)
- '(global-git-gutter-mode t)
- '(ledger-default-date-format "%Y-%m-%d")
- '(ledger-report-auto-refresh nil)
- '(ledger-reports
-   '(("bal
-" "ledger ")
-     ("A" "%(binary) -f %(ledger-file) -V bal -B --flat ")
-     ("bal" "%(binary) -f %(ledger-file) bal")
-     ("Bbal" "%(binary) -f %(ledger-file) bal -B")
-     ("BbalP" "%(binary) -f %(ledger-file) bal -B --price-db prices.db")
-     ("reg" "%(binary) -f %(ledger-file) reg")
-     ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
-     ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(org-agenda-files '("./" "~/.agenda_files/"))
- '(org-babel-load-languages '((awk . t) (C . t) (shell . t) (php . t)))
- '(org-export-backends '(ascii html icalendar latex md odt))
- '(org-habit-show-all-today t)
- '(org-habit-show-done-always-green nil)
- '(org-link-descriptive nil)
- '(org-link-file-path-type 'relative)
- '(org-log-into-drawer t)
- '(org-modules
-   '(ol-bbdb ol-bibtex ol-docview ol-doi ol-eww ol-gnus org-habit ol-info ol-irc ol-mhe org-mouse ol-rmail ol-w3m))
- '(org-startup-indented t)
- '(org-startup-truncated nil)
- '(outline-minor-mode-cycle t)
- '(outline-minor-mode-cycle-filter nil)
- '(outline-minor-mode-highlight 'append)
- '(package-selected-packages
-   '(posframe php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
- '(php-mode-coding-style 'php)
- '(show-paren-mode t)
- '(speedbar-show-unknown-files t)
- '(tab-width 4)
- '(vc-follow-symlinks t)
- '(verilog-indent-level 4)
- '(word-wrap t))
+;; (toggle-debug-on-error)
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+
 
 ;;; Package Specific
 (require 'package)
@@ -88,8 +37,10 @@
 (when (package-installed-p 'evil)
   (require 'evil)
   (evil-mode 1)
-  (evil-goggles-mode 1)
-  (evil-vimish-fold-mode 1)
+  ;; (evil-goggles-mode 1)
+  ;; (evil-vimish-fold-mode 1)
+  (global-evil-leader-mode 1)
+  (evil-leader/set-leader "<SPC>")
   )
 
 
@@ -119,8 +70,6 @@
     (evil-insert-newline-below)
     (evil-paste-after 1)
     ))
-(global-evil-leader-mode 1)
-(evil-leader/set-leader "<SPC>")
 
 (global-set-key (kbd "C-c <C-left>") 'evil-window-left)
 (global-set-key (kbd "C-c <C-right>") 'evil-window-right)
@@ -351,6 +300,7 @@
                   "IN-PROGRESS|CURRENT"
                   "|"
                   "DONE"
+                  "SKIPPED"
                   )))
 
 
@@ -365,7 +315,31 @@
             (define-key org-mode-map (kbd "<tab>") 'org-cycle)
             ))
 (put 'narrow-to-region 'disabled nil)
-(setq org-agenda-files '("./"))
+(setq org-agenda-files (directory-files-recursively "~/my_repos" "\\.org$"))
+
+
+;;; Templates and Macros https://stackoverflow.com/questions/1817257/how-to-determine-operating-system-in-elisp
+(defmacro with-system (type &rest body)
+  "Evaluate BODY if `system-type' equals TYPE."
+  (declare (indent defun))
+  `(when (eq system-type ',type)
+     ,@body))
+
+(with-system gnu/linux
+  ;; This will add this file to buffer list when opening emacs
+  ;; file-exists-p
+  ;; (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
+  )
+
+(with-system windows-nt
+  ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
+  )
+
+(with-system windows-nt
+  (setq org-agenda-files (directory-files-recursively "c:Github/journal-work" "\\.org$"))
+  )
+(add-to-list 'org-agenda-files '"./")
+(setq org-agenda-archives-mode t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-src-tab-acts-natively t)
 ;; (org-num-mode)
@@ -427,6 +401,7 @@
 ;;; Outline minor mode
 
 (setq outline-blank-line +1)
+;; (global-set-key (kbd "<tab>") 'outline-toggle-children)
 
 ;; This is very interesting you can enable outline minor mode and it
 ;; can recogonize heading level. Based on the comments documentation.
@@ -447,6 +422,9 @@
 (dolist (hook '(emacs-lisp-mode-hook))
   (add-hook hook (lambda () (outline-minor-mode 1))))
 
+;;; Shell-script-mode
+(add-hook 'shell-script-mode-hook (lambda () (outline-minor-mode 1)))
+
 ;;; Load all elisp files under ~/.emacs.d/site-lisp
 
 (setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
@@ -459,23 +437,6 @@
     (setq list (cdr list))))
 
 (my-load-elisp-files my-lisp-files)
-
-;;; Templates and Macros https://stackoverflow.com/questions/1817257/how-to-determine-operating-system-in-elisp
-(defmacro with-system (type &rest body)
-  "Evaluate BODY if `system-type' equals TYPE."
-  (declare (indent defun))
-  `(when (eq system-type ',type)
-     ,@body))
-
-(with-system gnu/linux
-  ;; This will add this file to buffer list when opening emacs
-  ;; file-exists-p
-  ;; (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
-  )
-
-(with-system windows-nt
-  ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
-  )
 
 
 
@@ -501,6 +462,43 @@
  ;; If there is more than one, they won't work right.
  )
 
-(toggle-frame-fullscreen)
+;; (toggle-frame-fullscreen)
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+
+
+;;; Open file in external application
+
+(defun xah-open-in-external-app (&optional @fname)
+  "Open the current file or dired marked files in external app.
+When called in emacs lisp, if @fname is given, open that.
+URL `http://xahlee.info/emacs/emacs/emacs_dired_open_file_in_ext_apps.html'
+Version 2019-11-04 2021-02-16"
+  (interactive)
+  (let* (
+         ($file-list
+          (if @fname
+              (progn (list @fname))
+            (if (string-equal major-mode "dired-mode")
+                (dired-get-marked-files)
+              (list (buffer-file-name)))))
+         ($do-it-p (if (<= (length $file-list) 5)
+                       t
+                     (y-or-n-p "Open more than 5 files? "))))
+    (when $do-it-p
+      (cond
+       ((string-equal system-type "windows-nt")
+        (mapc
+         (lambda ($fpath)
+           (shell-command (concat "PowerShell -Command \"Invoke-Item -LiteralPath\" " "'" (shell-quote-argument (expand-file-name $fpath )) "'")))
+         $file-list))
+       ((string-equal system-type "darwin")
+        (mapc
+         (lambda ($fpath)
+           (shell-command
+            (concat "open " (shell-quote-argument $fpath))))  $file-list))
+       ((string-equal system-type "gnu/linux")
+        (mapc
+         (lambda ($fpath) (let ((process-connection-type nil))
+                            (start-process "" nil "xdg-open" $fpath))) $file-list))))))

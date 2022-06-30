@@ -29,3 +29,6 @@ stow_vim_plugins/.emacs.d/elpa
 stow/.emacs.d/.org-id-locations
 stow/.emacs.d/projectile-bookmarks.eld
 stow/.emacs.d/projectile.cache
+**#
+*.#.*
+stow/.emacs.d/request/curl-cookie-jar
