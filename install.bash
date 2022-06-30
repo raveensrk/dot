@@ -11,7 +11,44 @@
 set -e
 # set -x
 
-requirements=(brew apt stow) # TODO: Check for brew and stow existance first
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+NC=$(tput sgr0)
+BLUE=$(tput setaf 4)
+red () {
+    tput setaf 1
+}
+
+green () {
+    tput setaf 2
+}
+
+yellow () {
+    tput setaf 3
+}
+
+blue () {
+    tput setaf 4
+}
+
+nc () {
+    tput sgr0
+}
+
+
+requirements=(stow)
+
+for item in "${requirements[@]}"; do
+    echo checking if $item is present...
+    if command -v $item; then
+	echo -e "$GREEN$item present...$NC"
+    else
+	echo -e "$RED$item not present...$NC"
+	echo -e "$RED$Script exitting...$NC"
+	exit 2
+    fi
+done
 
 
 # Current script dir csd
@@ -93,8 +130,17 @@ case $machine in
         ;;
     7)
         echo -e "${YELLOW}Installing for work machine with internet but with no root access and no wsl...${NC}"
-        ;;
+	yellow
+	echo "Setting the emacs and vim as flatpak version..."
+	nc
+	emacs () {
+	    flatpak run org.gnu.emacs --display $DISPLAY
+	}
 
+	vim () {
+	    flatpak run org.vim.Vim
+	}
+        ;;
     *)
         echo "Unknown machine! 😠" 
         ;;
@@ -108,6 +154,30 @@ esac
 [ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
 [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
 
+
+if [ -f "~/.emacs" ]; then
+    yellow
+    echo ~/.emacs is present
+    nc
+
+    cat ~/.emacs
+    
+    blue
+    echo Do you want to remove ~/.emacs? [Y/n]
+    nc
+    
+    read -re choice
+    if [ $choice = "Y" ]; then
+	rm -iv ~/.emacs
+    else
+	red
+	echo Cannot proceed without removing ~/.emacs file.
+	exit 2
+	nc
+    fi
+fi
+
+
 stow () {
     command stow --ignore=.DS_Store $@
 }
@@ -116,9 +186,6 @@ pushd "$csd"
 # [ -f "$HOME/.inputrc" ] && rm -ivf "$HOME/.inputrc"
 stow -R stow -t "$HOME" --no-folding || exit 2
 
-pushd packages
-vim -c "source install.vim | q"
-popd
 
 case "$machine" in
     1|3)
@@ -140,25 +207,15 @@ esac
 
 popd
 
-vim -c "PlugInstall | PlugClean | qa"
-
-if [ "$machine" != "2" ]; then
-    if [ -f ~/.emacs ]; then
-        echo -e "${YELLOW}~/.emacs present. Remove it? [Y/n]${NC}" 
-        read -re choice
-        if [ "$choice" = "Y" ]; then
-            less ~/.emacs
-            rm ~/.emacs
-        else
-            echo -e "${RED}Cannot proceed with ~/.emacs file. It conflicts with my ~/.emacs.d/init.el.${NC}"
-        fi 
-        unset choice
-    fi
-    emacs -nw -f my-package-refresh-and-install-selected-packages --kill
-fi 
+# Install plugins as required inside the editor
+# vim -c "PlugInstall | PlugClean | qa"
+# pushd packages
+# vim -c "source install.vim | q"
+# popd
+# emacs -nw -f my-package-refresh-and-install-selected-packages --kill
 
 if [[ ! -d "$HOME/.fzf/.git" ]]; then
-    git clone --depth 1 "https://github.com/junegunn/fzf.git" \
+    git clone --depth 1 "git@github.com:junegunn/fzf.git" \
         "$csd/stow_vim_plugins/.fzf"
 fi
 
@@ -167,26 +224,16 @@ if ! command -v fzf; then
 fi
 
 pushd "$HOME/.packages"
-case "$machine" in
-    7)
-        ./clone.bash --rebuild
-        break
-        ;;
-    *)
-        ./clone.bash
-        ;;
-esac
+./clone.bash
 popd
 
-ln -sf "$HOME/.packages/PathPicker-main/fpp" ~/.local/bin
-
 if [[ ! -d "$HOME/.tmux/plugins/tpm/.git" ]]; then
-    git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm"
+    git clone "git@github.com:tmux-plugins/tpm.git" "$HOME/.tmux/plugins/tpm"
 fi
 
 if ! command -v yt-dlp; then
-    sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
-    sudo chmod a+rx /usr/local/bin/yt-dlp
+    curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
+    chmod a+rx ~/.local/bin/yt-dlp
 fi
 
 

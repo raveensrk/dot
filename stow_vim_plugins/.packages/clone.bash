@@ -29,13 +29,6 @@ fi
 
 set -e
 
-for f in *.tar*; do
-    tar xf "$f"
-done
-
-for f in *.zip; do
-    unzip -qu "$f"
-done
 
 if [ "$1" = "--rebuild" ]; then
     rebuild="Y"
@@ -44,6 +37,14 @@ else
 fi
 
 if [ "$rebuild" = "Y" ]; then
+
+    for f in *.tar*; do
+	tar xf "$f"
+    done
+
+    for f in *.zip; do
+	unzip -qu "$f"
+    done
 
     # Usually -j option to make builds it faster but difficult if it
     # errors out since it runs the compilation parallely

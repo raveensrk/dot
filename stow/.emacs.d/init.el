@@ -1,3 +1,7 @@
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+
 ;;; Package Specific
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -32,6 +36,8 @@
   (evil-mode 1)
   ;; (evil-goggles-mode 1)
   ;; (evil-vimish-fold-mode 1)
+  (global-evil-leader-mode 1)
+  (evil-leader/set-leader "<SPC>")
   )
 
 
@@ -61,8 +67,6 @@
     (evil-insert-newline-below)
     (evil-paste-after 1)
     ))
-(global-evil-leader-mode 1)
-(evil-leader/set-leader "<SPC>")
 
 (global-set-key (kbd "C-c <C-left>") 'evil-window-left)
 (global-set-key (kbd "C-c <C-right>") 'evil-window-right)
@@ -457,8 +461,6 @@
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
 
 
 ;;; Open file in external application

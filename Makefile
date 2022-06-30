@@ -17,5 +17,11 @@ install_colemak:
 	cd colemak-1.0
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
 
+install_vim_from_flathub:
+	mkdir tmp
+	cd tmp
+	wget https://dl.flathub.org/repo/appstream/org.vim.Vim.flatpakref
+	flatpak install --user org.vim.Vim.flatpakref
+
 uninstall_colemak:
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
