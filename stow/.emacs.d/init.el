@@ -396,7 +396,7 @@
 ;;; Outline minor mode
 
 (setq outline-blank-line +1)
-(global-set-key (kbd "<tab>") 'outline-toggle-children)
+;; (global-set-key (kbd "<tab>") 'outline-toggle-children)
 
 ;; This is very interesting you can enable outline minor mode and it
 ;; can recogonize heading level. Based on the comments documentation.

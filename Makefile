@@ -20,8 +20,18 @@ install_colemak:
 install_vim_from_flathub:
 	mkdir tmp
 	cd tmp
-	wget https://dl.flathub.org/repo/appstream/org.vim.Vim.flatpakref
+	wget -nc https://dl.flathub.org/repo/appstream/org.vim.Vim.flatpakref
 	flatpak install --user org.vim.Vim.flatpakref
+
+install_git:
+	mkdir tmp
+	cd tmp
+	wget -nc https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
+	tar xf git-2.9.5.tar.gz
+	cd git-2.9.5
+	./configure --prefix=$$HOME/.local
+	make -j
+	make install
 
 uninstall_colemak:
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
