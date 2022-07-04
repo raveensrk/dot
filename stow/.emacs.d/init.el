@@ -335,9 +335,9 @@
   ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
   )
 
-(with-system windows-nt
-  (setq org-agenda-files (directory-files-recursively "c:Github/journal-work" "\\.org$"))
-  )
+;; (with-system windows-nt
+;;   (setq org-agenda-files (directory-files-recursively "c:Github/journal-work" "\\.org$"))
+;;   )
 (add-to-list 'org-agenda-files '"./")
 (setq org-agenda-archives-mode t)
 (setq org-confirm-babel-evaluate nil)
