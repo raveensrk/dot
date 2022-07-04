@@ -51,7 +51,7 @@ upgrade_ubuntu_18:
 upgrade_ubuntu_20:
 	bash upgrade_ubuntu.bash packages_list_ubuntu_20.txt
 
-setup_vim:
-    [ ! -d "$HOME/.vim/undo" ] && mkdir -p "$HOME/.vim/undo"
-    [ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
-    [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
+# setup_vim:
+#     [ ! -d "$HOME/.vim/undo" ] && mkdir -p "$HOME/.vim/undo"
+#     [ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
+#     [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
