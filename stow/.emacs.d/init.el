@@ -214,7 +214,7 @@
 (global-set-key (kbd "C-c F") 'counsel-org-file)
 
 ;;;; Helm
-(helm-mode 1)
+;; (helm-mode 1)
 
 ;;; Startup and behaviour
 (setq inhibit-startup-screen t)
