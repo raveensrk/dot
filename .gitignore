@@ -32,3 +32,4 @@ stow/.emacs.d/projectile.cache
 **#
 *.#.*
 stow/.emacs.d/request/curl-cookie-jar
+tmp/*
