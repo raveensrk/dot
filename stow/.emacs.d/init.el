@@ -415,6 +415,7 @@
 ;; something
 
 ;;; General
+(setq vc-follow-symlinks t)
 (global-set-key (kbd "C-c m") 'menu-bar-open)
 
 ;;; Elisp
@@ -501,3 +502,4 @@ Version 2019-11-04 2021-02-16"
         (mapc
          (lambda ($fpath) (let ((process-connection-type nil))
                             (start-process "" nil "xdg-open" $fpath))) $file-list))))))
+

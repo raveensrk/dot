@@ -62,7 +62,7 @@ fi
 selection="/tmp/,goto_selection_$$.txt"
 
 if [ "$include" != "" ]; then
-    grep $include --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.packages -H -n -r $string | fzf -m -e > "$selection"
+    grep $include --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.packages -H -n -R $string | fzf -m -e > "$selection"
 else
     # item=$(grep --exclude-dir=.git --exclude-dir=.hg -H -n -r . | fzf -e )
     rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e > "$selection"
@@ -76,17 +76,9 @@ while read -r -u5 item; do
     line=$(echo "$item" | awk -F ':' '{print $2}')
     # echo "$line"
     file_absolute_path="$file"
-    # echo -e "${YELLOW}Selection: \"$item\"${NC}" 
-    # echo -e "${YELLOW}Command: vim -c \":$line\" \"$file_absolute_path\"${NC}" 
 
-
-    if [ "$EDITOR" = "emacs -nw" ]; then
-        echo "emacsclient -nw -a emacs -nw \"+$line\" \"$file_absolute_path\" "
-        emacsclient -nw -a emacs -nw "+$line" "$file_absolute_path"
-    else
-        vim "$file_absolute_path" "+$line"
-    fi
-    
+    echo "$EDITOR \"+$line\" \"$file_absolute_path\" "
+    $EDITOR "+$line" "$file_absolute_path"
 
 done 5< "$selection"
 
