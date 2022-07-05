@@ -97,7 +97,7 @@
   "=" 'my-indent-whole-buffer
   "b" 'switch-to-buffer
   "fr" 'counsel-recentf
-  "ff" 'helm-find-files
+  "ff" 'counsel-find-file
   "e" 'eval-buffer
   "\t" 'org-cycle
   "r" 'restart-emacs
