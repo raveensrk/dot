@@ -96,7 +96,7 @@
 (evil-leader/set-key
   "=" 'my-indent-whole-buffer
   "b" 'switch-to-buffer
-  "fr" 'helm-recentf
+  "fr" 'counsel-recentf
   "ff" 'helm-find-files
   "e" 'eval-buffer
   "\t" 'org-cycle
