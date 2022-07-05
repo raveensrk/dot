@@ -169,7 +169,6 @@ stow -R stow -t "$HOME" --no-folding || exit 2
 case "$machine" in
     1|3)
         stow -R stow_wsl2_scripts -t "$HOME" --no-folding || exit 2
-        make install_colemak
         ;;
     1|2|3|4|6|7)
         stow -R stow_linux -t "$HOME" --no-folding || exit 2
@@ -205,16 +204,6 @@ fi
 pushd "$HOME/.packages"
 ./clone.bash
 popd
-
-if [[ ! -d "$HOME/.tmux/plugins/tpm/.git" ]]; then
-    git clone "git@github.com:tmux-plugins/tpm.git" "$HOME/.tmux/plugins/tpm"
-fi
-
-if ! command -v yt-dlp; then
-    curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
-    chmod a+rx ~/.local/bin/yt-dlp
-fi
-
 
 ### Exit
 

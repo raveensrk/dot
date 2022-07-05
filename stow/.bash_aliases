@@ -1,13 +1,11 @@
 # BASH ALIASES sourced at ~/.bashrc
 set -o vi
 
-
 if [ -d "$HOME/my_repos" ]; then
     export MY_REPOS="$HOME/my_repos"
 elif [ -d "$HOME/repos" ]; then
     export MY_REPOS="$HOME/repos"
 fi
-
 
 # {{{ ENVIRONMENT VARIABLES
 
@@ -178,8 +176,8 @@ done
 # {{{ VIM STUFF
 # export VISUAL="vim"
 # export EDITOR="vim"
-export VISUAL="emacs -nw"
-export EDITOR="emacs -nw"
+export VISUAL="emacsclient -a emacs"
+export EDITOR="emacsclient -a emacs"
 alias vs="command vim --servername VIM"
 v () {
     local servername
@@ -258,6 +256,10 @@ source "$HOME/.packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
 
 [ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
 
+# Use bash-completion, if available
+[[ $PS1 && -f ~/.local/share/bash-completion/bash_completion  ]] && \
+    . ~/.local/share/bash-completion/bash_completion
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -268,8 +270,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-
 
 # Colors
 LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" # TODO not working.
