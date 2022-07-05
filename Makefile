@@ -51,7 +51,17 @@ upgrade_ubuntu_18:
 upgrade_ubuntu_20:
 	bash upgrade_ubuntu.bash packages_list_ubuntu_20.txt
 
-setup_vim:
-    [ ! -d "$HOME/.vim/undo" ] && mkdir -p "$HOME/.vim/undo"
-    [ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
-    [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
+# setup_vim:
+#     [ ! -d "$HOME/.vim/undo" ] && mkdir -p "$HOME/.vim/undo"
+#     [ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
+#     [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
+
+
+install_bash_completions:
+	cd stow_vim_plugins/.packages
+	wget -nc https://github.com/scop/bash-completion/releases/download/2.11/bash-completion-2.11.tar.xz
+	cd bash-completion-2.11
+	./configure --prefix=$$HOME/.local
+	make           # GNU make required
+	make check     # optional, requires python3 with pytest >= 3.6, pexpect
+	make install   # as root
