@@ -1,6 +1,9 @@
 #!/bin/bash
 
-set -e
+# set -e
+
+source ~/.bash_prompt 
+
 
 # HELP: This script uses fzf to print all the lines of text present in
 # HELP: the current directory recrusively. Then it pipes it to fzf and
@@ -60,12 +63,25 @@ if [ "$input" != "" ]; then
 fi
 
 selection="/tmp/,goto_selection_$$.txt"
+touch "$selection"
+
+
+trap clean_up INT
+
+clean_up () {
+    yellow
+    echo caught ^C, removing $selection
+    nc
+    rm $selection
+    exit
+}
+
 
 if [ "$include" != "" ]; then
-    grep $include --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.packages -H -n -R $string | fzf -m -e > "$selection"
+    grep $include --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.packages -H -n -R $string | fzf -m -e -d : -n 3 > "$selection"
 else
     # item=$(grep --exclude-dir=.git --exclude-dir=.hg -H -n -r . | fzf -e )
-    rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e > "$selection"
+    rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e -d : -n 3 > "$selection"
 fi
 
 
