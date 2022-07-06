@@ -31,3 +31,4 @@ urlview
 vim
 vim-gtk
 yank
+toilet

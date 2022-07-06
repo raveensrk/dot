@@ -1,9 +1,8 @@
+;;; Raveen's Emacs init
 
 ;; (toggle-debug-on-error)
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
-
-
 
 ;;; Package Specific
 (require 'package)
@@ -417,6 +416,7 @@
 ;;; General
 (setq vc-follow-symlinks t)
 (global-set-key (kbd "C-c m") 'menu-bar-open)
+(global-linum-mode 1)
 
 ;;; Elisp
 (dolist (hook '(emacs-lisp-mode-hook))
