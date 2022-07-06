@@ -57,82 +57,11 @@ if [[ "$machine" == "" ]]; then
     echo -e "${RED}Machine variable unset. Add your machine to the hostlist.txt file.${NC}"
 fi
 
-echo -e "${YELLOW} Installing for machine $machine...${NC}"
-
-# {{{ Packages installed with package manager
-
-case $machine in
-    5)
-        if ! command -v brew; then
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        fi 
-        brew install $(xargs < ./packages_list_osx.txt)
-	    ;;
-    4)
-        sudo dnf install "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
-        sudo dnf install  $(xargs < ./packages_list_fedora.txt)
-        ;;
-    1|3)
-        echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
-        echo -e "${BLUE}You have 5 seconds to answer!${NC}"
-        TMOUT=5
-        read -r choice
-        TMOUT=0
-        if [ "$choice" = "Y" ]; then
-            sudo apt-get update
-            # sudo apt-get upgrade
-            sudo apt-get autoremove
-            sudo apt-get autoclean
-            sudo apt-get install -y $(xargs < packages_list_ubuntu.txt)
-            sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
-        fi
-        unset choice
-        ;;
-    6)
-        echo -e "${BLUE}Do you want to reinstall apt packages from internet? [Y/n]:${NC}"
-        echo -e "${BLUE}You have 5 seconds to answer!${NC}"
-        TMOUT=5
-        read -r choice
-        TMOUT=0
-        if [ "$choice" = "Y" ]; then
-            sudo apt-get update
-            # sudo apt-get upgrade
-            sudo apt-get autoremove
-            sudo apt-get autoclean
-            sudo apt-get install -y $(xargs < packages_list_ubuntu_20.txt)
-            sudo apt-get install -y lftp=4.8.1-1ubuntu0.1 --allow-downgrades || echo -e "${YELLOW}LFTP install failed...${NC}"
-        fi
-        unset choice
-        ;;
-    2)
-        echo -e "${YELLOW}Skipping internet based install..${NC}"
-        ;;
-    7)
-        echo -e "${YELLOW}Installing for work machine with internet but with no root access and no wsl...${NC}"
-	    yellow
-	    echo "Setting the emacs and vim as flatpak version..."
-	    nc
-	    emacs () {
-	        flatpak run org.gnu.emacs --display $DISPLAY
-	    }
-
-	    vim () {
-	        flatpak run org.vim.Vim
-	    }
-        ;;
-    *)
-        echo "Unknown machine! 😠" 
-        ;;
-esac
-
-# }}} 
-
 [ -d "$HOME/tmp" ] || mkdir "$HOME/tmp"
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ ! -d "$HOME/.vim/undo" ] && mkdir -p "$HOME/.vim/undo"
 [ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
 [ ! -d "$HOME/.vim/swap" ] && mkdir -p "$HOME/.vim/swap"
-
 
 if [ -f "~/.emacs" ]; then
     yellow
@@ -155,7 +84,6 @@ if [ -f "~/.emacs" ]; then
 	    nc
     fi
 fi
-
 
 stow () {
     command stow --ignore=.DS_Store $@
@@ -201,10 +129,5 @@ if ! command -v fzf; then
     "$HOME/.fzf/install" --all || echo -e "${YELLOW}FZF install failed...${NC}"
 fi
 
-pushd "$HOME/.packages"
-./clone.bash
-popd
-
-### Exit
 
 exit 0
