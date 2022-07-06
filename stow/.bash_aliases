@@ -250,6 +250,7 @@ source "$HOME/.packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
 # }}}
 
 # {{{ FZF
+export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
 
