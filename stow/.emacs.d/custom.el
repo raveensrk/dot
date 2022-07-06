@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(compilation-ask-about-save nil nil nil "Save all buffers before compilation")
- '(compilation-auto-jump-to-first-error t)
+ '(compilation-auto-jump-to-first-error nil)
  '(compilation-scroll-output t)
  '(cursor-type 'bar)
  '(custom-enabled-themes '(wombat))
