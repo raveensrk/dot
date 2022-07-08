@@ -36,6 +36,24 @@ install_git:
 
 stow_basic:
 	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases"
+	stow -R stow -t "$$HOME" --no-folding
+
+stow_wsl2:
+	stow -R stow_wsl2_scripts -t "$$HOME" --no-folding
+
+stow_macos:
+	stow -R stow_macos -t "$$HOME" --no-folding
+
+stow_linux:
+	stow -R stow_linux -t "$$HOME" --no-folding
+
+stow_vim_plugins:
+	stow -R stow_vim_plugins -t "$$HOME"
+
+install_plugins_for_vim_and_emacs:
+	vim -c "PlugInstall | PlugClean | qa"
+	emacs -nw -f my-package-refresh-and-install-selected-packages --kill
+
 
 upgrade_macos:
 	bash upgrade_macos.bash
