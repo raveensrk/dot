@@ -38,22 +38,37 @@ stow_basic:
 	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases"
 	stow -R stow -t "$$HOME" --no-folding
 
+unstow_basic:
+	stow -D stow -t "$$HOME" --no-folding
+
 stow_wsl2:
 	stow -R stow_wsl2_scripts -t "$$HOME" --no-folding
 
+unstow_wsl2:
+	stow -D stow_wsl2_scripts -t "$$HOME" --no-folding
+
 stow_macos:
+	defaults write com.apple.desktopservices DSDontWriteNetworkStores true
 	stow -R stow_macos -t "$$HOME" --no-folding
+
+unstow_macos:
+	stow -D stow_macos -t "$$HOME" --no-folding
 
 stow_linux:
 	stow -R stow_linux -t "$$HOME" --no-folding
 
+unstow_linux:
+	stow -d stow_linux -t "$$HOME" --no-folding
+
 stow_vim_plugins:
 	stow -R stow_vim_plugins -t "$$HOME"
+
+unstow_vim_plugins:
+	stow -D stow_vim_plugins -t "$$HOME"
 
 install_plugins_for_vim_and_emacs:
 	vim -c "PlugInstall | PlugClean | qa"
 	emacs -nw -f my-package-refresh-and-install-selected-packages --kill
-
 
 upgrade_macos:
 	bash upgrade_macos.bash
@@ -95,4 +110,4 @@ uninstall_bash_completions:
 
 install_basic: stow_basic install_vim install_bash_completions
 
-uninstall_all: uninstall_bash_completions
+uninstall_all: uninstall_bash_completions unstow_basic unstow_wsl2 unstow_vim_plugins unstow_linux unstow_macos clean
