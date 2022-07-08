@@ -2,10 +2,10 @@
 	# Applies to every targets in the file! By default every command
 	# alls a subshell this prevents that
 	# art
-	SHELL = /usr/bin/bash -x
+	SHELL = /usr/bin/bash
 
 clean:
-	rm -rfv ./tmp
+	rm -rfv ./tmp/* ./tmp/.*
 
 install_colemak:
 	# https://colemak.com/Unix
@@ -18,7 +18,6 @@ install_colemak:
 
 uninstall_colemak:
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
-
 
 install_vim_from_flathub:
 	mkdir tmp
@@ -73,4 +72,10 @@ install_tpm:
     git clone "git@github.com:tmux-plugins/tpm.git" "$HOME/.tmux/plugins/tpm"
 
 uninstall_tpm:
-	rm -vrf "$HOME/.tmux/plugins/tpm
+	rm -vrf "$HOME/.tmux/plugins/tpm"
+
+install_fzf:
+	bash install_fzf.bash
+
+install_basic:
+	bash add_sources.bash 

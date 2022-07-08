@@ -1,5 +1,5 @@
 # BASH ALIASES sourced at ~/.bashrc
-set -o vi
+# set -o vi
 
 if [ -d "$HOME/my_repos" ]; then
     export MY_REPOS="$HOME/my_repos"

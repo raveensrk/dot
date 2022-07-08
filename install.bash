@@ -15,7 +15,6 @@ set -e
 csd=$(dirname "$0")
 
 pushd "$csd"
-bash add_sources.bash 
 popd
 
 
@@ -120,14 +119,6 @@ popd
 # popd
 # emacs -nw -f my-package-refresh-and-install-selected-packages --kill
 
-if [[ ! -d "$HOME/.fzf/.git" ]]; then
-    git clone --depth 1 "git@github.com:junegunn/fzf.git" \
-        "$csd/stow_vim_plugins/.fzf"
-fi
-
-if ! command -v fzf; then
-    "$HOME/.fzf/install" --all || echo -e "${YELLOW}FZF install failed...${NC}"
-fi
 
 
 exit 0

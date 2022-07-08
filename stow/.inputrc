@@ -4,10 +4,10 @@ set completion-map-case On
 set colored-stats On
 set completion-display-width -1
 set bell-style visible
-set editing-mode vi
-set keymap vi
-set vi-cmd-mode-string (:)
-set vi-ins-mode-string (+)
+# set editing-mode vi
+# set keymap vi
+# set vi-cmd-mode-string (:)
+# set vi-ins-mode-string (+)
 # set editing-mode emacs
 # set keymap emacs
 set show-mode-in-prompt On
@@ -18,4 +18,13 @@ set menu-complete-display-prefix On # Perform partial completion on the first Ta
 "TAB": menu-complete # If there are multiple matches for completion, Tab should cycle through them
 "\e[A":history-search-backward # Cycle through history based on characters already typed on the line
 "\e[B":history-search-forward
+Control-o: "> output"
 
+$if Bash
+# Quote the current or previous word
+"\C-xq": "\eb\"\ef\""
+"\C-x\"": "\"\C-b\""
+"\C-xr": re-read-init-file
+"\C-xx": ",sync.bash"
+"AA": ",sync.bash"
+$endif
