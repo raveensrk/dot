@@ -51,9 +51,10 @@ upgrade_ubuntu_20:
 	bash upgrade_ubuntu.bash packages_list_ubuntu_20.txt
 
 install_vim:
-    mkdir -p "$HOME/.vim/undo"
-    mkdir -p "$HOME/.vim/backup"
-    mkdir -p "$HOME/.vim/swap"
+	mkdir "$$HOME/.vim"
+	mkdir "$$HOME/.vim/undo"
+	mkdir "$$HOME/.vim/backup"
+	mkdir "$$HOME/.vim/swap"
 
 install_bash_completions:
 	cd stow_vim_plugins/.packages
@@ -65,11 +66,11 @@ install_bash_completions:
 	make install   # as root
 
 install_yt-dlp:
-    curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
-    chmod a+rx ~/.local/bin/yt-dlp
+	curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
+	chmod a+rx ~/.local/bin/yt-dlp
 
 install_tpm:
-    git clone "git@github.com:tmux-plugins/tpm.git" "$HOME/.tmux/plugins/tpm"
+	git clone "git@github.com:tmux-plugins/tpm.git" "$HOME/.tmux/plugins/tpm"
 
 uninstall_tpm:
 	rm -vrf "$HOME/.tmux/plugins/tpm"

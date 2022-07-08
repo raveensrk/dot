@@ -11,6 +11,7 @@ set -e
 # script_dir=$(dirname "$0")
 
 git config --global pull.rebase false
+git config --global merge.tool vimdiff
 git config --global user.name "Raveen Kumar"
 git config --global user.email "raveen.srk.kumar@gmail.com"
 
