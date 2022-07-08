@@ -5,7 +5,7 @@
 
 source ~/.bash_prompt
 
-add_line="[ -f ~/.bash_aliases ] && source ~/.bash_aliases"
+add_line="$1"
 yellow
 echo This following line will be added:
 nc

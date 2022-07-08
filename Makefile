@@ -1,7 +1,6 @@
 .ONESHELL:
 	# Applies to every targets in the file! By default every command
 	# alls a subshell this prevents that
-	# art
 	SHELL = /usr/bin/bash
 
 clean:
@@ -35,8 +34,8 @@ install_git:
 	make -j
 	make install
 
-stow:
-	bash add_sources.bash 
+stow_basic:
+	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases"
 
 upgrade_macos:
 	bash upgrade_macos.bash
@@ -51,19 +50,7 @@ upgrade_ubuntu_20:
 	bash upgrade_ubuntu.bash packages_list_ubuntu_20.txt
 
 install_vim:
-	mkdir "$$HOME/.vim"
-	mkdir "$$HOME/.vim/undo"
-	mkdir "$$HOME/.vim/backup"
-	mkdir "$$HOME/.vim/swap"
-
-install_bash_completions:
-	cd stow_vim_plugins/.packages
-	wget -nc https://github.com/scop/bash-completion/releases/download/2.11/bash-completion-2.11.tar.xz
-	cd bash-completion-2.11
-	./configure --prefix=$$HOME/.local
-	make           # GNU make required
-	make check     # optional, requires python3 with pytest >= 3.6, pexpect
-	make install   # as root
+	bash install_vim.bash
 
 install_yt-dlp:
 	curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
@@ -78,5 +65,16 @@ uninstall_tpm:
 install_fzf:
 	bash install_fzf.bash
 
-install_basic:
-	bash add_sources.bash 
+install_bash_completions:
+	bash install_bash_completions.bash
+
+uninstall_bash_completions:
+	cd stow_vim_plugins/.packages/bash-completion-2.11
+	make uninstall
+	cd ..
+	rm -rf bash-completion-2.11
+	rm bash-completion-2.11.tar.xz
+
+install_basic: stow_basic install_vim install_bash_completions
+
+uninstall_all: uninstall_bash_completions
