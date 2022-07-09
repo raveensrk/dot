@@ -108,6 +108,6 @@ uninstall_bash_completions:
 	rm -rf bash-completion-2.11
 	rm bash-completion-2.11.tar.xz
 
-install_basic: stow_basic install_vim install_bash_completions
+install_basic: stow_basic install_vim 
 
 uninstall_all: uninstall_bash_completions unstow_basic unstow_wsl2 unstow_vim_plugins unstow_linux unstow_macos clean

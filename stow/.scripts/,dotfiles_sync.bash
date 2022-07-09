@@ -12,7 +12,7 @@ DOTFILES=$1 # Can also sync other repos not just dotfiles. DOTFILES variable inp
 pushd $DOTFILES
 
 if [ -f "./Makefile" ]; then
-  make clean  
+    make clean  
 fi
 
 if [ ! -d .git ]; then
@@ -45,14 +45,7 @@ else
         exit 0
     fi
 
-    echo -e "${YELLOW}Enter commit message or leave it empty for default commit message:${NC}"
-    read -re commit_msg
-
-    if [[ "$commit_msg" == "" ]]; then
-        git commit -m "Sync commit from $USER@$HOSTNAME"
-    else
-        git commit -m "$commit_msg"
-    fi
+    git commit -t ~/.scripts/git_commit_template.txt 
 
 fi
 

@@ -30,3 +30,4 @@ rsync
 grep
 bfg
 jq
+gimp
