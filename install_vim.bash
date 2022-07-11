@@ -1,4 +1,3 @@
-set -x
 set -e
 
 [ ! -d $HOME/.vim        ] && mkdir "$HOME/.vim"
