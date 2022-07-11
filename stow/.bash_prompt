@@ -33,7 +33,7 @@ export BLINK=$(tput blink)
 export REVERSE=$(tput smso)
 export UNDERLINE=$(tput smul)
 
-export PS1="\[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\W \[${NC}\]$ "
+export PS1="\[${RED}\][\s] \[${LIME_YELLOW}\][\V] \[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\W \[${NC}\]\n$ "
 # export PS1="\u @ \h : \W\n $ "
 
 unset -f red; red () { tput setaf 1; }
