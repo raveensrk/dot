@@ -416,7 +416,6 @@
 ;;; General
 (setq vc-follow-symlinks t)
 (global-set-key (kbd "C-c m") 'menu-bar-open)
-(global-linum-mode 1)
 
 ;;; Elisp
 (dolist (hook '(emacs-lisp-mode-hook))
@@ -503,3 +502,6 @@ Version 2019-11-04 2021-02-16"
          (lambda ($fpath) (let ((process-connection-type nil))
                             (start-process "" nil "xdg-open" $fpath))) $file-list))))))
 
+
+;; (setq left-margin-width 20)
+;; (setq left-fringe-width 20)

@@ -176,8 +176,10 @@ done
 # {{{ VIM STUFF
 # export VISUAL="vim"
 # export EDITOR="vim"
-export VISUAL="emacsclient -a emacs"
-export EDITOR="emacsclient -a emacs"
+# export VISUAL="emacsclient -a emacs"
+# export EDITOR="emacsclient -a emacs"
+export VISUAL="emacsclient -nw -a emacs -nw"
+export EDITOR="emacsclient -nw -a emacs -nw"
 alias vs="command vim --servername VIM"
 v () {
     local servername
