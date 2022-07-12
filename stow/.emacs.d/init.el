@@ -505,3 +505,6 @@ Version 2019-11-04 2021-02-16"
 
 ;; (setq left-margin-width 20)
 ;; (setq left-fringe-width 20)
+
+
+(indent-guide-global-mode 1)

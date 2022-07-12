@@ -16,6 +16,7 @@ install_colemak:
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
 
 uninstall_colemak:
+	# TODO
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
 
 install_vim_from_flathub:
@@ -127,6 +128,21 @@ install_tmux: install_libevent
 	PKG_CONFIG_PATH=$$HOME/.local/lib/pkgconfig ./configure --prefix=$$HOME/.local && make ;\
 	make install
 
-install_basic: stow_basic install_vim 
+install_basic: stow_basic install_vim
+
+install_emacs:
+	mkdir ~/.tmp ;\
+	cd ~/.tmp ;\
+    wget -nc https://mirror.hostiran.ir/gnu/gnu/emacs/emacs-28.1.tar.gz ;\
+	tar -xf emacs-28.1.tar.gz ;\
+    cd emacs-28.1 ;\
+    ./configure --prefix=$$HOME/.local ;\
+    make ;\
+    make install
+
+install_stow: # TODO
+	mkdir ~/.tmp ;\
+	cd ~/.tmp ;\
+    wget -nw https://ftp.gnu.org/gnu/stow/stow-2.2.0.tar.gz
 
 uninstall_all: uninstall_bash_completions unstow_basic unstow_wsl2 unstow_vim_plugins unstow_linux unstow_macos clean

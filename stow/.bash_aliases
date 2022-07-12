@@ -178,8 +178,9 @@ done
 # export EDITOR="vim"
 # export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
-export VISUAL="emacsclient -nw -a emacs -nw"
-export EDITOR="emacsclient -nw -a emacs -nw"
+export ALTERNATE_EDITOR="emacs -nw"
+export VISUAL="emacsclient -t -a $ALTERNATE_EDITOR"
+export EDITOR="emacsclient -t -a $ALTERNATE_EDITOR"
 alias vs="command vim --servername VIM"
 v () {
     local servername
@@ -204,8 +205,8 @@ v () {
         command vim --servername $servername --remote-send ":History<CR>"
     fi
 }
-alias bashal="v ~/.bash_aliases && source ~/.bash_aliases"
-alias csh_aliases="v ~/.aliases"
+alias bashal="$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
+alias csh_aliases="$EDITOR ~/.aliases"
 alias vimrc="v ~/.vimrc"
 # }}}
 # RANGER {{{
