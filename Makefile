@@ -111,3 +111,16 @@ uninstall_bash_completions:
 install_basic: stow_basic install_vim 
 
 uninstall_all: uninstall_bash_completions unstow_basic unstow_wsl2 unstow_vim_plugins unstow_linux unstow_macos clean
+
+.NOTPARALLEL:
+.ONESHELL:
+SHELL = /bin/bash
+STOW_VERSION = stow-2.2.0
+install_stow:
+	cd ~/.tmp; \
+	wget -nc https://ftp.gnu.org/gnu/stow/$(STOW_VERSION).tar.gz; \
+	tar xf $(STOW_VERSION).tar.gz; \
+	cd ~/.tmp/$(STOW_VERSION); \
+	./configure --prefix=$$HOME/.local; \
+	make; \
+	make install
