@@ -16,6 +16,7 @@ install_colemak:
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
 
 uninstall_colemak:
+	# TODO
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
 
 install_vim_from_flathub:
@@ -108,7 +109,41 @@ uninstall_bash_completions:
 	rm -rf bash-completion-2.11
 	rm bash-completion-2.11.tar.xz
 
-install_basic: stow_basic install_vim 
+install_libevent:
+	mkdir ~/.tmp ;\
+	cd ~/.tmp ;\
+    wget -nc https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz ;\
+	tar xf libevent-2.1.12-stable.tar.gz ;\
+    cd libevent-2.1.12-stable ;\
+    ./configure --prefix=$$HOME/.local --enable-shared ;\
+	make ;\
+	make install ;\
+
+install_tmux: install_libevent
+	mkdir ~/.tmp ;\
+	cd ~/.tmp ;\
+	wget -nc https://github.com/tmux/tmux/releases/download/3.3a/tmux-3.3a.tar.gz ;\
+	tar xf tmux-3.3a.tar.gz ;\
+	cd tmux-3.3a ;\
+	PKG_CONFIG_PATH=$$HOME/.local/lib/pkgconfig ./configure --prefix=$$HOME/.local && make ;\
+	make install
+
+install_basic: stow_basic install_vim
+
+install_emacs:
+	mkdir ~/.tmp ;\
+	cd ~/.tmp ;\
+    wget -nc https://mirror.hostiran.ir/gnu/gnu/emacs/emacs-28.1.tar.gz ;\
+	tar -xf emacs-28.1.tar.gz ;\
+    cd emacs-28.1 ;\
+    ./configure --prefix=$$HOME/.local ;\
+    make ;\
+    make install
+
+install_stow: # TODO
+	mkdir ~/.tmp ;\
+	cd ~/.tmp ;\
+    wget -nw https://ftp.gnu.org/gnu/stow/stow-2.2.0.tar.gz
 
 uninstall_all: uninstall_bash_completions unstow_basic unstow_wsl2 unstow_vim_plugins unstow_linux unstow_macos clean
 
