@@ -140,11 +140,6 @@ install_emacs:
     make ;\
     make install
 
-install_stow: # TODO
-	mkdir ~/.tmp ;\
-	cd ~/.tmp ;\
-    wget -nw https://ftp.gnu.org/gnu/stow/stow-2.2.0.tar.gz
-
 uninstall_all: uninstall_bash_completions unstow_basic unstow_wsl2 unstow_vim_plugins unstow_linux unstow_macos clean
 
 .NOTPARALLEL:

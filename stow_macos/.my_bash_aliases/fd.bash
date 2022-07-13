@@ -1,1 +1,0 @@
-../.packages/fd-v8.4.0-x86_64-apple-darwin/autocomplete/fd.bash
