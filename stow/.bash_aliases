@@ -364,3 +364,7 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+
+# This will exit bash shell as soon as it receives C-d as the last command
+export IGNOREEOF=0
