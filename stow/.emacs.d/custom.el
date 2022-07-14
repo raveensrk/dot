@@ -14,8 +14,6 @@
  '(dired-hide-details-hide-information-lines t)
  '(dired-hide-details-hide-symlink-targets t)
  '(display-line-numbers 'visual)
- ;; '(display-line-numbers-major-tick 10)
- ;; '(display-line-numbers-minor-tick 5)
  '(display-line-numbers-type 'visual)
  '(dynamic-fonts-preferred-monospace-point-size 20)
  '(dynamic-fonts-preferred-proportional-point-size 20)

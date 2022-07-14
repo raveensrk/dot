@@ -34,18 +34,20 @@ done < "$tmp_file"
 if [[ "$clean" == "1" ]]; then
     echo "Nothing to commit"
 else
-    git diff
-    git status
-    pwd
-    read -p "Add these changes? [y/n]: " choice
-    if [[ $choice == y ]]; then
-        git add . && git status
-    else
-        echo -e "${YELLOW} Skipping add and commit for $DOTFILES ${NC} "
-        exit 0
-    fi
+    # git diff
+    # git status
+    # pwd
+    # read -p "Add these changes? [y/n]: " choice
+    # if [[ $choice == y ]]; then
+    #     git add . && git status
+    # else
+    #     echo -e "${YELLOW} Skipping add and commit for $DOTFILES ${NC} "
+    #     exit 0
+    # fi
 
-    git commit -t ~/.scripts/git_commit_template.txt 
+    # git commit -t ~/.scripts/git_commit_template.txt
+
+    emacs -nw --eval "(magit)"
 
 fi
 
