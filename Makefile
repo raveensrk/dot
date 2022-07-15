@@ -91,7 +91,7 @@ install_yt-dlp:
 	chmod a+rx ~/.local/bin/yt-dlp
 
 install_tpm:
-	git clone "git@github.com:tmux-plugins/tpm.git" "$HOME/.tmux/plugins/tpm"
+	git clone "git@github.com:tmux-plugins/tpm.git" "$$HOME/.tmux/plugins/tpm"
 
 uninstall_tpm:
 	rm -vrf "$HOME/.tmux/plugins/tpm"

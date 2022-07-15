@@ -248,9 +248,6 @@ bind '"\C-o":"ranger-cd\C-m"'
 
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 # }}}
-# {{{ FD
-source "$HOME/.packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
-# }}}
 
 # {{{ FZF
 export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
