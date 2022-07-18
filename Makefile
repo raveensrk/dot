@@ -38,6 +38,7 @@ install_git:
 stow_basic:
 	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases"
 	stow -R stow -t "$$HOME" --no-folding
+	chmod 644 "$$HOME/.ssh/config"
 
 unstow_basic:
 	stow -D stow -t "$$HOME" --no-folding
