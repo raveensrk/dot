@@ -86,6 +86,17 @@ upgrade_ubuntu_20:
 install_vim:
 	bash install_vim.bash
 
+install_vim_from_source:
+	mkdir ~/tmp
+	cd ~/tmp
+	wget -nc "https://ftp.nluug.nl/pub/vim/unix/vim-8.2.tar.bz2"
+	tar xf vim-8.2.tar.bz2
+	cd vim82
+	./configure --prefix="$$HOME/.local"
+	make
+	make install 
+
+
 install_yt-dlp:
 	curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
 	chmod a+rx ~/.local/bin/yt-dlp

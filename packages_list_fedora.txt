@@ -35,3 +35,4 @@ rsync
 jq
 gimp
 emacs
+ncurses-devel-6.2-9.20210508.fc36.x86_64
