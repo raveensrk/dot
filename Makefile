@@ -36,7 +36,8 @@ install_git:
 	make install
 
 stow_basic:
-	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases"
+	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$$HOME/.bashrc"
+	bash add_sources.bash "[ -f ~/.bashrc] && source ~/.bashrc" "$$HOME/.bash_login"
 	stow -R stow -t "$$HOME" --no-folding
 
 unstow_basic:
