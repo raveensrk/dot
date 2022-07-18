@@ -31,3 +31,4 @@ grep
 bfg
 jq
 gimp
+emacs

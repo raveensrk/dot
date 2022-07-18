@@ -178,9 +178,9 @@ done
 # export EDITOR="vim"
 # export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
-export ALTERNATE_EDITOR="emacs -nw"
-export VISUAL="emacsclient -t"
-export EDITOR="emacsclient -t"
+export ALTERNATE_EDITOR="emacs"
+export VISUAL="emacsclient"
+export EDITOR="emacsclient"
 alias vs="command vim --servername VIM"
 v () {
     local servername
@@ -247,9 +247,6 @@ bind '"\C-o":"ranger-cd\C-m"'
 # work.
 
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
-# }}}
-# {{{ FD
-source "$HOME/.packages/fd-v8.3.0-i686-unknown-linux-musl/autocomplete/fd.bash"
 # }}}
 
 # {{{ FZF

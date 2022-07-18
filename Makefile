@@ -4,7 +4,6 @@
 	SHELL = /usr/bin/bash
 
 clean:
-	rm -rfv ./tmp/* ./tmp/.*
 
 install_colemak:
 	# https://colemak.com/Unix
@@ -39,6 +38,7 @@ stow_basic:
 	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$$HOME/.bashrc"
 	bash add_sources.bash "[ -f ~/.bashrc] && source ~/.bashrc" "$$HOME/.bash_login"
 	stow -R stow -t "$$HOME" --no-folding
+	chmod 644 "$$HOME/.ssh/config"
 
 unstow_basic:
 	stow -D stow -t "$$HOME" --no-folding
@@ -87,12 +87,23 @@ upgrade_ubuntu_20:
 install_vim:
 	bash install_vim.bash
 
+install_vim_from_source:
+	mkdir ~/tmp
+	cd ~/tmp
+	wget -nc "https://ftp.nluug.nl/pub/vim/unix/vim-8.2.tar.bz2"
+	tar xf vim-8.2.tar.bz2
+	cd vim82
+	./configure --prefix="$$HOME/.local"
+	make
+	make install 
+
+
 install_yt-dlp:
 	curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
 	chmod a+rx ~/.local/bin/yt-dlp
 
 install_tpm:
-	git clone "git@github.com:tmux-plugins/tpm.git" "$HOME/.tmux/plugins/tpm"
+	git clone "git@github.com:tmux-plugins/tpm.git" "$$HOME/.tmux/plugins/tpm"
 
 uninstall_tpm:
 	rm -vrf "$HOME/.tmux/plugins/tpm"
