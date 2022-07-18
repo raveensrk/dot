@@ -4,7 +4,6 @@
 	SHELL = /usr/bin/bash
 
 clean:
-	rm -rfv ./tmp/* ./tmp/.*
 
 install_colemak:
 	# https://colemak.com/Unix

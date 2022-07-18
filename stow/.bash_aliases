@@ -178,9 +178,9 @@ done
 # export EDITOR="vim"
 # export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
-export ALTERNATE_EDITOR="emacs -nw"
-export VISUAL="emacsclient -t"
-export EDITOR="emacsclient -t"
+export ALTERNATE_EDITOR="emacs"
+export VISUAL="emacsclient"
+export EDITOR="emacsclient"
 alias vs="command vim --servername VIM"
 v () {
     local servername
