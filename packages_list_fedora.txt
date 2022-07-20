@@ -38,3 +38,4 @@ emacs
 ncurses-devel-6.2-9.20210508.fc36.x86_64
 libX11-devel-1.7.3.1-2.fc36.x86_64 
 libXt-devel
+exa

@@ -49,7 +49,6 @@ alias ,dates='date -Iseconds | sed "s/:/-/g"'
 alias g='grep --color'
 alias gr='grep --color -r'
 alias h="history"
-alias l="ls -A"
 alias mkdir="mkdir -v"
 alias cp="cp -vi"
 alias mv="mv -vi"
@@ -119,13 +118,13 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 #------------------
 man() {
     LESS_TERMCAP_md=$'\e[01;31m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[01;44;33m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[01;32m' \
-        command man "$@"
-    }
+                   LESS_TERMCAP_me=$'\e[0m' \
+                   LESS_TERMCAP_se=$'\e[0m' \
+                   LESS_TERMCAP_so=$'\e[01;44;33m' \
+                   LESS_TERMCAP_ue=$'\e[0m' \
+                   LESS_TERMCAP_us=$'\e[01;32m' \
+                   command man "$@"
+}
 # }}}
 # {{{ PROMPT AND COLORS
 source ~/.bash_prompt
@@ -161,7 +160,7 @@ sx () {
 # }}}
 # {{{ UBUNTU SPECIFIC
 if [ -f /etc/bash_completion ]; then
-     . /etc/bash_completion
+    . /etc/bash_completion
 fi
 # }}}
 # {{{ Other Sources
@@ -265,15 +264,15 @@ export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 # Colors
-LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" # TODO not working.
+LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 
 # MACOS Specific {{{
 if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
@@ -329,9 +328,8 @@ unset -f ,,,
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
 
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -341,10 +339,6 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -355,13 +349,24 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 
 # This will exit bash shell as soon as it receives C-d as the last command
 export IGNOREEOF=0
+
+
+# LS aliases
+
+if command -v exa > /dev/null; then
+    alias ls='exa'
+    alias l="exa -la"
+else
+    alias ls='ls --color=auto'
+    alias l="ls -A"
+fi
