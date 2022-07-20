@@ -30,8 +30,6 @@ if [ -f "~/.emacs" ]; then
     fi
 fi
 
-
 make install_basic
-
 
 exit 0

@@ -5,6 +5,8 @@
 
 source ~/.bash_prompt
 
+[ ! -f "$2" ] && "touch $2"
+
 add_line="$1"
 yellow
 echo This following line will be added:
@@ -26,10 +28,10 @@ while read -re line; do
         line_present="1"
         break
     fi
-done < ~/.bashrc
+done < "$2"
 
 if [ "$line_present" != "1" ]; then
-    echo "$add_line" >> ~/.bashrc
+    echo "$add_line" >> "$2"
 fi
 
 exit 0
