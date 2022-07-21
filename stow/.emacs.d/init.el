@@ -292,14 +292,6 @@
 ;; (setq org-startup-folded t)
 (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
 (add-hook 'org-mode-hook (lambda () (olivetti-mode)))
-(setq org-todo-keywords
-      '((sequence "BACKLOG"
-                  "TODO"
-                  "IN-PROGRESS|CURRENT"
-                  "|"
-                  "DONE"
-                  "SKIPPED"
-                  )))
 
 
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -508,3 +500,11 @@ Version 2019-11-04 2021-02-16"
 
 
 (indent-guide-global-mode 1)
+
+;; (smartparens-global-mode +1)
+;; (show-smartparens-global-mode +1)
+
+(require 'flex-autopair)
+(flex-autopair-mode 1)
+
+;; #TODO (highlight-phrase #TODO dired-broken-symlink)

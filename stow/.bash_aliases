@@ -119,13 +119,13 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 #------------------
 man() {
     LESS_TERMCAP_md=$'\e[01;31m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[01;44;33m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[01;32m' \
-        command man "$@"
-    }
+                   LESS_TERMCAP_me=$'\e[0m' \
+                   LESS_TERMCAP_se=$'\e[0m' \
+                   LESS_TERMCAP_so=$'\e[01;44;33m' \
+                   LESS_TERMCAP_ue=$'\e[0m' \
+                   LESS_TERMCAP_us=$'\e[01;32m' \
+                   command man "$@"
+}
 # }}}
 # {{{ PROMPT AND COLORS
 source ~/.bash_prompt
@@ -161,7 +161,7 @@ sx () {
 # }}}
 # {{{ UBUNTU SPECIFIC
 if [ -f /etc/bash_completion ]; then
-     . /etc/bash_completion
+    . /etc/bash_completion
 fi
 # }}}
 # {{{ Other Sources
@@ -181,6 +181,10 @@ done
 export ALTERNATE_EDITOR="emacs"
 export VISUAL="emacsclient"
 export EDITOR="emacsclient"
+# ,magit () {
+#     emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,display-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
+# }
+
 alias vs="command vim --servername VIM"
 v () {
     local servername
@@ -265,11 +269,11 @@ export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 # Colors
@@ -355,11 +359,11 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
 
 
