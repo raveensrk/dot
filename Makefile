@@ -176,3 +176,6 @@ install_bash:
 	./configure --prefix=$$HOME/.local; \
 	make; \
 	make install
+
+update_emacs:
+	emacs --eval "(my-package-refresh-and-install-selected-packages)" --eval "(kill-emacs)"
