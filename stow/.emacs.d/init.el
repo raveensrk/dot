@@ -508,3 +508,5 @@ Version 2019-11-04 2021-02-16"
 (flex-autopair-mode 1)
 
 ;; #TODO (highlight-phrase #TODO dired-broken-symlink)
+
+(add-hook 'sh-mode-hook 'flymake-shellcheck-load)
