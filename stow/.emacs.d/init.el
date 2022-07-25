@@ -13,7 +13,7 @@
 (defun my-package-refresh-and-install-selected-packages ()
   (interactive)
   (package-refresh-contents)
-  (package-install-selected-packages)
+  (package-install-selected-packages t)
   (package-autoremove)
   )
 
