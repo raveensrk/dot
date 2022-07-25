@@ -111,31 +111,23 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:🏡"
+set $ws1 "1:HOME"
 # 2: Internet
-set $ws2 "2:🌏"
-# assign [class="Firefox"] $ws2
-assign [class="qBittorrent"] $ws2
+set $ws2 "2:INTERNET"
+assign [class="Firefox"] $ws2
 # 3: Recording
-set $ws3 "3:🖮"
-assign [class="obs"]          $ws3
-assign [class="keybr"]        $ws3
+set $ws3 "3:WORK"
 # 4: News
-set $ws4 "4:📰"
-assign [class="Liferea"]      $ws4
+set $ws4 "4:"
 # 5: Media
 set $ws5 "5:📺"
-assign [class="mpv"]          $ws5
-assign [class="generic"]      $ws5 # Haruna
 # 6: Music
 set $ws6 "6:🎵"
 # 7: Gaming
-set $ws7 "7:🎮"
-assign [class="Steam"]        $ws7
+set $ws7 "7"
 set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10:📙"
-assign [class="Com.github.johnfactotum.Foliate"]        $ws10
+set $ws9 "9:PERSONAL"
+set $ws10 "10:"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1

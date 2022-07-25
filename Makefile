@@ -13,6 +13,7 @@ install_colemak:
 	tar xvf colemak-1.0.tar.gz
 	cd colemak-1.0
 	setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
+	setxkbmap us -variant colemak
 
 uninstall_colemak:
 	# TODO
