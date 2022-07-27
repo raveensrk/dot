@@ -13,7 +13,7 @@
 (defun my-package-refresh-and-install-selected-packages ()
   (interactive)
   (package-refresh-contents)
-  (package-install-selected-packages)
+  (package-install-selected-packages t)
   (package-autoremove)
   )
 
@@ -510,3 +510,9 @@ Version 2019-11-04 2021-02-16"
 ;; #TODO (highlight-phrase #TODO dired-broken-symlink)
 
 (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
+
+
+;; set up babel support
+(require 'org)
+(require 'ob-tcl)
+;; add additional languages with (require 'ob-language)

@@ -58,11 +58,10 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias ,ecn="emacsclient -nw -a emacs -nw"
-alias ,ed="emacs --daemon"
-alias ,ec="emacsclient -nw -c -a emacs -nw -c"
-alias einit="e ~/.emacs"
-alias emk="emacsclient -e \"(server-force-delete)\""
+alias e="emacsclient -c"
+alias ee="emacs --daemon"
+alias ei="e ~/.emacs"
+alias eek="emacsclient -e \"(server-force-delete)\""
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
@@ -374,3 +373,4 @@ else
     alias ls='ls --color=auto'
     alias l="ls -A"
 fi
+
