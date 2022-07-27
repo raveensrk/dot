@@ -30,6 +30,10 @@ while [ "$1" ]; do
             shift
             input="$1"
             ;;
+        --print|-p)
+            # HELP: --print|-p  Will print instead of opening the file in the editor
+            print="1"
+            ;;
         --string|-s)
             shift
             string="$1"
@@ -52,6 +56,7 @@ while [ "$1" ]; do
 done
 
 string=${string:-.}
+print=${print:-0}
 
 for item  in ${ext[@]}; do
     include="$include --include=*.$item"
@@ -84,19 +89,22 @@ else
     rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e -d : -n 3 > "$selection"
 fi
 
+if [ "$print" = "1" ]; then
+    cat "$selection" | sed "s|^|$input/|;s|//|/|g"
+else
+    while read -r -u5 item; do
+        # echo "$item"
+        file=$(echo "$item" | awk -F ':' '{print $1}')
+        # echo "$file"
+        line=$(echo "$item" | awk -F ':' '{print $2}')
+        # echo "$line"
+        file_absolute_path="$file"
 
-while read -r -u5 item; do
-    # echo "$item"
-    file=$(echo "$item" | awk -F ':' '{print $1}')
-    # echo "$file"
-    line=$(echo "$item" | awk -F ':' '{print $2}')
-    # echo "$line"
-    file_absolute_path="$file"
+        echo "$EDITOR \"+$line\" \"$file_absolute_path\" "
+        $EDITOR "+$line" "$file_absolute_path"
+    done 5< "$selection"
+fi
 
-    echo "$EDITOR \"+$line\" \"$file_absolute_path\" "
-    $EDITOR "+$line" "$file_absolute_path"
-
-done 5< "$selection"
 
 rm "$selection"
 

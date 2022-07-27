@@ -65,6 +65,8 @@
  '(show-paren-mode t)
  '(speedbar-show-unknown-files t)
  '(tab-width 4)
+ '(warning-suppress-log-types '((magit)))
+ '(warning-suppress-types '((magit)))
  '(word-wrap t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

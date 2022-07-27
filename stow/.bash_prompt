@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html
 # https://wiki.archlinux.org/title/Bash/Prompt_customization
 # https://misc.flogisoft.com/bash/tip_colors_and_formatting
@@ -46,3 +48,10 @@ unset -f blink; blink () { tput blink; }
 unset -f bold; bold () { tput bold; }
 unset -f reverse; reverse () { tput smso; }
 unset -f underline; underline () { tput smul; }
+
+
+# TODO: This command will read a line from std input and apply a random color to it.
+
+random-color () {
+    grep :
+}
