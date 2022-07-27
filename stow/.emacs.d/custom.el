@@ -28,7 +28,7 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(org-agenda-files "~/.agenda_files")
+ '(org-agenda-files '("~/.agenda_files"))
  '(org-agenda-start-with-log-mode 'clockcheck)
  '(org-babel-load-languages '((awk . t) (C . t) (shell . t) (php . t)))
  '(org-export-backends '(ascii html icalendar latex md odt))
