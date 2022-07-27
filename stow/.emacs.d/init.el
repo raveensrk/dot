@@ -305,7 +305,6 @@
             (define-key org-mode-map (kbd "<tab>") 'org-cycle)
             ))
 (put 'narrow-to-region 'disabled nil)
-(setq org-agenda-files (directory-files-recursively "~/my_repos" "\\.org$"))
 
 
 ;;; Templates and Macros https://stackoverflow.com/questions/1817257/how-to-determine-operating-system-in-elisp
@@ -328,7 +327,6 @@
 ;; (with-system windows-nt
 ;;   (setq org-agenda-files (directory-files-recursively "c:Github/journal-work" "\\.org$"))
 ;;   )
-(add-to-list 'org-agenda-files '"./")
 (setq org-agenda-archives-mode t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-src-tab-acts-natively t)
