@@ -56,7 +56,7 @@
  '(org-startup-indented t)
  '(org-startup-truncated nil)
  '(org-todo-keywords
-   '((sequence "BACKLOG" "BLOG" "TODO" "IN-PROGRESS|CURRENT" "CURR" "|" "DONE" "SKIP" "SKIPPED")))
+   '((sequence "BLOG" "TODO" "CURR" "WAIT" "|" "DONE" "SKIP" )))
  '(outline-minor-mode-cycle t)
  '(outline-minor-mode-cycle-filter nil)
  '(outline-minor-mode-highlight 'append)
