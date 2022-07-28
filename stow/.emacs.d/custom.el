@@ -34,7 +34,7 @@
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-habit-show-all-today t)
  '(org-habit-show-done-always-green nil)
- '(org-link-descriptive nil)
+ '(org-link-descriptive t)
  '(org-link-file-path-type 'relative)
  '(org-log-done 'time)
  '(org-log-into-drawer t)
@@ -55,8 +55,7 @@
  '(org-refile-use-outline-path 'file)
  '(org-startup-indented t)
  '(org-startup-truncated nil)
- '(org-todo-keywords
-   '((sequence "BLOG" "TODO" "CURR" "WAIT" "|" "DONE" "SKIP" )))
+ '(org-todo-keywords '((sequence "BLOG" "TODO" "CURR" "WAIT" "|" "DONE" "SKIP")))
  '(outline-minor-mode-cycle t)
  '(outline-minor-mode-cycle-filter nil)
  '(outline-minor-mode-highlight 'append)

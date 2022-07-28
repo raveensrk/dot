@@ -290,7 +290,7 @@
 
 ;;; Org mode
 ;; (setq org-startup-folded t)
-(add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
+;; (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
 (add-hook 'org-mode-hook (lambda () (olivetti-mode)))
 
 
