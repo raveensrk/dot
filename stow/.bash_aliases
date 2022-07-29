@@ -374,3 +374,5 @@ else
     alias l="ls -A"
 fi
 
+alias agenda='emacs --eval "(org-agenda-list)"'
+alias todo='emacs --eval "(org-todo-list)"'
