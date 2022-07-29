@@ -233,7 +233,7 @@
 
 ;;; Appearence
 
-(toggle-truncate-lines 1)
+;; (toggle-truncate-lines 1)
 
 ;;;; Fonts
 
@@ -290,8 +290,8 @@
 
 ;;; Org mode
 ;; (setq org-startup-folded t)
-(add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-(add-hook 'org-mode-hook (lambda () (olivetti-mode)))
+;; (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
+;; (add-hook 'org-mode-hook (lambda () (olivetti-mode)))
 
 
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -514,3 +514,7 @@ Version 2019-11-04 2021-02-16"
 (require 'org)
 (require 'ob-tcl)
 ;; add additional languages with (require 'ob-language)
+;; (global-set-key [wheel-right] 'scroll-left)
+;; (global-set-key [wheel-left] 'scroll-right)
+;; (put 'scroll-left 'disabled nil)
+

@@ -1,1 +1,5 @@
 * TODO [#F] Finish some stuff and be cool
+* TODO [#A] Dev environment setup and Emacs configs gardening
+:LOGBOOK:
+CLOCK: [2022-07-29 Fri 00:57]--[2022-07-29 Fri 01:49] =>  0:52
+:END:
