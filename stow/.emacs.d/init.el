@@ -291,7 +291,7 @@
 ;;; Org mode
 ;; (setq org-startup-folded t)
 ;; (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-(add-hook 'org-mode-hook (lambda () (olivetti-mode)))
+;;(add-hook 'org-mode-hook (lambda () (olivetti-mode)))
 
 
 (global-set-key (kbd "C-c a") #'org-agenda)
