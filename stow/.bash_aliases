@@ -377,3 +377,5 @@ fi
 for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 
 alias y="yt-dlp"
+alias agenda='emacs --eval "(org-agenda-list)"'
+alias todo='emacs --eval "(org-todo-list)"'

@@ -30,3 +30,4 @@ urlview
 vim
 vim-gtk
 yank
+cscope

@@ -32,3 +32,4 @@ vim
 vim-gtk
 yank
 toilet
+cscope

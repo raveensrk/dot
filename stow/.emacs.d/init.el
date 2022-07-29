@@ -233,7 +233,7 @@
 
 ;;; Appearence
 
-(toggle-truncate-lines 1)
+;; (toggle-truncate-lines 1)
 
 ;;;; Fonts
 
@@ -290,8 +290,8 @@
 
 ;;; Org mode
 ;; (setq org-startup-folded t)
-(add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-(add-hook 'org-mode-hook (lambda () (olivetti-mode)))
+;; (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
+;; (add-hook 'org-mode-hook (lambda () (olivetti-mode)))
 
 
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -305,7 +305,6 @@
             (define-key org-mode-map (kbd "<tab>") 'org-cycle)
             ))
 (put 'narrow-to-region 'disabled nil)
-(setq org-agenda-files (directory-files-recursively "~/my_repos" "\\.org$"))
 
 
 ;;; Templates and Macros https://stackoverflow.com/questions/1817257/how-to-determine-operating-system-in-elisp
@@ -328,7 +327,6 @@
 ;; (with-system windows-nt
 ;;   (setq org-agenda-files (directory-files-recursively "c:Github/journal-work" "\\.org$"))
 ;;   )
-(add-to-list 'org-agenda-files '"./")
 (setq org-agenda-archives-mode t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-src-tab-acts-natively t)
@@ -510,3 +508,13 @@ Version 2019-11-04 2021-02-16"
 ;; #TODO (highlight-phrase #TODO dired-broken-symlink)
 
 (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
+
+
+;; set up babel support
+(require 'org)
+(require 'ob-tcl)
+;; add additional languages with (require 'ob-language)
+;; (global-set-key [wheel-right] 'scroll-left)
+;; (global-set-key [wheel-left] 'scroll-right)
+;; (put 'scroll-left 'disabled nil)
+
