@@ -271,7 +271,7 @@
   '(("." . "~/.emacs.d/file-backups")))
 
 ;;; Dired
-(setq dired-kill-when-opening-new-dired-buffer t)
+(setq dired-kill-when-opening-new-dired-buffer nil)
 (global-set-key (kbd "C-c +") 'dired-create-empty-file)
 (defun dired-dotfiles-toggle ()
   "Show/hide dot-files"
