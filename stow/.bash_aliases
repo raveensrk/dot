@@ -295,8 +295,8 @@ fi
 # }}}
 
 # {{{ COMMA ALIASES
-unset -f ,
-, () {
+unset -f z
+z () {
     local tmp="/tmp/.dirs_stack_tmp_$$"
     pushd $1 || return
     dirs -v | awk '{print $2}' >> ~/.dirs_stack
@@ -304,18 +304,18 @@ unset -f ,
     cat "$tmp" > ~/.dirs_stack_uniq
     command rm "$tmp"
 }
-complete -o dirnames ,
+complete -o dirnames z
 
-unset -f ,,
-,, () {
+unset -f zz
+zz () {
     local pushd_stack_index
     pushd_stack_index=$(dirs -v | fzf | awk '{print $1}')
     pushd +"$pushd_stack_index" || return
 }
 
-unset -f ,,,
-,,, () {
-    , "$(fzf < ~/.dirs_stack_uniq | sed "s|^~|${HOME}|")" || return
+unset -f zzz
+zzz () {
+    z "$(fzf < ~/.dirs_stack_uniq | sed "s|^~|${HOME}|")" || return
 }
 # }}}
 
@@ -374,5 +374,8 @@ else
     alias l="ls -A"
 fi
 
+for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
+
+alias y="yt-dlp"
 alias agenda='emacs --eval "(org-agenda-list)"'
 alias todo='emacs --eval "(org-todo-list)"'
