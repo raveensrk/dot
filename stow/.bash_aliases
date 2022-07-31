@@ -229,7 +229,7 @@ ranger_cd() {
     ranger --choosedir="$temp_file" -- "${@:-$PWD}"
     if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
         # cd -- "$chosen_dir"
-        , "$chosen_dir"
+        z "$chosen_dir"
     fi
     rm -f -- "$temp_file"
 }
@@ -298,7 +298,7 @@ fi
 unset -f z
 z () {
     local tmp="/tmp/.dirs_stack_tmp_$$"
-    pushd $1 || return
+    pushd "$1" || return
     dirs -v | awk '{print $2}' >> ~/.dirs_stack
     cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
     cat "$tmp" > ~/.dirs_stack_uniq
@@ -318,6 +318,8 @@ zzz () {
     z "$(fzf < ~/.dirs_stack_uniq | sed "s|^~|${HOME}|")" || return
 }
 # }}}
+
+alias cd="z"
 
 ### Code below this need to be reviewed. TODO
 

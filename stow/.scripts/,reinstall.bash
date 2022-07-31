@@ -1,8 +1,8 @@
 #!/bin/bash
 
-pushd ~/my_repos/dotfiles-main
-make update_emacs
-popd
+# pushd ~/my_repos/dotfiles-main
+# make update_emacs
+# popd
 
 pushd "$MY_REPOS" || exit 2
 for f in $(find . -iname install.bash); do
