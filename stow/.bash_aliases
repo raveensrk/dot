@@ -58,20 +58,13 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias e="emacsclient -c"
-alias ee="emacs --daemon"
+alias e="emacsclient -c -a \"\""
 alias ei="e ~/.emacs"
 alias eek="emacsclient -e \"(server-force-delete)\""
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
-alias d='pushd'
-alias dv='dirs -v'
-
-,ff () {
-    find -name "*$1*"
-}
 
 # This will cd and do ls but sometimes it gets broken
 
@@ -85,7 +78,7 @@ alias dv='dirs -v'
 #     ls
 # }
 
-convert-softlinks () {
+,convert-softlinks () {
     link_name="$1"
     # Get real path of original file
     orig=$(realpath "$link_name")
@@ -95,9 +88,6 @@ convert-softlinks () {
     cp "$orig" "$link_name"
     unset link_name orig 
 }
-# }}}
-# {{{ WSL
-alias ,e="explorer.exe ."
 # }}}
 # {{{ PAGERS
 export PAGER='less'
@@ -135,7 +125,6 @@ updatedb_home="$updatedb_path/home.db"
     [[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
     updatedb -l 0 -o "$updatedb_home" -U ~/
 }
-
 
 sd () {
     local dir=$(locate -d "$updatedb_home" .* | fzf)
@@ -177,8 +166,8 @@ done
 # export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
 export ALTERNATE_EDITOR="emacs"
-export VISUAL="emacsclient"
-export EDITOR="emacsclient"
+export VISUAL="emacsclient -c -a \"\""
+export EDITOR="emacsclient -c -a \"\""
 # ,magit () {
 #     emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,display-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
 # }
@@ -277,28 +266,20 @@ fi
 # Colors
 LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 
-# MACOS Specific {{{
-if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-    # https://github.com/platformio/platformio-atom-ide-terminal/issues/196
-    update_terminal_cwd() {
-        # Identify the directory using a "file:" scheme URL,
-        # including the host name to disambiguate local vs.
-        # remote connections. Percent-escape spaces.
-        local SEARCH=' '
-        local REPLACE='%20'
-        local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
-        printf '\e]7;%s\a' "$PWD_URL"
-    }
-fi 
-
-# }}}
 
 # {{{ COMMA ALIASES
 unset -f z
 z () {
     local tmp="/tmp/.dirs_stack_tmp_$$"
-    pushd "$1" || return
+    local dir=""
+    if [ "$1" = "" ]; then
+        dir="$HOME"
+    elif [ "$1" = "-" ]; then
+        dir="+1"
+    else
+        dir="$1"
+    fi
+    pushd "$dir" || return
     dirs -v | awk '{print $2}' >> ~/.dirs_stack
     cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
     cat "$tmp" > ~/.dirs_stack_uniq
@@ -365,7 +346,6 @@ fi
 # This will exit bash shell as soon as it receives C-d as the last command
 export IGNOREEOF=0
 
-
 # LS aliases
 
 if command -v exa > /dev/null; then
@@ -379,5 +359,31 @@ fi
 for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 
 alias y="yt-dlp"
-alias agenda='emacs --eval "(org-agenda-list)"'
-alias todo='emacs --eval "(org-todo-list)"'
+alias agenda='e --eval "(org-agenda-list)" &'
+alias todo='e --eval "(org-todo-list)" &'
+
+# BUGFIX: bash: __vte_prompt_command: command not found
+# https://ask.fedoraproject.org/t/how-to-fix-bash-vte-prompt-command-command-not-found-when-using-tmux/17704/3
+# check if function exists and define empty one if doesn't
+if [[ $(type -t "__vte_prompt_command") != function ]]; then
+    function __vte_prompt_command(){
+        return 0
+    }
+fi
+
+# MACOS Specific {{{
+if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # https://github.com/platformio/platformio-atom-ide-terminal/issues/196
+    update_terminal_cwd() {
+        # Identify the directory using a "file:" scheme URL,
+        # including the host name to disambiguate local vs.
+        # remote connections. Percent-escape spaces.
+        local SEARCH=' '
+        local REPLACE='%20'
+        local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
+        printf '\e]7;%s\a' "$PWD_URL"
+    }
+fi 
+
+# }}}
