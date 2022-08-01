@@ -33,3 +33,5 @@ jq
 gimp
 emacs
 cscope
+w3m
+mactex

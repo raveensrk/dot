@@ -271,7 +271,7 @@
   '(("." . "~/.emacs.d/file-backups")))
 
 ;;; Dired
-(setq dired-kill-when-opening-new-dired-buffer t)
+(setq dired-kill-when-opening-new-dired-buffer nil)
 (global-set-key (kbd "C-c +") 'dired-create-empty-file)
 (defun dired-dotfiles-toggle ()
   "Show/hide dot-files"
@@ -314,19 +314,6 @@
   `(when (eq system-type ',type)
      ,@body))
 
-(with-system gnu/linux
-  ;; This will add this file to buffer list when opening emacs
-  ;; file-exists-p
-  ;; (find-file "~/repos/dotfiles-main/dotfiles/.emacs")
-  )
-
-(with-system windows-nt
-  ;; (find-file "c:/Github/dotfiles-main/dotfiles/.emacs")
-  )
-
-;; (with-system windows-nt
-;;   (setq org-agenda-files (directory-files-recursively "c:Github/journal-work" "\\.org$"))
-;;   )
 (setq org-agenda-archives-mode t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-src-tab-acts-natively t)
@@ -518,3 +505,5 @@ Version 2019-11-04 2021-02-16"
 ;; (global-set-key [wheel-left] 'scroll-right)
 ;; (put 'scroll-left 'disabled nil)
 
+
+ (setq org-agenda-files '("~/.agenda_files"))

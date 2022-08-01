@@ -1,5 +1,8 @@
 * TODO [#A] Dev environment setup and Emacs configs gardening
 :LOGBOOK:
+CLOCK: [2022-08-01 Mon 16:46]--[2022-08-01 Mon 17:05] =>  0:19
+CLOCK: [2022-07-31 Sun 16:46]--[2022-07-31 Sun 16:55] =>  0:09
 CLOCK: [2022-07-29 Fri 00:57]--[2022-07-29 Fri 01:49] =>  0:52
 :END:
 * TODO [#A] Finish some stuff and be cool
+* TODO [#C] org-drill.el – flashcards and spaced repetition for org-mode
