@@ -56,7 +56,7 @@
  '(org-refile-allow-creating-parent-nodes 'confirm)
  '(org-refile-use-outline-path 'file)
  '(org-startup-indented t)
- '(org-startup-truncated t)
+ '(org-startup-truncated nil)
  '(org-todo-keywords '((sequence "BLOG" "TODO" "CURR" "WAIT" "|" "DONE" "SKIP")))
  '(outline-minor-mode-cycle t)
  '(outline-minor-mode-cycle-filter nil)
