@@ -172,6 +172,10 @@ export EDITOR="emacsclient -c -a \"\""
 #     emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,display-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
 # }
 
+,magit () {
+    e --eval "(magit)" &
+}
+
 alias vs="command vim --servername VIM"
 v () {
     local servername
