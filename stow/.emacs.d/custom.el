@@ -31,6 +31,11 @@
  '(mouse-wheel-flip-direction t)
  '(mouse-wheel-tilt-scroll t)
  '(org-agenda-files '("~/.agenda_files"))
+ '(org-agenda-prefix-format
+   '((agenda . " %i %-12:c%?-12t% s")
+     (todo . " %i %-25:c")
+     (tags . " %i %-12:c")
+     (search . " %i %-12:c")))
  '(org-agenda-start-with-log-mode 'clockcheck)
  '(org-babel-load-languages '((awk . t) (C . t) (shell . t) (php . t)))
  '(org-export-backends '(ascii html icalendar latex md odt))
