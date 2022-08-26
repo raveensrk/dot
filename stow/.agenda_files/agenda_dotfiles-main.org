@@ -1,4 +1,4 @@
-* TODO [#B] Dev environment setup and Emacs configs gardening
+* TODO [#C] Dev environment setup and Emacs configs gardening
 :LOGBOOK:
 CLOCK: [2022-08-01 Mon 16:46]--[2022-08-01 Mon 17:05] =>  0:19
 CLOCK: [2022-07-31 Sun 16:46]--[2022-07-31 Sun 16:55] =>  0:09
