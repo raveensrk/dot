@@ -507,3 +507,4 @@ Version 2019-11-04 2021-02-16"
 
 
  (setq org-agenda-files '("~/.agenda_files"))
+(add-hook 'sh-mode-hook 'flycheck-mode)
