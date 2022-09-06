@@ -246,6 +246,8 @@ bind '"\C-o":"ranger-cd\C-m"'
 
 # {{{ FZF
 export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
+export FZF_CTRL_T_COMMAND="command find -L ."
+export FZF_ALT_C_COMMAND="command find -L . -type d"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
 

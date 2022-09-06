@@ -25,6 +25,6 @@ $if Bash
 "\C-xq": "\eb\"\ef\""
 "\C-x\"": "\"\C-b\""
 "\C-xr": re-read-init-file
-"\C-xx": ",sync.bash"
-"AA": ",sync.bash"
+"\C-xx": ",sync.bash\n"
+"\C-xd": "zzz\n"
 $endif
