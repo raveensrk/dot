@@ -359,7 +359,7 @@ if command -v exa > /dev/null; then
     alias l="exa -la"
 else
     alias ls='ls --color=auto'
-    alias l="ls -A"
+    alias l="ls -Al"
 fi
 
 for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done

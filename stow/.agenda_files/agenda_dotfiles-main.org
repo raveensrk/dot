@@ -1,5 +1,6 @@
 * TODO [#F] Dev environment setup and Emacs configs gardening
 :LOGBOOK:
+CLOCK: [2022-09-06 Tue 15:40]--[2022-09-06 Tue 16:05] =>  0:25
 CLOCK: [2022-08-29 Mon 14:40]--[2022-08-29 Mon 15:33] =>  0:53
 CLOCK: [2022-08-01 Mon 16:46]--[2022-08-01 Mon 17:05] =>  0:19
 CLOCK: [2022-07-31 Sun 16:46]--[2022-07-31 Sun 16:55] =>  0:09
