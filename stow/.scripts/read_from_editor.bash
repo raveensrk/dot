@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.bash_prompt 
+source "$HOME/.bash_prompt"
 
 main () {
     local file=~/.tmp/tmp_read_from_editor.txt
