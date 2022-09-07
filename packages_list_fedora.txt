@@ -44,3 +44,4 @@ gnome-software
 git
 hg
 octave
+qrencode
