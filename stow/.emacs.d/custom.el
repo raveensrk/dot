@@ -59,7 +59,7 @@
  '(org-priority-lowest 70)
  '(org-refile-allow-creating-parent-nodes 'confirm)
  '(org-refile-use-outline-path 'file)
- '(org-startup-folded 'show2levels)
+ '(org-startup-folded nil)
  '(org-startup-indented t)
  '(org-startup-truncated nil)
  '(org-todo-keywords '((sequence "BLOG" "TODO" "CURR" "WAIT" "|" "DONE" "SKIP")))
