@@ -484,6 +484,7 @@ Version 2019-11-04 2021-02-16"
 ;; (setq left-fringe-width 20)
 
 
+;;; Indent Guide
 (indent-guide-global-mode 1)
 
 ;; (smartparens-global-mode +1)
@@ -494,19 +495,82 @@ Version 2019-11-04 2021-02-16"
 
 ;; #TODO (highlight-phrase #TODO dired-broken-symlink)
 
+;;; Shellcheck
 (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
-
-
-;; set up babel support
+;;; set up babel support
 (require 'org)
 (require 'ob-tcl)
 ;; add additional languages with (require 'ob-language)
 ;; (global-set-key [wheel-right] 'scroll-left)
 ;; (global-set-key [wheel-left] 'scroll-right)
 ;; (put 'scroll-left 'disabled nil)
-
-
- (setq org-agenda-files '("~/.agenda_files"))
-
+;;; Org Agenda files
+(setq org-agenda-files '("~/.agenda_files"))
+;;; Eshell 
 (add-hook 'eshell-mode-hook (lambda () (turn-off-evil-mode)))
 (add-hook 'sh-mode-hook 'flycheck-mode)
+;;; Org super agenda
+(setq spacemacs-theme-org-agenda-height nil
+      org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
+      org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-include-deadlines t
+      org-agenda-include-diary t
+      org-agenda-block-separator nil
+      org-agenda-compact-blocks t
+      org-agenda-start-with-log-mode t)
+(setq org-agenda-custom-commands
+      '(("z" "Super zaen view"
+         ((agenda "" ((org-agenda-span 'day)
+                      (org-super-agenda-groups
+                       '((:name "Today"
+                                :time-grid t
+                                :date today
+                                :todo "TODAY"
+                                :scheduled today
+                                :order 1)))))
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:name "Next to do"
+                                 :todo "NEXT"
+                                 :order 1)
+                          (:name "Important"
+                                 :tag "Important"
+                                 :priority "A"
+                                 :order 6)
+                          (:name "Due Today"
+                                 :deadline today
+                                 :order 2)
+                          (:name "Due Soon"
+                                 :deadline future
+                                 :order 8)
+                          (:name "Overdue"
+                                 :deadline past
+                                 :order 7)
+                          (:name "Assignments"
+                                 :tag "Assignment"
+                                 :order 10)
+                          (:name "Issues"
+                                 :tag "Issue"
+                                 :order 12)
+                          (:name "Projects"
+                                 :tag "Project"
+                                 :order 14)
+                          (:name "Emacs"
+                                 :tag "Emacs"
+                                 :order 13)
+                          (:name "Research"
+                                 :tag "Research"
+                                 :order 15)
+                          (:name "To read"
+                                 :tag "Read"
+                                 :order 30)
+                          (:name "Waiting"
+                                 :todo "WAITING"
+                                 :order 20)
+                          (:name "trivial"
+                                 :priority<= "C"
+                                 :tag ("Trivial" "Unimportant")
+                                 :todo ("SOMEDAY" )
+                                 :order 90)
+                          (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
