@@ -11,6 +11,7 @@
  '(custom-file "~/.emacs.d/custom.el")
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+ '(dired-dwim-target t)
  '(dired-hide-details-hide-information-lines t)
  '(dired-hide-details-hide-symlink-targets t)
  '(display-line-numbers 'visual)
