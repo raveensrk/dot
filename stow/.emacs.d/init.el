@@ -268,7 +268,7 @@
 
 ;;; Backups
 (setq backup-directory-alist 
-  '(("." . "~/.emacs.d/file-backups")))
+      '(("." . "~/.emacs.d/file-backups")))
 
 ;;; Dired
 (setq dired-kill-when-opening-new-dired-buffer nil)
@@ -574,3 +574,41 @@ Version 2019-11-04 2021-02-16"
                                  :todo ("SOMEDAY" )
                                  :order 90)
                           (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
+
+(defun insert-date ()
+  (interactive)
+  (insert
+   (replace-regexp-in-string " \\w\\w\\w" "" 
+                             (string-replace ">" ""
+                                             (string-replace "<" ""
+                                                             (org-time-stamp nil nil)
+                                                             )
+                                             )
+                             )
+   )
+  )
+
+
+
+(defun create-a-blog-entry ()
+  (interactive)
+  (print "Starting file creation...")
+  (find-file (read-file-name "Enter file Name:" "~/my_repos/raveenkumar.xyz/Blog/blog"))
+
+  (save-excursion
+    (insert
+     "#+include: ../css/html-options-level-2.org
+#+title: REPLACE_TITLE
+#+filetags: REPLACE_TAG
+"))
+  
+  (save-excursion
+    (while (re-search-forward "REPLACE_TITLE" nil t)
+      (replace-match (read-string "Enter title: "))))
+
+  (save-excursion
+    (while (re-search-forward "REPLACE_TAG" nil t)
+      (replace-match (read-string "Enter title: "))))
+  
+  )
+
