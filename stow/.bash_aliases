@@ -167,14 +167,14 @@ done
 # export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
 export ALTERNATE_EDITOR="emacs"
-export VISUAL="e"
-export EDITOR="e"
+export VISUAL="emacs"
+export EDITOR="emacs"
 # ,magit () {
 #     emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,display-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
 # }
 
 ,magit () {
-    e --eval "(magit)" &
+    emacs --eval "(magit)" &
 }
 
 alias vs="command vim --servername VIM"
