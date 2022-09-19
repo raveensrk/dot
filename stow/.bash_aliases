@@ -58,7 +58,8 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias e="emacsclient -c -a \"\""
+alias e="emacs"
+#alias e="emacsclient -c -a \"\""
 alias ei="e ~/.emacs"
 alias eek="emacsclient -e \"(server-force-delete)\""
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
@@ -166,8 +167,8 @@ done
 # export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
 export ALTERNATE_EDITOR="emacs"
-export VISUAL="emacsclient -c -a \"\""
-export EDITOR="emacsclient -c -a \"\""
+export VISUAL="e"
+export EDITOR="e"
 # ,magit () {
 #     emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,display-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
 # }
@@ -246,6 +247,8 @@ bind '"\C-o":"ranger-cd\C-m"'
 
 # {{{ FZF
 export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
+export FZF_CTRL_T_COMMAND="command find -L ."
+export FZF_ALT_C_COMMAND="command find -L . -type d"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
 
@@ -357,7 +360,7 @@ if command -v exa > /dev/null; then
     alias l="exa -la"
 else
     alias ls='ls --color=auto'
-    alias l="ls -A"
+    alias l="ls -Al"
 fi
 
 for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
