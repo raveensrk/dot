@@ -180,3 +180,8 @@ install_bash:
 
 update_emacs:
 	emacs --eval "(my-package-refresh-and-install-selected-packages)" --eval "(kill-emacs)"
+
+
+upgrade_general:
+	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	flatpak install flathub com.spotify.Client

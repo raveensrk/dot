@@ -294,6 +294,7 @@
 ;; (add-hook 'org-mode-hook (lambda () (olivetti-mode)))
 
 
+;; (add-hook 'org-mode-hook (lambda () (org-update-all-dblocks)))
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 (global-set-key (kbd "C-c e") 'org-babel-execute-src-block)
