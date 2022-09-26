@@ -27,4 +27,5 @@ $if Bash
 "\C-xr": re-read-init-file
 "\C-xx": ",sync.bash\n"
 "\C-xd": "zzz\n"
+"\C-xc": "cd ~/my_repos/dotfiles-main\nmake install_colemak\n"
 $endif

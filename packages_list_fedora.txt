@@ -46,3 +46,4 @@ hg
 octave
 qrencode
 npm
+xset
