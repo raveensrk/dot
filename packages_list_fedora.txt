@@ -47,3 +47,4 @@ octave
 qrencode
 npm
 xset
+google-chrome

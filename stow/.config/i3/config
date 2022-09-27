@@ -116,9 +116,9 @@ set $ws2 "2:Personal-INTERNET"
 # assign [class="Firefox"] $ws2
 set $ws3 "3:WORK"
 set $ws4 "4:Work-Internet"
-set $ws5 "5:Work-VPC"
-set $ws6 "6:Music"
-set $ws7 "7"
+set $ws5 "5:Work-Teams"
+set $ws6 "6:Work-VPC"
+set $ws7 "7:Music"
 set $ws8 "8"
 set $ws9 "9:PERSONAL"
 set $ws10 "10:"
@@ -195,6 +195,26 @@ client.background       #F8F8F2
 
 bar {
   status_command i3status
+  position bottom
+  workspace_buttons no
+  # status_command ~/.config/i3status/my_i3status.bash
+  colors {
+    background #282A36
+    statusline #F8F8F2
+    separator  #44475A
+
+    focused_workspace  #44475A #44475A #F8F8F2
+    active_workspace   #282A36 #44475A #F8F8F2
+    inactive_workspace #282A36 #282A36 #BFBFBF
+    urgent_workspace   #FF5555 #FF5555 #F8F8F2
+    binding_mode       #FF5555 #FF5555 #F8F8F2
+  }
+}
+
+
+bar {
+  status_command i3status --config ~/.config/i3status/config-top
+  position top
   # status_command ~/.config/i3status/my_i3status.bash
   colors {
     background #282A36
@@ -214,3 +234,4 @@ bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F
 # Startup applications
 # exec --no-startup-id firefox
 
+# exec --no-startup-id synclient VertScrollDelta=-111

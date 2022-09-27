@@ -8,5 +8,7 @@ sudo dnf install touchegg -y
 # You may also need to manually start the service
 sudo systemctl start touchegg
 sudo systemctl enable touchegg
+sudo dnf groupinstall i3-desktop-environment
+
 
 npm install --global prettier @prettier/plugin-lua @prettier/plugin-php prettier-plugin-solidity prettier-plugin-svelte prettier-plugin-toml
