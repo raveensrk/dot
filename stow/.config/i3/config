@@ -112,16 +112,18 @@ bindsym $mod+a focus parent
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1:Personal"
-set $ws2 "2:Personal-INTERNET"
-# assign [class="Firefox"] $ws2
-set $ws3 "3:WORK"
-set $ws4 "4:Work-Internet"
-set $ws5 "5:Work-Teams"
+set $ws2 "2:Mail"
+assign [class="thunderbird"] $ws2
+set $ws3 "3:Teams and Chat"
+assign [class="microsoft teams - preview"] $ws3
+set $ws4 "4:Work"
+set $ws5 "5:Work2"
 set $ws6 "6:Work-VPC"
-set $ws7 "7:Music"
-set $ws8 "8"
+set $ws7 "7:"
+set $ws8 "8:"
 set $ws9 "9:PERSONAL"
-set $ws10 "10:"
+set $ws10 "10:Music"
+assign [class="Spotify"] $ws10
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -229,7 +231,7 @@ bar {
   }
 }
 
-bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
+bindsym $mod+d exec "dmenu_run -l 10 -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
 
 # Startup applications
 # exec --no-startup-id firefox
