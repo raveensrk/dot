@@ -93,6 +93,7 @@ bindsym $mod+Shift+h split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
+workspace_layout stacking
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
@@ -114,14 +115,13 @@ bindsym $mod+a focus parent
 set $ws1 "1:Personal"
 set $ws2 "2:Mail"
 assign [class="thunderbird"] $ws2
-set $ws3 "3:Teams and Chat"
-assign [class="microsoft teams - preview"] $ws3
+set $ws3 "3:Chat"
 set $ws4 "4:Work"
 set $ws5 "5:Work2"
 set $ws6 "6:Work-VPC"
-set $ws7 "7:"
+set $ws7 "7:raveenkumar.xyz"
 set $ws8 "8:"
-set $ws9 "9:PERSONAL"
+set $ws9 "9:"
 set $ws10 "10:Music"
 assign [class="Spotify"] $ws10
 
@@ -136,6 +136,11 @@ bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
+bindsym $mod+n workspace next
+bindsym $mod+p workspace previous
+bindsym $mod+Shift+n move window to workspace next    ; workspace next;
+bindsym $mod+Shift+p move window to workspace previous; workspace previous;
+
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -197,6 +202,7 @@ client.background       #F8F8F2
 
 bar {
   status_command i3status
+  separator_symbol "🌲"
   position bottom
   workspace_buttons no
   # status_command ~/.config/i3status/my_i3status.bash
@@ -216,6 +222,7 @@ bar {
 
 bar {
   status_command i3status --config ~/.config/i3status/config-top
+  separator_symbol "🧱"
   position top
   # status_command ~/.config/i3status/my_i3status.bash
   colors {
@@ -237,3 +244,52 @@ bindsym $mod+d exec "dmenu_run -l 10 -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -
 # exec --no-startup-id firefox
 
 # exec --no-startup-id synclient VertScrollDelta=-111
+for_window [all] title_window_icon padding 5px
+for_window [all] border pixel 5
+
+
+# Press $mod+o followed by either f, t, Escape or Return to launch firefox,
+# thunderbird or return to the default mode, respectively.
+set $mode_launcher Launch: [f]irefox [t]hunderbird
+bindsym $mod+o mode "$mode_launcher"
+
+mode "$mode_launcher" {
+    bindsym f exec firefox
+    bindsym t exec thunderbird
+    bindsym e exec emacs
+
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+
+
+
+hide_edge_borders smart
+
+exec_always "cd ~/my_repos/dotfiles-main; make install_colemak"
+
+focus_follows_mouse yes
+
+
+popup_during_fullscreen smart
+
+
+
+
+workspace_auto_back_and_forth yes
+
+
+
+
+show_marks yes
+
+
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
+
+bindsym $mod+b bar mode toggle

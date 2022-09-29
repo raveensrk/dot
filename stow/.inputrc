@@ -28,4 +28,5 @@ $if Bash
 "\C-xx": ",sync.bash\n"
 "\C-xd": "zzz\n"
 "\C-xc": "cd ~/my_repos/dotfiles-main\nmake install_colemak\n"
+"\C-xo": "xdg-open . &\n"
 $endif
