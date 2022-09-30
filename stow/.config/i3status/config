@@ -16,7 +16,7 @@ order += "battery 0"
 order += "tztime local"
 
 tztime local {
-        format = "%Y-%m-%d %a %H:%M:%S %p"
+        format = "%Y-%m-%d %a %I:%M:%S %p"
 }
 
 disk "/" {

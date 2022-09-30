@@ -93,7 +93,7 @@ bindsym $mod+Shift+h split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-workspace_layout stacking
+workspace_layout tabbed
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
@@ -248,19 +248,6 @@ for_window [all] title_window_icon padding 5px
 for_window [all] border pixel 5
 
 
-# Press $mod+o followed by either f, t, Escape or Return to launch firefox,
-# thunderbird or return to the default mode, respectively.
-set $mode_launcher Launch: [f]irefox [t]hunderbird
-bindsym $mod+o mode "$mode_launcher"
-
-mode "$mode_launcher" {
-    bindsym f exec firefox
-    bindsym t exec thunderbird
-    bindsym e exec emacs
-
-    bindsym Escape mode "default"
-    bindsym Return mode "default"
-}
 
 
 
@@ -291,5 +278,26 @@ bindsym $mod+Shift+minus move scratchpad
 # Show the first scratchpad window
 bindsym $mod+minus scratchpad show
 
-
 bindsym $mod+b bar mode toggle
+
+# Press $mod+o followed by either f, t, Escape or Return to launch firefox,
+# thunderbird or return to the default mode, respectively.
+set $mode_launcher Launch: [q]uit [f]]irefox [t]hunderbird [e]macs
+bindsym $mod+o mode "$mode_launcher"
+
+mode "$mode_launcher" {
+    bindsym f exec firefox     ; mode "default"
+    bindsym t exec thunderbird ; mode "default"
+    bindsym e exec emacs       ; mode "default"
+    bindsym q mode "default"
+}
+
+set $custom_command [r]ename workspace [m]ove to workspace [c]reate workspace [q]uit
+bindsym $mod+c mode "$custom_command"
+
+mode "$custom_command" {
+    bindsym r exec i3-input -F 'rename workspace to "%s"' -P 'New name: '; mode "default"
+    bindsym m exec "bash ~/.scripts/move_window_to_existing_workspace.bash"
+    bindsym c exec i3-input -F 'workspace "%s"' -P 'New Workspace name: '; mode "default"
+    bindsym q mode "default"
+}
