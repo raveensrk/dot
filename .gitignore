@@ -9,6 +9,7 @@ stow_vim_plugins/.fzf
 stow_vim_plugins.tar.gz
 .DS_Store
 **/.DS_Store
+**.DS_Store
 stow/.emacs~
 stow/.emacs.d/recentf
 stow/.emacs.d/recentf~
