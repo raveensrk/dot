@@ -1,5 +1,6 @@
 * TODO [#F] Dev environment setup and Emacs configs gardening
 :LOGBOOK:
+CLOCK: [2022-10-06 Thu 16:40]--[2022-10-06 Thu 17:18] =>  0:38
 CLOCK: [2022-09-06 Tue 15:40]--[2022-09-06 Tue 16:05] =>  0:25
 CLOCK: [2022-08-29 Mon 14:40]--[2022-08-29 Mon 15:33] =>  0:53
 CLOCK: [2022-08-01 Mon 16:46]--[2022-08-01 Mon 17:05] =>  0:19
@@ -20,10 +21,3 @@ CLOCK: [2022-07-21 Thu 16:53]--[2022-07-21 Thu 17:14] =>  0:21
 CLOCK: [2022-07-21 Thu 16:42]--[2022-07-21 Thu 16:53] =>  0:11
 CLOCK: [2022-07-21 Thu 16:41]--[2022-07-21 Thu 16:41] =>  0:00
 :END:
-* TODO [#F] org-drill.el – flashcards and spaced repetition for org-mode
-:LOGBOOK:
-CLOCK: [2022-08-29 Mon 13:54]--[2022-08-29 Mon 13:55] =>  0:01
-:END:
-* TODO [#F] Terminal coloured words
-Auto color terminal output based on certain words
-color psprintf prints for info and error seperately

@@ -1,0 +1,29 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /home/rkumar/my_repos/dotfiles-main/stow/.agenda_files/agenda_dotfiles-main.org
+
+
+* DONE [#F] org-drill.el – flashcards and spaced repetition for org-mode
+CLOSED: [2022-10-06 Thu 14:48]
+:PROPERTIES:
+:ARCHIVE_TIME: 2022-10-06 Thu 14:49
+:ARCHIVE_FILE: ~/my_repos/dotfiles-main/stow/.agenda_files/agenda_dotfiles-main.org
+:ARCHIVE_CATEGORY: agenda_dotfiles-main
+:ARCHIVE_TODO: DONE
+:END:
+:LOGBOOK:
+CLOCK: [2022-08-29 Mon 13:54]--[2022-08-29 Mon 13:55] =>  0:01
+:END:
+
+* SKIP [#F] Terminal coloured words
+CLOSED: [2022-10-06 Thu 16:54]
+:PROPERTIES:
+:ARCHIVE_TIME: 2022-10-06 Thu 16:54
+:ARCHIVE_FILE: ~/my_repos/dotfiles-main/stow/.agenda_files/agenda_dotfiles-main.org
+:ARCHIVE_CATEGORY: agenda_dotfiles-main
+:ARCHIVE_TODO: SKIP
+:END:
+- Auto color terminal output based on certain words
+- color psprintf prints for info and error seperately
+- Ideally this should be a job for the terminal emulator not for shell
