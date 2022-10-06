@@ -21,6 +21,7 @@
  '(evil-symbol-word-search t)
  '(git-gutter:always-show-separator t)
  '(global-git-gutter-mode t)
+ '(ispell-dictionary "british")
  '(ledger-default-date-format "%Y-%m-%d")
  '(ledger-report-auto-refresh nil)
  '(ledger-reports
