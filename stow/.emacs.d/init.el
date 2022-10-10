@@ -616,3 +616,4 @@ Version 2019-11-04 2021-02-16"
 (setq org-agenda-text-search-extra-files
       (directory-files-recursively "~/my_repos" ".*\.org$\\|.*\.org_archive$"))
 (org-id-update-id-locations)
+(defun org-drill-entry-empty-p () nil)

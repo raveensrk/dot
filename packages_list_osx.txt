@@ -35,3 +35,4 @@ emacs
 cscope
 w3m
 mactex
+klavaro
