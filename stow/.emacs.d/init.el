@@ -617,3 +617,13 @@ Version 2019-11-04 2021-02-16"
       (directory-files-recursively "~/my_repos" ".*\.org$\\|.*\.org_archive$"))
 (org-id-update-id-locations)
 (defun org-drill-entry-empty-p () nil)
+
+
+
+(defun my-expand-lines ()
+  (interactive)
+  (let ((hippie-expand-try-functions-list
+         '(try-expand-line)))
+    (call-interactively 'hippie-expand)))
+
+(define-key evil-insert-state-map (kbd "C-x C-l") 'my-expand-lines)
