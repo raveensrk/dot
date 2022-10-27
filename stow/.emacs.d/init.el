@@ -623,3 +623,12 @@ Version 2019-11-04 2021-02-16"
 
 ;;; Maximize frame after starting emacsclient
 (add-hook 'server-after-make-frame-hook 'toggle-frame-maximized)
+
+
+(defun my-expand-lines ()
+  (interactive)
+  (let ((hippie-expand-try-functions-list
+         '(try-expand-line)))
+    (call-interactively 'hippie-expand)))
+
+(define-key evil-insert-state-map (kbd "C-x C-l") 'my-expand-lines)

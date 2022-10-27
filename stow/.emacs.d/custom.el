@@ -135,7 +135,7 @@
  '(tab-width 4)
  '(truncate-lines nil)
  '(warning-suppress-log-types '((magit)))
- '(warning-suppress-types '((comp) (magit)))
+ '(warning-suppress-types '((emacs) (comp) (magit)))
  '(word-wrap t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

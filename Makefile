@@ -48,7 +48,7 @@ install_git:
 
 stow_basic:
 	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$$HOME/.bashrc"
-	bash add_sources.bash "[ -f ~/.bashrc] && source ~/.bashrc" "$$HOME/.bash_login"
+	bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$$HOME/.bash_login"
 	stow -R stow -t "$$HOME" --no-folding
 	chmod 644 "$$HOME/.ssh/config"
 

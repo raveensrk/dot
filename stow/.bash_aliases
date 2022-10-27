@@ -175,7 +175,7 @@ export EDITOR="emacsclient -c"
 # }
 
 ,magit () {
-    emacs --eval "(magit)" &
+    emacs --eval "(progn (magit)  (delete-other-windows))" &
 }
 
 alias vs="command vim --servername VIM"
