@@ -393,7 +393,6 @@
 
 ;;; General
 (setq vc-follow-symlinks t)
-(global-set-key (kbd "C-c m") 'menu-bar-open)
 
 ;;; Elisp
 (dolist (hook '(emacs-lisp-mode-hook))
@@ -617,3 +616,10 @@ Version 2019-11-04 2021-02-16"
       (directory-files-recursively "~/my_repos" ".*\.org$\\|.*\.org_archive$"))
 (org-id-update-id-locations)
 (defun org-drill-entry-empty-p () nil)
+
+(global-set-key (kbd "C-c t") 'toggle-truncate-lines)
+(global-set-key (kbd "C-c n") 'tmm-menubar)
+(toggle-frame-fullscreen)
+
+;;; Maximize frame after starting emacsclient
+(add-hook 'server-after-make-frame-hook 'toggle-frame-maximized)
