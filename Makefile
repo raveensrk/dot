@@ -5,6 +5,17 @@
 
 clean:
 
+install_xclip:
+	mkdir tmp
+	cd tmp
+	wget -nc "https://github.com/astrand/xclip/archive/refs/tags/0.13.tar.gz"
+	tar xvf 0.13.tar.gz
+	cd xclip-0.13
+	autoreconf
+	./configure --prefix=$$HOME/.local
+	make
+	make install
+
 install_colemak:
 	# https://colemak.com/Unix
 	mkdir tmp
@@ -37,7 +48,7 @@ install_git:
 
 stow_basic:
 	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$$HOME/.bashrc"
-	bash add_sources.bash "[ -f ~/.bashrc] && source ~/.bashrc" "$$HOME/.bash_login"
+	bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$$HOME/.bash_login"
 	stow -R stow -t "$$HOME" --no-folding
 	chmod 644 "$$HOME/.ssh/config"
 

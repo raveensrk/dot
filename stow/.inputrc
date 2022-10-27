@@ -8,7 +8,7 @@ set bell-style visible
 # set keymap vi
 # set vi-cmd-mode-string (:)
 # set vi-ins-mode-string (+)
-# set editing-mode emacs
+set editing-mode emacs
 # set keymap emacs
 set show-mode-in-prompt On
 set skip-completed-text On
@@ -29,4 +29,6 @@ $if Bash
 "\C-xd": "zzz\n"
 "\C-xc": "cd ~/my_repos/dotfiles-main\nmake install_colemak\n"
 "\C-xo": "xdg-open . &\n"
+"\C-xl": "\C-e | less\n"
+"\C-x\C-o": "\C-a,fno.bash \C-e\n"
 $endif

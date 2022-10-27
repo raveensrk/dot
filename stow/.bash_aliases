@@ -58,14 +58,24 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias e="emacs"
-#alias e="emacsclient -c -a \"\""
 alias ei="e ~/.emacs"
 alias eek="emacsclient -e \"(server-force-delete)\""
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
+
+unset e
+unset -f e
+e () {
+    set -x
+    if [[ $@ == "" ]]; then
+        emacsclient -c -e "(recentf-open-files)"
+    else
+        $EDITOR $@
+    fi
+    set +x
+}
 
 # This will cd and do ls but sometimes it gets broken
 
@@ -152,23 +162,14 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 # }}}
-# {{{ Other Sources
-[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
-#export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
-[ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
-touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
-for f in ~/.my_bash_aliases/*; do
-    source "$f"
-done
-# }}}
 # {{{ VIM STUFF
 # export VISUAL="vim"
 # export EDITOR="vim"
 # export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
 export ALTERNATE_EDITOR="emacs"
-export VISUAL="emacs"
-export EDITOR="emacs"
+export VISUAL="emacsclient -c"
+export EDITOR="emacsclient -c"
 # ,magit () {
 #     emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,display-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
 # }
@@ -247,7 +248,7 @@ bind '"\C-o":"ranger-cd\C-m"'
 
 # {{{ FZF
 export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
-export FZF_CTRL_T_COMMAND="command find -L ."
+export FZF_CTRL_T_COMMAND="command find -L . $HOME/my_repos"
 export FZF_ALT_C_COMMAND="command find -L . -type d"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
@@ -287,7 +288,7 @@ z () {
         dir="$1"
     fi
     pushd "$dir" || return
-    dirs -v | awk '{print $2}' >> ~/.dirs_stack
+    dirs -v | awk '{print $2}' | sort | uniq >> ~/.dirs_stack
     cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
     cat "$tmp" > ~/.dirs_stack_uniq
     command rm "$tmp"
@@ -303,9 +304,11 @@ zz () {
 
 unset -f zzz
 zzz () {
-    z "$(fzf < ~/.dirs_stack_uniq | sed "s|^~|${HOME}|")" || return
+    z "$(fzf < ~/.dirs_stack | tail -n 50 | uniq | sed "s|^~|${HOME}|")" || return
 }
 # }}}
+
+alias ,edit_zzz="$EDITOR ~/.dirs_stack"
 
 alias cd="z"
 
@@ -393,4 +396,14 @@ if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
     }
 fi 
 
+# }}}
+
+# {{{ Other Sources
+[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
+#export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
+[ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
+touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
+for f in ~/.my_bash_aliases/*; do
+    source "$f"
+done
 # }}}
