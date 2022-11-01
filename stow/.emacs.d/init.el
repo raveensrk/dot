@@ -1,8 +1,37 @@
 ;;; Raveen's Emacs init
 
 ;; (toggle-debug-on-error)
-(setq custom-file "~/.emacs.d/custom.el")
+
+(if (string-equal system-type "windows-nt")
+    (progn
+      (setq custom-file "c:/github/dotfiles-main/stow/.emacs.d/custom.el")
+      (add-to-list 'load-path "c:/github/dotfiles-main/stow/.emacs.d/site-lisp"))
+  (progn
+    (setq custom-file "~/.emacs.d/custom.el")
+    (add-to-list 'load-path "~/.emacs.d/site-lisp")))
+
 (load custom-file)
+
+;;; Source after loading
+
+
+;;; Appearence
+
+;; (toggle-truncate-lines 1)
+
+;;;; Fonts
+
+;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
+
+(cond
+ ((find-font (font-spec :name "Cascadia Code"))
+  (set-frame-font "Cascadia Code-12"))
+ ((find-font (font-spec :name "Menlo"))
+  (set-frame-font "Menlo-12"))
+ ((find-font (font-spec :name "DejaVu Sans Mono"))
+  (set-frame-font "DejaVu Sans Mono-12"))
+ ((find-font (font-spec :name "Inconsolata"))
+  (set-frame-font "Inconsolata-12")))
 
 ;;; Package Specific
 (require 'package)
@@ -17,12 +46,14 @@
   (package-autoremove)
   )
 
-;;; Source after loading
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
+;;; Dynamic Fonts
+;; (require 'dynamic-fonts)
+;; (dynamic-fonts-setup)     ; finds "best" fonts and sets faces:
+;;                                         ; default, fixed-pitch, variable-pitch
+
 
 ;;;; Sr Speedbar
 (require 'sr-speedbar)
-
 
 ;;;; Magit
 (when (require 'magit nil 'noerror)
@@ -32,16 +63,14 @@
 (when (require 'expand-region nil 'noerror)
   (global-set-key (kbd "C-=") 'er/expand-region))
 
-
-
-
-
 (defun my-indent-whole-buffer ()
   (interactive)
   (indent-region (point-min) (point-max)))
+
 (defun my-find-init-file ()
   (interactive)
   (find-file "~/.emacs.d/init.el"))
+
 (defun my-org-daily-notes-file ()
   (interactive)
   (format "%d-%02d-%d.org" (calendar-extract-year (calendar-current-date))
@@ -58,6 +87,7 @@
 ;;;; Enabling packages
 (when (require 'beacon nil 'noerror)
   (beacon-mode 1))
+
 (global-company-mode 1)  
 (require 'minimal-session-saver)
 (minimal-session-saver-install-aliases)
@@ -96,45 +126,41 @@
 (setq ivy-count-format "(%d/%d) ")
 ;; enable this if you want `swiper' to use it
 ;; (setq search-default-mode #'char-fold-to-regexp)
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "<f2> j") 'counsel-set-variable)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-c v") 'ivy-push-view)
-(global-set-key (kbd "C-c V") 'ivy-pop-view)
-(global-set-key (kbd "C-c c") 'counsel-compile)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c L") 'counsel-git-log)
-(global-set-key (kbd "C-c k") 'counsel-rg)
-(global-set-key (kbd "C-c m") 'counsel-linux-app)
-(global-set-key (kbd "C-c z") 'counsel-fzf)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-c J") 'counsel-file-jump)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+(global-set-key (kbd "<f1> l") 'counsel-find-library)
+(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> j") 'counsel-set-variable)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "<f6>") 'ivy-resume)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(global-set-key (kbd "C-c w") 'counsel-wmctrl)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-c F") 'counsel-org-file)
+(global-set-key (kbd "C-c J") 'counsel-file-jump)
+(global-set-key (kbd "C-c L") 'counsel-git-log)
+(global-set-key (kbd "C-c V") 'ivy-pop-view)
 (global-set-key (kbd "C-c b") 'counsel-bookmark)
+(global-set-key (kbd "C-c c") 'counsel-compile)
 (global-set-key (kbd "C-c d") 'counsel-descbinds)
 (global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-rg)
+(global-set-key (kbd "C-c m") 'counsel-linux-app)
 (global-set-key (kbd "C-c o") 'counsel-outline)
 (global-set-key (kbd "C-c t") 'counsel-load-theme)
-(global-set-key (kbd "C-c F") 'counsel-org-file)
+(global-set-key (kbd "C-c v") 'ivy-push-view)
+(global-set-key (kbd "C-c w") 'counsel-wmctrl)
+(global-set-key (kbd "C-c z") 'counsel-fzf)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "M-x") 'counsel-M-x)
 
 ;;;; Helm
 ;; (helm-mode 1)
@@ -155,28 +181,6 @@
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
 
-;;; Appearence
-
-;; (toggle-truncate-lines 1)
-
-;;;; Fonts
-
-;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
-
-;; (cond
-;;  ((find-font (font-spec :name "Cascadia Code"))
-;;   (set-frame-font "Cascadia Code-12"))
-;;  ((find-font (font-spec :name "Menlo"))
-;;   (set-frame-font "Menlo-12"))
-;;  ((find-font (font-spec :name "DejaVu Sans Mono"))
-;;   (set-frame-font "DejaVu Sans Mono-12"))
-;;  ((find-font (font-spec :name "Inconsolata"))
-;;   (set-frame-font "Inconsolata-12")))
-
-;;;; Dynamic Fonts
-(require 'dynamic-fonts)
-(dynamic-fonts-setup)     ; finds "best" fonts and sets faces:
-                                        ; default, fixed-pitch, variable-pitch
 
 ;;; Editing
 (setq-default tab-width 4)
@@ -326,18 +330,7 @@
 ;;; Shell-script-mode
 (add-hook 'shell-script-mode-hook (lambda () (outline-minor-mode 1)))
 
-;;; Load all elisp files under ~/.emacs.d/site-lisp
 
-(setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
-
-(defun my-load-elisp-files (list)
-  "Print each element of LIST on a line of its own."
-  (while list
-    (print (car list))
-    (load-file (print (car list)))
-    (setq list (cdr list))))
-
-(my-load-elisp-files my-lisp-files)
 
 
 
@@ -662,3 +655,21 @@ Version 2019-11-04 2021-02-16"
 (global-set-key (kbd "C-c i") 'my-find-init-file)
 (global-set-key (kbd "C-c .") 'embark-act)
 (global-set-key (kbd "C-c ;") 'embark-dwim)
+
+
+
+
+;;; Load all elisp files under ~/.emacs.d/site-lisp
+
+(if (string-equal system-type "windows-nt")
+    (setq my-lisp-files (directory-files-recursively "c:/github/dotfiles-main/stow/.emacs.d/site-lisp/" ""))
+  (setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" "")))
+
+(defun my-load-elisp-files (list)
+  "Print each element of LIST on a line of its own."
+  (while list
+    (print (car list))
+    (load-file (print (car list)))
+    (setq list (cdr list))))
+
+(my-load-elisp-files my-lisp-files)
