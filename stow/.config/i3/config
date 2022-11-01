@@ -117,7 +117,7 @@ set $ws1 "Home"
 set $ws2 "Mail"
 assign [class="thunderbird"] $ws2
 set $ws3 "Music"
-assign [class="Spotify"] $ws3
+assign [class="spotify"] $ws3
 set $ws7 "raveenkumar.xyz"
 set $ws4 "4:"
 set $ws5 "5:"
