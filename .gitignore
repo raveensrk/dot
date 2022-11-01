@@ -35,3 +35,4 @@ stow/.emacs.d/projectile.cache
 stow/.emacs.d/request/curl-cookie-jar
 tmp/*
 /TAGS
+stow/.emacs.d/async-bytecomp.log

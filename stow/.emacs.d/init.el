@@ -320,8 +320,8 @@
 (global-set-key (kbd "C-c m") 'menu-bar-open)
 
 ;;; Elisp
-(dolist (hook '(emacs-lisp-mode-hook))
-  (add-hook hook (lambda () (outline-minor-mode 1))))
+;; (dolist (hook '(emacs-lisp-mode-hook))
+;;  (add-hook hook (lambda () (outline-minor-mode 1))))
 
 ;;; Shell-script-mode
 (add-hook 'shell-script-mode-hook (lambda () (outline-minor-mode 1)))
@@ -429,8 +429,24 @@ Version 2019-11-04 2021-02-16"
 ;; (global-set-key [wheel-right] 'scroll-left)
 ;; (global-set-key [wheel-left] 'scroll-right)
 ;; (put 'scroll-left 'disabled nil)
+
 ;;; Org Agenda files
-(setq org-agenda-files '("~/.agenda_files"))
+
+
+(if (string-equal system-type "windows-nt")
+    (progn (message "Windows")
+           (setq org-agenda-files
+                 (directory-files-recursively "c:/github" ".*agenda.*\.org$\\|.*agenda.*\.org_archive$")))
+  (progn (message "Unix")
+         (setq org-agenda-files '("~/.agenda_files"))
+         (when (file-exists-p "~/my_repos")
+           (setq org-agenda-text-search-extra-files
+                 (directory-files-recursively "~/my_repos" ".*\.org$\\|.*\.org_archive$")))))
+
+(org-id-update-id-locations)
+
+
+
 ;;; Eshell 
 (add-hook 'sh-mode-hook 'flycheck-mode)
 ;;; Org super agenda
@@ -537,11 +553,7 @@ Version 2019-11-04 2021-02-16"
   )
 
 
-(when (file-exists-p "~/my_repos")
-  (setq org-agenda-text-search-extra-files
-        (directory-files-recursively "~/my_repos" ".*\.org$\\|.*\.org_archive$"))
-  )
-(org-id-update-id-locations)
+
 (defun org-drill-entry-empty-p () nil)
 
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
@@ -557,9 +569,10 @@ Version 2019-11-04 2021-02-16"
   (let ((hippie-expand-try-functions-list
          '(try-expand-line)))
     (call-interactively 'hippie-expand)))
+
 ;;; Evil mode stuff
 
-(define-key evil-insert-state-map (kbd "C-x C-l") 'my-expand-lines)
+;; (define-key evil-insert-state-map (kbd "C-x C-l") 'my-expand-lines)
 ;; (when (package-installed-p 'evil)
 ;;   (require 'evil)
 ;;   (evil-mode 1)
@@ -641,3 +654,11 @@ Version 2019-11-04 2021-02-16"
 ;; (evil-snipe-mode 1)
 ;; (evil-snipe-override-mode 1)
 ;; (evil-mc-mode 1)
+
+
+(global-set-key (kbd "C-c C-l") 'my-expand-lines)
+(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
+(global-set-key (kbd "C-c fr") 'counsel-recentf)
+(global-set-key (kbd "C-c i") 'my-find-init-file)
+(global-set-key (kbd "C-c .") 'embark-act)
+(global-set-key (kbd "C-c ;") 'embark-dwim)

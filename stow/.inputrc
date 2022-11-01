@@ -2,6 +2,8 @@ $include  /etc/inputrc
 
 set completion-map-case On
 set colored-stats On
+set colored-completion-prefix on
+set colored-completion-prefix On
 set completion-display-width -1
 set bell-style visible
 # set editing-mode vi
