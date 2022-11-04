@@ -2,6 +2,8 @@
 
 ;; (toggle-debug-on-error)
 
+;; (setq default-directory "C:/")
+
 (if (string-equal system-type "windows-nt")
     (progn
       (setq custom-file "c:/github/dotfiles-main/stow/.emacs.d/custom.el")
@@ -551,7 +553,7 @@ Version 2019-11-04 2021-02-16"
 
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-c n") 'tmm-menubar)
-(toggle-frame-fullscreen)
+(toggle-frame-maximized)
 
 ;;; Maximize frame after starting emacsclient
 (add-hook 'server-after-make-frame-hook 'toggle-frame-maximized)
@@ -657,8 +659,6 @@ Version 2019-11-04 2021-02-16"
 (global-set-key (kbd "C-c ;") 'embark-dwim)
 
 
-
-
 ;;; Load all elisp files under ~/.emacs.d/site-lisp
 
 (if (string-equal system-type "windows-nt")
@@ -673,3 +673,14 @@ Version 2019-11-04 2021-02-16"
     (setq list (cdr list))))
 
 (my-load-elisp-files my-lisp-files)
+
+
+
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets/"                 ;; personal snippets
+        "c:/github/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
+        ))
+
+(yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
+
+
