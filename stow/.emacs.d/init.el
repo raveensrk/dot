@@ -565,90 +565,93 @@ Version 2019-11-04 2021-02-16"
          '(try-expand-line)))
     (call-interactively 'hippie-expand)))
 
-;;; Evil mode stuff
+;; Evil mode stuff
 
-;; (define-key evil-insert-state-map (kbd "C-x C-l") 'my-expand-lines)
-;; (when (package-installed-p 'evil)
-;;   (require 'evil)
-;;   (evil-mode 1)
-;;   ;; (evil-goggles-mode 1)
-;;   ;; (evil-vimish-fold-mode 1)
-;;   (global-evil-leader-mode 1)
-;;   (evil-leader/set-leader "<SPC>")
-;;   )
+(when (package-installed-p 'evil)
+  (require 'evil)
+  (evil-mode 1)
+  ;; (evil-goggles-mode 1)
+  ;; (evil-vimish-fold-mode 1)
+  (global-evil-leader-mode 1)
+  (evil-leader/set-leader "<SPC>")
+  )
+
+(add-hook 'eshell-mode-hook (lambda () (turn-off-evil-mode)))
+
+;; (require 'evil)
+;; (evil-mode 1)
+;; (global-evil-surround-mode 1)
 ;; 
-;; (add-hook 'eshell-mode-hook (lambda () (turn-off-evil-mode)))
+;; ;; this macro was copied from here: https://stackoverflow.com/a/22418983/4921402
+;; (defmacro define-and-bind-quoted-text-object (name key start-regex end-regex)
+;;   (let ((inner-name (make-symbol (concat "evil-inner-" name)))
+;;         (outer-name (make-symbol (concat "evil-a-" name))))
+;;     `(progn
+;;        (evil-define-text-object ,inner-name (count &optional beg end type)
+;;          (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+;;        (evil-define-text-object ,outer-name (count &optional beg end type)
+;;          (evil-select-paren ,start-regex ,end-regex beg end type count t))
+;;        (define-key evil-inner-text-objects-map ,key #',inner-name)
+;;        (define-key evil-outer-text-objects-map ,key #',outer-name))))
 ;; 
-;; ;; (require 'evil)
-;; ;; (evil-mode 1)
-;; ;; (global-evil-surround-mode 1)
-;; ;; 
-;; ;; ;; this macro was copied from here: https://stackoverflow.com/a/22418983/4921402
-;; ;; (defmacro define-and-bind-quoted-text-object (name key start-regex end-regex)
-;; ;;   (let ((inner-name (make-symbol (concat "evil-inner-" name)))
-;; ;;         (outer-name (make-symbol (concat "evil-a-" name))))
-;; ;;     `(progn
-;; ;;        (evil-define-text-object ,inner-name (count &optional beg end type)
-;; ;;          (evil-select-paren ,start-regex ,end-regex beg end type count nil))
-;; ;;        (evil-define-text-object ,outer-name (count &optional beg end type)
-;; ;;          (evil-select-paren ,start-regex ,end-regex beg end type count t))
-;; ;;        (define-key evil-inner-text-objects-map ,key #',inner-name)
-;; ;;        (define-key evil-outer-text-objects-map ,key #',outer-name))))
-;; ;; 
-;; ;; 
-;; ;; (define-and-bind-quoted-text-object "tilde" "~" "~" "~")
 ;; 
-;; ;; Also, hiding leading stars with ~(setq org-superstar-special-todo-items 'hide)~ looks great but breaks after switching org-mode buffers once.
-;; (defun evil-paste-after-newline ()
-;;   (interactive)
-;;   (progn
-;;     (evil-insert-newline-below)
-;;     (evil-paste-after 1)
-;;     ))
-;; 
-;; (global-set-key (kbd "C-c <C-left>") 'evil-window-left)
-;; (global-set-key (kbd "C-c <C-right>") 'evil-window-right)
-;; (global-set-key (kbd "C-c <C-up>") 'evil-window-up)
-;; (global-set-key (kbd "C-c <C-down>") 'evil-window-down)
-;; 
-;; (evil-leader/set-key
-;;   "=" 'my-indent-whole-buffer
-;;   "b" 'switch-to-buffer
-;;   "fr" 'counsel-recentf
-;;   "ff" 'counsel-find-file
-;;   "e" 'eval-buffer
-;;   "\t" 'org-cycle
-;;   "r" 'restart-emacs
-;;   "pl" 'package-list-packages
-;;   "pi" 'my-package-refresh-and-install-selected-packages
-;;   "h" 'help
-;;   "d" 'dired
-;;   "w" 'save-buffer
-;;   "q" 'save-buffers-kill-terminal
-;;   "i" 'my-find-init-file
-;;   "+" 'text-scale-increase
-;;   "-" 'text-scale-decrease
-;;   "x" 'execute-extended-command
-;;   "." 'embark-act
-;;   ";" 'embark-dwim
-;;   "B" 'embark-bindings
-;;   "s" 'swiper
-;;   "lr" 'ledger-report
-;;   "a" 'mark-whole-buffer
-;;   "pp" 'evil-paste-after-newline
-;;   "c" 'recompile
-;;   )
-;; (evil-define-key '(normal visual) 'global (kbd "C-a")
-;;   'evil-numbers/inc-at-pt)
-;; (evil-define-key '(normal visual) 'global (kbd "C-x")
-;;   'evil-numbers/dec-at-pt)
-;; (evil-define-key '(normal visual) 'global (kbd "g C-a")
-;;   'evil-numbers/inc-at-pt-incremental)
-;; (evil-define-key '(normal visual) 'global (kbd "g C-x")
-;;   'evil-numbers/dec-at-pt-incremental)
-;; (evil-snipe-mode 1)
-;; (evil-snipe-override-mode 1)
-;; (evil-mc-mode 1)
+;; (define-and-bind-quoted-text-object "tilde" "~" "~" "~")
+
+;; Also, hiding leading stars with ~(setq org-superstar-special-todo-items 'hide)~ looks great but breaks after switching org-mode buffers once.
+(defun evil-paste-after-newline ()
+  (interactive)
+  (progn
+    (evil-insert-newline-below)
+    (evil-paste-after 1)
+    ))
+
+(global-set-key (kbd "C-c <C-left>") 'evil-window-left)
+(global-set-key (kbd "C-c <C-right>") 'evil-window-right)
+(global-set-key (kbd "C-c <C-up>") 'evil-window-up)
+(global-set-key (kbd "C-c <C-down>") 'evil-window-down)
+
+(evil-leader/set-key
+  "=" 'my-indent-whole-buffer
+  "b" 'switch-to-buffer
+  "fr" 'counsel-recentf
+  "ff" 'counsel-find-file
+                                        ;    "e" 'eval-buffer
+  "\t" 'org-cycle
+  "r" 'restart-emacs
+  "pl" 'package-list-packages
+  "pi" 'my-package-refresh-and-install-selected-packages
+  "h" 'help
+  "d" 'dired
+  "w" 'save-buffer
+  "q" 'save-buffers-kill-terminal
+                                        ;    "i" 'my-find-init-file
+  "+" 'text-scale-increase
+  "-" 'text-scale-decrease
+  "x" 'execute-extended-command
+  "." 'embark-act
+  ";" 'embark-dwim
+  "B" 'embark-bindings
+  "s" 'swiper
+  "lr" 'ledger-report
+  "a" 'mark-whole-buffer
+  "pp" 'evil-paste-after-newline
+  "c" 'recompile
+                                        ;  "o" 'forward-char
+                                        ;  "n" 'backward-char
+                                        ;  "e" 'next-line
+                                        ;  "i" 'previous-line
+  )
+(evil-define-key '(normal visual) 'global (kbd "C-a")
+  'evil-numbers/inc-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "C-x")
+  'evil-numbers/dec-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "g C-a")
+  'evil-numbers/inc-at-pt-incremental)
+(evil-define-key '(normal visual) 'global (kbd "g C-x")
+  'evil-numbers/dec-at-pt-incremental)
+(evil-snipe-mode 1)
+(evil-snipe-override-mode 1)
+(evil-mc-mode 1)
 
 
 (global-set-key (kbd "C-c C-l") 'my-expand-lines)
@@ -684,3 +687,13 @@ Version 2019-11-04 2021-02-16"
 (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
 
 
+(define-key evil-insert-state-map (kbd "C-x C-l") 'my-expand-lines)
+(key-chord-mode 1)
+(key-chord-define-global " n" 'backward-char)
+(key-chord-define-global " n" 'backward-char)
+(key-chord-define-global " o" 'forward-char)
+(key-chord-define-global " e" 'next-line)
+(key-chord-define-global " i" 'previous-line)
+
+(evil-escape-mode t)
+(setq-default evil-escape-key-sequence "ne")
