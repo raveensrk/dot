@@ -4,13 +4,10 @@
 
 ;; (setq default-directory "C:/")
 
-(if (string-equal system-type "windows-nt")
-    (progn
-      (setq custom-file "c:/github/dotfiles-main/stow/.emacs.d/custom.el")
-      (add-to-list 'load-path "c:/github/dotfiles-main/stow/.emacs.d/site-lisp"))
-  (progn
-    (setq custom-file "~/.emacs.d/custom.el")
-    (add-to-list 'load-path "~/.emacs.d/site-lisp")))
+;; If you are using windows set the home environment variable to a where your .emacs.d is present
+
+(setq custom-file "~/.emacs.d/custom.el")
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 (load custom-file)
 
@@ -431,7 +428,7 @@ Version 2019-11-04 2021-02-16"
 (if (string-equal system-type "windows-nt")
     (progn (message "Windows")
            (setq org-agenda-files
-                 (directory-files-recursively "c:/github" ".*agenda.*\.org$\\|.*agenda.*\.org_archive$")))
+                 (directory-files-recursively "c:/my_repos" ".*agenda.*\.org$\\|.*agenda.*\.org_archive$")))
   (progn (message "Unix")
          (setq org-agenda-files '("~/.agenda_files"))
          (when (file-exists-p "~/my_repos")
@@ -664,9 +661,8 @@ Version 2019-11-04 2021-02-16"
 
 ;;; Load all elisp files under ~/.emacs.d/site-lisp
 
-(if (string-equal system-type "windows-nt")
-    (setq my-lisp-files (directory-files-recursively "c:/github/dotfiles-main/stow/.emacs.d/site-lisp/" ""))
-  (setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" "")))
+
+(setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
 
 (defun my-load-elisp-files (list)
   "Print each element of LIST on a line of its own."
@@ -681,7 +677,7 @@ Version 2019-11-04 2021-02-16"
 
 (setq yas-snippet-dirs
       '("~/.emacs.d/snippets/"                 ;; personal snippets
-        "c:/github/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
+        "c:/my_repos/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
         ))
 
 (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
