@@ -5,6 +5,17 @@
 
 clean:
 
+install_xclip:
+	mkdir tmp
+	cd tmp
+	wget -nc "https://github.com/astrand/xclip/archive/refs/tags/0.13.tar.gz"
+	tar xvf 0.13.tar.gz
+	cd xclip-0.13
+	autoreconf
+	./configure --prefix=$$HOME/.local
+	make
+	make install
+
 install_colemak:
 	# https://colemak.com/Unix
 	mkdir tmp

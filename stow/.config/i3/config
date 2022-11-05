@@ -113,18 +113,18 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:Personal"
-set $ws2 "2:Mail"
+set $ws1 "Home"
+set $ws2 "Mail"
 assign [class="thunderbird"] $ws2
-set $ws3 "3:Chat"
-set $ws4 "4:Work"
-set $ws5 "5:Work2"
-set $ws6 "6:Work-VPC"
-set $ws7 "7:raveenkumar.xyz"
-set $ws8 "8:"
-set $ws9 "9:"
-set $ws10 "10:Music"
-assign [class="Spotify"] $ws10
+set $ws3 "Music"
+assign [class="spotify"] $ws3
+set $ws7 "raveenkumar.xyz"
+set $ws4 "4:"
+set $ws5 "5:"
+set $ws6 "6:"
+set $ws8 "8:work_1"
+set $ws9 "9:work_2"
+set $ws10 "10:work_3"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -241,14 +241,14 @@ bar {
 
 bindsym $mod+d exec "dmenu_run -l 10 -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
 
-# Startup applications
-# exec --no-startup-id firefox
+## Startup applications
+assign [class="todoist"] todoist
+exec --no-startup-id firefox
+exec --no-startup-id todoist
 
 # exec --no-startup-id synclient VertScrollDelta=-111
 for_window [all] title_window_icon padding 5px
 for_window [all] border pixel 5
-
-
 
 
 
@@ -302,5 +302,6 @@ mode "$custom_command" {
     bindsym c exec i3-input -F 'workspace "%s"' -P 'New Workspace name: '; mode "default"
     bindsym q mode "default"
 }
-# The middle button over a titlebar kills the window
+
+## The middle button over a titlebar kills the window
 bindsym --release button2 kill

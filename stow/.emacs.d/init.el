@@ -1,8 +1,36 @@
 ;;; Raveen's Emacs init
 
 ;; (toggle-debug-on-error)
+
+;; (setq default-directory "C:/")
+
+;; If you are using windows set the home environment variable to a where your .emacs.d is present
+
 (setq custom-file "~/.emacs.d/custom.el")
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+
 (load custom-file)
+
+;;; Source after loading
+
+
+;;; Appearence
+
+;; (toggle-truncate-lines 1)
+
+;;;; Fonts
+
+;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
+
+(cond
+ ((find-font (font-spec :name "Cascadia Code"))
+  (set-frame-font "Cascadia Code-12"))
+ ((find-font (font-spec :name "Menlo"))
+  (set-frame-font "Menlo-12"))
+ ((find-font (font-spec :name "DejaVu Sans Mono"))
+  (set-frame-font "DejaVu Sans Mono-12"))
+ ((find-font (font-spec :name "Inconsolata"))
+  (set-frame-font "Inconsolata-12")))
 
 ;;; Package Specific
 (require 'package)
@@ -17,12 +45,14 @@
   (package-autoremove)
   )
 
-;;; Source after loading
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
+;;; Dynamic Fonts
+;; (require 'dynamic-fonts)
+;; (dynamic-fonts-setup)     ; finds "best" fonts and sets faces:
+;;                                         ; default, fixed-pitch, variable-pitch
+
 
 ;;;; Sr Speedbar
 (require 'sr-speedbar)
-
 
 ;;;; Magit
 (when (require 'magit nil 'noerror)
@@ -32,55 +62,14 @@
 (when (require 'expand-region nil 'noerror)
   (global-set-key (kbd "C-=") 'er/expand-region))
 
-;;;; Evil Mode
-(when (package-installed-p 'evil)
-  (require 'evil)
-  (evil-mode 1)
-  ;; (evil-goggles-mode 1)
-  ;; (evil-vimish-fold-mode 1)
-  (global-evil-leader-mode 1)
-  (evil-leader/set-leader "<SPC>")
-  )
-
-
-;; (require 'evil)
-;; (evil-mode 1)
-;; (global-evil-surround-mode 1)
-;; 
-;; ;; this macro was copied from here: https://stackoverflow.com/a/22418983/4921402
-;; (defmacro define-and-bind-quoted-text-object (name key start-regex end-regex)
-;;   (let ((inner-name (make-symbol (concat "evil-inner-" name)))
-;;         (outer-name (make-symbol (concat "evil-a-" name))))
-;;     `(progn
-;;        (evil-define-text-object ,inner-name (count &optional beg end type)
-;;          (evil-select-paren ,start-regex ,end-regex beg end type count nil))
-;;        (evil-define-text-object ,outer-name (count &optional beg end type)
-;;          (evil-select-paren ,start-regex ,end-regex beg end type count t))
-;;        (define-key evil-inner-text-objects-map ,key #',inner-name)
-;;        (define-key evil-outer-text-objects-map ,key #',outer-name))))
-;; 
-;; 
-;; (define-and-bind-quoted-text-object "tilde" "~" "~" "~")
-
-;; Also, hiding leading stars with ~(setq org-superstar-special-todo-items 'hide)~ looks great but breaks after switching org-mode buffers once.
-(defun evil-paste-after-newline ()
-  (interactive)
-  (progn
-    (evil-insert-newline-below)
-    (evil-paste-after 1)
-    ))
-
-(global-set-key (kbd "C-c <C-left>") 'evil-window-left)
-(global-set-key (kbd "C-c <C-right>") 'evil-window-right)
-(global-set-key (kbd "C-c <C-up>") 'evil-window-up)
-(global-set-key (kbd "C-c <C-down>") 'evil-window-down)
-
 (defun my-indent-whole-buffer ()
   (interactive)
   (indent-region (point-min) (point-max)))
+
 (defun my-find-init-file ()
   (interactive)
   (find-file "~/.emacs.d/init.el"))
+
 (defun my-org-daily-notes-file ()
   (interactive)
   (format "%d-%02d-%d.org" (calendar-extract-year (calendar-current-date))
@@ -89,51 +78,15 @@
 (defun my-open-org-daily-notes-file ()
   (interactive)
   (find-file (format "./%s" (my-org-daily-notes-file))))
+
 ;; TODO: create heaing automatically after i enter todays org file
 ;; (format "* %s" (org-date-from-calendar))
 
-(evil-leader/set-key
-  "=" 'my-indent-whole-buffer
-  "b" 'switch-to-buffer
-  "fr" 'counsel-recentf
-  "ff" 'counsel-find-file
-  "e" 'eval-buffer
-  "\t" 'org-cycle
-  "r" 'restart-emacs
-  "pl" 'package-list-packages
-  "pi" 'my-package-refresh-and-install-selected-packages
-  "h" 'help
-  "d" 'dired
-  "w" 'save-buffer
-  "q" 'save-buffers-kill-terminal
-  "i" 'my-find-init-file
-  "+" 'text-scale-increase
-  "-" 'text-scale-decrease
-  "x" 'execute-extended-command
-  "." 'embark-act
-  ";" 'embark-dwim
-  "B" 'embark-bindings
-  "s" 'swiper
-  "lr" 'ledger-report
-  "a" 'mark-whole-buffer
-  "pp" 'evil-paste-after-newline
-  "c" 'recompile
-  )
-(evil-define-key '(normal visual) 'global (kbd "C-a")
-  'evil-numbers/inc-at-pt)
-(evil-define-key '(normal visual) 'global (kbd "C-x")
-  'evil-numbers/dec-at-pt)
-(evil-define-key '(normal visual) 'global (kbd "g C-a")
-  'evil-numbers/inc-at-pt-incremental)
-(evil-define-key '(normal visual) 'global (kbd "g C-x")
-  'evil-numbers/dec-at-pt-incremental)
-(evil-snipe-mode 1)
-(evil-snipe-override-mode 1)
-(evil-mc-mode 1)
 
 ;;;; Enabling packages
 (when (require 'beacon nil 'noerror)
   (beacon-mode 1))
+
 (global-company-mode 1)  
 (require 'minimal-session-saver)
 (minimal-session-saver-install-aliases)
@@ -172,45 +125,41 @@
 (setq ivy-count-format "(%d/%d) ")
 ;; enable this if you want `swiper' to use it
 ;; (setq search-default-mode #'char-fold-to-regexp)
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "<f2> j") 'counsel-set-variable)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-c v") 'ivy-push-view)
-(global-set-key (kbd "C-c V") 'ivy-pop-view)
-(global-set-key (kbd "C-c c") 'counsel-compile)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c L") 'counsel-git-log)
-(global-set-key (kbd "C-c k") 'counsel-rg)
-(global-set-key (kbd "C-c m") 'counsel-linux-app)
-(global-set-key (kbd "C-c z") 'counsel-fzf)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-c J") 'counsel-file-jump)
+(global-set-key "\C-s" 'swiper)
+(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+(global-set-key (kbd "<f1> l") 'counsel-find-library)
+(global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "<f2> j") 'counsel-set-variable)
+(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+(global-set-key (kbd "<f6>") 'ivy-resume)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(global-set-key (kbd "C-c w") 'counsel-wmctrl)
+(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-c F") 'counsel-org-file)
+(global-set-key (kbd "C-c J") 'counsel-file-jump)
+(global-set-key (kbd "C-c L") 'counsel-git-log)
+(global-set-key (kbd "C-c V") 'ivy-pop-view)
 (global-set-key (kbd "C-c b") 'counsel-bookmark)
+(global-set-key (kbd "C-c c") 'counsel-compile)
 (global-set-key (kbd "C-c d") 'counsel-descbinds)
 (global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-rg)
+(global-set-key (kbd "C-c m") 'counsel-linux-app)
 (global-set-key (kbd "C-c o") 'counsel-outline)
 (global-set-key (kbd "C-c t") 'counsel-load-theme)
-(global-set-key (kbd "C-c F") 'counsel-org-file)
+(global-set-key (kbd "C-c v") 'ivy-push-view)
+(global-set-key (kbd "C-c w") 'counsel-wmctrl)
+(global-set-key (kbd "C-c z") 'counsel-fzf)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "M-x") 'counsel-M-x)
 
 ;;;; Helm
 ;; (helm-mode 1)
@@ -231,28 +180,6 @@
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
 
-;;; Appearence
-
-;; (toggle-truncate-lines 1)
-
-;;;; Fonts
-
-;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
-
-;; (cond
-;;  ((find-font (font-spec :name "Cascadia Code"))
-;;   (set-frame-font "Cascadia Code-12"))
-;;  ((find-font (font-spec :name "Menlo"))
-;;   (set-frame-font "Menlo-12"))
-;;  ((find-font (font-spec :name "DejaVu Sans Mono"))
-;;   (set-frame-font "DejaVu Sans Mono-12"))
-;;  ((find-font (font-spec :name "Inconsolata"))
-;;   (set-frame-font "Inconsolata-12")))
-
-;;;; Dynamic Fonts
-(require 'dynamic-fonts)
-(dynamic-fonts-setup)     ; finds "best" fonts and sets faces:
-                                        ; default, fixed-pitch, variable-pitch
 
 ;;; Editing
 (setq-default tab-width 4)
@@ -396,24 +323,13 @@
 (global-set-key (kbd "C-c m") 'menu-bar-open)
 
 ;;; Elisp
-(dolist (hook '(emacs-lisp-mode-hook))
-  (add-hook hook (lambda () (outline-minor-mode 1))))
+;; (dolist (hook '(emacs-lisp-mode-hook))
+;;  (add-hook hook (lambda () (outline-minor-mode 1))))
 
 ;;; Shell-script-mode
 (add-hook 'shell-script-mode-hook (lambda () (outline-minor-mode 1)))
 
-;;; Load all elisp files under ~/.emacs.d/site-lisp
 
-(setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
-
-(defun my-load-elisp-files (list)
-  "Print each element of LIST on a line of its own."
-  (while list
-    (print (car list))
-    (load-file (print (car list)))
-    (setq list (cdr list))))
-
-(my-load-elisp-files my-lisp-files)
 
 
 
@@ -505,10 +421,25 @@ Version 2019-11-04 2021-02-16"
 ;; (global-set-key [wheel-right] 'scroll-left)
 ;; (global-set-key [wheel-left] 'scroll-right)
 ;; (put 'scroll-left 'disabled nil)
+
 ;;; Org Agenda files
-(setq org-agenda-files '("~/.agenda_files"))
+
+
+(if (string-equal system-type "windows-nt")
+    (progn (message "Windows")
+           (setq org-agenda-files
+                 (directory-files-recursively "c:/my_repos" ".*agenda.*\.org$\\|.*agenda.*\.org_archive$")))
+  (progn (message "Unix")
+         (setq org-agenda-files '("~/.agenda_files"))
+         (when (file-exists-p "~/my_repos")
+           (setq org-agenda-text-search-extra-files
+                 (directory-files-recursively "~/my_repos" ".*\.org$\\|.*\.org_archive$")))))
+
+(org-id-update-id-locations)
+
+
+
 ;;; Eshell 
-(add-hook 'eshell-mode-hook (lambda () (turn-off-evil-mode)))
 (add-hook 'sh-mode-hook 'flycheck-mode)
 ;;; Org super agenda
 (setq spacemacs-theme-org-agenda-height nil
@@ -613,11 +544,16 @@ Version 2019-11-04 2021-02-16"
   
   )
 
-(setq org-agenda-text-search-extra-files
-      (directory-files-recursively "~/my_repos" ".*\.org$\\|.*\.org_archive$"))
-(org-id-update-id-locations)
+
+
 (defun org-drill-entry-empty-p () nil)
 
+(global-set-key (kbd "C-c t") 'toggle-truncate-lines)
+(global-set-key (kbd "C-c n") 'tmm-menubar)
+(toggle-frame-maximized)
+
+;;; Maximize frame after starting emacsclient
+(add-hook 'server-after-make-frame-hook 'toggle-frame-maximized)
 
 
 (defun my-expand-lines ()
@@ -626,4 +562,134 @@ Version 2019-11-04 2021-02-16"
          '(try-expand-line)))
     (call-interactively 'hippie-expand)))
 
+;; Evil mode stuff
+
+(when (package-installed-p 'evil)
+  (require 'evil)
+  (evil-mode 1)
+  ;; (evil-goggles-mode 1)
+  ;; (evil-vimish-fold-mode 1)
+  (global-evil-leader-mode 1)
+  (evil-leader/set-leader "<SPC>")
+  )
+
+(add-hook 'eshell-mode-hook (lambda () (turn-off-evil-mode)))
+
+;; (require 'evil)
+;; (evil-mode 1)
+;; (global-evil-surround-mode 1)
+;; 
+;; ;; this macro was copied from here: https://stackoverflow.com/a/22418983/4921402
+;; (defmacro define-and-bind-quoted-text-object (name key start-regex end-regex)
+;;   (let ((inner-name (make-symbol (concat "evil-inner-" name)))
+;;         (outer-name (make-symbol (concat "evil-a-" name))))
+;;     `(progn
+;;        (evil-define-text-object ,inner-name (count &optional beg end type)
+;;          (evil-select-paren ,start-regex ,end-regex beg end type count nil))
+;;        (evil-define-text-object ,outer-name (count &optional beg end type)
+;;          (evil-select-paren ,start-regex ,end-regex beg end type count t))
+;;        (define-key evil-inner-text-objects-map ,key #',inner-name)
+;;        (define-key evil-outer-text-objects-map ,key #',outer-name))))
+;; 
+;; 
+;; (define-and-bind-quoted-text-object "tilde" "~" "~" "~")
+
+;; Also, hiding leading stars with ~(setq org-superstar-special-todo-items 'hide)~ looks great but breaks after switching org-mode buffers once.
+(defun evil-paste-after-newline ()
+  (interactive)
+  (progn
+    (evil-insert-newline-below)
+    (evil-paste-after 1)
+    ))
+
+(global-set-key (kbd "C-c <C-left>") 'evil-window-left)
+(global-set-key (kbd "C-c <C-right>") 'evil-window-right)
+(global-set-key (kbd "C-c <C-up>") 'evil-window-up)
+(global-set-key (kbd "C-c <C-down>") 'evil-window-down)
+
+(evil-leader/set-key
+  "=" 'my-indent-whole-buffer
+  "b" 'switch-to-buffer
+  "fr" 'counsel-recentf
+  "ff" 'counsel-find-file
+                                        ;    "e" 'eval-buffer
+  "\t" 'org-cycle
+  "r" 'restart-emacs
+  "pl" 'package-list-packages
+  "pi" 'my-package-refresh-and-install-selected-packages
+  "h" 'help
+  "d" 'dired
+  "w" 'save-buffer
+  "q" 'save-buffers-kill-terminal
+                                        ;    "i" 'my-find-init-file
+  "+" 'text-scale-increase
+  "-" 'text-scale-decrease
+  "x" 'execute-extended-command
+  "." 'embark-act
+  ";" 'embark-dwim
+  "B" 'embark-bindings
+  "s" 'swiper
+  "lr" 'ledger-report
+  "a" 'mark-whole-buffer
+  "pp" 'evil-paste-after-newline
+  "c" 'recompile
+                                        ;  "o" 'forward-char
+                                        ;  "n" 'backward-char
+                                        ;  "e" 'next-line
+                                        ;  "i" 'previous-line
+  )
+(evil-define-key '(normal visual) 'global (kbd "C-a")
+  'evil-numbers/inc-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "C-x")
+  'evil-numbers/dec-at-pt)
+(evil-define-key '(normal visual) 'global (kbd "g C-a")
+  'evil-numbers/inc-at-pt-incremental)
+(evil-define-key '(normal visual) 'global (kbd "g C-x")
+  'evil-numbers/dec-at-pt-incremental)
+(evil-snipe-mode 1)
+(evil-snipe-override-mode 1)
+(evil-mc-mode 1)
+
+
+(global-set-key (kbd "C-c C-l") 'my-expand-lines)
+(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
+(global-set-key (kbd "C-c fr") 'counsel-recentf)
+(global-set-key (kbd "C-c i") 'my-find-init-file)
+(global-set-key (kbd "C-c .") 'embark-act)
+(global-set-key (kbd "C-c ;") 'embark-dwim)
+
+
+;;; Load all elisp files under ~/.emacs.d/site-lisp
+
+
+(setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
+
+(defun my-load-elisp-files (list)
+  "Print each element of LIST on a line of its own."
+  (while list
+    (print (car list))
+    (load-file (print (car list)))
+    (setq list (cdr list))))
+
+(my-load-elisp-files my-lisp-files)
+
+
+
+(setq yas-snippet-dirs
+      '("~/.emacs.d/snippets/"                 ;; personal snippets
+        "c:/my_repos/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
+        ))
+
+(yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
+
+
 (define-key evil-insert-state-map (kbd "C-x C-l") 'my-expand-lines)
+(key-chord-mode 1)
+(key-chord-define-global " n" 'backward-char)
+(key-chord-define-global " n" 'backward-char)
+(key-chord-define-global " o" 'forward-char)
+(key-chord-define-global " e" 'next-line)
+(key-chord-define-global " i" 'previous-line)
+
+(evil-escape-mode t)
+(setq-default evil-escape-key-sequence "ne")

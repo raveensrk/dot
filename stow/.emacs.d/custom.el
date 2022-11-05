@@ -8,7 +8,6 @@
  '(compilation-scroll-output t)
  '(cursor-type 'bar)
  '(custom-enabled-themes '(wombat))
- '(custom-file "~/.emacs.d/custom.el")
  '(custom-safe-themes
    '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
  '(dired-dwim-target t)
@@ -21,6 +20,7 @@
  '(evil-symbol-word-search t)
  '(git-gutter:always-show-separator t)
  '(global-git-gutter-mode t)
+ '(initial-frame-alist '((fullscreen . maximized)))
  '(ispell-dictionary "british")
  '(ledger-default-date-format "%Y-%m-%d")
  '(ledger-report-auto-refresh nil)
@@ -123,8 +123,11 @@
  '(outline-minor-mode-cycle-filter nil)
  '(outline-minor-mode-highlight 'append)
  '(package-selected-packages
-   '(the-matrix-theme aggressive-indent org-super-agenda format-all org-drill orderless flymake-shellcheck flex-autopair smartparens xml-quotes projectile-ripgrep xhair indent-guide htmlize markdown-mode all-the-icons-completion all-the-icons-ivy-rich ivy counsel ox-pandoc evil-surround php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
+   '(the-matrix-theme aggressive-indent org-super-agenda format-all org-drill orderless flymake-shellcheck flex-autopair smartparens xml-quotes projectile-ripgrep xhair indent-guide htmlize markdown-mode all-the-icons-completion all-the-icons-ivy-rich ivy counsel ox-pandoc evil-surround php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets
+   evil-escape key-chord org-download aggressive-indent org-super-agenda format-all org-drill orderless flymake-shellcheck flex-autopair smartparens xml-quotes projectile-ripgrep xhair indent-guide htmlize markdown-mode all-the-icons-completion all-the-icons-ivy-rich ivy counsel ox-pandoc evil-surround php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
  '(php-mode-coding-style 'php)
+ '(projectile-auto-discover nil)
+ '(projectile-project-search-path nil)
  '(show-paren-mode t)
  '(speedbar-show-unknown-files t)
  '(tab-width 4)

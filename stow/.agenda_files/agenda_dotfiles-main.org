@@ -21,3 +21,10 @@ CLOCK: [2022-07-21 Thu 16:53]--[2022-07-21 Thu 17:14] =>  0:21
 CLOCK: [2022-07-21 Thu 16:42]--[2022-07-21 Thu 16:53] =>  0:11
 CLOCK: [2022-07-21 Thu 16:41]--[2022-07-21 Thu 16:41] =>  0:00
 :END:
+* TODO [#F] Emacs same button                                         :ideas:
+
+Use same button for example space to do different operations based on text context
+
+SPC SPC should open and close heading
+
+SPC SPC should do other things too
