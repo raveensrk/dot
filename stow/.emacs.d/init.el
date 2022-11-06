@@ -218,7 +218,7 @@
 ;;; Org mode
 ;; (setq org-startup-folded t)
 ;; (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-;; (add-hook 'org-mode-hook (lambda () (olivetti-mode)))
+(add-hook 'org-mode-hook (lambda () (olivetti-mode)))
 
 
 ;; (add-hook 'org-mode-hook (lambda () (org-update-all-dblocks)))
@@ -607,7 +607,17 @@ Version 2019-11-04 2021-02-16"
 (global-set-key (kbd "C-c <C-up>") 'evil-window-up)
 (global-set-key (kbd "C-c <C-down>") 'evil-window-down)
 
+
+(defun copy-whole-buffer ()
+  "This function will copy the whole buffer..."
+  (interactive)
+  (save-excursion
+    (mark-whole-buffer)
+    (kill-ring-save nil nil t))
+  )
+
 (evil-leader/set-key
+  "y" 'copy-whole-buffer
   "=" 'my-indent-whole-buffer
   "b" 'switch-to-buffer
   "fr" 'counsel-recentf
@@ -621,7 +631,7 @@ Version 2019-11-04 2021-02-16"
   "d" 'dired
   "w" 'save-buffer
   "q" 'save-buffers-kill-terminal
-                                        ;    "i" 'my-find-init-file
+  "i" 'my-find-init-file
   "+" 'text-scale-increase
   "-" 'text-scale-decrease
   "x" 'execute-extended-command
@@ -637,6 +647,7 @@ Version 2019-11-04 2021-02-16"
                                         ;  "n" 'backward-char
                                         ;  "e" 'next-line
                                         ;  "i" 'previous-line
+  "y" 'copy-whole-buffer
   )
 (evil-define-key '(normal visual) 'global (kbd "C-a")
   'evil-numbers/inc-at-pt)
@@ -692,4 +703,7 @@ Version 2019-11-04 2021-02-16"
 (key-chord-define-global " i" 'previous-line)
 
 (evil-escape-mode t)
-(setq-default evil-escape-key-sequence "ne")
+(setq-default evil-escape-key-sequence "eee")
+
+
+
