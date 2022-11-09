@@ -40,3 +40,6 @@ stow/.bash_history
 stow/.gitconfig
 stow/.gitconfig
 stow/.gitconfig
+stow/.git-for-windows-updater
+stow/_viminfo
+stow/vimfiles/.netrwhist
