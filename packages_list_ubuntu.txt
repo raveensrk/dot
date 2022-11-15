@@ -33,3 +33,16 @@ vim-gtk
 yank
 toilet
 cscope
+rsync
+jq
+gimp
+emacs
+exa
+gnome-software
+git
+hg
+octave
+qrencode
+npm
+xset
+google-chrome

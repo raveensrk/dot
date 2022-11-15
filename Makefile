@@ -196,3 +196,6 @@ update_emacs:
 upgrade_general:
 	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 	flatpak install flathub com.spotify.Client
+
+install_doom_emacs:
+	bash -x ./install_doom_emacs.bash 
