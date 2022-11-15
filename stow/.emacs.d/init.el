@@ -88,8 +88,8 @@
   (beacon-mode 1))
 
 (global-company-mode 1)  
-(require 'minimal-session-saver)
-(minimal-session-saver-install-aliases)
+;; (require 'minimal-session-saver)
+;; (minimal-session-saver-install-aliases)
 (when (require 'multiple-cursors nil 'noerror)
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -695,15 +695,10 @@ Version 2019-11-04 2021-02-16"
 
 
 (define-key evil-insert-state-map (kbd "C-x C-l") 'my-expand-lines)
-(key-chord-mode 1)
-(key-chord-define-global " n" 'backward-char)
-(key-chord-define-global " n" 'backward-char)
-(key-chord-define-global " o" 'forward-char)
-(key-chord-define-global " e" 'next-line)
-(key-chord-define-global " i" 'previous-line)
 
 (evil-escape-mode t)
 (setq-default evil-escape-key-sequence "eee")
 
-
+(add-hook 'verilog-mode-hook 'outshine-mode)
+(add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
 

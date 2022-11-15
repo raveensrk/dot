@@ -45,6 +45,31 @@ install_git:
 	./configure --prefix=$$HOME/.local
 	make -j
 	make install
+	
+install_git_2.38.1:
+	mkdir tmp
+	cd tmp
+	wget -nc https://www.kernel.org/pub/software/scm/git/git-2.38.1.tar.gz
+	tar xf git-2.38.1.tar.gz
+	cd git-2.38.1
+	./configure --prefix=$$HOME/.local
+	make -j
+	make install
+
+
+install_git_2.23.0:
+	mkdir tmp
+	cd tmp
+	wget -nc https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.23.0.tar.gz
+	tar xf git-2.23.0.tar.gz
+	cd git-2.23.0
+	./configure --prefix=$$HOME/.local
+	make -j
+	make install
+
+
+
+
 
 stow_basic:
 	bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$$HOME/.bashrc"
@@ -160,7 +185,7 @@ install_emacs:
     wget -nc https://mirror.hostiran.ir/gnu/gnu/emacs/emacs-28.1.tar.gz ;\
 	tar -xf emacs-28.1.tar.gz ;\
     cd emacs-28.1 ;\
-    ./configure --prefix=$$HOME/.local ;\
+    ./configure --with-x-toolkit=no --prefix=$$HOME/.local ;\
     make ;\
     make install
 
