@@ -2,7 +2,8 @@
 
 # set -e
 
-source ~/.bash_prompt 
+set -x
+source ~/.bash_prompt
 
 
 # HELP: This script uses fzf to print all the lines of text present in
@@ -42,6 +43,9 @@ while [ "$1" ]; do
             # HELP: --ext  Only the extension will be filtered, example: md, org, bash, multiple --ext options allowed
             shift
             ext+=("$1")
+            ;;
+        --file-names|-fn)
+            grep_filenames_also="true"
             ;;
         --help|-h)
             # HELP: --help|help  prints help
@@ -86,7 +90,11 @@ if [ "$include" != "" ]; then
     grep $include --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.packages -H -n -R $string | fzf -m -e -d : -n 3 > "$selection"
 else
     # item=$(grep --exclude-dir=.git --exclude-dir=.hg -H -n -r . | fzf -e )
-    rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e -d : -n 3 > "$selection"
+    if [ "$grep_filenames_also" = "true" ]; then
+        rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e  > "$selection" # This will grep both file contents and name
+    else
+        rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e -d : -n 3 > "$selection" # This will only grep file contents
+    fi
 fi
 
 if [ "$print" = "1" ]; then
