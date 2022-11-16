@@ -1,5 +1,5 @@
 #+title: Install Everything
-#+autotangle: t
+#+auto_tangle: t
 
 * Introduction
 This script will install everything for my ubuntu wsl setup
@@ -12,14 +12,44 @@ set -x
 #+end_src
 * Basic programs
 
-#+begin_src bash :tangle yes :comments both
+#+name: stow_basic
+#+begin_src bash :tangle sync.bash
 [ -d "$HOME/tmp" ] || mkdir "$HOME/tmp"
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ -d "$HOME/.status" ] || mkdir -p "$HOME/.status"
+bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
+bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
+stow -R stow -t "$HOME" --no-folding
+
+# Not sure if this is required anymore
+# chmod 644 "$HOME/.ssh/config"
 #+end_src
 
+#+begin_src bash :tangle yes :noweb yes
+<<stow_basic>>
+#+end_src
+
+
+To unstow basic
+
+#+name: unstow_basic
+#+begin_src bash :tangle uninstall_everything.bash
+stow -D stow -t "$$HOME" --no-folding
+#+end_src
+
+
+Updates
+#+begin_src bash :tangle yes
+sudo apt update -y
+sudo apt upgrade -y
+#+end_src
+
+Apt installs
 #+begin_src bash :tangle yes
 sudo apt install -y  \
+    flatpak \
+    snap \
+    snapd \
     autoconf \
     automake \
     cscope \
@@ -61,19 +91,198 @@ sudo apt install -y  \
     vim-gtk \
     x11-xserver-utils \
     yank \
+    xclip \
+
+
+    sudo apt install gnome-software-plugin-flatpak
+flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+#+end_src
+
+#+RESULTS:
+
+Snap installs
+#+begin_src bash :tangle yes
+#flatpak install flathub org.mozilla.firefox
+#+end_src
+* WSL 2 Specific
+
+To get gui working in windows 10 and wsl 2 we need this script but not requried for windows 11
+
+#+begin_src bash :tangle stow_wsl2_scripts.bash
+stow -R stow_wsl2_scripts -t "$HOME" --no-folding
+#+end_src
+
+#+begin_src bash :tangle unstow_wsl2_scripts.bash
+stow -D stow_wsl2_scripts -t "$HOME" --no-folding
+#+end_src
+
+* TODO Stowing for macos
+
+#+name: stow_macos
+#+begin_src bash :tangle stow_macos.bash
+stow -R stow_macos -t "$HOME" --no-folding
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+#+end_src
+
+#+begin_src bash :tangle no :noweb
+<<stow_macos>>
+#+end_src
+
+#+name: unstow_macos
+#+begin_src bash :tangle unstow_macos.bash
+stow -D stow_macos -t "$HOME" --no-folding
+#+end_src
+
+* Stowing for linux
+
+#+name: stow_linux
+#+begin_src bash :tangle stow_linux.bash
+stow -R stow_linux -t "$HOME" --no-folding
+#+end_src
+
+#+begin_src bash :tangle no :noweb
+<<stow_linux>>
+#+end_src
+
+#+name: unstow_linux
+#+begin_src bash :tangle unstow_linux.bash
+stow -D stow_linux -t "$HOME" --no-folding
 #+end_src
 
 * Install doom emacs
-#+begin_src bash :tangle yes
+#+name: stow_doom_emacs
+#+begin_src bash :tangle sync.bash
 stow -R doom_emacs -t "$HOME" --no-folding
-git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-~/.emacs.d/bin/doom install
-~/.emacs.d/bin/doom sync
 #+end_src
 
-* Install fzf
+#+begin_src bash :tangle yes :noweb yes
+<<stow_doom_emacs>>
+
+if [ ! -e ~/.emacs.d/bin/doom ]; then
+    git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+    ~/.emacs.d/bin/doom install
+    ~/.emacs.d/bin/doom sync
+else
+    echo Doom exists...
+fi
+#+end_src
+
+* Install fzf if it does not exist
 #+begin_src bash :tangle yes
-git clone --depth 1 "git@github.com:junegunn/fzf.git" ./stow_vim_plugins/.fzf
-stow -R stow_vim_plugins -t "$HOME"
+if [ ! -e ~/.fzf/bin/fzf ]; then
+    git clone --depth 1 "git@github.com:junegunn/fzf.git" ~/.fzf
+fi
 "$HOME/.fzf/install" --all
+#+end_src
+
+* Install colemak
+#+name: install_colemak
+#+begin_src bash :tangle install_colemak.bash
+# https://colemak.com/Unix
+[ ! -d ~/.tmp ] && mkdir ~/.tmp
+pushd ~/.tmp
+wget -nc "https://colemak.com/pub/unix/colemak-1.0.tar.gz"
+tar xvf colemak-1.0.tar.gz
+pushd colemak-1.0
+setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
+setxkbmap us -variant colemak
+popd
+popd
+#+end_src
+
+#+begin_src bash :tangle yes :noweb yes
+<<install_colemak>>
+#+end_src
+
+** Uninstall colemak
+#+begin_src bash :tangle uninstall_colemak.bash
+setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
+#+end_src
+
+* Install xclip from source
+#+begin_src bash :tangle ./installer_scripts/install_xclip.bash
+pushd ~/.tmp
+wget -nc "https://github.com/astrand/xclip/archive/refs/tags/0.13.tar.gz"
+tar xvf 0.13.tar.gz
+pushd xclip-0.13
+autoreconf
+./configure --prefix=$HOME/.local
+make
+make install
+popd
+popd
+#+end_src
+* Install vim from flathub
+#+begin_src bash :tangle ./installer_scripts/install_vim_from_flathub.bash
+pushd ~/.tmp
+wget -nc "https://dl.flathub.org/repo/appstream/org.vim.Vim.flatpakref"
+flatpak install --user org.vim.Vim.flatpakref
+popd
+#+end_src
+* Install vim from source
+#+begin_src bash :tangle ./installer_scripts/install_vim_from_flathub.bash
+pushd ~/.tmp
+wget -nc https://ftp.nluug.nl/pub/vim/unix/vim-8.2.tar.bz2
+tar xf vim-8.2.tar.bz2
+pushd vim82 || exit 2
+./configure --prefix="$HOME/.local" # defaults to /usr/local
+make
+make install
+popd || exit 2
+popd
+#+end_src
+* Install git from source
+#+begin_src bash :tangle ./installer_scripts/install_git_from_source.bash
+pushd ~/.tmp
+wget -nc https://www.kernel.org/pub/software/scm/git/git-2.38.1.tar.gz
+tar xf git-2.38.1.tar.gz
+pushd git-2.38.1
+./configure --prefix=$$HOME/.local
+make -j
+make install
+popd
+popd
+#+end_src
+* Install ctags from source
+
+#+begin_src bash :tangle ./installer_scripts/install_ctags_from_source.bash
+pushd ~/.tmp
+wget -nc https://github.com/universal-ctags/ctags/archive/refs/heads/master.zip -O ctags.zip
+unzip -qo ctags.zip
+pushd ctags-master
+export ACLOCAL_PATH="/usr/share/aclocal"
+./autogen.sh
+./configure --prefix="$HOME/.local"
+make
+make install
+popd
+popd
+#+end_src
+* Install pkg-config from source
+
+#+begin_src bash :tangle ./installer_scripts/install_pkg-config_from_source.bash
+pushd ~/.tmp
+tar xf pkg-config-0.29.2.tar.gz
+pushd ./pkg-config-0.29.2
+./configure --prefix="$HOME/.local" --with-internal-glib
+make
+make install
+popd
+popd
+#+end_src
+
+* Download soruce packages for building
+#+begin_src bash :tangle ./installer_scripts/download_source_packages_for_building.bash
+wget -nc https://github.com/universal-ctags/ctags/archive/refs/heads/master.zip -O ctags.zip
+wget -nc https://github.com/facebook/PathPicker/archive/refs/heads/main.zip -O PathPicker.zip
+wget -nc https://ftp.gnu.org/gnu/texinfo/texinfo-6.8.tar.gz
+wget -nc https://ftp.nluug.nl/pub/vim/unix/vim-8.2.tar.bz2
+wget -nc https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz
+wget -nc https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz
+wget -nc https://github.com/sharkdp/fd/releases/download/v8.3.0/fd-v8.3.0-i686-unknown-linux-musl.tar.gz
+wget -nc https://github.com/sharkdp/fd/releases/download/v8.4.0/fd-v8.4.0-x86_64-apple-darwin.tar.gz
+wget -nc https://github.com/tmux/tmux/releases/download/2.6/tmux-2.6.tar.gz
+wget -nc https://ranger.github.io/ranger-stable.tar.gz
+wget -nc https://github.com/scop/bash-completion/releases/download/2.11/bash-completion-2.11.tar.xz
+wget -nc https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep-13.0.0-x86_64-unknown-linux-musl.tar.gz
 #+end_src
