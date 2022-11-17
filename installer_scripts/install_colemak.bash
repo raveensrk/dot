@@ -1,5 +1,4 @@
 # https://colemak.com/Unix
-[ ! -d ~/.tmp ] && mkdir ~/.tmp
 pushd ~/.tmp
 wget -nc "https://colemak.com/pub/unix/colemak-1.0.tar.gz"
 tar xvf colemak-1.0.tar.gz

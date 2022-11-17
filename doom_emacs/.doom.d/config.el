@@ -78,3 +78,7 @@
 (menu-bar-mode +1)
 (require 'org-auto-tangle)
 (add-hook 'org-mode-hook 'org-auto-tangle-mode)
+(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+(setq org-id-locations-file-relative t)
+(setq org-startup-folded t)
+(map! :leader :desc "Winner undo" :n "<left>" #'winner-undo)
