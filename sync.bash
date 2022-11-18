@@ -19,44 +19,44 @@ if [ "$is_linux" = "Darwin" ]; then
     fi
 
     brew install \
-        autoconf \
-        automake \
-        bat \
-        curl \
-        ffmpeg \
-        ffmpegthumbnailer \
-        gnuplot \
-        htop \
-        imagemagick \
-        dialog \
-        mediainfo \
-        mpv \
-        neofetch \
-        newsboat \
-        pandoc \
-        pkg-config \
-        python \
-        ranger \
-        ripgrep \
-        ruby \
-        shellcheck \
-        stow \
-        tldr \
-        urlview \
-        vim \
-        yank \
-        wget \
-        lesspipe \
-        rsync \
-        grep \
-        bfg \
-        jq \
-        gimp \
-        emacs \
-        cscope \
-        w3m \
-        mactex \
-        klavaro
+         autoconf \
+         automake \
+         bat \
+         curl \
+         ffmpeg \
+         ffmpegthumbnailer \
+         gnuplot \
+         htop \
+         imagemagick \
+         dialog \
+         mediainfo \
+         mpv \
+         neofetch \
+         newsboat \
+         pandoc \
+         pkg-config \
+         python \
+         ranger \
+         ripgrep \
+         ruby \
+         shellcheck \
+         stow \
+         tldr \
+         urlview \
+         vim \
+         yank \
+         wget \
+         lesspipe \
+         rsync \
+         grep \
+         bfg \
+         jq \
+         gimp \
+         emacs \
+         cscope \
+         w3m \
+         mactex \
+         klavaro
 
 fi
 
@@ -69,4 +69,6 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     else
         echo Doom exists...
     fi
+else
+    stow -R stow_my_emacs -t "$HOME" --no-folding
 fi
