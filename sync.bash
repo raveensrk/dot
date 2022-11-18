@@ -60,7 +60,7 @@ if [ "$is_linux" = "Darwin" ]; then
 
 fi
 
-if [ "$is_ubuntu" = "Ubuntu" ]; then
+if [ "$is_ubuntu" = "Ubuntu" ] || [ "$is_linux" = "Darwin" ]; then
     stow -R doom_emacs -t "$HOME" --no-folding
     if [ ! -e ~/.emacs.d/bin/doom ]; then
         git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
