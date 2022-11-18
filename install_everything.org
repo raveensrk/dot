@@ -171,59 +171,68 @@ sudo systemctl enable touchegg
 sudo dnf groupinstall i3-desktop-environment
 npm install --global prettier @prettier/plugin-lua @prettier/plugin-php prettier-plugin-solidity prettier-plugin-svelte prettier-plugin-toml
 #+end_src
-* TODO Basic programs install for macos
+* Basic programs install for macos
+#+name: update_macos
 #+begin_src bash :tangle ./installer_scripts/update_macos.bash
-if ! command -v brew; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if [ "$is_linux" = "Darwin" ]; then
+    if ! command -v brew; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+
+    brew install \
+        autoconf \
+        automake \
+        bat \
+        curl \
+        ffmpeg \
+        ffmpegthumbnailer \
+        gnuplot \
+        htop \
+        imagemagick \
+        dialog \
+        mediainfo \
+        mpv \
+        neofetch \
+        newsboat \
+        pandoc \
+        pkg-config \
+        python \
+        ranger \
+        ripgrep \
+        ruby \
+        shellcheck \
+        stow \
+        tldr \
+        urlview \
+        vim \
+        yank \
+        wget \
+        lesspipe \
+        rsync \
+        grep \
+        bfg \
+        jq \
+        gimp \
+        emacs \
+        cscope \
+        w3m \
+        mactex \
+        klavaro
+
 fi
-
-brew install \
-    autoconf \
-    automake \
-    bat \
-    curl \
-    ffmpeg \
-    ffmpegthumbnailer \
-    gnuplot \
-    htop \
-    imagemagick \
-    dialog \
-    mediainfo \
-    mpv \
-    neofetch \
-    newsboat \
-    pandoc \
-    pkg-config \
-    python \
-    ranger \
-    ripgrep \
-    ruby \
-    shellcheck \
-    stow \
-    tldr \
-    urlview \
-    vim \
-    yank \
-    wget \
-    lesspipe \
-    rsync \
-    grep \
-    bfg \
-    jq \
-    gimp \
-    emacs \
-    cscope \
-    w3m \
-    mactex \
-    klavaro \
-
 #+end_src
 
-* TODO Stowing for macos
+#+begin_src bash :tangle yes :noweb yes
+<<update_macos>>
+#+end_src
 
-#+begin_src bash :tangle no
-stow -R stow_macos -t "$HOME" --no-folding
-defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+* Stowing for macos
+
+#+begin_src bash :tangle yes
+if [ "$is_linux" = "Darwin" ]; then
+    stow -R stow_macos -t "$HOME" --no-folding
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores true
+fi
 #+end_src
 
 To unstow
@@ -231,7 +240,10 @@ To unstow
 #+begin_src bash :tangle no
 stow -D stow_macos -t "$HOME" --no-folding
 #+end_src
-** TODO Add to sync.bash
+** Add to sync.bash
+#+begin_src bash :tangle sync.bash :noweb yes
+<<update_macos>>
+#+end_src
 
 * Stow for WSL 2 Specific
 
@@ -292,15 +304,19 @@ fi
 * Install colemak
 #+name: install_colemak
 #+begin_src bash :tangle ./installer_scripts/install_colemak.bash
-# https://colemak.com/Unix
-pushd ~/.tmp
-wget -nc "https://colemak.com/pub/unix/colemak-1.0.tar.gz"
-tar xvf colemak-1.0.tar.gz
-pushd colemak-1.0
-setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
-setxkbmap us -variant colemak
-popd
-popd
+if [ "$is_linux" = "Linux" ]; then
+    # https://colemak.com/Unix
+
+
+    pushd ~/.tmp
+    wget -nc "https://colemak.com/pub/unix/colemak-1.0.tar.gz"
+    tar xvf colemak-1.0.tar.gz
+    pushd colemak-1.0
+    setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
+    setxkbmap us -variant colemak
+    popd
+    popd
+fi
 #+end_src
 
 #+begin_src bash :tangle yes :noweb yes
@@ -353,6 +369,9 @@ popd
 popd
 
 bash add_sources.bash "[ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh"  "$HOME/.bashrc"
+
+
+
 #+end_src
 
 To uninstall use the following commands
@@ -504,3 +523,6 @@ cd bash-5.1
 make
 make install
 #+end_src
+
+* [[id:0b1b9c18-fb50-4ad2-a552-bf29b7ded02a][Doom Emacs Configs]]
+* [[file:../]]

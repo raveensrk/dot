@@ -1,3 +1,15 @@
+:PROPERTIES:
+:ID:       0b1b9c18-fb50-4ad2-a552-bf29b7ded02a
+:END:
+#+title: Config
+#+auto_tangle: t
+#+startup: overview
+
+* Introduction
+This is a literate config for all the doom emacs settings. Some credits,
+- https://github.com/munen/emacs.d
+* Some default things
+#+begin_src elisp :tangle yes
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -75,28 +87,46 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+
+#+end_src
+* Safety
+When the lines in a file are so long that performance could suffer to an unacceptable degree, we say “so long” to the slow modes and options enabled in that buffer, and invoke something much more basic in their place.
+#+begin_src elisp :tangle yes
 (if (version<= "27.1" emacs-version)
     (global-so-long-mode 1))
-
+#+end_src
+* Appearence
+#+begin_src elisp :tangle yes
 (menu-bar-mode +1)
 (beacon-mode +1)
 (tab-bar-mode +1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (rainbow-mode +1)
-
+#+end_src
+* Navigation
+#+begin_src elisp :tangle yes
 (setq mouse-wheel-flip-direction t)
 (setq mouse-wheel-tilt-scroll t)
 (global-set-key (kbd "M-o") 'ace-window)
 (dumb-jump-mode +1)
 (setq dumb-jump-selector 'ivy)
-
+#+end_src
+** Search non-ASCII characters
+isearch can find a wide range of Unicode characters (like á, ⓐ, or 𝒶) when you search for ASCII characters (a in this example).
+#+begin_src elisp :tangle yes
 (setq search-default-mode #'char-fold-to-regexp)
-
+#+end_src
+* Projectile
+#+begin_src elisp :tangle yes
 (setq projectile-project-search-path '("~/my_repos/" "~/work/" ("~/github" . 1)))
-
+#+end_src
+* Dired mode
+#+begin_src elisp :tangle yes
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (setq dired-dwim-target t)
-
+#+end_src
+* Org mode
+#+begin_src elisp :tangle yes
 ;;; Org mode
 
 (setq org-structure-template-alist
@@ -140,6 +170,9 @@
 (require 'org-roam-export)
 (org-roam-db-autosync-mode)
 
+#+end_src
+* My shortcuts and hotkeys
+#+begin_src elisp :tangle yes
 (map! :leader :desc "Winner undo" :n "<left>" #'winner-undo)
 (map! :leader :desc "Toggle truncate lines" :n "z z t" #'toggle-truncate-lines)
 
@@ -180,6 +213,12 @@
       :desc "Org roam buffer toggle"
       "z s" #'org-roam-db-sync)
 
+#+end_src
+* Editing
+** Move current line up or down
+https://emacsredux.com/blog/2013/04/02/move-current-line-up-or-down/
+
+#+begin_src elisp :tangle yes
 (defun move-line-up ()
   "Move up the current line."
   (interactive)
@@ -197,3 +236,7 @@
 
 (global-set-key (kbd "M-<down>") 'move-line-down)
 (global-set-key (kbd "M-<up>") 'move-line-up)
+
+#+end_src
+* Packages
+- [[file:packages.el]]
