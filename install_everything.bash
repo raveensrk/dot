@@ -2,23 +2,27 @@
 set -e
 set -x
 
-[ ! -d $HOME/.tmp        ] && mkdir "$HOME/.tmp"
-[ ! -d $HOME/.vim        ] && mkdir "$HOME/.vim"
-[ ! -d $HOME/.vim/undo   ] && mkdir "$HOME/.vim/undo"
-[ ! -d $HOME/.vim/backup ] && mkdir "$HOME/.vim/backup"
-[ ! -d $HOME/.vim/swap   ] && mkdir "$HOME/.vim/swap"
+# {{{ Basic files and directories setup
+[ ! -d "$HOME/.tmp"        ] && mkdir "$HOME/.tmp"
+[ ! -d "$HOME/.vim"        ] && mkdir "$HOME/.vim"
+[ ! -d "$HOME/.vim/undo"   ] && mkdir "$HOME/.vim/undo"
+[ ! -d "$HOME/.vim/backup" ] && mkdir "$HOME/.vim/backup"
+[ ! -d "$HOME/.vim/swap"   ] && mkdir "$HOME/.vim/swap"
 [ -d "$HOME/tmp" ] || mkdir "$HOME/tmp"
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ -d "$HOME/.status" ] || mkdir -p "$HOME/.status"
+# }}}
 bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
 bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
+
+
 stow -R stow -t "$HOME" --no-folding
 
 # Not sure if this is required anymore
 # chmod 644 "$HOME/.ssh/config"
 
 is_ubuntu=$(cat /etc/lsb-release | grep DISTRIB_ID | cut -d = -f 2)
-echo is_ubuntu = $is_ubuntu
+echo is_ubuntu = "$is_ubuntu"
 
 if [ "$is_ubuntu" = "Ubuntu" ]; then
     sudo apt update -y
@@ -157,7 +161,7 @@ if [ "$is_linux" = "Linux" ]; then
     popd
 fi
 
-if [ ! -e $HOME/.tmux/plugins/tpm ]; then
+if [ ! -e "$HOME/.tmux/plugins/tpm" ]; then
     git clone "git@github.com:tmux-plugins/tpm.git" "$HOME/.tmux/plugins/tpm"
 else
     echo TPM present...
