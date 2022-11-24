@@ -52,7 +52,8 @@ else
     # #TODO https://trycatchchris.co.uk/post/view/Open-Emacs-magit-from-command-line
     # emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,dis bplay-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
     
-    emacs --eval "(progn (magit) (delete-other-windows))"
+    # emacs --eval "(progn (magit) (delete-other-windows))"
+    vim -c "Git"
 
 fi
 
