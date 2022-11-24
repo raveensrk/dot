@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# {{{1 ***ENABLED*** DEBUG MODE
 set -e
 set -x
 
@@ -11,6 +13,7 @@ set -x
 [ -d "$HOME/tmp" ]        || mkdir "$HOME/tmp"
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ -d "$HOME/.status" ]    || mkdir -p "$HOME/.status"
+~/.scripts/,clean_up_.DS_Store.bash
 # }}}
 # {{{1 Stow general files
 stow -R stow -t "$HOME" --no-folding
@@ -143,8 +146,8 @@ fi
 # {{{1 Install FZF
 if [ ! -e ~/.fzf/bin/fzf ]; then
     git clone --depth 1 "git@github.com:junegunn/fzf.git" ~/.fzf
+    "$HOME/.fzf/install" --all
 fi
-"$HOME/.fzf/install" --all
 
 # {{{1 Install colemak
 if [ "$is_linux" = "Linux" ]; then
@@ -164,10 +167,12 @@ if [ ! -e "$HOME/.tmux/plugins/tpm" ]; then
 else
     echo TPM present...
 fi
- # {{{1 Install yt-dlp
-curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
-chmod a+rx ~/.local/bin/yt-dlp
- # {{{1 Install vim plugins and clean
+# {{{1 Install yt-dlp
+if [ ! -e ~/.local/bin/yt-dlp ]; then
+    curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
+    chmod a+rx ~/.local/bin/yt-dlp
+fi 
+# {{{1 Install vim plugins and clean
 vim -c "PlugInstall | PlugClean | qa"
 # {{{1 Install Bash completions package
 if [ ! -f ~/.local/etc/profile.d/bash_completion.sh ]; then
