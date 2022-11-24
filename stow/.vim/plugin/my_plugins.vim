@@ -112,7 +112,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-
+nnoremap <leader>/ :BLines<CR>
 
 "}}}
 " {{{ COLOR / THEME
