@@ -76,8 +76,8 @@ set wildmenu
 
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
-" set scrolloff=999
-" set sidescrolloff=999
+set scrolloff=999
+set sidescrolloff=999
 
 " set virtualedit=all
 set textwidth=0 wrapmargin=0
@@ -154,20 +154,38 @@ nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
 
 " Move blocks on lines in visual mode
-vnoremap <leader><Up>   :'<,'>move -2<CR>gv=gv
-vnoremap <leader><Down> :'<,'>move +2<CR>gv=gv
+vnoremap <Up>   :move -2<CR>gv=gv
+vnoremap <Down> :move +2<CR>gv=gv
 
 " Move single lines in normal mode
-nnoremap <leader><Up>   :move -2<CR>
-nnoremap <leader><Down> :move +1<CR>
+nnoremap <Up>   :move -2<CR>
+nnoremap <Down> :move +1<CR>
+
+" TODO Move vertial lines left or right in visual mode
 
 nnoremap <leader>ac :s/ --/\r--/g<CR>
 nnoremap <leader><tab> za
 
 " Execute current line in Vim Ex mode
 nnoremap <leader>x yyq:p<CR>
+
+" Execute current line in bash and return the results few lines below within a
+" fold
+nnoremap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
+
+" {{{2 Map meta key to movement 
+nnoremap n h
+nnoremap e j
+nnoremap i k
+nnoremap o l
+vnoremap n h
+vnoremap e j
+vnoremap i k
+vnoremap o l
+
+
 " }}}
-" {{{ Resource plugin directory
+" {{{1 Resource plugin directory
 " This is done so the plugin directory is sourced again at the end of this
 " vimrc file. This will make plugins work properly
 
