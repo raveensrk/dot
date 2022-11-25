@@ -1,1 +1,1 @@
-setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
+  setxkbmap us; xmodmap xmodmap/xmodmap.colemak && xset r 66
