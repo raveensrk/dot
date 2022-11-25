@@ -20,7 +20,7 @@ stow -R stow -t "$HOME" --no-folding
 # Add sources whereever required
 bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
 bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
-# {{{1 Brew install Ubuntu packages
+# {{{1 APT install Ubuntu packages
 is_ubuntu=$(cat /etc/lsb-release | grep DISTRIB_ID | cut -d = -f 2)
 echo is_ubuntu = "$is_ubuntu"
 
@@ -28,6 +28,7 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     sudo apt update -y
     sudo apt upgrade -y
     sudo apt install -y  \
+        libncurses-dev \
         flatpak \
         snap \
         snapd \
