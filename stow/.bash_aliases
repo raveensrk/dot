@@ -18,9 +18,12 @@ export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
+for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 
 # }}}
 # {{{ BASH SHOPTS
+# This will exit bash shell as soon as it receives C-d as the last command
+export IGNOREEOF=0
 shopt -s direxpand
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 shopt -s histappend # append to the history file, don't overwrite it
@@ -31,14 +34,43 @@ export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_history # Change the file location because certain bash sessions truncate .bash_history file upon close. # http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND" # Force prompt to write history after every command. http://superuser.com/questions/20900/bash-history-loss
 shopt -s checkwinsize # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
 # }}}
 # {{{ INTERFACE
 if [ -v xset ]; then
     xset r rate 300 50
     xset m 10 1
 fi
+# Colors
+LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
 # }}}
 # {{{ ALIASES
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+# LS aliases
+
+if command -v exa > /dev/null; then
+    alias ls='exa'
+    alias l="exa -la"
+else
+    alias ls='ls --color=auto'
+    alias l="ls -Al"
+fi
+alias y="yt-dlp"
+alias ,edit_zzz="$EDITOR ~/.dirs_stack"
 alias ..="cd .."
 alias ,.="open ."
 alias ,top='top -d 0.125'
@@ -97,7 +129,7 @@ e () {
     rm "$link_name"
     # Replace link with original
     cp "$orig" "$link_name"
-    unset link_name orig 
+    unset link_name orig
 }
 # }}}
 # {{{ PAGERS
@@ -140,7 +172,7 @@ updatedb_home="$updatedb_path/home.db"
 sd () {
     local dir=$(locate -d "$updatedb_home" .* | fzf)
     echo -e ${BLUE} The following command is executed... ${NC}
-    echo -e ${YELLOW} 'pushd' "$dir" ${NC} 
+    echo -e ${YELLOW} 'pushd' "$dir" ${NC}
     pushd "$dir"
 }
 
@@ -151,7 +183,7 @@ sl () {
 sx () {
     local file=$(locate -d "$updatedb_home" .* | fzf)
     echo -e ${BLUE} The following command is executed... ${NC}
-    echo -e ${YELLOW} 'source' "$file" ${NC} 
+    echo -e ${YELLOW} 'source' "$file" ${NC}
     source "$file"
 }
 
@@ -193,7 +225,7 @@ v () {
         echo -e "${RED}No vim servers found...${NC}"
         vim $@
         return 1
-    fi 
+    fi
 
     servername=$(vim --serverlist)
     if [[ $# -ge 1 ]]; then
@@ -245,15 +277,13 @@ bind '"\C-o":"ranger-cd\C-m"'
 
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 # }}}
-
 # {{{ FZF
 export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
 export FZF_CTRL_T_COMMAND="command find -L . $HOME/my_repos"
 export FZF_ALT_C_COMMAND="command find -L . -type d"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
-
-
+# {{{ Completion system
 [ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
 
 # Use bash-completion, if available
@@ -271,11 +301,11 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# Colors
-LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
-
-
-# {{{ COMMA ALIASES
+# }}} 
+# {{{ zzz ALIASES
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+alias cd="z"
 unset -f z
 z () {
     local tmp="/tmp/.dirs_stack_tmp_$$"
@@ -307,71 +337,7 @@ zzz () {
     z "$(fzf < ~/.dirs_stack | tail -n 50 | uniq | sed "s|^~|${HOME}|")" || return
 }
 # }}}
-
-alias ,edit_zzz="$EDITOR ~/.dirs_stack"
-
-alias cd="z"
-
-### Code below this need to be reviewed. TODO
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-        . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-        . /etc/bash_completion
-    fi
-fi
-
-
-# This will exit bash shell as soon as it receives C-d as the last command
-export IGNOREEOF=0
-
-# LS aliases
-
-if command -v exa > /dev/null; then
-    alias ls='exa'
-    alias l="exa -la"
-else
-    alias ls='ls --color=auto'
-    alias l="ls -Al"
-fi
-
-for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
-
-alias y="yt-dlp"
-alias agenda='e --eval "(org-agenda-list)" &'
-alias todo='e --eval "(org-todo-list)" &'
-
+# {{{ Fedora BUG fix
 # BUGFIX: bash: __vte_prompt_command: command not found
 # https://ask.fedoraproject.org/t/how-to-fix-bash-vte-prompt-command-command-not-found-when-using-tmux/17704/3
 # check if function exists and define empty one if doesn't
@@ -380,7 +346,7 @@ if [[ $(type -t "__vte_prompt_command") != function ]]; then
         return 0
     }
 fi
-
+# }}}
 # MACOS Specific {{{
 if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -394,10 +360,9 @@ if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
         local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
         printf '\e]7;%s\a' "$PWD_URL"
     }
-fi 
+fi
 
 # }}}
-
 # {{{ Other Sources
 [ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
 #export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
@@ -406,4 +371,10 @@ touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
+# }}}
+# {{{ WSL 2 specific - Ubuntu
+which_linux=$(cat /etc/os-release | grep  ^NAME= | cut -d = -f 2 | tr -d "\"")
+if [ "$which_linux" = "Ubuntu" ]; then
+    . ~/my_repos/dotfiles-main/installer_scripts/install_colemak.bash > /dev/null 2>&1
+fi 
 # }}}

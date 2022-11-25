@@ -167,6 +167,8 @@ nnoremap <leader><Up>   :move -2<CR>
 nnoremap <leader><Down> :move +1<CR>
 
 nnoremap <leader>ac :s/ --/\r--/g<CR>
+
+nnoremap <leader><tab> za
 " }}}
 
 " This is done so the plugin directory is sourced again at the end of this

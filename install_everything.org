@@ -306,6 +306,7 @@ To unstow
 * Install colemak
 #+name: install_colemak
 #+begin_src bash :tangle ./installer_scripts/install_colemak.bash
+  is_linux=$(uname -a | cut -d ' ' -f 1)
   if [ "$is_linux" = "Linux" ]; then
       # https://colemak.com/Unix
 

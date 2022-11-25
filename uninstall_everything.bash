@@ -1,1 +1,1 @@
-stow -D stow -t "$$HOME" --no-folding
+  stow -D stow -t "$$HOME" --no-folding
