@@ -178,3 +178,4 @@ for f in split(glob('~/.vim/plugin/*.vim'), '\n')
 endfor
 
 " let b:systemverilog_indent_ifdef_off
+set autoread

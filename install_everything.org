@@ -291,8 +291,13 @@ To unstow
 	  echo Doom exists...
       fi
   else
+      echo "Not ubuntu or macos... Stowing my emacs configs..."
       stow -R stow_my_emacs -t "$HOME" --no-folding
   fi
+#+end_src
+
+#+begin_src bash :tangle yes :noweb yes
+  <<stow_doom_emacs>>
 #+end_src
 
 * Install fzf if it does not exist

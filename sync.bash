@@ -63,12 +63,13 @@ fi
 if [ "$is_ubuntu" = "Ubuntu" ] || [ "$is_linux" = "Darwin" ]; then
     stow -R doom_emacs -t "$HOME" --no-folding
     if [ ! -e ~/.emacs.d/bin/doom ]; then
-        git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-        ~/.emacs.d/bin/doom install
-        ~/.emacs.d/bin/doom sync
+	git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+	~/.emacs.d/bin/doom install
+	~/.emacs.d/bin/doom sync
     else
-        echo Doom exists...
+	echo Doom exists...
     fi
 else
+    echo "Not ubuntu or macos... Stowing my emacs configs..."
     stow -R stow_my_emacs -t "$HOME" --no-folding
 fi
