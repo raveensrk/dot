@@ -101,9 +101,10 @@ unset e
 unset -f e
 e () {
     set -x
-    if [[ $@ == "" ]]; then
+    if [[ $* == "" ]]; then
         emacsclient -c -e "(recentf-open-files)"
     else
+        # shellcheck disable=SC2068
         $EDITOR $@
     fi
     set +x
@@ -165,12 +166,13 @@ source ~/.bash_prompt
 updatedb_path="$HOME/.local/locate_db"
 updatedb_home="$updatedb_path/home.db"
 ,updatedb () {
-    [[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
-    updatedb -l 0 -o "$updatedb_home" -U ~/
+[[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
+updatedb -l 0 -o "$updatedb_home" -U ~/
 }
 
 sd () {
-    local dir=$(locate -d "$updatedb_home" .* | fzf)
+    local dir
+    dir=$(locate -d "$updatedb_home" .* | fzf)
     echo -e ${BLUE} The following command is executed... ${NC}
     echo -e ${YELLOW} 'pushd' "$dir" ${NC}
     pushd "$dir"
@@ -195,19 +197,19 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 # {{{ VIM STUFF
-# export VISUAL="vim"
-# export EDITOR="vim"
+export VISUAL="vim"
+export EDITOR="vim"
 # export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
-export ALTERNATE_EDITOR="emacs"
-export VISUAL="emacsclient -c"
-export EDITOR="emacsclient -c"
+# export ALTERNATE_EDITOR="emacs"
+# export VISUAL="emacsclient -c"
+# export EDITOR="emacsclient -c"
 # ,magit () {
 #     emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,display-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
 # }
 
 ,magit () {
-    emacs --eval "(progn (magit)  (delete-other-windows))" &
+emacs --eval "(progn (magit)  (delete-other-windows))" &
 }
 
 alias vs="command vim --servername VIM"
@@ -235,7 +237,6 @@ v () {
     fi
 }
 alias bashal="$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
-alias csh_aliases="$EDITOR ~/.aliases"
 alias vimrc="v ~/.vimrc"
 # }}}
 # RANGER {{{

@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'https://github.com/maxbrunsfeld/vim-yankstack'
 Plug 'https://github.com/tpope/vim-sensible'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -23,7 +24,7 @@ Plug 'airblade/vim-gitgutter'
 " Plug 'dense-analysis/ale'
 " Plug 'tommcdo/vim-exchange'
 " Plug 'svermeulen/vim-yoink'
-" Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " Plug 'xolox/vim-easytags'
 " Plug 'xolox/vim-misc'
 " Plug 'preservim/tagbar'
@@ -112,7 +113,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-
+nnoremap <leader>/ :BLines<CR>
 
 "}}}
 " {{{ COLOR / THEME

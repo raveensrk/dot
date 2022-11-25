@@ -76,8 +76,8 @@ set wildmenu
 
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
-" set scrolloff=999
-" set sidescrolloff=999
+set scrolloff=999
+set sidescrolloff=999
 
 " set virtualedit=all
 set textwidth=0 wrapmargin=0
@@ -107,13 +107,13 @@ set autochdir
 " FILE SPECIFIC {{{
 autocmd BufRead .vimrc :set foldmethod=marker
 " }}}
-" Copy Paste to/from Vim/system clipboard {{{
-vnoremap <leader>y "+y
-vnoremap <leader>x "+x
-nnoremap <leader>p "+p
-vnoremap <leader>y "+y
-vnoremap <leader>x "+x
-nnoremap <leader>p "+p
+" ***DISABLED*** Copy Paste to/from Vim/system clipboard {{{
+" vnoremap <leader>y "+y
+" vnoremap <leader>x "+x
+" nnoremap <leader>p "+p
+" vnoremap <leader>y "+y
+" vnoremap <leader>x "+x
+" nnoremap <leader>p "+p
 " }}}
 " {{{ CUSTOM KEYMAPS
 let mapleader = " "
@@ -140,12 +140,8 @@ nnoremap <leader>qq  :q!<CR>
 nnoremap <leader>qa  :qa<CR>
 nnoremap <leader>qqa :qa!<CR>
 
-" Copy paste to and from system clipboard
-" ---------------------------------------------
-nnoremap <leader>y  "+y<CR>
-nnoremap <leader>Y  "+y<CR>
-nnoremap <leader>p  "+p<CR>
-nnoremap <leader>Y  "+P<CR>
+nnoremap <leader>a ggVG
+nnoremap <leader>y mmggVGy'm
 
 " Other time savers
 " -------------------------------
@@ -153,24 +149,44 @@ nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
 nnoremap <leader>e   :Ex<CR>jj
 nnoremap <leader>pi :PlugClean<CR>:PlugInstall<CR>
 nnoremap <leader>vrc :e $MYVIMRC<CR>
-nnoremap <leader>s :w<CR>:source $MYVIMRC<CR>
-nnoremap <leader>src :p ~/.vimrc<CR>:w<CR>:source ~/.vimrc<CR>
+nnoremap <leader>src :b ~/.vimrc<CR>:w<CR>:source ~/.vimrc<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
 
 " Move blocks on lines in visual mode
-vnoremap <leader><Up>   :'<,'>move -2<CR>gv=gv
-vnoremap <leader><Down> :'<,'>move +2<CR>gv=gv
+vnoremap <Up>   :move -2<CR>gv=gv
+vnoremap <Down> :move +2<CR>gv=gv
 
 " Move single lines in normal mode
-nnoremap <leader><Up>   :move -2<CR>
-nnoremap <leader><Down> :move +1<CR>
+nnoremap <Up>   :move -2<CR>
+nnoremap <Down> :move +1<CR>
+
+" TODO Move vertial lines left or right in visual mode
 
 nnoremap <leader>ac :s/ --/\r--/g<CR>
 
 nnoremap <leader><tab> za
-" }}}
 
+" Execute current line in Vim Ex mode
+nnoremap <leader>x yyq:p<CR>
+
+" Execute current line in bash and return the results few lines below within a
+" fold
+nnoremap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
+
+" {{{2 Map meta key to movement 
+nnoremap n h
+nnoremap e j
+nnoremap i k
+nnoremap o l
+vnoremap n h
+vnoremap e j
+vnoremap i k
+vnoremap o l
+
+
+" }}}
+" {{{1 Resource plugin directory
 " This is done so the plugin directory is sourced again at the end of this
 " vimrc file. This will make plugins work properly
 
@@ -179,4 +195,7 @@ for f in split(glob('~/.vim/plugin/*.vim'), '\n')
     exe 'source' f
 endfor
 
+" }}}
+" {{{ ***DISABLED*** Testing
 " let b:systemverilog_indent_ifdef_off
+" }}} 
