@@ -15,8 +15,8 @@ Plug 'git@github.com:tomtom/tcomment_vim'
 Plug 'git@github.com:tpope/vim-unimpaired'
 Plug 'git@github.com:tpope/vim-surround'
 Plug 'git@github.com:tpope/vim-repeat'
-" Plug 'junegunn/vim-easy-align'
 " Plug 'mattn/emmet-vim'
+Plug 'git@github.com:junegunn/vim-easy-align'
 Plug 'git@github.com:mg979/vim-visual-multi', {'branch': 'master'}
 " mg979/vim-visual-multi
 Plug 'git@github.com:airblade/vim-gitgutter'
@@ -90,8 +90,8 @@ set updatetime=100 " For gitgutter
 
 nmap <F8> :TagbarToggle<CR>
 
-let g:rainbow_active = 1
-let g:airline#extensions#tabline#enabled = 1
+" let g:rainbow_active = 1
+" let g:airline#extensions#tabline#enabled = 1
 
 " Vim Easy Align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
