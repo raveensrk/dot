@@ -180,6 +180,12 @@ nnoremap <leader>r
 nnoremap <leader>ln :lnext<cr>
 nnoremap <leader>lp :lprevious<cr>
 
+" Align data set / make table
+vnoremap <leader>align !column --table -s <input_seperator> -o <output_seperator>
+
+" Date
+nnoremap <leader>date :-1read !date +\%Y-\%m-\%d-\%H-\%M-\%S<cr>
+
 " {{{2 Map meta key to movement 
 nnoremap n h
 nnoremap e j

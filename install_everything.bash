@@ -28,6 +28,8 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     sudo apt update -y
     sudo apt upgrade -y
     sudo apt install -y  \
+        libdbus-glib-1-dev  `# This is to use firefox binary in wsl 2` \
+        libncurses-dev \
         flatpak \
         snap \
         snapd \
@@ -154,8 +156,8 @@ if [ "$is_ubuntu" = "Ubuntu" ] || [ "$is_linux" = "Darwin" ]; then
 	echo Doom exists...
     fi
 else
-    echo "Not ubuntu or macos... Stowing my emacs configs..."
-    stow -R stow_my_emacs -t "$HOME" --no-folding
+    echo "Not ubuntu or macos... Not Stowing my emacs configs..."
+    # stow -R stow_my_emacs -t "$HOME" --no-folding
 fi
 
 # {{{1 Install FZF
@@ -203,6 +205,11 @@ if [ ! -f ~/.local/etc/profile.d/bash_completion.sh ]; then
     bash add_sources.bash "[ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh"  "$HOME/.bashrc"
 fi 
 
-# {{{1 Misc
+### Misc
 # Not sure if this is required anymore
 # chmod 644 "$HOME/.ssh/config"
+
+# Local Variables:
+# eval: (outline-minor-mode)
+# outline-regexp: "###"
+# End:

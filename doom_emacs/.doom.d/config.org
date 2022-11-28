@@ -102,6 +102,7 @@ When the lines in a file are so long that performance could suffer to an unaccep
 (tab-bar-mode +1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (rainbow-mode +1)
+;; (doom/increase-font-size 4)
 #+end_src
 ** Theme
 #+begin_src elisp :tangle yes
@@ -216,6 +217,12 @@ isearch can find a wide range of Unicode characters (like á, ⓐ, or 𝒶) when
 (map! :leader
       :desc "Org roam buffer toggle"
       "z s" #'org-roam-db-sync)
+
+(require 'open-external "~/.doom.d/open-external.el")
+
+(map! :leader
+      :desc "Open current org-mode url in OpenWith.exe external application..."
+      "z o" #'open-external)
 
 #+end_src
 * Editing
