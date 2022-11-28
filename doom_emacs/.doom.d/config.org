@@ -103,6 +103,10 @@ When the lines in a file are so long that performance could suffer to an unaccep
 (mouse-avoidance-mode 'cat-and-mouse)
 (rainbow-mode +1)
 #+end_src
+** Theme
+#+begin_src elisp :tangle yes
+(load-theme 'doom-gruvbox t)
+#+end_src
 * Navigation
 #+begin_src elisp :tangle yes
 (setq mouse-wheel-flip-direction t)
@@ -241,5 +245,7 @@ https://emacsredux.com/blog/2013/04/02/move-current-line-up-or-down/
 * Packages
 - [[file:packages.el]]
 * My macros
-
 These will be loaded in site-lisp directory
+#+begin_src elisp :tangle yes
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+#+end_src

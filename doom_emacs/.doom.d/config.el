@@ -84,6 +84,8 @@
 (mouse-avoidance-mode 'cat-and-mouse)
 (rainbow-mode +1)
 
+(load-theme 'doom-gruvbox t)
+
 (setq mouse-wheel-flip-direction t)
 (setq mouse-wheel-tilt-scroll t)
 (global-set-key (kbd "M-o") 'ace-window)
@@ -197,3 +199,5 @@
 
 (global-set-key (kbd "M-<down>") 'move-line-down)
 (global-set-key (kbd "M-<up>") 'move-line-up)
+
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
