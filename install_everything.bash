@@ -155,8 +155,8 @@ if [ "$is_ubuntu" = "Ubuntu" ] || [ "$is_linux" = "Darwin" ]; then
 	echo Doom exists...
     fi
 else
-    echo "Not ubuntu or macos... Stowing my emacs configs..."
-    stow -R stow_my_emacs -t "$HOME" --no-folding
+    echo "Not ubuntu or macos... Not Stowing my emacs configs..."
+    # stow -R stow_my_emacs -t "$HOME" --no-folding
 fi
 
 # {{{1 Install FZF
