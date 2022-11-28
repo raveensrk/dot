@@ -218,8 +218,6 @@ isearch can find a wide range of Unicode characters (like á, ⓐ, or 𝒶) when
       :desc "Org roam buffer toggle"
       "z s" #'org-roam-db-sync)
 
-(require 'open-external "~/.doom.d/open-external.el")
-
 (map! :leader
       :desc "Open current org-mode url in OpenWith.exe external application..."
       "z o" #'open-external)
@@ -252,8 +250,8 @@ https://emacsredux.com/blog/2013/04/02/move-current-line-up-or-down/
 * Packages
 - [[file:packages.el]]
 * My macros
-These will be loaded in site-lisp directory
+Take all the elisp files in the my_elisp directory and source it.
 #+begin_src elisp :tangle yes
-;; (add-to-list 'load-path "~/.emacs.d/site-lisp")
-;; (require 'my_insert_html_embed)
+(mapcar 'load-file (directory-files-recursively "~/.doom.d/my_elisp" ".*.el"))
 #+end_src
+
