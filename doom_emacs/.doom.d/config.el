@@ -83,6 +83,7 @@
 (tab-bar-mode +1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (rainbow-mode +1)
+;; (doom/increase-font-size 4)
 
 (setq mouse-wheel-flip-direction t)
 (setq mouse-wheel-tilt-scroll t)
@@ -179,6 +180,12 @@
 (map! :leader
       :desc "Org roam buffer toggle"
       "z s" #'org-roam-db-sync)
+
+(require 'open-external "~/.doom.d/open-external.el")
+
+(map! :leader
+      :desc "Open current org-mode url in OpenWith.exe external application..."
+      "z o" #'open-external)
 
 (defun move-line-up ()
   "Move up the current line."
