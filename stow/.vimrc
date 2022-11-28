@@ -7,6 +7,7 @@ source $VIMRUNTIME/vimrc_example.vim
 map <F3> "zyiw:exe "h ".@z<CR>
 " }}}
 " BASICS {{{
+set autoread
 set mouse=a
 set nocompatible
 filetype plugin on
@@ -173,6 +174,11 @@ nnoremap <leader>x yyq:p<CR>
 " Execute current line in bash and return the results few lines below within a
 " fold
 nnoremap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
+nnoremap <leader>r
+
+" Locaction list 
+nnoremap <leader>ln :lnext<cr>
+nnoremap <leader>lp :lprevious<cr>
 
 " Align data set / make table
 vnoremap <leader>align !column --table -s <input_seperator> -o <output_seperator>
@@ -202,6 +208,9 @@ for f in split(glob('~/.vim/plugin/*.vim'), '\n')
 endfor
 
 " }}}
-" {{{ ***DISABLED*** Testing
+" {{{1 ***DISABLED*** Testing
 " let b:systemverilog_indent_ifdef_off
-" }}} 
+" {{{1 NEW stuff
+runtime ftplugin/man.vim
+packadd! editexisting
+source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim

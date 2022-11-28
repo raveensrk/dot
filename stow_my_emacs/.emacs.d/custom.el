@@ -7,9 +7,9 @@
  '(compilation-auto-jump-to-first-error nil)
  '(compilation-scroll-output t)
  '(cursor-type 'bar)
- '(custom-enabled-themes '(wombat))
+ '(custom-enabled-themes '(gruvbox-dark-hard wombat))
  '(custom-safe-themes
-   '("ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+   '("d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" "ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
  '(dired-dwim-target t)
  '(dired-hide-details-hide-information-lines t)
  '(dired-hide-details-hide-symlink-targets t)
@@ -102,6 +102,7 @@
  '(org-priority-lowest 70)
  '(org-refile-allow-creating-parent-nodes 'confirm)
  '(org-refile-use-outline-path 'file)
+ '(org-src-preserve-indentation t)
  '(org-startup-folded nil)
  '(org-startup-indented t)
  '(org-startup-truncated nil)
@@ -123,7 +124,7 @@
  '(outline-minor-mode-cycle-filter nil)
  '(outline-minor-mode-highlight 'append)
  '(package-selected-packages
-   '(org-auto-tangle outshine the-matrix-theme aggressive-indent org-super-agenda format-all org-drill orderless flymake-shellcheck flex-autopair smartparens xml-quotes projectile-ripgrep xhair indent-guide htmlize markdown-mode all-the-icons-completion all-the-icons-ivy-rich ivy counsel ox-pandoc evil-surround php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets evil-escape key-chord org-download aggressive-indent org-super-agenda format-all org-drill orderless flymake-shellcheck flex-autopair smartparens xml-quotes projectile-ripgrep xhair indent-guide htmlize markdown-mode all-the-icons-completion all-the-icons-ivy-rich ivy counsel ox-pandoc evil-surround php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
+   '(gruvbox-theme org-auto-tangle outshine the-matrix-theme aggressive-indent org-super-agenda format-all org-drill orderless flymake-shellcheck flex-autopair smartparens xml-quotes projectile-ripgrep xhair indent-guide htmlize markdown-mode all-the-icons-completion all-the-icons-ivy-rich ivy counsel ox-pandoc evil-surround php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets evil-escape key-chord org-download aggressive-indent org-super-agenda format-all org-drill orderless flymake-shellcheck flex-autopair smartparens xml-quotes projectile-ripgrep xhair indent-guide htmlize markdown-mode all-the-icons-completion all-the-icons-ivy-rich ivy counsel ox-pandoc evil-surround php-mode simple-httpd projectile dynamic-fonts use-package runner avy rainbow-delimiters swiper helm-etags-plus beacon company embark evil evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-vimish-fold expand-region flycheck flyspell-correct folding git-gutter helm ledger-mode load-dir magit marginalia minimal-session-saver noccur olivetti restart-emacs search-web vterm which-key writegood-mode yasnippet yasnippet-snippets))
  '(php-mode-coding-style 'php)
  '(projectile-auto-discover nil)
  '(projectile-project-search-path nil)

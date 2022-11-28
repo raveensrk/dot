@@ -89,6 +89,7 @@ if [ "$is_linux" = "Darwin" ]; then
     fi
 
     brew install \
+        graphicsmagick \
         autoconf \
         automake \
         bat \
@@ -142,6 +143,20 @@ if [ "$is_linux" = "Linux" ]; then
     stow -R stow_linux -t "$HOME" --no-folding
 else
     echo Skipping linux stow command since this system is not linux...
+fi
+
+if [ "$is_ubuntu" = "Ubuntu" ] || [ "$is_linux" = "Darwin" ]; then
+    stow -R doom_emacs -t "$HOME" --no-folding
+    if [ ! -e ~/.emacs.d/bin/doom ]; then
+	git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+	~/.emacs.d/bin/doom install
+	~/.emacs.d/bin/doom sync
+    else
+	echo Doom exists...
+    fi
+else
+    echo "Not ubuntu or macos... Stowing my emacs configs..."
+    stow -R stow_my_emacs -t "$HOME" --no-folding
 fi
 
 # {{{1 Install FZF

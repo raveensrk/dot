@@ -18,6 +18,7 @@ export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
+# shellcheck disable=SC2044
 for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 
 # }}}
@@ -44,10 +45,14 @@ if [ -v xset ]; then
     xset m 10 1
 fi
 # Colors
-LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    if  test -r ~/.dircolors; then
+        eval "$(dircolors -b ~/.dircolors)"
+    else
+        eval "$(dircolors -b)"
+    fi
     alias dir='dir --color=auto'
     alias vdir='vdir --color=auto'
 
@@ -70,7 +75,7 @@ else
     alias l="ls -Al"
 fi
 alias y="yt-dlp"
-alias ,edit_zzz="$EDITOR ~/.dirs_stack"
+alias ,edit_zzz="\$EDITOR ~/.dirs_stack"
 alias ..="cd .."
 alias ,.="open ."
 alias ,top='top -d 0.125'
@@ -150,32 +155,27 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 # Man colors
 #------------------
 man() {
-    LESS_TERMCAP_md=$'\e[01;31m' \
-                   LESS_TERMCAP_me=$'\e[0m' \
-                   LESS_TERMCAP_se=$'\e[0m' \
-                   LESS_TERMCAP_so=$'\e[01;44;33m' \
-                   LESS_TERMCAP_ue=$'\e[0m' \
-                   LESS_TERMCAP_us=$'\e[01;32m' \
-                   command man "$@"
+    LESS_TERMCAP_md=$'\e[01;31m'          LESS_TERMCAP_me=$'\e[0m'          LESS_TERMCAP_se=$'\e[0m'          LESS_TERMCAP_so=$'\e[01;44;33m'          LESS_TERMCAP_ue=$'\e[0m'          LESS_TERMCAP_us=$'\e[01;32m'          command man "$@"
 }
 # }}}
 # {{{ PROMPT AND COLORS
-source ~/.bash_prompt
+# shellcheck disable=SC1091
+source "$HOME/.bash_prompt"
 # }}}
 # {{{ LOCATE FILES AND DIRS
 updatedb_path="$HOME/.local/locate_db"
 updatedb_home="$updatedb_path/home.db"
 ,updatedb () {
-[[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
-updatedb -l 0 -o "$updatedb_home" -U ~/
+    [[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
+    updatedb -l 0 -o "$updatedb_home" -U ~/
 }
 
 sd () {
     local dir
     dir=$(locate -d "$updatedb_home" .* | fzf)
-    echo -e ${BLUE} The following command is executed... ${NC}
-    echo -e ${YELLOW} 'pushd' "$dir" ${NC}
-    pushd "$dir"
+    echo -e "${BLUE} The following command is executed... ${NC}"
+    echo -e "${YELLOW} pushd $dir ${NC}"
+    pushd "$dir" || return
 }
 
 sl () {
@@ -183,9 +183,11 @@ sl () {
 }
 
 sx () {
-    local file=$(locate -d "$updatedb_home" .* | fzf)
-    echo -e ${BLUE} The following command is executed... ${NC}
-    echo -e ${YELLOW} 'source' "$file" ${NC}
+    local file
+    file=$(locate -d "$updatedb_home" .* | fzf)
+    echo -e "${BLUE} The following command is executed... ${NC}"
+    echo -e "${YELLOW} source $file ${NC}"
+    # shellcheck disable=SC1090
     source "$file"
 }
 
@@ -193,14 +195,15 @@ sx () {
 # }}}
 # {{{ UBUNTU SPECIFIC
 if [ -f /etc/bash_completion ]; then
+    # shellcheck disable=SC1091
     . /etc/bash_completion
 fi
 # }}}
 # {{{ VIM STUFF
 export VISUAL="vim"
 export EDITOR="vim"
-# export VISUAL="emacsclient -a emacs"
 # export EDITOR="emacsclient -a emacs"
+# export VISUAL="emacsclient -a emacs"
 # export ALTERNATE_EDITOR="emacs"
 # export VISUAL="emacsclient -c"
 # export EDITOR="emacsclient -c"
@@ -209,7 +212,7 @@ export EDITOR="vim"
 # }
 
 ,magit () {
-emacs --eval "(progn (magit)  (delete-other-windows))" &
+    emacs --eval "(progn (magit)  (delete-other-windows))" &
 }
 
 alias vs="command vim --servername VIM"
@@ -225,18 +228,20 @@ v () {
         return 1
     elif [ "$nservers" -eq 0 ]; then
         echo -e "${RED}No vim servers found...${NC}"
+        # shellcheck disable=SC2068
         vim $@
         return 1
     fi
 
     servername=$(vim --serverlist)
     if [[ $# -ge 1 ]]; then
-        command vim --servername $servername --remote $@
+        # shellcheck disable=SC2068
+        command vim --servername "$servername" --remote $@
     else
-        command vim --servername $servername --remote-send ":History<CR>"
+        command vim --servername "$servername" --remote-send ":History<CR>"
     fi
 }
-alias bashal="$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
+alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
 alias vimrc="v ~/.vimrc"
 # }}}
 # RANGER {{{
@@ -282,12 +287,15 @@ bind '"\C-o":"ranger-cd\C-m"'
 export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
 export FZF_CTRL_T_COMMAND="command find -L . $HOME/my_repos"
 export FZF_ALT_C_COMMAND="command find -L . -type d"
+# shellcheck disable=SC1090
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
 # {{{ Completion system
+# shellcheck disable=SC1090
 [ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
 
 # Use bash-completion, if available
+# shellcheck disable=SC1090
 [[ $PS1 && -f ~/.local/share/bash-completion/bash_completion  ]] && \
     . ~/.local/share/bash-completion/bash_completion
 
@@ -296,8 +304,10 @@ export FZF_ALT_C_COMMAND="command find -L . -type d"
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
+        # shellcheck disable=SC1091
         . /usr/share/bash-completion/bash_completion
     elif [ -f /etc/bash_completion ]; then
+        # shellcheck disable=SC1091
         . /etc/bash_completion
     fi
 fi
@@ -349,7 +359,7 @@ if [[ $(type -t "__vte_prompt_command") != function ]]; then
 fi
 # }}}
 # MACOS Specific {{{
-if [ $(uname -a | awk '{print $1}') = "Darwin" ]; then
+if [ "$(uname -a | awk '{print $1}')" = "Darwin" ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
     # https://github.com/platformio/platformio-atom-ide-terminal/issues/196
     update_terminal_cwd() {
@@ -370,12 +380,20 @@ fi
 [ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
 touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
+    # shellcheck disable=SC1090
     source "$f"
 done
 # }}}
 # {{{ WSL 2 specific - Ubuntu
-which_linux=$(cat /etc/os-release | grep  ^NAME= | cut -d = -f 2 | tr -d "\"")
-if [ "$which_linux" = "Ubuntu" ]; then
-    . ~/my_repos/dotfiles-main/installer_scripts/install_colemak.bash > /dev/null 2>&1
-fi 
+if [ -e /etc/os-release ]; then
+    which_linux=$(grep ^NAME= /etc/os-release | cut -d = -f 2 | tr -d "\"")
+    if [ "$which_linux" = "Ubuntu" ]; then
+        # shellcheck disable=SC1090
+        . ~/my_repos/dotfiles-main/installer_scripts/install_colemak.bash > /dev/null 2>&1
+    fi 
+fi
 # }}}
+# {{{1 TODO IDEAS
+# TODO Restart vim
+# https://stackoverflow.com/questions/43113569/how-to-close-vim-editor-with-non-zero-return-value
+

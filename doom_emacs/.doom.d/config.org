@@ -240,3 +240,6 @@ https://emacsredux.com/blog/2013/04/02/move-current-line-up-or-down/
 #+end_src
 * Packages
 - [[file:packages.el]]
+* My macros
+
+These will be loaded in site-lisp directory

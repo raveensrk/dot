@@ -1,49 +1,50 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
-Plug 'https://github.com/maxbrunsfeld/vim-yankstack'
-Plug 'https://github.com/tpope/vim-sensible'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'morhetz/gruvbox'
+Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
+Plug 'git@github.com:tpope/vim-sensible'
+Plug 'git@github.com:junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'git@github.com:junegunn/fzf.vim'
+Plug 'git@github.com:morhetz/gruvbox'
 " Plug 'vim/killersheep'
-Plug 'frazrepo/vim-rainbow'
+Plug 'git@github.com:frazrepo/vim-rainbow'
 " Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
 " Plug 'ctrlpvim/ctrlp.vim'
-Plug 'easymotion/vim-easymotion'
-Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'junegunn/vim-easy-align'
+Plug 'git@github.com:junegunn/vim-easy-align'
+Plug 'git@github.com:easymotion/vim-easymotion'
+Plug 'git@github.com:tomtom/tcomment_vim'
+Plug 'git@github.com:tpope/vim-unimpaired'
+Plug 'git@github.com:tpope/vim-surround'
+Plug 'git@github.com:tpope/vim-repeat'
 " Plug 'mattn/emmet-vim'
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-" https://github.com/mg979/vim-visual-multi
-Plug 'airblade/vim-gitgutter'
+Plug 'git@github.com:junegunn/vim-easy-align'
+Plug 'git@github.com:mg979/vim-visual-multi', {'branch': 'master'}
+" mg979/vim-visual-multi
+Plug 'git@github.com:airblade/vim-gitgutter'
 " Plug 'terryma/vim-expand-region'
 " Plug 'dense-analysis/ale'
 " Plug 'tommcdo/vim-exchange'
 " Plug 'svermeulen/vim-yoink'
-Plug 'tpope/vim-fugitive'
+Plug 'git@github.com:tpope/vim-fugitive'
 " Plug 'xolox/vim-easytags'
 " Plug 'xolox/vim-misc'
 " Plug 'preservim/tagbar'
-Plug 'mhinz/vim-signify'
-Plug 'https://github.com/azabiong/vim-highlighter'
-Plug 'https://github.com/vim-syntastic/syntastic'
+Plug 'git@github.com:mhinz/vim-signify'
+Plug 'git@github.com:azabiong/vim-highlighter'
+Plug 'git@github.com:vim-syntastic/syntastic'
 "Plug 'jceb/vim-orgmode'
 
 " Plug 'godlygeek/tabular'
 " Plug 'plasticboy/vim-markdown'
 "
-Plug 'https://github.com/tpope/vim-markdown'
+Plug 'git@github.com:tpope/vim-markdown'
 
-Plug 'liuchengxu/vim-which-key'
-" Plug 'https://github.com/xolox/vim-misc'
-" Plug 'https://github.com/xolox/vim-session'
+Plug 'git@github.com:liuchengxu/vim-which-key'
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-session'
 
-Plug 'https://github.com/tpope/vim-speeddating'
-Plug 'https://github.com/yoshi1123/vim-linebox'
+Plug 'git@github.com:tpope/vim-speeddating'
+Plug 'git@github.com:yoshi1123/vim-linebox'
 
 " On-demand lazy load
 " Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
@@ -54,12 +55,12 @@ Plug 'https://github.com/yoshi1123/vim-linebox'
 " " autocmd! User vim-which-key call which_key#register('<Space>',
 " 'g:which_key_map')
 
-Plug 'https://github.com/mechatroner/rainbow_csv'
-" Plug 'https://github.com/yegappan/taglist'
-" Plug 'https://github.com/fholgado/minibufexpl.vim'
-Plug 'https://github.com/ervandew/supertab'
-Plug 'ledger/vim-ledger'
-Plug 'nathanaelkane/vim-indent-guides'
+Plug 'git@github.com:mechatroner/rainbow_csv'
+" Plug 'yegappan/taglist'
+" Plug 'fholgado/minibufexpl.vim'
+Plug 'git@github.com:ervandew/supertab'
+Plug 'git@github.com:ledger/vim-ledger'
+Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 
 call plug#end()
 
@@ -90,8 +91,8 @@ set updatetime=100 " For gitgutter
 
 nmap <F8> :TagbarToggle<CR>
 
-let g:rainbow_active = 1
-let g:airline#extensions#tabline#enabled = 1
+" let g:rainbow_active = 1
+" let g:airline#extensions#tabline#enabled = 1
 
 " Vim Easy Align
 " Start interactive EasyAlign in visual mode (e.g. vipga)

@@ -66,6 +66,11 @@
   (interactive)
   (indent-region (point-min) (point-max)))
 
+(defun my-indent-whole-buffer-and-save ()
+  (interactive)
+  (indent-region (point-min) (point-max))
+  (save-buffer)  )
+
 (defun my-find-init-file ()
   (interactive)
   (find-file "~/.emacs.d/init.el"))
@@ -184,12 +189,10 @@
 ;;; Editing
 (setq-default tab-width 4)
 (setq tab-width 4)
-(progn
-  ;; make indent commands use space only (never tab character)
-  (setq-default indent-tabs-mode nil)
-  ;; emacs 23.1 to 26, default to t
-  ;; if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
-  )
+;; make indent commands use space only (never tab character)
+(setq-default indent-tabs-mode nil)
+;; emacs 23.1 to 26, default to t
+;; if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
 
 
 
@@ -629,7 +632,7 @@ Version 2019-11-04 2021-02-16"
   "pi" 'my-package-refresh-and-install-selected-packages
   "h" 'help
   "d" 'dired
-  "w" 'save-buffer
+  "w" 'my-indent-whole-buffer-and-save
   "q" 'save-buffers-kill-terminal
   "i" 'my-find-init-file
   "+" 'text-scale-increase
@@ -702,3 +705,4 @@ Version 2019-11-04 2021-02-16"
 (add-hook 'verilog-mode-hook 'outshine-mode)
 (add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
 
+(add-hook 'org-mode-hook 'org-auto-tangle-mode)
