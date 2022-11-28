@@ -5,7 +5,7 @@ pushd ~/.tmp || exit 2
 # tar xf vim-8.2.tar.bz2
 # pushd vim82 || exit 2
 
-git clone https://github.com/vim/vim.git
+git clone git@github.com:vim/vim.git
 pushd vim || exit 2
 exit 0
 ./configure --prefix="$HOME/.local" --disable-gui --without-x

@@ -174,6 +174,12 @@ nnoremap <leader>x yyq:p<CR>
 " fold
 nnoremap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
 
+" Align data set / make table
+vnoremap <leader>align !column --table -s <input_seperator> -o <output_seperator>
+
+" Date
+nnoremap <leader>date :-1read !date +\%Y-\%m-\%d-\%H-\%M-\%S<cr>
+
 " {{{2 Map meta key to movement 
 nnoremap n h
 nnoremap e j
