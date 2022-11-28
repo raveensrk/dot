@@ -254,5 +254,6 @@ https://emacsredux.com/blog/2013/04/02/move-current-line-up-or-down/
 * My macros
 These will be loaded in site-lisp directory
 #+begin_src elisp :tangle yes
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp")
+;; (require 'my_insert_html_embed)
 #+end_src

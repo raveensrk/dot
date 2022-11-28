@@ -207,4 +207,5 @@
 (global-set-key (kbd "M-<down>") 'move-line-down)
 (global-set-key (kbd "M-<up>") 'move-line-up)
 
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp")
+;; (require 'my_insert_html_embed)
