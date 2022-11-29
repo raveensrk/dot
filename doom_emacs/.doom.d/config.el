@@ -143,6 +143,10 @@
 (require 'org-roam-export)
 (org-roam-db-autosync-mode)
 
+;;; enable abbreviations globally
+(setq-default abbrev-mode t)
+
+;;; Hotkeys
 (map! :leader :desc "Winner undo" :n "<left>" #'winner-undo)
 (map! :leader :desc "Toggle truncate lines" :n "z z t" #'toggle-truncate-lines)
 

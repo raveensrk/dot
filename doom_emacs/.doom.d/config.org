@@ -178,6 +178,10 @@ isearch can find a wide range of Unicode characters (like á, ⓐ, or 𝒶) when
 #+end_src
 * My shortcuts and hotkeys
 #+begin_src elisp :tangle yes
+;;; enable abbreviations globally
+(setq-default abbrev-mode t)
+
+;;; Hotkeys
 (map! :leader :desc "Winner undo" :n "<left>" #'winner-undo)
 (map! :leader :desc "Toggle truncate lines" :n "z z t" #'toggle-truncate-lines)
 
