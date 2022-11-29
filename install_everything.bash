@@ -28,6 +28,7 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     sudo apt update -y
     sudo apt upgrade -y
     sudo apt install -y  \
+        zathura `# PDF viewer` \
         eog `# Eyo of gnome image viewer` \
         libdbus-glib-1-dev  `# This is to use firefox binary in wsl 2` \
         libncurses-dev \
