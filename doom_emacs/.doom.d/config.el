@@ -85,6 +85,8 @@
 (rainbow-mode +1)
 ;; (doom/increase-font-size 4)
 
+(load-theme 'doom-gruvbox t)
+
 (setq mouse-wheel-flip-direction t)
 (setq mouse-wheel-tilt-scroll t)
 (global-set-key (kbd "M-o") 'ace-window)
@@ -181,8 +183,6 @@
       :desc "Org roam buffer toggle"
       "z s" #'org-roam-db-sync)
 
-(require 'open-external "~/.doom.d/open-external.el")
-
 (map! :leader
       :desc "Open current org-mode url in OpenWith.exe external application..."
       "z o" #'open-external)
@@ -204,3 +204,5 @@
 
 (global-set-key (kbd "M-<down>") 'move-line-down)
 (global-set-key (kbd "M-<up>") 'move-line-up)
+
+(mapcar 'load-file (directory-files-recursively "~/.doom.d/my_elisp" ".*.el"))
