@@ -185,7 +185,19 @@
 
 (map! :leader
       :desc "Open current org-mode url in OpenWith.exe external application..."
-      "z o" #'open-external)
+      "z o" #'my-wsl2-open-external-org-https-urls)
+
+
+(defun my-org-convert-line-to-list ()
+  "This function will make current line into a list"
+  (interactive)
+  (save-excursion
+    (beginning-of-line)
+    (insert "- ")))
+
+(map! :leader
+      :desc "Convert current line to list item"
+      "z l" #'my-org-convert-line-to-list)
 
 (defun move-line-up ()
   "Move up the current line."
