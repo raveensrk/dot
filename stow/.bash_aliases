@@ -101,6 +101,7 @@ alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://g
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
+alias ,emacsconfigs="emacs -nw ~/my_repos/dotfiles-main/doom_emacs/.doom.d/config.org"
 
 unset e
 unset -f e
