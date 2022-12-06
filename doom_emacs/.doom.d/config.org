@@ -178,6 +178,8 @@ isearch can find a wide range of Unicode characters (like á, ⓐ, or 𝒶) when
 #+end_src
 * My shortcuts and hotkeys
 #+begin_src elisp :tangle yes
+(map! :leader :desc "Edit org mode src blocks" :n "z e" #'org-edit-src-code)
+
 ;;; enable abbreviations globally
 (setq-default abbrev-mode t)
 

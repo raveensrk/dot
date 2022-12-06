@@ -32,5 +32,6 @@ $if Bash
 "\C-xc": "cd ~/my_repos/dotfiles-main\nmake install_colemak\n"
 "\C-xo": "xdg-open . &\n"
 "\C-xl": "\C-e | less\n"
+"\C-xh": "\C-e --help | less\n"
 "\C-x\C-o": "\C-a,fno.bash \C-e\n"
 $endif
