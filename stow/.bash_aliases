@@ -329,6 +329,7 @@ z () {
     else
         dir="$1"
     fi
+    dir=$(realpath "$dir")
     pushd "$dir" || return
     dirs -v | awk '{print $2}' | sort | uniq >> ~/.dirs_stack
     cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
