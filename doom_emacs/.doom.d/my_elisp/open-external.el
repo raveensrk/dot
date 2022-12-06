@@ -41,6 +41,18 @@
            (buffer-file-name (other-buffer)) "'" )))
 
 
+(defun my-wsl2-open-external-pdf ()
+  "This function is used to open current file in buffer in external program in WSL 2"
+  (interactive)
+  (message
+   (shell-command
+    (concat "echo " "'" (buffer-file-name (other-buffer)) "'" " | tr '/' '\\\\' | xargs powershell.exe start msedge"))))
+
+
+
+
+
+
 
    (provide 'open-external)
 ;;; open-external.el ends here
