@@ -143,6 +143,8 @@
 (require 'org-roam-export)
 (org-roam-db-autosync-mode)
 
+(map! :leader :desc "Edit org mode src blocks" :n "z e" #'org-edit-src-code)
+
 ;;; enable abbreviations globally
 (setq-default abbrev-mode t)
 

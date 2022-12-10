@@ -13,6 +13,7 @@ set -x
 [ -d "$HOME/tmp" ]        || mkdir "$HOME/tmp"
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ -d "$HOME/.status" ]    || mkdir -p "$HOME/.status"
+[ -d "$HOME/.doom.d/my_elisp" ]    || mkdir -p "$HOME/.doom.d/my_elisp"
 ~/.scripts/,clean_up_.DS_Store.bash
 # }}}
 # {{{1 Stow general files
