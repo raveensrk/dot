@@ -179,9 +179,9 @@
       :desc "Org roam node insert"
       "z i" #'org-roam-node-insert)
 
-(map! :leader
-      :desc "Org roam buffer toggle"
-      "z t" #'org-roam-buffer-toggle)
+;; (map! :leader
+;;       :desc "Org roam buffer toggle"
+;;       "z t" #'org-roam-buffer-toggle)
 
 (map! :leader
       :desc "Org roam buffer toggle"
@@ -202,6 +202,10 @@
 (map! :leader
       :desc "Convert current line to list item"
       "z l" #'my-org-convert-line-to-list)
+
+(map! :leader
+      :desc "Org toggle narrow to subtree"
+      "z t" #'org-toggle-narrow-to-subtree)
 
 (defun move-line-up ()
   "Move up the current line."
