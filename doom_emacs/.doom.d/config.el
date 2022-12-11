@@ -121,6 +121,7 @@
 (setq org-link-file-path-type 'relative)
 (setq org-agenda-archives-mode t)
 (setq org-startup-folded 'overview)
+(setq org-attach-id-dir "data/")
 (require 'org-auto-tangle)
 (add-hook 'org-mode-hook 'org-auto-tangle-mode)
 
