@@ -64,7 +64,7 @@ set nonumber norelativenumber
 " set list
 " }}}
 " {{{ INTERFACE
-set wrap
+set nowrap
 set cursorline
 set cursorcolumn
 set hlsearch

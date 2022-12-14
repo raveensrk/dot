@@ -29,6 +29,7 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     sudo apt update -y
     sudo apt upgrade -y
     sudo apt install -y  \
+        libreoffice \
         zathura `# PDF viewer` \
         eog `# Eyo of gnome image viewer` \
         libdbus-glib-1-dev  `# This is to use firefox binary in wsl 2` \
@@ -85,6 +86,8 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     # TODO flatpak not working in ubuntu wsl
     # flatpak install flathub com.spotify.Client
     # flatpak install flathub org.mozilla.firefox
+
+    pip install xlsx2csv
 fi
 # {{{1 Brew install macos packages
 if [ "$is_linux" = "Darwin" ]; then
