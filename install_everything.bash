@@ -87,7 +87,7 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     # flatpak install flathub com.spotify.Client
     # flatpak install flathub org.mozilla.firefox
 
-    pip install xlsx2csv xlsxwriter
+    pip install xlsx2csv xlsxwriter pandas openpyxl
 fi
 # {{{1 Brew install macos packages
 if [ "$is_linux" = "Darwin" ]; then
