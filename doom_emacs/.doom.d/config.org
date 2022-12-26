@@ -132,6 +132,12 @@ isearch can find a wide range of Unicode characters (like á, ⓐ, or 𝒶) when
 #+end_src
 * Org mode
 #+begin_src elisp :tangle yes
+
+(require 'org-download)
+
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+
 ;;; Org mode
 
 (setq org-structure-template-alist
