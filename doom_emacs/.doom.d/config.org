@@ -132,6 +132,12 @@ isearch can find a wide range of Unicode characters (like á, ⓐ, or 𝒶) when
 #+end_src
 * Org mode
 #+begin_src elisp :tangle yes
+
+(require 'org-download)
+
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+
 ;;; Org mode
 
 (setq org-structure-template-alist
@@ -277,3 +283,7 @@ Take all the elisp files in the my_elisp directory and source it.
 (mapcar 'load-file (directory-files-recursively "~/.doom.d/my_elisp" ".*.el"))
 #+end_src
 
+* Testing
+#+begin_src elisp :tangle yes
+(setq tags-table-list nil)
+#+end_src

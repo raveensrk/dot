@@ -100,6 +100,11 @@
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (setq dired-dwim-target t)
 
+(require 'org-download)
+
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+
 ;;; Org mode
 
 (setq org-structure-template-alist
@@ -229,3 +234,5 @@
 (global-set-key (kbd "M-<up>") 'move-line-up)
 
 (mapcar 'load-file (directory-files-recursively "~/.doom.d/my_elisp" ".*.el"))
+
+(setq tags-table-list nil)
