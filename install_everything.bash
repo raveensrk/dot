@@ -14,13 +14,9 @@ set -x
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ -d "$HOME/.status" ]    || mkdir -p "$HOME/.status"
 [ -d "$HOME/.doom.d/my_elisp" ]    || mkdir -p "$HOME/.doom.d/my_elisp"
-~/.scripts/,clean_up_.DS_Store.bash
+
+[ -e ~/.scripts/,clean_up_.DS_Store.bash ] && ~/.scripts/,clean_up_.DS_Store.bash
 # }}}
-# {{{1 Stow general files
-stow -R stow -t "$HOME" --no-folding
-# Add sources whereever required
-bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
-bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
 # {{{1 APT install Ubuntu packages
 is_ubuntu=$(cat /etc/lsb-release | grep DISTRIB_ID | cut -d = -f 2)
 echo is_ubuntu = "$is_ubuntu"
@@ -78,7 +74,8 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
         vim-gtk \
         x11-xserver-utils \
         yank \
-        xclip
+        xclip \
+        gifsicle
 
 
     sudo apt install gnome-software-plugin-flatpak
@@ -138,6 +135,11 @@ if [ "$is_linux" = "Darwin" ]; then
 
 fi
 
+# {{{1 Stow general files
+stow -R stow -t "$HOME" --no-folding
+# Add sources whereever required
+bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
+bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
 # {{{1 Stow MACOS only packages
 if [ "$is_linux" = "Darwin" ]; then
     stow -R stow_macos -t "$HOME" --no-folding

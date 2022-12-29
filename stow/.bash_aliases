@@ -102,6 +102,7 @@ alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
 alias ,emacsconfigs="emacs -nw ~/my_repos/dotfiles-main/doom_emacs/.doom.d/config.org"
+alias ,exp="explorer.exe"
 
 unset e
 unset -f e
