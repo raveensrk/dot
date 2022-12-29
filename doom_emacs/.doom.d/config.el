@@ -229,3 +229,5 @@
 (global-set-key (kbd "M-<up>") 'move-line-up)
 
 (mapcar 'load-file (directory-files-recursively "~/.doom.d/my_elisp" ".*.el"))
+
+(setq tags-table-list nil)
