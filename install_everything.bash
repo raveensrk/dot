@@ -2,7 +2,7 @@
 
 # {{{1 ***ENABLED*** DEBUG MODE
 set -e
-set -x
+# set -x
 
 # {{{ Basic files and directories setup
 [ ! -d "$HOME/.tmp"        ] && mkdir "$HOME/.tmp"
@@ -25,6 +25,7 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     sudo apt update -y
     sudo apt upgrade -y
     sudo apt install -y  \
+        x11-xkb-utils \
         libreoffice \
         zathura `# PDF viewer` \
         eog `# Eyo of gnome image viewer` \
@@ -60,6 +61,7 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
         pandoc \
         pkg-config \
         python3 \
+        python2 \
         python3-pip \
         qrencode \
         ranger \
@@ -75,7 +77,7 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
         x11-xserver-utils \
         yank \
         xclip \
-        gifsicle
+        gifsicle \
 
 
     sudo apt install gnome-software-plugin-flatpak
@@ -194,7 +196,7 @@ else
 fi
 # {{{1 Install yt-dlp
 if [ ! -e ~/.local/bin/yt-dlp ]; then
-    curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
+    wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp --output-document ~/.local/bin/yt-dlp
     chmod a+rx ~/.local/bin/yt-dlp
 fi 
 # {{{1 Install vim plugins and clean
@@ -206,8 +208,8 @@ if [ ! -f ~/.local/etc/profile.d/bash_completion.sh ]; then
     tar xf bash-completion-2.11.tar.xz
     pushd "bash-completion-2.11"
     ./configure --prefix="$HOME/.local"
-    make
-    make install
+    make > /dev/null
+    make install > /dev/null
     popd
     popd
     bash add_sources.bash "[ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh"  "$HOME/.bashrc"
@@ -221,3 +223,14 @@ fi
 # eval: (outline-minor-mode)
 # outline-regexp: "###"
 # End:
+
+#{{{1 TLDR
+tldr -u
+#{{{1 NVIM stuff
+
+if [ ! -f ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
+    git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+        ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+fi
+
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
