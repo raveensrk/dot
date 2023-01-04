@@ -1,4 +1,4 @@
-source $VIMRUNTIME/vimrc_example.vim
+" source $VIMRUNTIME/vimrc_example.vim
 
 " Help {{{
 " Press <F1> for help
@@ -174,7 +174,7 @@ nnoremap <leader>x yyq:p<CR>
 " Execute current line in bash and return the results few lines below within a
 " fold
 nnoremap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
-nnoremap <leader>r
+nnoremap <leader>r :RangerChooser<cr>
 
 " Locaction list 
 nnoremap <leader>ln :lnext<cr>
@@ -211,6 +211,6 @@ endfor
 " {{{1 ***DISABLED*** Testing
 " let b:systemverilog_indent_ifdef_off
 " {{{1 NEW stuff
-runtime ftplugin/man.vim
-packadd! editexisting
-source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
+" runtime ftplugin/man.vim
+" packadd! editexisting
+" source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
