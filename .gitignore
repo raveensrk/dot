@@ -43,3 +43,4 @@ stow/.gitconfig
 stow/.git-for-windows-updater
 stow/_viminfo
 stow/vimfiles/.netrwhist
+/stow/.scripts/OPENAI_API_KEY.bash
