@@ -229,3 +229,35 @@
 (global-set-key (kbd "M-<up>") 'move-line-up)
 
 (mapcar 'load-file (directory-files-recursively "~/.doom.d/my_elisp" ".*.el"))
+
+(defun set-org-roam-directory ()
+  "Set `org-roam-directory' based on the current project."
+  (setq org-roam-directory (car (last (project-current)))))
+
+(add-hook 'projectile-after-switch-project-hook 'set-org-roam-directory)
+
+(defun rename-current-file-and-buffer (new-name)
+  "Rename the current file and update the buffer to reflect the new name."
+  (interactive (list (read-string "Enter new file name: " (file-name-nondirectory (buffer-file-name)))))
+  (rename-file (buffer-file-name) new-name)
+  (rename-buffer new-name)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (string= (buffer-file-name) (buffer-file-name (current-buffer)))
+        (set-visited-file-name new-name)
+        (save-buffer)))))
+
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
