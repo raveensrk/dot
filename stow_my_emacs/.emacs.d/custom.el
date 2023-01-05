@@ -63,14 +63,14 @@
                     (:discard
                      (:tag
                       ("Chore" "Routine" "Daily"))))))))
-      nil)))
+      nil)) t)
  '(org-agenda-prefix-format
    '((agenda . " %i %-12:c%?-12t% s")
      (todo . " %i %-25:c")
      (tags . " %i %-12:c")
      (search . " %i %-12:c")))
- '(org-agenda-start-with-log-mode 'clockcheck)
- '(org-babel-load-languages '((awk . t) (C . t) (shell . t) ))
+ '(org-agenda-start-with-log-mode 'clockcheck t)
+ '(org-babel-load-languages '((awk . t) (C . t) (shell . t)))
  '(org-clock-report-include-clocking-task t)
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-habit-show-all-today t)
@@ -124,74 +124,7 @@
  '(outline-minor-mode-cycle-filter nil)
  '(outline-minor-mode-highlight 'append)
  '(package-selected-packages
-   '(
-     benchmark-init
-aggressive-indent
-all-the-icons-completion
-all-the-icons-ivy-rich
-avy
-beacon
-company
-counsel
-dynamic-fonts
-embark
-evil
-evil-escape
-evil-goggles
-evil-leader
-evil-mc
-evil-numbers
-evil-snipe
-evil-surround
-evil-vimish-fold
-expand-region
-flex-autopair
-flycheck
-flymake-shellcheck
-flyspell-correct
-folding
-format-all
-git-gutter
-gruvbox-theme
-helm
-helm-etags-plus
-htmlize
-indent-guide
-ivy
-key-chord
-ledger-mode
-load-dir
-magit
-marginalia
-markdown-mode
-minimal-session-saver
-noccur
-olivetti
-orderless
-org-auto-tangle
-org-download
-org-drill
-org-super-agenda
-ox-pandoc
-php-mode
-projectile
-projectile-ripgrep
-rainbow-delimiters
-restart-emacs
-runner
-search-web
-simple-httpd
-smartparens
-swiper
-use-package
-vterm
-which-key
-writegood-mode
-xhair
-xml-quotes
-yasnippet
-yasnippet-snippets
-))
+   '(prog-mode bicycle undo-fu evil-collection sh-script shell-script multiple-cursors org use-package benchmark-init aggressive-indent all-the-icons-completion all-the-icons-ivy-rich avy beacon company counsel dynamic-fonts embark evil evil-escape evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-surround evil-vimish-fold expand-region flex-autopair flycheck flymake-shellcheck flyspell-correct folding format-all git-gutter gruvbox-theme helm helm-etags-plus htmlize indent-guide ivy key-chord ledger-mode load-dir magit marginalia markdown-mode minimal-session-saver noccur olivetti orderless org-auto-tangle org-download org-drill org-super-agenda ox-pandoc php-mode projectile projectile-ripgrep rainbow-delimiters restart-emacs runner search-web simple-httpd smartparens swiper use-package vterm which-key writegood-mode xhair xml-quotes yasnippet yasnippet-snippets))
  '(php-mode-coding-style 'php)
  '(projectile-auto-discover nil)
  '(projectile-project-search-path nil)
