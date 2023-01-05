@@ -100,10 +100,10 @@
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (setq dired-dwim-target t)
 
-(require 'org-download)
+;; (require 'org-download)
 
 ;; Drag-and-drop to `dired`
-(add-hook 'dired-mode-hook 'org-download-enable)
+;; (add-hook 'dired-mode-hook 'org-download-enable)
 
 ;;; Org mode
 

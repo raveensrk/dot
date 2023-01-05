@@ -8,6 +8,7 @@
 * Introduction
 This is a literate config for all the doom emacs settings. Some credits,
 - https://github.com/munen/emacs.d
+
 * Some default things
 #+begin_src elisp :tangle yes
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -133,10 +134,10 @@ isearch can find a wide range of Unicode characters (like á, ⓐ, or 𝒶) when
 * Org mode
 #+begin_src elisp :tangle yes
 
-(require 'org-download)
+;; (require 'org-download)
 
 ;; Drag-and-drop to `dired`
-(add-hook 'dired-mode-hook 'org-download-enable)
+;; (add-hook 'dired-mode-hook 'org-download-enable)
 
 ;;; Org mode
 

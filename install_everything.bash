@@ -228,7 +228,9 @@ fi
 tldr -u
 #{{{1 NVIM stuff
 
-if [ ! -f ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
+source ./installer_scripts/install_nvim_from_source.bash
+
+if [ ! -e ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
     git clone --depth 1 https://github.com/wbthomason/packer.nvim \
         ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 fi
