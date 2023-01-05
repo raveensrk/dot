@@ -89,7 +89,7 @@ vnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
 
 set updatetime=100 " For gitgutter
 
-nmap <F8> :TagbarToggle<CR>
+" nmap <F8> :TagbarToggle<CR>
 
 " let g:rainbow_active = 1
 " let g:airline#extensions#tabline#enabled = 1
@@ -101,8 +101,8 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " Vim Expand Region
-map K <Plug>(expand_region_expand)
-map J <Plug>(expand_region_shrink)
+" map K <Plug>(expand_region_expand)
+" map J <Plug>(expand_region_shrink)
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
