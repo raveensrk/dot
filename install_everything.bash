@@ -2,7 +2,7 @@
 
 # {{{1 ***ENABLED*** DEBUG MODE
 set -e
-set -x
+# set -x
 
 # {{{ Basic files and directories setup
 [ ! -d "$HOME/.tmp"        ] && mkdir "$HOME/.tmp"
@@ -14,13 +14,9 @@ set -x
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ -d "$HOME/.status" ]    || mkdir -p "$HOME/.status"
 [ -d "$HOME/.doom.d/my_elisp" ]    || mkdir -p "$HOME/.doom.d/my_elisp"
-~/.scripts/,clean_up_.DS_Store.bash
+
+[ -e ~/.scripts/,clean_up_.DS_Store.bash ] && ~/.scripts/,clean_up_.DS_Store.bash
 # }}}
-# {{{1 Stow general files
-stow -R stow -t "$HOME" --no-folding
-# Add sources whereever required
-bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
-bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
 # {{{1 APT install Ubuntu packages
 is_ubuntu=$(cat /etc/lsb-release | grep DISTRIB_ID | cut -d = -f 2)
 echo is_ubuntu = "$is_ubuntu"
@@ -29,6 +25,8 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     sudo apt update -y
     sudo apt upgrade -y
     sudo apt install -y  \
+        x11-xkb-utils \
+        libreoffice \
         zathura `# PDF viewer` \
         eog `# Eyo of gnome image viewer` \
         libdbus-glib-1-dev  `# This is to use firefox binary in wsl 2` \
@@ -63,6 +61,7 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
         pandoc \
         pkg-config \
         python3 \
+        python2 \
         python3-pip \
         qrencode \
         ranger \
@@ -77,7 +76,8 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
         vim-gtk \
         x11-xserver-utils \
         yank \
-        xclip
+        xclip \
+        gifsicle \
 
 
     sudo apt install gnome-software-plugin-flatpak
@@ -85,6 +85,8 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
     # TODO flatpak not working in ubuntu wsl
     # flatpak install flathub com.spotify.Client
     # flatpak install flathub org.mozilla.firefox
+
+    pip install xlsx2csv xlsxwriter pandas openpyxl
 fi
 # {{{1 Brew install macos packages
 if [ "$is_linux" = "Darwin" ]; then
@@ -135,6 +137,11 @@ if [ "$is_linux" = "Darwin" ]; then
 
 fi
 
+# {{{1 Stow general files
+stow -R stow -t "$HOME" --no-folding
+# Add sources whereever required
+bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
+bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
 # {{{1 Stow MACOS only packages
 if [ "$is_linux" = "Darwin" ]; then
     stow -R stow_macos -t "$HOME" --no-folding
@@ -189,7 +196,7 @@ else
 fi
 # {{{1 Install yt-dlp
 if [ ! -e ~/.local/bin/yt-dlp ]; then
-    curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/.local/bin/yt-dlp
+    wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp --output-document ~/.local/bin/yt-dlp
     chmod a+rx ~/.local/bin/yt-dlp
 fi 
 # {{{1 Install vim plugins and clean
@@ -201,8 +208,8 @@ if [ ! -f ~/.local/etc/profile.d/bash_completion.sh ]; then
     tar xf bash-completion-2.11.tar.xz
     pushd "bash-completion-2.11"
     ./configure --prefix="$HOME/.local"
-    make
-    make install
+    make > /dev/null
+    make install > /dev/null
     popd
     popd
     bash add_sources.bash "[ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh"  "$HOME/.bashrc"
@@ -216,3 +223,16 @@ fi
 # eval: (outline-minor-mode)
 # outline-regexp: "###"
 # End:
+
+#{{{1 TLDR
+tldr -u
+#{{{1 NVIM stuff
+
+source ./installer_scripts/install_nvim_from_source.bash
+
+if [ ! -e ~/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
+    git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+        ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+fi
+
+nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'

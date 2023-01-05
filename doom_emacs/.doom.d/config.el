@@ -100,6 +100,11 @@
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (setq dired-dwim-target t)
 
+;; (require 'org-download)
+
+;; Drag-and-drop to `dired`
+;; (add-hook 'dired-mode-hook 'org-download-enable)
+
 ;;; Org mode
 
 (setq org-structure-template-alist
@@ -261,3 +266,6 @@
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
+
+;;(setq tags-table-list nil)
+(setq find-file-visit-truename nil)

@@ -17,25 +17,29 @@
 
 
 # https://stackoverflow.com/questions/342093/ps1-line-wrapping-with-colours-problem
-export BLACK=$(tput setaf 0)
-export RED=$(tput setaf 1)
-export GREEN=$(tput setaf 2)
-export LIME_YELLOW=$(tput setaf 190)
-export YELLOW=$(tput setaf 3)
-export POWDER_BLUE=$(tput setaf 153)
-export BLUE=$(tput setaf 4)
-export MAGENTA=$(tput setaf 5)
-export CYAN=$(tput setaf 6)
-export WHITE=$(tput setaf 7)
-export BRIGHT=$(tput bold)
-export NORMAL=$(tput sgr0)
-export NC=$(tput sgr0)
-export RESET=$(tput sgr0)
-export BLINK=$(tput blink)
-export REVERSE=$(tput smso)
-export UNDERLINE=$(tput smul)
+BLACK=$(tput setaf 0)
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+LIME_YELLOW=$(tput setaf 190)
+YELLOW=$(tput setaf 3)
+POWDER_BLUE=$(tput setaf 153)
+BLUE=$(tput setaf 4)
+MAGENTA=$(tput setaf 5)
+CYAN=$(tput setaf 6)
+WHITE=$(tput setaf 7)
+BRIGHT=$(tput bold)
+NORMAL=$(tput sgr0)
+NC=$(tput sgr0)
+RESET=$(tput sgr0)
+BLINK=$(tput blink)
+REVERSE=$(tput smso)
+UNDERLINE=$(tput smul)
 
-export PS1="\[${RED}\][\s] \[${LIME_YELLOW}\][\V] \[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\W \[${NC}\]\n$ "
+export BLACK RED GREEN LIME_YELLOW YELLOW POWDER_BLUE BLUE MAGENTA CYAN WHITE BRIGHT NORMAL NC RESET BLINK REVERSE UNDERLINE
+
+
+PS1="\[${RED}\][\s] \[${LIME_YELLOW}\][\V] \[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\W \[${NC}\]\n$ "
+export PS1
 # export PS1="\u @ \h : \W\n $ "
 
 unset -f red; red () { tput setaf 1; }
@@ -49,6 +53,23 @@ unset -f bold; bold () { tput bold; }
 unset -f reverse; reverse () { tput smso; }
 unset -f underline; underline () { tput smul; }
 
+echob () {
+    blue
+    echo "$1"
+    nc
+}
+
+echor () {
+    red
+    echo "$1"
+    nc
+}
+
+echoy () {
+    yellow
+    echo "$1"
+    nc
+}
 
 # TODO: This command will read a line from std input and apply a random color to it.
 

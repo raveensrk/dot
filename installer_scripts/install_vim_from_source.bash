@@ -7,9 +7,9 @@ pushd ~/.tmp || exit 2
 
 git clone git@github.com:vim/vim.git
 pushd vim || exit 2
-exit 0
 ./configure --prefix="$HOME/.local" --disable-gui --without-x
 make
 make install
 popd || exit 2
 popd || exit 2
+exit 0

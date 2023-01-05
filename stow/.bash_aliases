@@ -102,6 +102,7 @@ alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
 alias ,emacsconfigs="emacs -nw ~/my_repos/dotfiles-main/doom_emacs/.doom.d/config.org"
+alias ,exp="explorer.exe"
 
 unset e
 unset -f e
@@ -201,16 +202,11 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 # {{{ VIM STUFF
-export VISUAL="vim"
-export EDITOR="vim"
-# export EDITOR="emacsclient -a emacs"
-# export VISUAL="emacsclient -a emacs"
-# export ALTERNATE_EDITOR="emacs"
+export EDITOR="emacsclient -nw"
+export VISUAL="emacsclient -nw"
+export ALTERNATE_EDITOR="emacs -nw"
 # export VISUAL="emacsclient -c"
 # export EDITOR="emacsclient -c"
-# ,magit () {
-#     emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,display-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
-# }
 
 ,magit () {
     emacs --eval "(progn (magit)  (delete-other-windows))" &

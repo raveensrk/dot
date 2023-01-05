@@ -43,3 +43,12 @@ stow/.gitconfig
 stow/.git-for-windows-updater
 stow/_viminfo
 stow/vimfiles/.netrwhist
+/stow/.scripts/OPENAI_API_KEY.bash
+/stow_my_emacs/.emacs.d/.org-id-locations
+/stow_my_emacs/.emacs.d/elpa/
+/stow_my_emacs/.emacs.d/history
+/stow_my_emacs/.emacs.d/places
+/stow_my_emacs/.emacs.d/projectile-bookmarks.eld
+/stow_my_emacs/.emacs.d/recentf
+/stow_my_emacs/.emacs.d/transient/
+/stow_my_emacs/.emacs.d/.#init.el
