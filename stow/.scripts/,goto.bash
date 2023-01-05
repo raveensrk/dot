@@ -2,7 +2,7 @@
 
 # set -e
 
-set -x
+# set -x
 source ~/.bash_prompt
 
 
@@ -44,6 +44,10 @@ while [ "$1" ]; do
             shift
             ext+=("$1")
             ;;
+        --file)
+            shift
+            file+=("$1")
+            ;;
         --file-names|-fn)
             grep_filenames_also="true"
             ;;
@@ -61,6 +65,10 @@ done
 
 string=${string:-.}
 print=${print:-0}
+
+for item  in ${file[@]}; do
+    include="$include --include=*$item"
+done
 
 for item  in ${ext[@]}; do
     include="$include --include=*.$item"

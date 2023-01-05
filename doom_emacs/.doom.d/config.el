@@ -235,4 +235,5 @@
 
 (mapcar 'load-file (directory-files-recursively "~/.doom.d/my_elisp" ".*.el"))
 
-(setq tags-table-list nil)
+;;(setq tags-table-list nil)
+(setq find-file-visit-truename nil)

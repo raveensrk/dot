@@ -285,5 +285,6 @@ Take all the elisp files in the my_elisp directory and source it.
 
 * Testing
 #+begin_src elisp :tangle yes
-(setq tags-table-list nil)
+;;(setq tags-table-list nil)
+(setq find-file-visit-truename nil)
 #+end_src
