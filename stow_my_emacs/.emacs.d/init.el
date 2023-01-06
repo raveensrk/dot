@@ -597,7 +597,7 @@
   :ensure t
   :config
   (dashboard-setup-startup-hook)
-  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  ;; (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
   ;; Set the title
   ;; (setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
   ;; Set the banner
@@ -653,7 +653,7 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+  (load-theme 'doom-gruvbox t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
