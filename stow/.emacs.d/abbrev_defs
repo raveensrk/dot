@@ -13,7 +13,6 @@
     ("nc" "${NC}" nil :count 1)
     ("red" "${RED}" nil :count 1)
     ("ru" "Reorganizing and updating" nil :count 2)
-    ("t" "the" nil :count 1)
     ("yellow" "${YELLOW}" nil :count 1)
    ))
 
