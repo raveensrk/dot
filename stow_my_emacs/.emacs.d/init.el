@@ -5,12 +5,21 @@
 (package-initialize)
 
 
+
+
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(setq custom-file "~/.emacs.d/custom.el")
-(add-to-list 'load-path "~/.emacs.d/site-lisp")
+
+(if (string-equal system-type "windows-nt")
+    (progn
+      (setq custom-file "c:/github/dotfiles-main/stow_my_emacs/.emacs.d/custom.el"))
+  (progn
+    (setq custom-file "~/.emacs.d/custom.el")
+    (add-to-list 'load-path "~/.emacs.d/site-lisp")))
+
 (load custom-file)
+
 (defun my-package-refresh-and-install-selected-packages ()
   (interactive)
   (package-refresh-contents)
@@ -40,7 +49,7 @@
 (setq vc-follow-symlinks t)
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
-(tab-bar-mode 1)
+;; (tab-bar-mode nil)
 (savehist-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 ;; This will set first buffer shown as scratch
@@ -228,7 +237,7 @@
 (if (string-equal system-type "windows-nt")
     (progn (message "Windows")
            (setq org-agenda-files
-                 (directory-files-recursively "c:/my_repos" ".*agenda.*\.org$\\|.*agenda.*\.org_archive$")))
+                 (directory-files-recursively "c:/github/" ".*agenda.*\.org$\\|.*agenda.*\.org_archive$")))
   (progn (message "Unix")
          (setq org-agenda-files '("~/.agenda_files"))
          (when (file-exists-p "~/my_repos")
@@ -401,42 +410,10 @@
 ;;   ;; (global-evil-surround-mode 1)
 ;;   ;; (evil-goggles-mode 1)
 ;;   ;; (evil-vimish-fold-mode 1)
-;;   (global-evil-leader-mode 1)
 ;;   (global-set-key (kbd "C-c <C-left>") 'evil-window-left)
 ;;   (global-set-key (kbd "C-c <C-right>") 'evil-window-right)
 ;;   (global-set-key (kbd "C-c <C-up>") 'evil-window-up)
 ;;   (global-set-key (kbd "C-c <C-down>") 'evil-window-down)
-;;   (📦 evil-leader
-;;     :config
-;; 	(evil-leader/set-leader "<SPC>")
-;; 	(evil-leader/set-key
-;; 	 "y" 'copy-whole-buffer
-;; 	 "=" 'my-indent-whole-buffer
-;; 	 "b" 'switch-to-buffer
-;; 	 "fr" 'counsel-recentf
-;; 	 "ff" 'counsel-find-file
-;; 	 "\t" 'org-cycle
-;; 	 "r" 'restart-emacs
-;; 	 "pl" 'package-list-packages
-;; 	 "pi" 'my-package-refresh-and-install-selected-packages
-;; 	 "h" 'help
-;; 	 "d" 'dired
-;; 	 "w" 'my-indent-whole-buffer-and-save
-;; 	 "q" 'save-buffers-kill-terminal
-;; 	 "i" 'my-find-init-file
-;; 	 "+" 'text-scale-increase
-;; 	 "-" 'text-scale-decrease
-;; 	 "x" 'execute-extended-command
-;; 	 "." 'embark-act
-;; 	 ";" 'embark-dwim
-;; 	 "B" 'embark-bindings
-;; 	 "s" 'swiper
-;; 	 "lr" 'ledger-report
-;; 	 "a" 'mark-whole-buffer
-;; 	 "pp" 'evil-paste-after-newline
-;; 	 "c" 'recompile
-;; 	 "y" 'copy-whole-buffer
-;; 	 ))
 ;;   (📦 evil-numbers
 ;;     :config
 ;;   (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
@@ -480,6 +457,44 @@
   :config
   (setq evil-want-integration t)
   (evil-collection-init))
+
+
+;;; Evil leader
+(up evil-leader
+  :after evil
+  :config
+  (global-evil-leader-mode 1)
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+   "y" 'copy-whole-buffer
+   "=" 'my-indent-whole-buffer
+   "b" 'switch-to-buffer
+   "fr" 'counsel-recentf
+   "ff" 'counsel-find-file
+   "\t" 'org-cycle
+   "r" 'restart-emacs
+   "pl" 'package-list-packages
+   "pi" 'my-package-refresh-and-install-selected-packages
+   "h" 'help
+   "d" 'dired
+   "w" 'my-indent-whole-buffer-and-save
+   "q" 'save-buffers-kill-terminal
+   "i" 'my-find-init-file
+   "+" 'text-scale-increase
+   "-" 'text-scale-decrease
+   "x" 'execute-extended-command
+   "." 'embark-act
+   ";" 'embark-dwim
+   "B" 'embark-bindings
+   "s" 'swiper
+   "lr" 'ledger-report
+   "a" 'mark-whole-buffer
+   "pp" 'evil-paste-after-newline
+   "c" 'recompile
+   "y" 'copy-whole-buffer
+   )
+  )
+
 
 
 ;;; Maximize frame after starting emacsclient
@@ -674,6 +689,8 @@
 ;; (up multifiles)
 (use-package all-the-icons
   :if (display-graphic-p))
+;; TODO make sure you do this on windows https://www.reddit.com/r/emacs/comments/gznezn/alltheicons/
+
 (up focus
   :diminish
   :hook emacs-lisp-mode
@@ -878,3 +895,138 @@
   :after (treemacs)
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
+
+(use-package emojify
+  :hook (after-init . global-emojify-mode))
+
+(use-package centaur-tabs
+  ;; https://github.com/ema2159/centaur-tabs
+  :demand
+  :config
+  (centaur-tabs-mode t)
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward)
+  :config
+  (centaur-tabs-headline-match)
+  (setq centaur-tabs-style "bar")
+  (setq centaur-tabs-height 32)
+  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-set-bar 'over)
+  (setq centaur-tabs-close-button "X")
+  (setq centaur-tabs-set-modified-marker t)
+  (setq centaur-tabs-modified-marker "*")
+  (centaur-tabs-change-fonts "arial" 160)
+  (centaur-tabs-enable-buffer-reordering)
+
+  ;; When the currently selected tab(A) is at the right of the last visited
+  ;; tab(B), move A to the right of B. When the currently selected tab(A) is
+  ;; at the left of the last visited tab(B), move A to the left of B
+  (setq centaur-tabs-adjust-buffer-order t)
+  ;; Move the currently selected tab to the left of the the last visited tab.
+  ;; (setq centaur-tabs-adjust-buffer-order 'left)
+  ;; Move the currently selected tab to the right of the the last visited tab.
+  (setq centaur-tabs-adjust-buffer-order 'right)
+
+  ;; To enable an automatic alpabetical buffer reordering, put the following lines in your configuration.
+  ;; (centaur-tabs-enable-buffer-alphabetical-reordering)
+  ;; (setq centaur-tabs-adjust-buffer-order t)
+
+  ;; TODO this icon is broken need to fix
+  (setq centaur-tabs-show-navigation-buttons t)
+
+  (setq centaur-tabs-show-new-tab-button t)
+  (setq centaur-tabs-show-count t)
+  )
+
+
+(use-package centaur-tabs
+  ;; Example config
+  ;; :load-path "~/.emacs.d/other/centaur-tabs"
+  :config
+  (setq centaur-tabs-style "bar"
+	    centaur-tabs-height 32
+	    centaur-tabs-set-icons t
+	    centaur-tabs-set-modified-marker t
+	    centaur-tabs-show-navigation-buttons t
+	    centaur-tabs-set-bar 'under
+	    x-underline-at-descent-line t)
+  (centaur-tabs-headline-match)
+  ;; (setq centaur-tabs-gray-out-icons 'buffer)
+  ;; (centaur-tabs-enable-buffer-reordering)
+  ;; (setq centaur-tabs-adjust-buffer-order t)
+  (centaur-tabs-mode t)
+  (setq uniquify-separator "/")
+  (setq uniquify-buffer-name-style 'forward)
+  (defun centaur-tabs-buffer-groups ()
+    "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+ Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+ All buffer name start with * will group to \"Emacs\".
+ Other buffer group by `centaur-tabs-get-group-name' with project name."
+    (list
+     (cond
+	  ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
+	  ;; "Remote")
+	  ((or (string-equal "*" (substring (buffer-name) 0 1))
+	       (memq major-mode '(magit-process-mode
+				              magit-status-mode
+				              magit-diff-mode
+				              magit-log-mode
+				              magit-file-mode
+				              magit-blob-mode
+				              magit-blame-mode
+				              )))
+	   "Emacs")
+	  ((derived-mode-p 'prog-mode)
+	   "Editing")
+	  ((derived-mode-p 'dired-mode)
+	   "Dired")
+	  ((memq major-mode '(helpful-mode
+			              help-mode))
+	   "Help")
+	  ((memq major-mode '(org-mode
+			              org-agenda-clockreport-mode
+			              org-src-mode
+			              org-agenda-mode
+			              org-beamer-mode
+			              org-indent-mode
+			              org-bullets-mode
+			              org-cdlatex-mode
+			              org-agenda-log-mode
+			              diary-mode))
+	   "OrgMode")
+	  (t
+	   (centaur-tabs-get-group-name (current-buffer))))))
+  :hook
+  (dashboard-mode . centaur-tabs-local-mode)
+  (term-mode . centaur-tabs-local-mode)
+  (calendar-mode . centaur-tabs-local-mode)
+  (org-agenda-mode . centaur-tabs-local-mode)
+  (helpful-mode . centaur-tabs-local-mode)
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward)
+  ;; ("C-c t s" . centaur-tabs-counsel-switch-group)
+  ;;(  "C-c t p" . centaur-tabs-group-by-projectile-project)
+  ;;(  "C-c t g" . centaur-tabs-group-buffer-groups)
+  (:map evil-normal-state-map
+	    ("g t" . centaur-tabs-forward)
+	    ("g T" . centaur-tabs-backward)))
+
+(up org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  )
+;; 
+
+
+
+
+(if (string-equal system-type "windows-nt")
+    (setq my-packages-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d/my-packages")
+  (setq my-packages-path "~/.emacs.d/my-packages"))
+
+(add-to-list 'load-path my-packages-path)
+(require 'my-menu-bar)
