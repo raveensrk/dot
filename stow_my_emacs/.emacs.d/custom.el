@@ -32,6 +32,7 @@
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
  '(mouse-wheel-flip-direction t)
  '(mouse-wheel-tilt-scroll t)
+ '(neo-window-width 40)
  '(org-agenda-custom-commands
    '(("i" "Command to view ideas todo" tags-todo "ideas"
       ((org-agenda-overriding-header "IDEAS")))
@@ -124,7 +125,7 @@
  '(outline-minor-mode-cycle-filter nil)
  '(outline-minor-mode-highlight 'append)
  '(package-selected-packages
-   '(prog-mode bicycle undo-fu evil-collection sh-script shell-script multiple-cursors org use-package benchmark-init aggressive-indent all-the-icons-completion all-the-icons-ivy-rich avy beacon company counsel dynamic-fonts embark evil evil-escape evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-surround evil-vimish-fold expand-region flex-autopair flycheck flymake-shellcheck flyspell-correct folding format-all git-gutter gruvbox-theme helm helm-etags-plus htmlize indent-guide ivy key-chord ledger-mode load-dir magit marginalia markdown-mode minimal-session-saver noccur olivetti orderless org-auto-tangle org-download org-drill org-super-agenda ox-pandoc php-mode projectile projectile-ripgrep rainbow-delimiters restart-emacs runner search-web simple-httpd smartparens swiper use-package vterm which-key writegood-mode xhair xml-quotes yasnippet yasnippet-snippets))
+   '(neotree prog-mode bicycle undo-fu evil-collection sh-script shell-script multiple-cursors org use-package benchmark-init aggressive-indent all-the-icons-completion all-the-icons-ivy-rich avy beacon company counsel dynamic-fonts embark evil evil-escape evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-surround evil-vimish-fold expand-region flex-autopair flycheck flymake-shellcheck flyspell-correct folding format-all git-gutter gruvbox-theme helm helm-etags-plus htmlize indent-guide ivy key-chord ledger-mode load-dir magit marginalia markdown-mode minimal-session-saver noccur olivetti orderless org-auto-tangle org-download org-drill org-super-agenda ox-pandoc php-mode projectile projectile-ripgrep rainbow-delimiters restart-emacs runner search-web simple-httpd smartparens swiper use-package vterm which-key writegood-mode xhair xml-quotes yasnippet yasnippet-snippets))
  '(php-mode-coding-style 'php)
  '(projectile-auto-discover nil)
  '(projectile-project-search-path nil)

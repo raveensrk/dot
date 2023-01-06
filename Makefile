@@ -1,6 +1,5 @@
 emacs_install:
 	stow -R stow_my_emacs -t ~/ --no-folding
-	emacs --script "~/.emacs.d/scripts/install_my_packages.el"
 emacs_uninstall:
 	rm -rf ~/.doom.d ~/.emacs.d
 doom_install:
