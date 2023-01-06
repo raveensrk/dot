@@ -1,7 +1,7 @@
 ;;; Package Specific
 (require 'package)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 
@@ -114,7 +114,9 @@
 			  ("C-c n" . org-toggle-narrow-to-subtree)
 			  ("<tab>" . org-cycle)))
 (use-package beacon :config (beacon-mode 1))
-(use-package company :config (global-company-mode 1))
+(use-package company
+  :diminish
+  :config (global-company-mode 1))
 (use-package multiple-cursors
   :config
   (multiple-cursors-mode 1)
@@ -144,6 +146,7 @@
 (defalias 'up 'use-package)
 (defalias '📦 'use-package)
 (up ivy
+  :diminish
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
@@ -172,9 +175,9 @@
     ("C-c fr"  . counsel-recentf)
     )
   :bind
-  	("C-x b"   . 'ivy-switch-buffer)
-	("C-c v"   . 'ivy-push-view)
-	("C-c V"   . 'ivy-pop-view))
+  ("C-x b"   . 'ivy-switch-buffer)
+  ("C-c v"   . 'ivy-push-view)
+  ("C-c V"   . 'ivy-pop-view))
 
 ;;; Editing
 (setq-default tab-width 4)
@@ -184,7 +187,7 @@
 ;; emacs 23.1 to 26, default to t
 ;; if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
 ;;; Backups
-(setq backup-directory-alist 
+(setq backup-directory-alist
       '(("." . "~/.emacs.d/file-backups")))
 ;;; Dired
 (setq dired-kill-when-opening-new-dired-buffer nil)
@@ -194,7 +197,7 @@
   (interactive)
   (when (equal major-mode 'dired-mode)
     (if (or (not (boundp 'dired-dotfiles-show-p)) dired-dotfiles-show-p) ; if currently showing
-	    (progn 
+	    (progn
 	      (set (make-local-variable 'dired-dotfiles-show-p) nil)
 	      (message "h")
 	      (dired-mark-files-regexp "^\\\.")
@@ -210,7 +213,9 @@
 ;; (setq org-startup-folded t)
 ;; (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
 (📦 org-auto-tangle :hook org-mode)
-(📦 olivetti :hook org-mode)
+(📦 olivetti
+  :diminish
+  :hook org-mode)
 ;; (add-hook 'org-mode-hook (lambda () (org-update-all-dblocks)))
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
@@ -298,7 +303,7 @@
 (defun insert-date ()
   (interactive)
   (insert
-   (replace-regexp-in-string " \\w\\w\\w" "" 
+   (replace-regexp-in-string " \\w\\w\\w" ""
                              (string-replace ">" ""
                                              (string-replace "<" ""
                                                              (org-time-stamp nil nil)
@@ -319,7 +324,7 @@
 #+title: REPLACE_TITLE
 #+filetags: REPLACE_TAG
 "))
-  
+
   (save-excursion
     (while (re-search-forward "REPLACE_TITLE" nil t)
       (replace-match (read-string "Enter title: "))))
@@ -327,7 +332,7 @@
   (save-excursion
     (while (re-search-forward "REPLACE_TAG" nil t)
       (replace-match (read-string "Enter title: "))))
-  
+
   )
 
 (defun org-drill-entry-empty-p () nil) ;; TODO why is this here?
@@ -338,7 +343,7 @@
  ((string-equal system-type "windows-nt")
   (progn
     (message "Microsoft Windows")))
- 
+
  ((string-equal system-type "darwin") ;  macOS
   (progn
     (message "Mac OS X")
@@ -348,7 +353,7 @@
       '(progn
          (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
          (define-key flyspell-mouse-map [mouse-3] #'undefined)))))
- 
+
  ((string-equal system-type "gnu/linux")
   (progn
     (message "Linux")
@@ -369,13 +374,22 @@
 
 ;; (📦 sh-script :hook (outline-minor-mode)) ; TODO
 (📦 projectile
+  :diminish
   :config (projectile-mode +1)
   :bind (:map projectile-mode-map ("C-c p" . projectile-command-map)))
-(📦 indent-guide :config (indent-guide-global-mode 1))
-(📦 smartparens :config (smartparens-global-mode +1))
-(📦 flex-autopair :config (flex-autopair-mode 1))
-(📦 flycheck :hook sh-mode)
-(📦 flymake-shellcheck :hook sh-mode)
+(📦 indent-guide
+  :diminish
+  :config (indent-guide-global-mode 1))
+(📦 smartparens
+  :diminish
+  :config (smartparens-global-mode +1))
+;; (📦 flex-autopair :config (flex-autopair-mode 1))
+(📦 flycheck
+  :diminish
+  :hook sh-mode)
+(📦 flymake-shellcheck
+  :diminish
+  :hook sh-mode)
 ;; (📦 evil
 ;;   :bind
 ;;   (:map evil-insert-state-map ("C-x C-l" . my-expand-lines))
@@ -467,7 +481,7 @@
   (setq evil-want-integration t)
   (evil-collection-init))
 
-  
+
 ;;; Maximize frame after starting emacsclient
 (add-hook 'server-after-make-frame-hook 'toggle-frame-maximized)
 (defun evil-paste-after-newline ()
@@ -499,17 +513,19 @@
 ;;     (print (car list))
 ;;     (load-file (print (car list)))
 ;;     (setq list (cdr list))))
-;; 
+;;
 ;; (my-load-elisp-files my-lisp-files)
 ;;; Yas snippets
 (📦 yasnippet
+  :diminish
   :config
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
   (setq yas-snippet-dirs
         '("~/.emacs.d/snippets/"                 ;; personal snippets
           "c:/my_repos/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
           ))
-  (📦 yasnippet-snippets))
+  (📦 yasnippet-snippets
+    :diminish))
 
 ;; (add-hook 'emacs-lisp-mode-hook (outline-minor-mode 1))
 ;; (add-hook 'outline-minor-mode-hook
@@ -519,10 +535,12 @@
 
 ;;; https://github.com/tarsius/bicycle
 (use-package bicycle
+  :diminish
+  :disabled t
   :after outline
   :bind (:map outline-minor-mode-map
-		([C-tab] . bicycle-cycle)
-		([S-tab] . bicycle-cycle-global)))
+		      ([C-tab] . bicycle-cycle)
+		      ([S-tab] . bicycle-cycle-global)))
 
 ;; (use-package prog
 ;;   :config
@@ -569,9 +587,178 @@
 
 ;; TODO make neotree open on startup
 (up neotree
+  :diminish
   :bind ("C-c d" . neotree-toggle)
   )
 
 (global-auto-revert-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(use-package dashboard
+  :diminish
+  ;; https://github.com/emacs-dashboard/emacs-dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  ;; (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  ;; Set the title
+  ;; (setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
+  ;; Set the banner
+  ;; (setq dashboard-startup-banner nil)
+  ;; Value can be
+  ;; - nil to display no banner
+  ;; - 'official which displays the official emacs logo
+  ;; - 'logo which displays an alternative emacs logo
+  ;; - 1, 2 or 3 which displays one of the text banners
+  ;; - "path/to/your/image.gif", "path/to/your/image.png" or "path/to/your/text.txt" which displays whatever gif/image/text you would prefer
+  ;; - a cons of '("path/to/your/image.png" . "path/to/your/text.txt")
+
+  ;; Content is not centered by default. To center, set
+  (setq dashboard-center-content t)
+
+  ;; To disable shortcut "jump" indicators for each section, set
+  (setq dashboard-show-shortcuts nil)
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5)
+                          (agenda . 5)
+                          (registers . 5)))
+
+
+  ;; https://github.com/emacs-dashboard/emacs-dashboard/issues/184
+  ;; TODO This solution did not work
+  ;; (if (display-graphic-p)
+  ;;     (define-key dashboard-mode-map [down-mouse-1] 'widget-button-click)
+  ;;   (define-key dashboard-mode-map [down-mouse-1] nil))
+  ;; (define-key dashboard-mode-map [mouse-1] 'widget-button-click)
+  ;; (define-key dashboard-mode-map [down-mouse-1] 'widget-button-press)
+
+  )
+
+(up hyperbole
+  :diminish
+  :config (hyperbole-mode 1))
+(up zoom
+  :diminish
+  ;; https://github.com/cyrus-and/zoom
+  :config (zoom-mode t))
+(up solaire-mode
+  :diminish
+  ;; https://github.com/hlissner/emacs-solaire-mode
+  :config
+  (solaire-global-mode +1)
+  )
+
+(use-package doom-themes
+  :diminish
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-gruvbox t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
+
+
+;; https://github.com/emacs-tw/awesome-emacs
+
+;; (up multifiles)
+(use-package all-the-icons
+  :if (display-graphic-p))
+(up focus
+  :diminish
+  :hook emacs-lisp-mode
+  )
+
+(up drag-stuff
+  :diminish
+  ;; https://github.com/rejeep/drag-stuff.el
+  :config
+  (drag-stuff-global-mode +1)
+  (drag-stuff-define-keys)
+  )
+
+
+(use-package fzf
+  :diminish
+  ;; https://github.com/bling/fzf.el
+  :bind
+  ;; Don't forget to set keybinds!
+  :config
+  (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+        fzf/executable "fzf"
+        fzf/git-grep-args "-i --line-number %s"
+        ;; command used for `fzf-grep-*` functions
+        ;; example usage for ripgrep:
+        ;; fzf/grep-command "rg --no-heading -nH"
+        fzf/grep-command "grep -nrH"
+        ;; If nil, the fzf buffer will appear at the top of the window
+        fzf/position-bottom t
+        fzf/window-height 15))
+
+(use-package spu
+  :disabled t
+  ;; https://github.com/mola-T/SPU
+  ;; Silent Package updater
+  :defer 5 ;; defer package loading for 5 second
+  :config (spu-package-upgrade-daily))
+
+
+(use-package esup
+  :disabled t
+  ;; Emacs startup profiler
+  ;; https://github.com/jschaf/esup
+  :ensure t
+  ;; To use MELPA Stable use ":pin melpa-stable",
+  :pin melpa-stable)
+
+(up nyan-mode
+  ;; Nyan mode
+  ;; https://github.com/TeMPOraL/nyan-mode
+  :config
+  (nyan-mode)
+  )
+
+(up sr-speedbar)
+
+(up selectric-mode
+  :disabled t
+  ;; https://github.com/rbanffy/selectric-mode
+  :config
+  (selectric-mode +1)
+  )
+
+;; TODO https://github.com/jtmoulia/elisp-koans
+
+(up keycast
+  :disabled t
+  ;; https://github.com/tarsius/keycast
+  :config
+  (keycast-mode)
+  ;; The code below is not working
+  ;;  (keycast-mode-line-mode +1)
+  )
+
+(up restart-emacs)
+(up diminish)
+(up format-all
+  :diminish
+  ;; https://github.com/lassik/emacs-format-all-the-code/tree/c156ffe5f3c979ab89fd941658e840801078d091
+  :hook
+  (add-hook 'prog-mode-hook 'format-all-mode)
+  )
+(up apheleia
+  :disabled t
+  ;; https://github.com/radian-software/apheleia
+  :config
+  (apheleia-global-mode +1)
+  )

@@ -9,7 +9,7 @@
  '(cursor-type 'bar)
  '(custom-enabled-themes '(gruvbox-dark-hard wombat))
  '(custom-safe-themes
-   '("d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" "ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
+   '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" "ee92ce1c1161c93411629213e2e51ff0199aedc479c4588f3bdf8747e3dc1ae6" default))
  '(dired-dwim-target t)
  '(dired-hide-details-hide-information-lines t)
  '(dired-hide-details-hide-symlink-targets t)
@@ -125,10 +125,11 @@
  '(outline-minor-mode-cycle-filter nil)
  '(outline-minor-mode-highlight 'append)
  '(package-selected-packages
-   '(neotree prog-mode bicycle undo-fu evil-collection sh-script shell-script multiple-cursors org use-package benchmark-init aggressive-indent all-the-icons-completion all-the-icons-ivy-rich avy beacon company counsel dynamic-fonts embark evil evil-escape evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-surround evil-vimish-fold expand-region flex-autopair flycheck flymake-shellcheck flyspell-correct folding format-all git-gutter gruvbox-theme helm helm-etags-plus htmlize indent-guide ivy key-chord ledger-mode load-dir magit marginalia markdown-mode minimal-session-saver noccur olivetti orderless org-auto-tangle org-download org-drill org-super-agenda ox-pandoc php-mode projectile projectile-ripgrep rainbow-delimiters restart-emacs runner search-web simple-httpd smartparens swiper use-package vterm which-key writegood-mode xhair xml-quotes yasnippet yasnippet-snippets))
+   '(doom-themes solaire-mode apheleia diminish sr-speedbar nyan-mode nyan esup spu fzf drag-stuff focus all-the-icons multifiles solaire zoom hyperbole dashboard neotree prog-mode bicycle undo-fu evil-collection sh-script shell-script multiple-cursors org use-package benchmark-init aggressive-indent all-the-icons-completion all-the-icons-ivy-rich avy beacon company counsel dynamic-fonts embark evil evil-escape evil-goggles evil-leader evil-mc evil-numbers evil-snipe evil-surround evil-vimish-fold expand-region flex-autopair flycheck flymake-shellcheck flyspell-correct folding format-all git-gutter gruvbox-theme helm helm-etags-plus htmlize indent-guide ivy key-chord ledger-mode load-dir magit marginalia markdown-mode minimal-session-saver noccur olivetti orderless org-auto-tangle org-download org-drill org-super-agenda ox-pandoc php-mode projectile projectile-ripgrep rainbow-delimiters restart-emacs runner search-web simple-httpd smartparens swiper use-package vterm which-key writegood-mode xhair xml-quotes yasnippet yasnippet-snippets))
  '(php-mode-coding-style 'php)
  '(projectile-auto-discover nil)
  '(projectile-project-search-path nil)
+ '(save-place-mode t)
  '(show-paren-mode t)
  '(speedbar-show-unknown-files t)
  '(tab-width 4)
