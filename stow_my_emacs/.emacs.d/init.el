@@ -1,7 +1,7 @@
 ;;; Package Specific
 (require 'package)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 
@@ -590,6 +590,9 @@
   :diminish
   :bind ("C-c d" . neotree-toggle)
   )
+
+(global-auto-revert-mode t)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-package dashboard
   :diminish
