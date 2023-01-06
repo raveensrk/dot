@@ -466,33 +466,33 @@
   (global-evil-leader-mode 1)
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-   "y" 'copy-whole-buffer
-   "=" 'my-indent-whole-buffer
-   "b" 'switch-to-buffer
-   "fr" 'counsel-recentf
-   "ff" 'counsel-find-file
-   "\t" 'org-cycle
-   "r" 'restart-emacs
-   "pl" 'package-list-packages
-   "pi" 'my-package-refresh-and-install-selected-packages
-   "h" 'help
-   "d" 'dired
-   "w" 'my-indent-whole-buffer-and-save
-   "q" 'save-buffers-kill-terminal
-   "i" 'my-find-init-file
-   "+" 'text-scale-increase
-   "-" 'text-scale-decrease
-   "x" 'execute-extended-command
-   "." 'embark-act
-   ";" 'embark-dwim
-   "B" 'embark-bindings
-   "s" 'swiper
-   "lr" 'ledger-report
-   "a" 'mark-whole-buffer
-   "pp" 'evil-paste-after-newline
-   "c" 'recompile
-   "y" 'copy-whole-buffer
-   )
+    "y" 'copy-whole-buffer
+    "=" 'my-indent-whole-buffer
+    "b" 'switch-to-buffer
+    "fr" 'counsel-recentf
+    "ff" 'counsel-find-file
+    "\t" 'org-cycle
+    "r" 'restart-emacs
+    "pl" 'package-list-packages
+    "pi" 'my-package-refresh-and-install-selected-packages
+    "h" 'help
+    "d" 'dired
+    "w" 'my-indent-whole-buffer-and-save
+    "q" 'save-buffers-kill-terminal
+    "i" 'my-find-init-file
+    "+" 'text-scale-increase
+    "-" 'text-scale-decrease
+    "x" 'execute-extended-command
+    "." 'embark-act
+    ";" 'embark-dwim
+    "B" 'embark-bindings
+    "s" 'swiper
+    "lr" 'ledger-report
+    "a" 'mark-whole-buffer
+    "pp" 'evil-paste-after-newline
+    "c" 'recompile
+    "y" 'copy-whole-buffer
+    )
   )
 
 
@@ -1019,7 +1019,7 @@
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   )
-;; 
+;;
 
 
 
@@ -1030,3 +1030,21 @@
 
 (add-to-list 'load-path my-packages-path)
 (require 'my-menu-bar)
+
+;; Emojis
+;; https://www.masteringemacs.org/article/unicode-ligatures-color-emoji
+;; This seems to be a fix for the this issue :935
+(use-package unicode-fonts
+  :ensure t
+  :config
+  (unicode-fonts-setup))
+
+(global-prettify-symbols-mode +1)
+
+(up org-roam
+  :disabled t
+  :config
+  (if (string-equal system-type "windows-nt")
+      (setq org-roam-directory (file-truename "c:/github/raveenkumar.xyz/Blog"))
+    (setq org-roam-directory (file-truename "~/my-repos/raveenkumar.xyz/Blog")))
+  (org-roam-db-autosync-mode))
