@@ -1042,9 +1042,7 @@
 (global-prettify-symbols-mode +1)
 
 (up org-roam
-  :disabled t
+  :unless (string-equal system-type "windows-nt")
   :config
-  (if (string-equal system-type "windows-nt")
-      (setq org-roam-directory (file-truename "c:/github/raveenkumar.xyz/Blog"))
-    (setq org-roam-directory (file-truename "~/my-repos/raveenkumar.xyz/Blog")))
+  (setq org-roam-directory (file-truename "~/my_repos/raveenkumar.xyz/Blog"))
   (org-roam-db-autosync-mode))
