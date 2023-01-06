@@ -571,3 +571,7 @@
 (up neotree
   :bind ("C-c d" . neotree-toggle)
   )
+
+(global-auto-revert-mode t)
+(defalias 'yes-or-no-p 'y-or-n-p)
+
