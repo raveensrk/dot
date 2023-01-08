@@ -146,9 +146,7 @@
 			  ("C-c n" . org-toggle-narrow-to-subtree)
 			  ("<tab>" . org-cycle)))
 (use-package beacon :config (beacon-mode 1))
-(use-package company
-  :diminish
-  :config (global-company-mode 1))
+(use-package company :diminish :config (global-company-mode 1))
 (use-package multiple-cursors
   :config
   (multiple-cursors-mode 1)
