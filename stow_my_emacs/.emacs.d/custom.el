@@ -31,6 +31,8 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
+ '(mouse-drag-and-drop-region t)
+ '(mouse-drag-and-drop-region-cut-when-buffers-differ t)
  '(mouse-wheel-flip-direction t)
  '(mouse-wheel-tilt-scroll t)
  '(neo-window-width 40)

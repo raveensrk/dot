@@ -1,8 +1,10 @@
 ;;; Package Specific
-(require 'package)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+ (require 'package)
+ (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+ (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+ ;; (package-initialize)
+
+
 
 
 
@@ -29,12 +31,33 @@
 
 ;;; https://gist.github.com/Gavinok/38975384c4a46c291103e7b220dc25e9
 ;;; BOOTSTRAP USE-PACKAGE
-;; (package-initialize)
+(package-initialize)
 (setq use-package-always-ensure t)
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+ (unless (package-installed-p 'use-package)
+   (package-refresh-contents)
+   (package-install 'use-package))
 (eval-when-compile (require 'use-package))
+
+;; (defvar bootstrap-version)
+;; (let ((bootstrap-file
+;;        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+;;       (bootstrap-version 6))
+;;   (unless (file-exists-p bootstrap-file)
+;;     (with-current-buffer
+;;         (url-retrieve-synchronously
+;;          "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+;;          'silent 'inhibit-cookies)
+;;       (goto-char (point-max))
+;;       (eval-print-last-sexp)))
+;; (load bootstrap-file nil 'nomessage))
+
+
+(setq package-enable-at-startup nil)
+;; (straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
+
+(use-package straight)
 
 (use-package benchmark-init :hook (after-init-hook benchmark-init/deactivate))
 
@@ -223,6 +246,7 @@
 ;; (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
 (📦 org-auto-tangle :hook org-mode)
 (📦 olivetti
+  :disabled t
   :diminish
   :hook org-mode)
 ;; (add-hook 'org-mode-hook (lambda () (org-update-all-dblocks)))
@@ -1046,3 +1070,17 @@
   :config
   (setq org-roam-directory (file-truename "~/my_repos/raveenkumar.xyz/Blog"))
   (org-roam-db-autosync-mode))
+
+(up org-roam
+  :unless (string-equal system-type "windows-nt")
+  :config
+  (setq org-roam-directory (file-truename "~/my_repos/raveenkumar.xyz/Blog"))
+  (org-roam-db-autosync-mode))
+
+
+(up f)
+(up names)
+
+(add-hook 'Custom-mode-hook 'turn-off-evil-mode)
+
+
