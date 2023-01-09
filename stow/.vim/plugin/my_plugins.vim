@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'mhinz/vim-startify'
 Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
 Plug 'git@github.com:tpope/vim-sensible'
 Plug 'git@github.com:junegunn/fzf', { 'do': { -> fzf#install() } }
