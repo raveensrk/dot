@@ -1,52 +1,35 @@
-;;; Package Specific
-
-(require 'package)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-;; and `package-pinned-packages`. Most users will not need or want to do this.
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-
-;;; https://gist.github.com/Gavinok/38975384c4a46c291103e7b220dc25e9
-;;; BOOTSTRAP USE-PACKAGE
-(setq use-package-always-ensure t)
-;; (setq use-package-always-defer t)
-(unless (package-installed-p 'use-package)
-   (package-refresh-contents)
-   (package-install 'use-package))
-(eval-when-compile (require 'use-package))
-
-;; (defvar bootstrap-version)
-;; (let ((bootstrap-file
-;;        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-;;       (bootstrap-version 6))
-;;   (unless (file-exists-p bootstrap-file)
-;;     (with-current-buffer
-;;         (url-retrieve-synchronously
-;;          "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-;;          'silent 'inhibit-cookies)
-;;       (goto-char (point-max))
-;;       (eval-print-last-sexp)))
-;; (load bootstrap-file nil 'nomessage))
-;; (setq package-enable-at-startup nil)
-;; (straight-use-package 'use-package)
+;;; Straight
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(setq package-enable-at-startup nil)
 ;; (setq straight-use-package-by-default t)
-;; (use-package straight)
+
 (setq use-package-compute-stastics t)
 
-(use-package benchmark-init
-  :ensure t
-  :config
-  ;; To disable collection of benchmark data after init is done.
-    (add-hook 'after-init-hook 'benchmark-init/deactivate))
+(straight-use-package 'use-package)
 
-;;; Raveen's Emacs init
+;; (require 'package)
+;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;; ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; (package-initialize)
+;; ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; ;; and `package-pinned-packages`. Most users will not need or want to do this.
+;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;; (setq use-package-always-ensure t) ; This only works with package.el ;; https://github.com/radian-software/straight.el#integration-with-use-package:~:text=Specifying%20%3Astraight%20t%20is%20unnecessary%20if%20you%20set%20straight%2Duse%2Dpackage%2Dby%2Ddefault%20to%20a%20non%2Dnil%20value.%20(Note%20that%20the%20variable%20use%2Dpackage%2Dalways%2Densure%20is%20associated%20with%20package.el%2C%20and%20you%20should%20not%20use%20it%20with%20straight.el.)
 
-;; (toggle-debug-on-error)
+(defalias 'up 'use-package)
 
-;; If you are using windows set the home environment variable to a where your .emacs.d is present
-
+(up benchmark-init :straight t :ensure t :config (add-hook 'after-init-hook 'benchmark-init/deactivate))
 ;;; Startup and behaviour
 (setq inhibit-startup-screen t)
 (setq vc-follow-symlinks t)
@@ -89,8 +72,12 @@
   (set-frame-font "Inconsolata-12")))
 
 ;; (use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
-(use-package magit :bind ("C-x g" . magit-status))
-(use-package expand-region :bind ("C-=" . er/expand-region))
+(use-package magit :ensure t :bind ("C-x g" . magit-status))
+(unless (package-installed-p 'compat)
+  (package-install 'compat))
+;; 57834ac3f93aa3c6af02e4484241c59bcbc676d0
+
+(use-package expand-region :straight t :bind ("C-=" . er/expand-region))
 ;;; My functions
 
 (defun my-expand-lines ()
@@ -113,8 +100,9 @@
 
 ;; Not working TODO
 ;; (use-package beacon :config (beacon-mode 1))
-(use-package company :diminish :config (global-company-mode 1))
+(use-package company :straight t :diminish :config (global-company-mode 1))
 (use-package multiple-cursors
+  :straight t
   :config
   (multiple-cursors-mode 1)
   :bind
@@ -122,28 +110,14 @@
   ("C-c e n"	.	mc/mark-next-like-this)
   ("C-c e p"	.	mc/mark-previous-like-this)
   ("C-c e a"	.	mc/mark-all-like-this))
-(use-package marginalia :config (marginalia-mode 1))
-(use-package which-key :config (which-key-mode 1))
-(use-package rainbow-delimiters :config (rainbow-delimiters-mode 1))
-(use-package avy :bind ("C-c y" . avy-goto-char))
-(use-package embark
-:disabled t
-  :bind
-  ("C-c ." . embark-act)
-  ("C-c ;" . embark-dwim)
-  ("C-h B" . embark-bindings)
-  :config
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-				 nil
-				 (window-parameters (mode-line-format . none))))
-  )
-(defalias 'up 'use-package)
-(defalias '📦 'use-package)
+(use-package marginalia :straight t :config (marginalia-mode 1))
+(use-package which-key :straight t :config (which-key-mode 1))
+(use-package rainbow-delimiters :straight t :config (rainbow-delimiters-mode 1))
+(use-package avy
+  :straight t
+  :bind ("C-c y" . avy-goto-char))
 (up ivy
+  :straight t
   :diminish
   :config
   (ivy-mode 1)
@@ -152,30 +126,34 @@
   (setq ivy-count-format "(%d/%d) ")
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
-  (📦 swiper :bind ("C-s" . swiper))
-  (📦 counsel :bind
-	(:map minibuffer-local-map ("C-r" . counsel-minibuffer-history))
-	("C-c i L" . counsel-git-log)
-	("C-c b"   . counsel-bookmark)
-	("C-c c"   . counsel-compile)
-	("C-c d"   . counsel-descbinds)
-	("C-c g"   . counsel-git)
-	("C-c j"   . counsel-git-grep)
-	("C-c k"   . counsel-rg)
-	("C-c m"   . counsel-linux-app)
-	("C-c o"   . counsel-outline)
-	("C-c t"   . counsel-load-theme)
-	("C-c w"   . counsel-wmctrl)
-	("C-c z"   . counsel-fzf)
-	("C-x C-f" . counsel-find-file)
-	("C-x l"   . counsel-locate)
-	("M-x"     . counsel-M-x)
-    ("C-c fr"  . counsel-recentf)
-    )
   :bind
   ("C-x b"   . 'ivy-switch-buffer)
   ("C-c v"   . 'ivy-push-view)
   ("C-c V"   . 'ivy-pop-view))
+(up swiper
+  :straight t
+  :bind ("C-s" . swiper))
+(up counsel
+  :straight t
+  :bind
+  (:map minibuffer-local-map ("C-r" . counsel-minibuffer-history))
+  ("C-c i L" . counsel-git-log)
+  ("C-c b"   . counsel-bookmark)
+  ("C-c c"   . counsel-compile)
+  ("C-c d"   . counsel-descbinds)
+  ("C-c g"   . counsel-git)
+  ("C-c j"   . counsel-git-grep)
+  ("C-c k"   . counsel-rg)
+  ("C-c m"   . counsel-linux-app)
+  ("C-c o"   . counsel-outline)
+  ("C-c t"   . counsel-load-theme)
+  ("C-c w"   . counsel-wmctrl)
+  ("C-c z"   . counsel-fzf)
+  ("C-x C-f" . counsel-find-file)
+  ("C-x l"   . counsel-locate)
+  ("M-x"     . counsel-M-x)
+  ("C-c fr"  . counsel-recentf))
+
 
 ;;; Editing
 (setq-default tab-width 4)
@@ -195,13 +173,13 @@
   (interactive)
   (when (equal major-mode 'dired-mode)
     (if (or (not (boundp 'dired-dotfiles-show-p)) dired-dotfiles-show-p) ; if currently showing
-	    (progn
-	      (set (make-local-variable 'dired-dotfiles-show-p) nil)
-	      (message "h")
-	      (dired-mark-files-regexp "^\\\.")
-	      (dired-do-kill-lines))
-	  (progn (revert-buffer) ; otherwise just revert to re-show
-	         (set (make-local-variable 'dired-dotfiles-show-p) t)))))
+	(progn
+	  (set (make-local-variable 'dired-dotfiles-show-p) nil)
+	  (message "h")
+	  (dired-mark-files-regexp "^\\\.")
+	  (dired-do-kill-lines))
+      (progn (revert-buffer) ; otherwise just revert to re-show
+	     (set (make-local-variable 'dired-dotfiles-show-p) t)))))
 
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 (put 'narrow-to-region 'disabled nil)
@@ -213,57 +191,46 @@
 (setq outline-blank-line +1)
 (global-set-key (kbd "C-c m") 'menu-bar-open)
 
-;; (📦 sh-script :hook (outline-minor-mode)) ; TODO
-(📦 projectile
+(up projectile
+  :straight t
   :diminish
   :config (projectile-mode +1)
   :bind (:map projectile-mode-map ("C-c p" . projectile-command-map)))
-(📦 indent-guide
+(up indent-guide
+  :straight t
   :diminish
   :config (indent-guide-global-mode 1))
-(📦 smartparens
+(up smartparens
+  :straight t
   :diminish
   :config (smartparens-global-mode +1))
-;; (📦 evil
-;;   :bind
-;;   (:map evil-insert-state-map ("C-x C-l" . my-expand-lines))
-;;   (("<escape>" . keyboard-escape-quit))
-;;   :hook
-;;   (eshell-mode . turn-off-evil-mode)
-;;   :config
-;;   (evil-mode 1)
-;;   ;; (global-evil-surround-mode 1)
-;;   ;; (evil-goggles-mode 1)
-;;   ;; (evil-vimish-fold-mode 1)
-;;   (global-set-key (kbd "C-c <C-left>") 'evil-window-left)
-;;   (global-set-key (kbd "C-c <C-right>") 'evil-window-right)
-;;   (global-set-key (kbd "C-c <C-up>") 'evil-window-up)
-;;   (global-set-key (kbd "C-c <C-down>") 'evil-window-down)
-;;   (📦 evil-numbers
-;;     :config
-;;   (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
-;;   (evil-define-key '(normal visual) 'global (kbd "C-x") 'evil-numbers/dec-at-pt)
-;;   (evil-define-key '(normal visual) 'global (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
-;;   (evil-define-key '(normal visual) 'global (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental))
-;;   (📦 evil-snipe
-;;     :config
-;;     (evil-snipe-mode 1)
-;;     (evil-snipe-override-mode 1))
-;;   (📦 evil-mc :config (evil-mc-mode 1))
-;;   (add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
-;;   (📦 evil-escape
-;;   :config
-;;   (evil-escape-mode t)
-;;   (setq-default evil-escape-key-sequence "eee"))
-;;   )
 
+(setq evil-want-keybinding nil)
+(up evil-numbers
+  :after evil
+  :straight t
+  :config
+  (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
+  (evil-define-key '(normal visual) 'global (kbd "C-x") 'evil-numbers/dec-at-pt)
+  (evil-define-key '(normal visual) 'global (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
+  (evil-define-key '(normal visual) 'global (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental))
+
+(up evil-snipe
+  :after evil
+  :straight t
+  :config
+  (evil-snipe-mode 1)
+  (evil-snipe-override-mode 1))
+(up evil-mc :straight t :config (evil-mc-mode 1))
+(add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
 
 ;;; UNDO
 ;; Vim style undo not needed for emacs 28
-;; (use-package undo-fu)
+(use-package undo-fu :straight t)
 
 ;;; Vim Bindings
 (use-package evil
+  :straight t
   :demand t
   :bind (("<escape>" . keyboard-escape-quit))
   :init
@@ -275,10 +242,9 @@
   :config
   (evil-mode 1))
 
-
 ;;; Vim Bindings Everywhere else
 (use-package evil-collection
-  :after evil
+  :straight t
   :config
   (setq evil-want-integration t)
   (evil-collection-init))
@@ -286,37 +252,38 @@
 
 ;;; Evil leader
 (up evil-leader
+  :straight t
   :after evil
   :config
   (global-evil-leader-mode 1)
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-    "y" 'copy-whole-buffer
-    "=" 'my-indent-whole-buffer
-    "b" 'switch-to-buffer
-    "fr" 'counsel-recentf
-    "ff" 'counsel-find-file
-    "r" 'restart-emacs
-    "pl" 'package-list-packages
-    "pi" 'my-package-refresh-and-install-selected-packages
-    "h" 'help
-    "d" 'dired
-    "w" 'my-indent-whole-buffer-and-save
-    "q" 'save-buffers-kill-terminal
-    "i" 'my-find-init-file
-    "+" 'text-scale-increase
-    "-" 'text-scale-decrease
-    "x" 'execute-extended-command
-    "." 'embark-act
-    ";" 'embark-dwim
-    "B" 'embark-bindings
-    "s" 'swiper
-    "lr" 'ledger-report
-    "a" 'mark-whole-buffer
-    "pp" 'evil-paste-after-newline
-    "c" 'recompile
-    "y" 'copy-whole-buffer
-    )
+   "y" 'copy-whole-buffer
+   "=" 'my-indent-whole-buffer
+   "b" 'switch-to-buffer
+   "fr" 'counsel-recentf
+   "ff" 'counsel-find-file
+   "r" 'restart-emacs
+   "pl" 'package-list-packages
+   "pi" 'my-package-refresh-and-install-selected-packages
+   "h" 'help
+   "d" 'dired
+   "w" 'my-indent-whole-buffer-and-save
+   "q" 'save-buffers-kill-terminal
+   "i" 'my-find-init-file
+   "+" 'text-scale-increase
+   "-" 'text-scale-decrease
+   "x" 'execute-extended-command
+   "." 'embark-act
+   ";" 'embark-dwim
+   "B" 'embark-bindings
+   "s" 'swiper
+   "lr" 'ledger-report
+   "a" 'mark-whole-buffer
+   "pp" 'evil-paste-after-newline
+   "c" 'comment-region
+   "y" 'copy-whole-buffer
+   )
   )
 
 
@@ -355,7 +322,8 @@
 ;;
 ;; (my-load-elisp-files my-lisp-files)
 ;;; Yas snippets
-(📦 yasnippet
+(up yasnippet
+  :straight t
   :defer 10
   :diminish
   :config
@@ -364,132 +332,52 @@
         '("~/.emacs.d/snippets/"                 ;; personal snippets
           "c:/my_repos/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
           ))
-  (📦 yasnippet-snippets
+  (up yasnippet-snippets
+    :straight t
     :diminish))
-
-;; (add-hook 'emacs-lisp-mode-hook (outline-minor-mode 1))
-;; (add-hook 'outline-minor-mode-hook
-;;           (lambda ()
-;;            (define-key (kbd "TAB") 'outline-toggle-children)))
-
-
-;;; https://github.com/tarsius/bicycle
-(use-package bicycle
-  :diminish
-  :disabled t
-  :after outline
-  :bind (:map outline-minor-mode-map
-		      ([C-tab] . bicycle-cycle)
-		      ([S-tab] . bicycle-cycle-global)))
-
-;; (use-package prog
-;;   :config
-;;   (add-hook 'prog-mode-hook 'outline-minor-mode)
-;;   (add-hook 'prog-mode-hook 'hs-minor-mode))
-
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Foldout.html
-
-(with-eval-after-load "outline"
-  (require 'foldout))
-
-
-
 
 (global-auto-revert-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-package dashboard
+  :straight t
   :diminish
   ;; https://github.com/emacs-dashboard/emacs-dashboard
   :ensure t
   :config
   (dashboard-setup-startup-hook)
-  ;; (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-  ;; Set the title
-  ;; (setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
-  ;; Set the banner
-  ;; (setq dashboard-startup-banner nil)
-  ;; Value can be
-  ;; - nil to display no banner
-  ;; - 'official which displays the official emacs logo
-  ;; - 'logo which displays an alternative emacs logo
-  ;; - 1, 2 or 3 which displays one of the text banners
-  ;; - "path/to/your/image.gif", "path/to/your/image.png" or "path/to/your/text.txt" which displays whatever gif/image/text you would prefer
-  ;; - a cons of '("path/to/your/image.png" . "path/to/your/text.txt")
 
   ;; Content is not centered by default. To center, set
   (setq dashboard-center-content t)
 
   ;; To disable shortcut "jump" indicators for each section, set
   (setq dashboard-show-shortcuts nil)
-  (setq dashboard-items '((recents  . 5)
-                          (bookmarks . 5)
-                          (projects . 5)
-                          (agenda . 5)
-                          (registers . 5)))
+  (setq dashboard-items '((recents  . 10)
+                          (bookmarks . 10)
+                          (projects . 5))))
 
-
-  ;; https://github.com/emacs-dashboard/emacs-dashboard/issues/184
-  ;; TODO This solution did not work
-  ;; (if (display-graphic-p)
-  ;;     (define-key dashboard-mode-map [down-mouse-1] 'widget-button-click)
-  ;;   (define-key dashboard-mode-map [down-mouse-1] nil))
-  ;; (define-key dashboard-mode-map [mouse-1] 'widget-button-click)
-  ;; (define-key dashboard-mode-map [down-mouse-1] 'widget-button-press)
-
-  )
-
-(up hyperbole
-  :disabled t
-  :diminish
-  :config (hyperbole-mode 1))
 (up zoom
+  :straight t
   :diminish
   ;; https://github.com/cyrus-and/zoom
   :config (zoom-mode t))
-(up solaire-mode
-  :disabled t
-  :diminish
-  ;; https://github.com/hlissner/emacs-solaire-mode
-  :config
-  (solaire-global-mode +1)
-  )
-
-(use-package doom-themes
-  :disabled t
-  :diminish
-  :ensure t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-gruvbox t)
-
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
 
 
 ;; https://github.com/emacs-tw/awesome-emacs
 
-;; (up multifiles)
 (use-package all-the-icons
-  :disabled t
+  :straight t
   :if (display-graphic-p))
 ;; TODO make sure you do this on windows https://www.reddit.com/r/emacs/comments/gznezn/alltheicons/
 
 (up focus
+  :straight t
   :diminish
   :hook emacs-lisp-mode
   )
 
 (up drag-stuff
+  :straight t
   :defer 5
   :diminish
   ;; https://github.com/rejeep/drag-stuff.el
@@ -500,6 +388,7 @@
 
 
 (use-package fzf
+  :straight t
   :defer 5
   :diminish
   ;; https://github.com/bling/fzf.el
@@ -517,67 +406,27 @@
         fzf/position-bottom t
         fzf/window-height 15))
 
-(use-package spu
-  :disabled t
-  ;; https://github.com/mola-T/SPU
-  ;; Silent Package updater
-  :defer 5 ;; defer package loading for 5 second
-  :config (spu-package-upgrade-daily))
-
-
-(use-package esup
-  ;; Emacs startup profiler
-  ;; https://github.com/jschaf/esup
-  :ensure t
-  ;; To use MELPA Stable use ":pin melpa-stable",
-  :pin melpa-stable)
-
 (up nyan-mode
+  :straight t
   ;; Nyan mode
   ;; https://github.com/TeMPOraL/nyan-mode
   :config
   (nyan-mode)
   )
 
-(up sr-speedbar)
-
-(up selectric-mode
-  :disabled t
-  ;; https://github.com/rbanffy/selectric-mode
-  :config
-  (selectric-mode +1)
-  )
-
-;; TODO https://github.com/jtmoulia/elisp-koans
-
-(up keycast
-  :disabled t
-  ;; https://github.com/tarsius/keycast
-  :config
-  (keycast-mode)
-  ;; The code below is not working
-  ;;  (keycast-mode-line-mode +1)
-  )
-
-(up restart-emacs)
-(up diminish)
+(up restart-emacs :straight t)
 (up format-all
+  :straight t
   :diminish
   ;; https://github.com/lassik/emacs-format-all-the-code/tree/c156ffe5f3c979ab89fd941658e840801078d091
   :hook
   (add-hook 'prog-mode-hook 'format-all-mode)
   )
-(up apheleia
-  :disabled t
-  ;; https://github.com/radian-software/apheleia
-  :config
-  (apheleia-global-mode +1)
-  )
 
 ;; https://github.com/Alexander-Miller/treemacs
 (use-package treemacs
-  :ensure t
-  :defer t
+  :straight t
+  :defer 10
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
@@ -664,37 +513,13 @@
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
 
-(use-package treemacs-evil
-  :after (treemacs evil)
-  :ensure t)
-
-(use-package treemacs-projectile
-  :after (treemacs projectile)
-  :ensure t)
-
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
-
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :ensure t)
-
-(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
-  :ensure t
-  :config (treemacs-set-scope-type 'Perspectives))
-
-(use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
-  :after (treemacs)
-  :ensure t
-  :config (treemacs-set-scope-type 'Tabs))
-
 (use-package emojify
-  :disabled t
+      :straight t
+  :defer 10
   :hook (after-init . global-emojify-mode))
 
 (use-package centaur-tabs
+  :straight t
   ;; https://github.com/ema2159/centaur-tabs
   :demand
   :config
@@ -706,120 +531,47 @@
   (centaur-tabs-headline-match)
   (setq centaur-tabs-style "bar")
   (setq centaur-tabs-height 32)
-  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-set-icons nil)
   (setq centaur-tabs-set-bar 'over)
   (setq centaur-tabs-close-button "X")
   (setq centaur-tabs-set-modified-marker t)
   (setq centaur-tabs-modified-marker "*")
   (centaur-tabs-change-fonts "arial" 160)
   (centaur-tabs-enable-buffer-reordering)
-
-  ;; When the currently selected tab(A) is at the right of the last visited
-  ;; tab(B), move A to the right of B. When the currently selected tab(A) is
-  ;; at the left of the last visited tab(B), move A to the left of B
   (setq centaur-tabs-adjust-buffer-order t)
-  ;; Move the currently selected tab to the left of the the last visited tab.
-  ;; (setq centaur-tabs-adjust-buffer-order 'left)
-  ;; Move the currently selected tab to the right of the the last visited tab.
   (setq centaur-tabs-adjust-buffer-order 'right)
-
-  ;; To enable an automatic alpabetical buffer reordering, put the following lines in your configuration.
-  ;; (centaur-tabs-enable-buffer-alphabetical-reordering)
-  ;; (setq centaur-tabs-adjust-buffer-order t)
-
-  ;; TODO this icon is broken need to fix
-  (setq centaur-tabs-show-navigation-buttons t)
-
   (setq centaur-tabs-show-new-tab-button t)
   (setq centaur-tabs-show-count t)
+  (setq centaur-tabs-set-icons nil)
   )
 
 
-(use-package centaur-tabs
-  ;; Example config
-  ;; :load-path "~/.emacs.d/other/centaur-tabs"
-  :config
-  (setq centaur-tabs-style "bar"
-	    centaur-tabs-height 32
-	    centaur-tabs-set-icons t
-	    centaur-tabs-set-modified-marker t
-	    centaur-tabs-show-navigation-buttons t
-	    centaur-tabs-set-bar 'under
-	    x-underline-at-descent-line t)
-  (centaur-tabs-headline-match)
-  ;; (setq centaur-tabs-gray-out-icons 'buffer)
-  ;; (centaur-tabs-enable-buffer-reordering)
-  ;; (setq centaur-tabs-adjust-buffer-order t)
-  (centaur-tabs-mode t)
-  (setq uniquify-separator "/")
-  (setq uniquify-buffer-name-style 'forward)
-  (defun centaur-tabs-buffer-groups ()
-    "`centaur-tabs-buffer-groups' control buffers' group rules.
 
- Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
- All buffer name start with * will group to \"Emacs\".
- Other buffer group by `centaur-tabs-get-group-name' with project name."
-    (list
-     (cond
-	  ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
-	  ;; "Remote")
-	  ((or (string-equal "*" (substring (buffer-name) 0 1))
-	       (memq major-mode '(magit-process-mode
-				              magit-status-mode
-				              magit-diff-mode
-				              magit-log-mode
-				              magit-file-mode
-				              magit-blob-mode
-				              magit-blame-mode
-				              )))
-	   "Emacs")
-	  ((derived-mode-p 'prog-mode)
-	   "Editing")
-	  ((derived-mode-p 'dired-mode)
-	   "Dired")
-	  ((memq major-mode '(helpful-mode
-			              help-mode))
-	   "Help")
-	  ((memq major-mode '(org-mode
-			              org-agenda-clockreport-mode
-			              org-src-mode
-			              org-agenda-mode
-			              org-beamer-mode
-			              org-indent-mode
-			              org-bullets-mode
-			              org-cdlatex-mode
-			              org-agenda-log-mode
-			              diary-mode))
-	   "OrgMode")
-	  (t
-	   (centaur-tabs-get-group-name (current-buffer))))))
-  :hook
-  (dashboard-mode . centaur-tabs-local-mode)
-  (term-mode . centaur-tabs-local-mode)
-  (calendar-mode . centaur-tabs-local-mode)
-  (org-agenda-mode . centaur-tabs-local-mode)
-  (helpful-mode . centaur-tabs-local-mode)
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward)
-  ;; ("C-c t s" . centaur-tabs-counsel-switch-group)
-  ;;(  "C-c t p" . centaur-tabs-group-by-projectile-project)
-  ;;(  "C-c t g" . centaur-tabs-group-buffer-groups)
-  (:map evil-normal-state-map
-	    ("g t" . centaur-tabs-forward)
-	    ("g T" . centaur-tabs-backward)))
+;; Reference
 
-(if (string-equal system-type "windows-nt")
-    (setq my-packages-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d/my-packages")
-  (setq my-packages-path "~/.emacs.d/my-packages"))
+;; http://xahlee.info/emacs/emacs/elisp_menu.html#:~:text=Adding%20Your%20Own%20Menu&text=(emacs%20call%20these%20IDs%20%E2%80%9Cfake,%3E%20.
 
-(add-to-list 'load-path my-packages-path)
-(require 'my-menu-bar)
+;; Creating a new menu pane in the menu bar to the right of “Tools” menu
+(define-key-after
+  global-map
+  [menu-bar mymenu]
+  (cons "My Menu" (make-sparse-keymap "hoot hoot"))
+  'tools )
+
+
+;; creating another menu item
+(define-key
+  global-map
+  [menu-bar mymenu treemacs]
+  '("toggle treemacs" . treemacs))
+
 
 ;; Emojis
 ;; https://www.masteringemacs.org/article/unicode-ligatures-color-emoji
 ;; This seems to be a fix for the this issue :935
 (use-package unicode-fonts
+  :straight t
+  :defer 10
   :ensure t
   :config
   (unicode-fonts-setup))
@@ -827,6 +579,8 @@
 (global-prettify-symbols-mode +1)
 
 (add-hook 'Custom-mode-hook 'turn-off-evil-mode)
+
+
 
 ;; (up use-package)
 
@@ -851,18 +605,22 @@
 (setq dired-hide-details-hide-information-lines t)
 (setq dired-hide-details-hide-symlink-targets t)
 (setq cursor-type 'bar)
-(setq centaur-tabs-show-navigation-buttons t)
+(setq centaur-tabs-show-navigation-buttons nil)
 (setq compilation-auto-jump-to-first-error nil)
 (setq compilation-scroll-output t)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(yasnippet-snippets benchmark-init)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+(straight-use-package 'modus-themes)
+
+(require 'modus-themes) ; OR for the built-in themes: (require-theme 'modus-themes)
+
+;; Add all your customizations prior to loading the themes
+(setq modus-themes-italic-constructs t)
+(setq modus-themes-bold-constructs t)
+
+;; Maybe define some palette overrides, such as by using our presets
+(setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
+
+;; Load the theme of your choice:
+(load-theme 'modus-vivendi :no-confim)
+
+(define-key global-map (kbd "<f5>") #'modus-themes-toggle)
