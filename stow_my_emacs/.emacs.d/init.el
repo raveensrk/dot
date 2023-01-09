@@ -1,39 +1,18 @@
 ;;; Package Specific
- (require 'package)
- (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
- (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
- ;; (package-initialize)
 
-
-
-
-
-
+(require 'package)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
-(if (string-equal system-type "windows-nt")
-    (progn
-      (setq custom-file "c:/github/dotfiles-main/stow_my_emacs/.emacs.d/custom.el"))
-  (progn
-    (setq custom-file "~/.emacs.d/custom.el")
-    (add-to-list 'load-path "~/.emacs.d/site-lisp")))
-
-(load custom-file)
-
-(defun my-package-refresh-and-install-selected-packages ()
-  (interactive)
-  (package-refresh-contents)
-  (package-install-selected-packages t)
-  (package-autoremove)
-  )
-
 ;;; https://gist.github.com/Gavinok/38975384c4a46c291103e7b220dc25e9
 ;;; BOOTSTRAP USE-PACKAGE
-(package-initialize)
 (setq use-package-always-ensure t)
- (unless (package-installed-p 'use-package)
+;; (setq use-package-always-defer t)
+(unless (package-installed-p 'use-package)
    (package-refresh-contents)
    (package-install 'use-package))
 (eval-when-compile (require 'use-package))
@@ -50,16 +29,17 @@
 ;;       (goto-char (point-max))
 ;;       (eval-print-last-sexp)))
 ;; (load bootstrap-file nil 'nomessage))
-
-
-(setq package-enable-at-startup nil)
+;; (setq package-enable-at-startup nil)
 ;; (straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
+;; (setq straight-use-package-by-default t)
+;; (use-package straight)
+(setq use-package-compute-stastics t)
 
-
-(use-package straight)
-
-(use-package benchmark-init :hook (after-init-hook benchmark-init/deactivate))
+(use-package benchmark-init
+  :ensure t
+  :config
+  ;; To disable collection of benchmark data after init is done.
+    (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 ;;; Raveen's Emacs init
 
@@ -108,7 +88,7 @@
  ((find-font (font-spec :name "Inconsolata"))
   (set-frame-font "Inconsolata-12")))
 
-(use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
+;; (use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
 (use-package magit :bind ("C-x g" . magit-status))
 (use-package expand-region :bind ("C-=" . er/expand-region))
 ;;; My functions
@@ -130,22 +110,9 @@
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 
-;; (use-package org
-;;   :hook
-;;   (org-mode-hook (imenu 1))
-;;   (org-mode-hook (imenu-add-menubar-index 1))
-;;   (org-mode-hook (setq imenu-auto-rescan 1)))
 
 ;; Not working TODO
-(use-package org
-  :disabled t
-  :hook
-  (add-hook 'org-mode-hook #'imenu)
-  (add-hook 'org-mode-hook #'(imenu-add-menubar-index 1))
-  :bind (:map org-mode-map
-			  ("C-c n" . org-toggle-narrow-to-subtree)
-			  ("<tab>" . org-cycle)))
-(use-package beacon :config (beacon-mode 1))
+;; (use-package beacon :config (beacon-mode 1))
 (use-package company :diminish :config (global-company-mode 1))
 (use-package multiple-cursors
   :config
@@ -160,6 +127,7 @@
 (use-package rainbow-delimiters :config (rainbow-delimiters-mode 1))
 (use-package avy :bind ("C-c y" . avy-goto-char))
 (use-package embark
+:disabled t
   :bind
   ("C-c ." . embark-act)
   ("C-c ;" . embark-dwim)
@@ -236,166 +204,8 @@
 	         (set (make-local-variable 'dired-dotfiles-show-p) t)))))
 
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
-;;; Org mode
-(setq org-agenda-archives-mode t)
-(setq org-confirm-babel-evaluate nil)
-(setq org-src-tab-acts-natively t)
-;; (setq org-startup-folded t)
-;; (add-hook 'org-mode-hook (lambda () (visual-line-mode 1)))
-(📦 org-auto-tangle :hook org-mode)
-(📦 olivetti
-  :disabled t
-  :diminish
-  :hook org-mode)
-;; (add-hook 'org-mode-hook (lambda () (org-update-all-dblocks)))
-(global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c c") #'org-capture)
-;; (global-set-key (kbd "C-c e") 'org-babel-execute-src-block)
-(global-set-key (kbd "C-c l") #'org-store-link)
-(global-set-key (kbd "ESC m") #'menu-bar-open)
 (put 'narrow-to-region 'disabled nil)
-;;; Org Agenda files
 
-(if (string-equal system-type "windows-nt")
-    (progn (message "Windows")
-           (setq org-agenda-files
-                 (directory-files-recursively "c:/github/" ".*agenda.*\.org$\\|.*agenda.*\.org_archive$")))
-  (progn (message "Unix")
-         (setq org-agenda-files '("~/.agenda_files"))
-         (when (file-exists-p "~/my_repos")
-           (setq org-agenda-text-search-extra-files
-                 (directory-files-recursively "~/my_repos" ".*\.org$\\|.*\.org_archive$")))))
-;; (org-id-update-id-locations)
-;;; Org super agenda
-(setq spacemacs-theme-org-agenda-height nil
-      org-agenda-time-grid '((daily today require-timed) "----------------------" nil)
-      org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-deadline-if-done t
-      org-agenda-include-deadlines t
-      org-agenda-include-diary t
-      org-agenda-block-separator nil
-      org-agenda-compact-blocks t
-      org-agenda-start-with-log-mode t)
-(setq org-agenda-custom-commands
-      '(("z" "Super zaen view"
-         ((agenda "" ((org-agenda-span 'day)
-                      (org-super-agenda-groups
-                       '((:name "Today"
-                                :time-grid t
-                                :date today
-                                :todo "TODAY"
-                                :scheduled today
-                                :order 1)))))
-          (alltodo "" ((org-agenda-overriding-header "")
-                       (org-super-agenda-groups
-                        '((:name "Next to do"
-                                 :todo "NEXT"
-                                 :order 1)
-                          (:name "Important"
-                                 :tag "Important"
-                                 :priority "A"
-                                 :order 6)
-                          (:name "Due Today"
-                                 :deadline today
-                                 :order 2)
-                          (:name "Due Soon"
-                                 :deadline future
-                                 :order 8)
-                          (:name "Overdue"
-                                 :deadline past
-                                 :order 7)
-                          (:name "Assignments"
-                                 :tag "Assignment"
-                                 :order 10)
-                          (:name "Issues"
-                                 :tag "Issue"
-                                 :order 12)
-                          (:name "Projects"
-                                 :tag "Project"
-                                 :order 14)
-                          (:name "Emacs"
-                                 :tag "Emacs"
-                                 :order 13)
-                          (:name "Research"
-                                 :tag "Research"
-                                 :order 15)
-                          (:name "To read"
-                                 :tag "Read"
-                                 :order 30)
-                          (:name "Waiting"
-                                 :todo "WAITING"
-                                 :order 20)
-                          (:name "trivial"
-                                 :priority<= "C"
-                                 :tag ("Trivial" "Unimportant")
-                                 :todo ("SOMEDAY" )
-                                 :order 90)
-                          (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
-(defun insert-date ()
-  (interactive)
-  (insert
-   (replace-regexp-in-string " \\w\\w\\w" ""
-                             (string-replace ">" ""
-                                             (string-replace "<" ""
-                                                             (org-time-stamp nil nil)
-                                                             )
-                                             )
-                             )
-   )
-  )
-
-(defun create-a-blog-entry ()
-  (interactive)
-  (print "Starting file creation...")
-  (find-file (read-file-name "Enter file Name:" "~/my_repos/raveenkumar.xyz/Blog/blog"))
-
-  (save-excursion
-    (insert
-     "#+include: ../css/html-options-level-2.org
-#+title: REPLACE_TITLE
-#+filetags: REPLACE_TAG
-"))
-
-  (save-excursion
-    (while (re-search-forward "REPLACE_TITLE" nil t)
-      (replace-match (read-string "Enter title: "))))
-
-  (save-excursion
-    (while (re-search-forward "REPLACE_TAG" nil t)
-      (replace-match (read-string "Enter title: "))))
-
-  )
-
-(defun org-drill-entry-empty-p () nil) ;; TODO why is this here?
-
-;;; Spellchecker
-;; https://www.tenderisthebyte.com/blog/2019/06/09/spell-checking-emacs/
-(cond
- ((string-equal system-type "windows-nt")
-  (progn
-    (message "Microsoft Windows")))
-
- ((string-equal system-type "darwin") ;  macOS
-  (progn
-    (message "Mac OS X")
-    (dolist (hook '(text-mode-hook))
-      (add-hook hook (lambda () (flyspell-mode 1))))
-    (eval-after-load "flyspell"
-      '(progn
-         (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
-         (define-key flyspell-mouse-map [mouse-3] #'undefined)))))
-
- ((string-equal system-type "gnu/linux")
-  (progn
-    (message "Linux")
-    (dolist (hook '(text-mode-hook))
-      (add-hook hook (lambda () (flyspell-mode 1))))
-    (eval-after-load "flyspell"
-      '(progn
-         (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
-         (define-key flyspell-mouse-map [mouse-3] #'undefined)))
-
-    )))
 ;;; Hippie expand
 ;; https://www.masteringemacs.org/article/text-expansion-hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
@@ -414,13 +224,6 @@
 (📦 smartparens
   :diminish
   :config (smartparens-global-mode +1))
-;; (📦 flex-autopair :config (flex-autopair-mode 1))
-(📦 flycheck
-  :diminish
-  :hook sh-mode)
-(📦 flymake-shellcheck
-  :diminish
-  :hook sh-mode)
 ;; (📦 evil
 ;;   :bind
 ;;   (:map evil-insert-state-map ("C-x C-l" . my-expand-lines))
@@ -457,7 +260,7 @@
 
 ;;; UNDO
 ;; Vim style undo not needed for emacs 28
-(use-package undo-fu)
+;; (use-package undo-fu)
 
 ;;; Vim Bindings
 (use-package evil
@@ -493,7 +296,6 @@
     "b" 'switch-to-buffer
     "fr" 'counsel-recentf
     "ff" 'counsel-find-file
-    "\t" 'org-cycle
     "r" 'restart-emacs
     "pl" 'package-list-packages
     "pi" 'my-package-refresh-and-install-selected-packages
@@ -554,6 +356,7 @@
 ;; (my-load-elisp-files my-lisp-files)
 ;;; Yas snippets
 (📦 yasnippet
+  :defer 10
   :diminish
   :config
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
@@ -591,42 +394,6 @@
 
 
 
-
-
-
-;;; Testing
-;;; Disabled
-;; (toggle-truncate-lines 1)
-;; Sr Speedbar
-;; (require 'sr-speedbar)
-;; (defun my-org-daily-notes-file ()
-;;   (interactive)
-;;   (format "%d-%02d-%d.org" (calendar-extract-year (calendar-current-date))
-;;           (calendar-extract-month (calendar-current-date))
-;;           (calendar-extract-day (calendar-current-date))))
-;; (defun my-open-org-daily-notes-file ()
-;;   (interactive)
-;;   (find-file (format "./%s" (my-org-daily-notes-file))))
-;; (require 'minimal-session-saver)
-;; (minimal-session-saver-install-aliases)
-;; Helm
-;; (helm-mode 1)
-;; (toggle-frame-fullscreen)
-;; (setq left-margin-width 20)
-;; (setq left-fringe-width 20)
-;; #TODO (highlight-phrase #TODO dired-broken-symlink)
-;; (require 'ob-tcl)
-;; (global-set-key [wheel-right] 'scroll-left)
-;; (global-set-key [wheel-left] 'scroll-right)
-;; (put 'scroll-left 'disabled nil)
-
-
-
-;; TODO make neotree open on startup
-(up neotree
-  :diminish
-  :bind ("C-c d" . neotree-toggle)
-  )
 
 (global-auto-revert-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -673,6 +440,7 @@
   )
 
 (up hyperbole
+  :disabled t
   :diminish
   :config (hyperbole-mode 1))
 (up zoom
@@ -680,6 +448,7 @@
   ;; https://github.com/cyrus-and/zoom
   :config (zoom-mode t))
 (up solaire-mode
+  :disabled t
   :diminish
   ;; https://github.com/hlissner/emacs-solaire-mode
   :config
@@ -687,6 +456,7 @@
   )
 
 (use-package doom-themes
+  :disabled t
   :diminish
   :ensure t
   :config
@@ -710,6 +480,7 @@
 
 ;; (up multifiles)
 (use-package all-the-icons
+  :disabled t
   :if (display-graphic-p))
 ;; TODO make sure you do this on windows https://www.reddit.com/r/emacs/comments/gznezn/alltheicons/
 
@@ -719,6 +490,7 @@
   )
 
 (up drag-stuff
+  :defer 5
   :diminish
   ;; https://github.com/rejeep/drag-stuff.el
   :config
@@ -728,6 +500,7 @@
 
 
 (use-package fzf
+  :defer 5
   :diminish
   ;; https://github.com/bling/fzf.el
   :bind
@@ -753,7 +526,6 @@
 
 
 (use-package esup
-  :disabled t
   ;; Emacs startup profiler
   ;; https://github.com/jschaf/esup
   :ensure t
@@ -919,6 +691,7 @@
   :config (treemacs-set-scope-type 'Tabs))
 
 (use-package emojify
+  :disabled t
   :hook (after-init . global-emojify-mode))
 
 (use-package centaur-tabs
@@ -1036,16 +809,6 @@
 	    ("g t" . centaur-tabs-forward)
 	    ("g T" . centaur-tabs-backward)))
 
-(up org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  )
-;;
-
-
-
-
 (if (string-equal system-type "windows-nt")
     (setq my-packages-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d/my-packages")
   (setq my-packages-path "~/.emacs.d/my-packages"))
@@ -1063,22 +826,43 @@
 
 (global-prettify-symbols-mode +1)
 
-(up org-roam
-  :unless (string-equal system-type "windows-nt")
-  :config
-  (setq org-roam-directory (file-truename "~/my_repos/raveenkumar.xyz/Blog"))
-  (org-roam-db-autosync-mode))
-
-(up org-roam
-  :unless (string-equal system-type "windows-nt")
-  :config
-  (setq org-roam-directory (file-truename "~/my_repos/raveenkumar.xyz/Blog"))
-  (org-roam-db-autosync-mode))
-
-
-(up f)
-(up names)
-
 (add-hook 'Custom-mode-hook 'turn-off-evil-mode)
 
+;; (up use-package)
 
+(setq outline-minor-mode-cycle t)
+(setq projectile-project-search-path nil)
+(setq projectile-auto-discover nil)
+(setq save-place-mode t)
+(setq show-paren-mode t)
+(setq speedbar-show-unknown-files t)
+(setq tab-width 4)
+(setq truncate-lines nil)
+(setq mouse-drag-and-drop-region t)
+(setq mouse-drag-and-drop-region-cut-when-buffers-differ t)
+(setq mouse-wheel-flip-direction t)
+(setq mouse-wheel-tilt-scroll t)
+(setq neo-window-width 40)
+(setq git-gutter:always-show-separator t)
+(setq global-git-gutter-mode t)
+(setq display-line-numbers 'visual)
+(setq display-line-numbers-type 'visual)
+(setq dired-dwim-target t)
+(setq dired-hide-details-hide-information-lines t)
+(setq dired-hide-details-hide-symlink-targets t)
+(setq cursor-type 'bar)
+(setq centaur-tabs-show-navigation-buttons t)
+(setq compilation-auto-jump-to-first-error nil)
+(setq compilation-scroll-output t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(yasnippet-snippets benchmark-init)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

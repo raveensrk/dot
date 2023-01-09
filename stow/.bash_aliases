@@ -202,11 +202,12 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 # {{{ VIM STUFF
-export EDITOR="emacsclient -nw"
-export VISUAL="emacsclient -nw"
-export ALTERNATE_EDITOR="emacs -nw"
+# export EDITOR="emacsclient -nw"
+# export VISUAL="emacsclient -nw"
+# export ALTERNATE_EDITOR="emacs -nw"
 # export VISUAL="emacsclient -c"
 # export EDITOR="emacsclient -c"
+export EDITOR="vim"
 
 ,magit () {
     emacs --eval "(progn (magit)  (delete-other-windows))" &
