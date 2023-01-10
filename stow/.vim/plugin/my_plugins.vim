@@ -1,6 +1,10 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
-Plug 'git@github.com:junegunn/limelight.vim'
+" " Track the engine.
+" Plug 'SirVer/ultisnips'
+" " Snippets are separated from the engine. Add this if you want them:
+" Plug 'honza/vim-snippets'
+" Plug 'git@github.com:junegunn/limelight.vim'
 Plug 'mhinz/vim-startify'
 Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
 Plug 'git@github.com:tpope/vim-sensible'
@@ -65,6 +69,16 @@ Plug 'git@github.com:ledger/vim-ledger'
 Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 
 call plug#end()
+"{{{1 Plugin configs
+" " Trigger configuration. You need to change this to something other than <tab>
+" " if you use one of the following:
+" " " - https://github.com/Valloric/YouCompleteMe
+" " " - https://github.com/nvim-lua/completion-nvim
+" let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" " If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsEditSplit="vertical"
 
 " MBE
 " MiniBufExpl Colors

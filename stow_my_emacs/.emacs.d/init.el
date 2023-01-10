@@ -622,6 +622,19 @@
 (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
 
 ;; Load the theme of your choice:
-(load-theme 'modus-vivendi :no-confim)
+(load-theme 'modus-vivendi-tinted :no-confim)
 
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("986cdc701d133f7c6b596f06ab5c847bebdd53eb6bc5992e90446d2ddff2ad9e" "53585ce64a33d02c31284cd7c2a624f379d232b27c4c56c6d822eff5d3ba7625" default)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
