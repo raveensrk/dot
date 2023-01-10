@@ -396,3 +396,4 @@ fi
 # TODO Restart vim
 # https://stackoverflow.com/questions/43113569/how-to-close-vim-editor-with-non-zero-return-value
 
+alias chop="tr ' ' '\n'"
