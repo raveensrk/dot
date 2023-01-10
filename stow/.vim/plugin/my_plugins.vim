@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'rstacruz/vim-xtract'
 Plug 'preservim/nerdtree'
 Plug 'git@github.com:junegunn/limelight.vim'
 Plug 'mhinz/vim-startify'
