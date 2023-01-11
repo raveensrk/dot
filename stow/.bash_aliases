@@ -397,3 +397,4 @@ fi
 # https://stackoverflow.com/questions/43113569/how-to-close-vim-editor-with-non-zero-return-value
 
 alias chop="tr ' ' '\n'"
+alias srun_fast="srun --pty --cpus-per-task=4 --mem=8192 --cpu-freq=3400"
