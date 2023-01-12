@@ -395,8 +395,8 @@ fi
 # {{{1 TODO IDEAS
 # TODO Restart vim
 # https://stackoverflow.com/questions/43113569/how-to-close-vim-editor-with-non-zero-return-value
-
 alias chop="tr ' ' '\n'"
 # {{{1 GIT
 git config --global pull.rebase true
-
+# {{{1 Other
+alias srun_fast="srun --pty --cpus-per-task=4 --mem=8192 --cpu-freq=3400"
