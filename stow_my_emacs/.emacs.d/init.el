@@ -675,3 +675,35 @@
   :straight t
   :config
   (persistent-scratch-setup-default))
+
+
+(defun er-copy-file-name-to-clipboard ()
+  "Copy the current buffer file name to the clipboard."
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (kill-new filename)
+      (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+
+;; https://emacsredux.com/blog/2016/01/31/use-tab-to-indent-or-complete/
+;; (setq tab-always-indent 'complete)
+
+(global-set-key (kbd "ESC ESC h") 'help)
+(global-set-key (kbd "ESC ESC c") 'comment-line)
+(global-set-key (kbd "ESC ESC e x") 'eval-last-sexp)
+(global-set-key (kbd "ESC ESC r") 'restart-emacs)
+(global-set-key (kbd "ESC ESC e f") 'elfeed)
+(global-set-key (kbd "ESC ESC e e") 'elfeed-edit-my-rss-feed-list)
+(up crux
+  :straight t)
+(global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region)
+(global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
+(global-set-key (kbd "ESC ESC a") 'avy-goto-char)
+(global-set-key (kbd "ESC ESC i") 'my-open-init-file)
+(global-set-key (kbd "ESC ESC f") 'ffap)
+(global-set-key (kbd "ESC ESC /") 'swiper)
+(global-set-key (kbd "ESC ESC b") 'counsel-buffer-or-recentf)
+(global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
