@@ -18,10 +18,10 @@
 
 (straight-use-package 'use-package)
 
-;; (require 'package)
-;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(require 'package)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;; ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; (package-initialize)
+(package-initialize)
 ;; ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
@@ -561,17 +561,20 @@
 ;;; Yas snippets
 (up yasnippet
   :straight t
-  :defer 10
+  :defer 5
   :diminish
   :config
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
   (setq yas-snippet-dirs
         '("~/.emacs.d/snippets/"                 ;; personal snippets
-          "c:/my_repos/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
-          ))
-  (up yasnippet-snippets
-    :straight t
-    :diminish))
+          "c:/github/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
+          )))
+
+(up yasnippet-snippets
+  :after yasnippet
+  :straight t
+  :diminish)
+
 ;;; fzf
 (use-package fzf
   :straight t
@@ -699,6 +702,8 @@
 (global-set-key (kbd "ESC ESC e e") 'elfeed-edit-my-rss-feed-list)
 (up crux
   :straight t)
+(up web-mode
+  :straight t)
 (global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region)
 (global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
 (global-set-key (kbd "ESC ESC a") 'avy-goto-char)
@@ -707,3 +712,11 @@
 (global-set-key (kbd "ESC ESC /") 'swiper)
 (global-set-key (kbd "ESC ESC b") 'counsel-buffer-or-recentf)
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
+
+(setq auto-save-visited-interval 1)
+(auto-save-visited-mode +1)
+
+
+
+(global-set-key (kbd "ESC ESC m m") 'magit)
+(global-set-key (kbd "ESC ESC m l") 'magit-list-repositories)
