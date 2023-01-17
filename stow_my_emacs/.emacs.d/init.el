@@ -119,7 +119,7 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 200)
 (setq recentf-max-saved-items 200)
-(save-place-mode 1)
+(save-place-mode +1)
 ;;; Mouse Support in Terminal
 ;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
 ;; For linux use (gpm-mouse-mode 1)
@@ -238,11 +238,12 @@
 
 ;; (use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
 (use-package magit :ensure t :bind ("C-x g" . magit-status))
-(unless (package-installed-p 'compat)
-  (package-install 'compat))
+;; (unless (package-installed-p 'compat)
+;;   (package-install 'compat))
 ;; 57834ac3f93aa3c6af02e4484241c59bcbc676d0
 
 (use-package beacon
+  :straight t
   :config
   (beacon-mode 1))
 ;;; Expand region
@@ -740,7 +741,12 @@
 (setq auto-save-visited-interval 100) ;; 100 is 1 second
 (setq large-file-warning-threshold 100000000)
 (setq auto-revert-interval 1)
-(context-menu-mode +1)
+
+(if (version< emacs-version "28.1")
+    (message "Emacs version is older than 28.1")
+  (progn
+    (message "Emacs version is 28.1 or newer")
+    (context-menu-mode +1)))
 
 (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
 (setq comint-buffer-maximum-size 10000)
