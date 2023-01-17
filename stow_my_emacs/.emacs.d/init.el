@@ -723,3 +723,6 @@
 ;;; Autosave files every 1 second if visited and changed
 (auto-save-visited-mode +1)
 (setq auto-save-visited-interval 1)
+(setq large-file-warning-threshold 100000000)
+(setq auto-revert-interval 1)
+(context-menu-mode +1)
