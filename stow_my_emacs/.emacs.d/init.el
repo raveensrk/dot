@@ -25,7 +25,7 @@
 ;; ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(advice-add 'list-packages :before 'package-refresh-contents)
+;; (advice-add 'list-packages :before 'package-refresh-contents)
 ;; (setq use-package-always-ensure t) ; This only works with package.el ;; https://github.com/radian-software/straight.el#integration-with-use-package:~:text=Specifying%20%3Astraight%20t%20is%20unnecessary%20if%20you%20set%20straight%2Duse%2Dpackage%2Dby%2Ddefault%20to%20a%20non%2Dnil%20value.%20(Note%20that%20the%20variable%20use%2Dpackage%2Dalways%2Densure%20is%20associated%20with%20package.el%2C%20and%20you%20should%20not%20use%20it%20with%20straight.el.)
 ;;; Use package
 (defalias 'up 'use-package)
@@ -315,9 +315,18 @@
   ("C-x b"   . 'ivy-switch-buffer)
   ("C-c v"   . 'ivy-push-view)
   ("C-c V"   . 'ivy-pop-view))
+
 (up swiper
   :straight t
-  :bind ("C-s" . swiper))
+  :config
+  (defun my-word-at-point ()
+    (interactive)
+    (swiper (word-at-point)))
+  :bind
+  ("C-s" . my-word-at-point)
+  ("ESC ESC *" . my-word-at-point)
+  )
+
 (up counsel
   :straight t
   :bind (
@@ -459,10 +468,10 @@
   :diminish
   :config (projectile-mode +1)
   (defun my-projectile-add-to-known-projects (args)
-       "Add a project to projectile interactively"
-       (interactive "D")
-       (projectile-add-known-project args)
-       )
+    "Add a project to projectile interactively"
+    (interactive "D")
+    (projectile-add-known-project args)
+    )
   :bind
   (:map projectile-mode-map ("ESC ESC p" . projectile-command-map))
   ("ESC ESC p a" . my-projectile-add-to-known-projects)
@@ -645,10 +654,10 @@
   (interactive)
   (switch-to-buffer "*dashboard*"))
 
-(strokes-mode +1)
-(global-set-key (kbd "<down-mouse-3>") 'strokes-do-stroke) ; Draw strokes with RMB
-(setq strokes-use-strokes-buffer t)
-(global-set-key (kbd "ESC ESC e s") 'strokes-global-set-stroke)
+;; TODO (strokes-mode +1)
+;; (global-set-key (kbd "<down-mouse-3>") 'strokes-do-stroke) ; Draw strokes with RMB
+;; (setq strokes-use-strokes-buffer t)
+;; (global-set-key (kbd "ESC ESC e s") 'strokes-global-set-stroke)
 
 (if (string-equal system-type "windows-nt")
     (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
@@ -723,7 +732,8 @@
   :straight t)
 (global-set-key (kbd "ESC ESC a") 'avy-goto-char)
 (global-set-key (kbd "ESC ESC i") 'my-open-init-file)
-(global-set-key (kbd "ESC ESC f") 'ffap)
+(global-set-key (kbd "ESC ESC f f") 'ffap)
+(global-set-key (kbd "ESC ESC f a") 'append-to-file)
 (defun nuke-all-buffers ()
   (interactive)
   (mapcar 'kill-buffer (buffer-list))
@@ -731,7 +741,10 @@
 (global-set-key (kbd "ESC ESC /") 'swiper)
 (global-set-key (kbd "ESC ESC =") 'my-indent-whole-buffer)
 (global-set-key (kbd "ESC ESC K") 'nuke-all-buffers)
-(global-set-key (kbd "ESC ESC b b") 'counsel-buffer-or-recentf)
+(global-set-key (kbd "ESC ESC b b") 'ivy-switch-buffer)(up magit-section
+                                                         :straight t)
+
+;; (global-set-key (kbd "ESC ESC b b") 'counsel-buffer-or-recentf)
 (global-set-key (kbd "ESC ESC b k") 'kill-buffer)
 (global-set-key (kbd "ESC ESC e x") 'eval-last-sexp)
 (global-set-key (kbd "ESC ESC e r") 'eval-region)
@@ -763,4 +776,155 @@
 (setq comint-buffer-maximum-size 10000)
 (global-display-line-numbers-mode +1)
 
+
+(setq magit-repolist-columns
+      '(("Name"    25 magit-repolist-column-ident ())
+        ("Version" 25 magit-repolist-column-version ())
+        ("D"        1 magit-repolist-column-dirty ())
+        ("B<U"      3 magit-repolist-column-unpulled-from-upstream
+         ((:right-align t)
+          (:help-echo "Upstream changes not in branch")))
+        ("B>U"      3 magit-repolist-column-unpushed-to-upstream
+         ((:right-align t)
+          (:help-echo "Local changes not in upstream")))
+        ("Path"    99 magit-repolist-column-path ())))
+
+(up markdown-mode
+  :straight t)
+
+
+(defun my-list-packages ()
+  (interactive)
+  (if (bound-and-true-p my-package-refreshed-once)
+      (list-packages)
+    (package-refresh-contents t)
+    (setq my-package-refreshed-once t)
+    (list-packages)))
+
+(global-set-key (kbd "ESC ESC l") 'my-list-packages)
+
+
+;;; Outline mode extend headings backline
+(up outline-minor-faces
+  :straight t)
+(use-package backline
+  :straight t
+  :after outline
+  :config (advice-add 'outline-flag-region :after 'backline-update)
+  (outline-minor-faces-mode +1))
+(add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
+
+(up magit-section
+  :straight t)
+
+(up smex
+  :straight t)
+
+(use-package back-button
+  :straight t
+  :config
+  (back-button-mode +1))
+
+
+
+
+(setq tmp '(a b c))
+(add-to-list 'tmp 'e t)
+
+
+
+;; https://ruzkuku.com/texts/emacs-mouse.html
+
+(defun highlight-symbol-at-mouse (e)
+  "Highlight symbol at mouse click E."
+  (interactive "e")
+  (save-excursion
+    (mouse-set-point e)
+    (highlight-symbol-at-point)))
+
+(defun context-menu-highlight-symbol (menu click)
+  "Populate MENU with command to search online."
+  (save-excursion
+    (mouse-set-point click)
+    (when (symbol-at-point)
+      (define-key-after menu [highlight-search-separator] menu-bar-separator)
+      (define-key-after menu [highlight-search-mouse]
+        '(menu-item "Highlight Symbol" highlight-symbol-at-mouse
+                    :help "Highlight symbol at point"))))
+  menu)
+
+(add-hook 'context-menu-functions #'context-menu-highlight-symbol)
+
+;; TODO this is not working
+;; (defun duplicate-tab (e)
+;;   "Highlight symbol at mouse click E."
+;;   (interactive "e")
+;;   (save-excursion
+;;     (mouse-set-point e)
+;;     (tab-bar-new-tab)))
+
+;; (defun my-context-menu-duplicate-tab (menu click)
+;;   (save-excursion
+;;     (mouse-set-point click)
+;;     (define-key-after menu [tab-separator] menu-bar-separator)
+;;     (define-key-after menu [tab-seperator-mouse]
+;;       '(menu-item "Duplicate Tab" duplicate-tab
+;;                   :help "Create a duplicate tab")))
+;;   menu)
+
+;; (add-hook 'context-menu-functions #'my-context-menu-duplicate-tab)
+
+
+(defun mouse-online-search-at-point (e)
+  "Search for word at point or selection."
+  (interactive "e")
+  (let ((query (if (use-region-p)
+                   (buffer-substring (region-beginning)
+                                     (region-end))
+                 (save-excursion
+                   (mouse-set-point e)
+                   (thing-at-point 'symbol)))))
+    (unless query
+      (user-error "Nothing to search for"))
+    (browse-url (concat
+                 eww-search-prefix
+                 (mapconcat #'url-hexify-string (split-string query) "+")))))
+
+(defun context-menu-online-search (menu click)
+  "Populate MENU with command to search online."
+  (save-excursion
+    (mouse-set-point click)
+    (define-key-after menu [online-search-separator] menu-bar-separator)
+    (define-key-after menu [online-search-at-mouse]
+      '(menu-item "Online search" mouse-online-search-at-point
+                  :help "Search for region or word online")))
+  menu)
+
+
+(add-hook 'context-menu-functions #'mouse-online-search-at-point)
+
+
+(defun man-at-mouse (e)
+  "Open man manual at point."
+  (interactive "e")
+  (save-excursion
+    (mouse-set-point e)
+    (man (Man-default-man-entry))))
+
+(defun man-context-menu (menu click)
+  "Populate MENU with commands that open a man page at point."
+  (save-excursion
+    (mouse-set-point click)
+    (when (save-excursion
+            (skip-syntax-backward "^ ")
+            (and (looking-at
+                  "[[:space:]]*\\([[:alnum:]_-]+([[:alnum:]]+)\\)")
+                 (match-string 1)))
+      (define-key-after menu [man-separator] menu-bar-separator)
+      (define-key-after menu [man-at-mouse]
+        '(menu-item "Open man page" man-at-mouse
+                    :help "Open man page around mouse click"))))
+  menu)
+
+(add-hook 'context-menu-functions #'man-context-menu)
 
