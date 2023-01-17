@@ -71,6 +71,8 @@
                           (bookmarks . 10)
                           (projects . 5))))
 ;;;; Editing
+(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c c") 'comment-line)))
+
 (setq-default tab-width 4)
 (setq tab-width 4)
 ;; make indent commands use space only (never tab character)
@@ -305,7 +307,7 @@
   :bind (
 	     ;; ("C-c i L" . counsel-git-log)
 	     ("C-c b"   . counsel-bookmark)
-	     ("C-c c"   . counsel-compile)
+	     ;;( "C-c c"   . counsel-compile)
 	     ("C-c d"   . counsel-descbinds)
 	     ;; ("C-c g"   . counsel-git)
 	     ;; ("C-c j"   . counsel-git-grep)
@@ -603,3 +605,15 @@
 (setq outline-minor-mode-cycle t)
 ;;; Others
 (global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
+
+
+(defun switch-to-dashboard-buffer ()
+  (interactive)
+  (switch-to-buffer "*dashboard*"))
+
+(strokes-mode +1)
+(global-set-key (kbd "<down-mouse-3>") 'strokes-do-stroke) ; Draw strokes with RMB
+(setq strokes-use-strokes-buffer t)
+(global-set-key (kbd "C-c s s") 'strokes-global-set-stroke)
+
+
