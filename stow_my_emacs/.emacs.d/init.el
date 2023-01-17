@@ -50,9 +50,6 @@
 (mouse-avoidance-mode 'cat-and-mouse)
 ;; This will set first buffer shown as scratch
 ;; (setq initial-buffer-choice t)
-(global-set-key (kbd "C-c t") 'toggle-truncate-lines)
-(global-set-key (kbd "C-c n") 'tmm-menubar)
-(global-set-key (kbd "C-c m") 'menu-bar-open)
 (toggle-frame-maximized)
 (put 'narrow-to-region 'disabled nil)
 (use-package dashboard
@@ -72,6 +69,8 @@
                           (bookmarks . 10)
                           (projects . 5))))
 ;;;; Editing
+(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "ESC ESC c") 'comment-line)))
+
 (defun my-increment-number-decimal (&optional arg)
   "Increment the number forward from point by 'arg'."
   (interactive "p*")
@@ -87,7 +86,7 @@
             (setq answer (+ (expt 10 field-width) answer)))
           (replace-match (format (concat "%0" (int-to-string field-width) "d")
                                  answer)))))))
-(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c +") 'my-increment-number-decimal)))
+(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "ESC ESC +") 'my-increment-number-decimal)))
 (setq-default tab-width 4)
 (setq tab-width 4)
 ;; make indent commands use space only (never tab character)
@@ -120,7 +119,7 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 200)
 (setq recentf-max-saved-items 200)
-(save-place-mode 1)
+(save-place-mode +1)
 ;;; Mouse Support in Terminal
 ;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
 ;; For linux use (gpm-mouse-mode 1)
@@ -239,11 +238,12 @@
 
 ;; (use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
 (use-package magit :ensure t :bind ("C-x g" . magit-status))
-(unless (package-installed-p 'compat)
-  (package-install 'compat))
+;; (unless (package-installed-p 'compat)
+;;   (package-install 'compat))
 ;; 57834ac3f93aa3c6af02e4484241c59bcbc676d0
 
 (use-package beacon
+  :straight t
   :config
   (beacon-mode 1))
 ;;; Expand region
@@ -298,7 +298,7 @@
 (use-package rainbow-delimiters :straight t :config (rainbow-delimiters-mode 1))
 (use-package avy
   :straight t
-  :bind ("C-c a" . avy-goto-char))
+  :bind ("ESC ESC a" . avy-goto-char))
 ;;; Minibuffer completions
 (use-package marginalia :straight t :config (marginalia-mode 1))
 (up ivy
@@ -322,8 +322,11 @@
   :straight t
   :bind (
 	     ;; ("C-c i L" . counsel-git-log)
-	     ("C-c b"   . counsel-bookmark)
-	     ("C-c c"   . counsel-compile)
+	     ;; ("C-c b"   . counsel-bookmark)
+	     ( "ESC ESC C"   . compile)
+	     ;; ( "ESC ESC C"   . counsel-compile)
+	     ("ESC ESC B"   . counsel-bookmark)
+	     ;;( "C-c c"   . counsel-compile)
 	     ("C-c d"   . counsel-descbinds)
 	     ;; ("C-c g"   . counsel-git)
 	     ;; ("C-c j"   . counsel-git-grep)
@@ -332,12 +335,12 @@
 	     ("C-c o"   . counsel-outline)
 	     ;;( "C-c t"   . counsel-load-theme)
 	     ("C-c w"   . counsel-wmctrl)
-	     ("C-c z"   . counsel-fzf)
+	     ("ESC ESC z"   . counsel-fzf)
 	     ("C-x C-f" . counsel-find-file)
-	     ("C-x l"   . counsel-locate)
+	     ;;( "C-x l"   . counsel-locate)
 	     ("M-x"     . counsel-M-x)
 	     ("C-c fr"  . counsel-recentf)
-	     ("C-c g" . counsel-rg)
+	     ("ESC ESC g" . counsel-rg)
 	     ;;( "C-c er" . restart-emacs)
 	     :map minibuffer-local-map
 	     ("C-r" . counsel-minibuffer-history)
@@ -455,7 +458,15 @@
   :straight t
   :diminish
   :config (projectile-mode +1)
-  :bind (:map projectile-mode-map ("C-c p" . projectile-command-map)))
+  (defun my-projectile-add-to-known-projects (args)
+       "Add a project to projectile interactively"
+       (interactive "D")
+       (projectile-add-known-project args)
+       )
+  :bind
+  (:map projectile-mode-map ("ESC ESC p" . projectile-command-map))
+  ("ESC ESC p a" . my-projectile-add-to-known-projects)
+  )
 (setq projectile-project-search-path nil)
 (setq projectile-auto-discover nil)
 ;;; Evil
@@ -563,6 +574,8 @@
   :straight t
   :defer 5
   :diminish
+  :bind
+  ("ESC ESC y" . 'yas-new-snippet)
   :config
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
   (setq yas-snippet-dirs
@@ -627,6 +640,16 @@
 ;;; Others
 (global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
 
+
+(defun switch-to-dashboard-buffer ()
+  (interactive)
+  (switch-to-buffer "*dashboard*"))
+
+(strokes-mode +1)
+(global-set-key (kbd "<down-mouse-3>") 'strokes-do-stroke) ; Draw strokes with RMB
+(setq strokes-use-strokes-buffer t)
+(global-set-key (kbd "ESC ESC s s") 'strokes-global-set-stroke)
+
 (if (string-equal system-type "windows-nt")
     (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
   (setq my-emacs-root-path "~/.emacs.d"))
@@ -640,6 +663,7 @@
 (up elfeed
   :straight t
   :defer 10
+  :if (file-exists-p "~/.emacs.d/my-packages/rss-feeds.el")
   :config
   (setq my-rss-feed-list "~/.emacs.d/my-packages/rss-feeds.el")
   (load-file my-rss-feed-list)
@@ -651,17 +675,14 @@
     (delete-directory "~/.elfeed" t))
   (advice-add 'elfeed :before 'elfeed-update)
   :bind
-  ("C-c e f f" . elfeed)
-  ("C-c e f e" . elfeed-edit-my-rss-feed-list)
-  ("C-c e f d" . elfeed-db-delete)
+  ("ESC ESC e f f" . elfeed)
+  ("ESC ESC e f e" . elfeed-edit-my-rss-feed-list)
+  ("ESC ESC e f d" . elfeed-db-delete)
   )
 
 (defun my-open-init-file ()
-    (interactive)
+  (interactive)
   (find-file user-init-file))
-
-(global-set-key (kbd "C-c i") 'my-open-init-file)
-(global-set-key (kbd "C-c f f") 'find-file-at-point)
 
 ;; (if (file-exists-p (concat my-emacs-root-path "/" "other-packages/aide/aide.el")))
 ;; (straight-use-package)
@@ -694,29 +715,60 @@
 ;; https://emacsredux.com/blog/2016/01/31/use-tab-to-indent-or-complete/
 ;; (setq tab-always-indent 'complete)
 
-(global-set-key (kbd "ESC ESC h") 'help)
-(global-set-key (kbd "ESC ESC c") 'comment-line)
-(global-set-key (kbd "ESC ESC e x") 'eval-last-sexp)
-(global-set-key (kbd "ESC ESC r") 'restart-emacs)
-(global-set-key (kbd "ESC ESC e f") 'elfeed)
-(global-set-key (kbd "ESC ESC e e") 'elfeed-edit-my-rss-feed-list)
 (up crux
   :straight t)
 (up web-mode
   :straight t)
-(global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region)
-(global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
 (global-set-key (kbd "ESC ESC a") 'avy-goto-char)
 (global-set-key (kbd "ESC ESC i") 'my-open-init-file)
 (global-set-key (kbd "ESC ESC f") 'ffap)
-(global-set-key (kbd "ESC ESC /") 'swiper)
-(global-set-key (kbd "ESC ESC b") 'counsel-buffer-or-recentf)
-(global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
+  :straight t
+  :config
+  (global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
+  (global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region)
+  )
 
-(setq auto-save-visited-interval 1)
-(auto-save-visited-mode +1)
+(defun nuke-all-buffers ()
+  (interactive)
+  (mapcar 'kill-buffer (buffer-list))
+  (delete-other-windows))
+
+(global-set-key (kbd "ESC ESC /") 'swiper)
+(global-set-key (kbd "ESC ESC =") 'my-indent-whole-buffer)
+(global-set-key (kbd "ESC ESC K") 'nuke-all-buffers)
+(global-set-key (kbd "ESC ESC b b") 'counsel-buffer-or-recentf)
+(global-set-key (kbd "ESC ESC b k") 'kill-buffer)
+(global-set-key (kbd "ESC ESC e x") 'eval-last-sexp)
+(global-set-key (kbd "ESC ESC e r") 'eval-region)
+(global-set-key (kbd "ESC ESC f") 'ffap)
+(global-set-key (kbd "ESC ESC h") 'help)
+(global-set-key (kbd "ESC ESC i") 'my-open-init-file)
+(global-set-key (kbd "ESC ESC m") 'menu-bar-open)
+(global-set-key (kbd "ESC ESC o") 'delete-other-windows)
+(global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
 
 
 
 (global-set-key (kbd "ESC ESC m m") 'magit)
 (global-set-key (kbd "ESC ESC m l") 'magit-list-repositories)
+(global-set-key (kbd "ESC ESC r") 'restart-emacs)
+(global-set-key (kbd "ESC ESC s") 'split-window-below)
+(global-set-key (kbd "ESC ESC t") 'toggle-truncate-lines)
+(global-set-key (kbd "ESC ESC v") 'split-window-right)
+(global-set-key (kbd "ESC ESC x d") 'dired)
+
+;;; Autosave files every 1 second if visited and changed
+(setq auto-save-visited-interval 1)
+(auto-save-visited-mode +1)
+(setq large-file-warning-threshold 100000000)
+(setq auto-revert-interval 1)
+(if (version< emacs-version "28.1")
+    (message "Emacs version is older than 28.1")
+  (progn
+    (message "Emacs version is 28.1 or newer")
+    (context-menu-mode +1)))
+
+(add-hook 'compilation-filter-hook 'comint-truncate-buffer)
+(setq comint-buffer-maximum-size 10000)
+
+(global-display-line-numbers-mode +1)

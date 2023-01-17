@@ -95,27 +95,22 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias ei="e ~/.emacs"
-alias eek="emacsclient -e \"(server-force-delete)\""
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
-alias ,emacsconfigs="emacs -nw ~/my_repos/dotfiles-main/doom_emacs/.doom.d/config.org"
 alias ,exp="explorer.exe"
-
-unset e
-unset -f e
-e () {
-    set -x
+alias ed="emacs -nw --daemon"
+alias ek="emacs -nw -Q --eval \"(progn (server-force-delete) (save-buffers-kill-terminal))\""
+ec () {
     if [[ $* == "" ]]; then
-        emacsclient -c -e "(recentf-open-files)"
+        emacsclient -nw --eval "(switch-to-dashboard-buffer)"
     else
         # shellcheck disable=SC2068
         $EDITOR $@
     fi
-    set +x
 }
+alias e=ec
 
 # This will cd and do ls but sometimes it gets broken
 
@@ -207,7 +202,8 @@ fi
 # export ALTERNATE_EDITOR="emacs -nw"
 # export VISUAL="emacsclient -c"
 # export EDITOR="emacsclient -c"
-export EDITOR="vim"
+export EDITOR="emacsclient -nw"
+alias e="$EDITOR"
 
 ,magit () {
     emacs --eval "(progn (magit)  (delete-other-windows))" &
