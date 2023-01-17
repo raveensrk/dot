@@ -458,7 +458,8 @@
   :straight t
   :diminish
   :config (projectile-mode +1)
-  :bind (:map projectile-mode-map ("C-c p" . projectile-command-map)))
+  :bind
+  (:map projectile-mode-map ("ESC ESC p" . projectile-command-map)))
 (setq projectile-project-search-path nil)
 (setq projectile-auto-discover nil)
 ;;; Evil
@@ -566,15 +567,19 @@
   :straight t
   :defer 10
   :diminish
+  :bind
+  ("ESC ESC y" . 'yas-new-snippet)
   :config
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
   (setq yas-snippet-dirs
         '("~/.emacs.d/snippets/"                 ;; personal snippets
           "c:/my_repos/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
-          ))
-  (up yasnippet-snippets
-    :straight t
-    :diminish))
+          )))
+(up yasnippet-snippets
+  :after yasnippet
+  :straight t
+  :diminish)
+
 ;;; fzf
 (use-package fzf
   :straight t
@@ -735,13 +740,12 @@
 (global-set-key (kbd "ESC ESC x d") 'dired)
 
 ;;; Autosave files every 1 second if visited and changed
-(auto-save-mode +1)
-(setq auto-save-interval 100) ;; 100 is 1 second
+;; (auto-save-mode +1)
 (auto-save-visited-mode +1)
-(setq auto-save-visited-interval 100) ;; 100 is 1 second
+;; (setq auto-save-interval 20)
+(setq auto-save-visited-interval 1)
 (setq large-file-warning-threshold 100000000)
 (setq auto-revert-interval 1)
-
 (if (version< emacs-version "28.1")
     (message "Emacs version is older than 28.1")
   (progn
