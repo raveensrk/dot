@@ -458,8 +458,15 @@
   :straight t
   :diminish
   :config (projectile-mode +1)
+  (defun my-projectile-add-to-known-projects (args)
+       "Add a project to projectile interactively"
+       (interactive "D")
+       (projectile-add-known-project args)
+       )
   :bind
-  (:map projectile-mode-map ("ESC ESC p" . projectile-command-map)))
+  (:map projectile-mode-map ("ESC ESC p" . projectile-command-map))
+  ("ESC ESC p a" . my-projectile-add-to-known-projects)
+  )
 (setq projectile-project-search-path nil)
 (setq projectile-auto-discover nil)
 ;;; Evil
@@ -731,7 +738,6 @@
 (global-set-key (kbd "ESC ESC i") 'my-open-init-file)
 (global-set-key (kbd "ESC ESC m") 'menu-bar-open)
 (global-set-key (kbd "ESC ESC o") 'delete-other-windows)
-(global-set-key (kbd "ESC ESC p") 'projectile-switch-project)
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
 (global-set-key (kbd "ESC ESC r") 'restart-emacs)
 (global-set-key (kbd "ESC ESC s") 'split-window-below)
