@@ -1,8 +1,12 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+" " Track the engine.
+" Plug 'SirVer/ultisnips'
+" " Snippets are separated from the engine. Add this if you want them:
+" Plug 'honza/vim-snippets'
+" Plug 'git@github.com:junegunn/limelight.vim'
 Plug 'rstacruz/vim-xtract'
-Plug 'preservim/nerdtree'
-Plug 'git@github.com:junegunn/limelight.vim'
+" Plug 'preservim/nerdtree'
 Plug 'mhinz/vim-startify'
 Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
 Plug 'git@github.com:tpope/vim-sensible'
@@ -67,6 +71,16 @@ Plug 'git@github.com:ledger/vim-ledger'
 Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 
 call plug#end()
+"{{{1 Plugin configs
+" " Trigger configuration. You need to change this to something other than <tab>
+" " if you use one of the following:
+" " " - https://github.com/Valloric/YouCompleteMe
+" " " - https://github.com/nvim-lua/completion-nvim
+" let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" " If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsEditSplit="vertical"
 
 " MBE
 " MiniBufExpl Colors
@@ -128,19 +142,19 @@ set background=dark
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 " }}}
 " {{{1 NERDTree
-nnoremap <leader>n :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
-" Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-" Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+" "nnoremap <leader>n :NERDTreeFocus<CR>
+" "nnoremap <C-n> :NERDTree<CR>
+" "nnoremap <C-t> :NERDTreeToggle<CR>
+" "nnoremap <C-f> :NERDTreeFind<CR>
+" "" Exit Vim if NERDTree is the only window remaining in the only tab.
+\" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+"  Close the tab if NERDTree is the only window remaining in it.
+" "autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" "" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+\" autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+\"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+"  Open the existing NERDTree on each new tab.
+" "autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
 " {{{ Limelight
 " nmap <Leader>l <Plug>(Limelight)

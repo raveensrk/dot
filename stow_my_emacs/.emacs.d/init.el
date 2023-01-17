@@ -25,6 +25,7 @@
 ;; ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(advice-add 'list-packages :before 'package-refresh-contents)
 ;; (setq use-package-always-ensure t) ; This only works with package.el ;; https://github.com/radian-software/straight.el#integration-with-use-package:~:text=Specifying%20%3Astraight%20t%20is%20unnecessary%20if%20you%20set%20straight%2Duse%2Dpackage%2Dby%2Ddefault%20to%20a%20non%2Dnil%20value.%20(Note%20that%20the%20variable%20use%2Dpackage%2Dalways%2Densure%20is%20associated%20with%20package.el%2C%20and%20you%20should%20not%20use%20it%20with%20straight.el.)
 ;;; Use package
 (defalias 'up 'use-package)
@@ -73,6 +74,22 @@
 ;;;; Editing
 (add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c c") 'comment-line)))
 
+(defun my-increment-number-decimal (&optional arg)
+  "Increment the number forward from point by 'arg'."
+  (interactive "p*")
+  (save-excursion
+    (save-match-data
+      (let (inc-by field-width answer)
+        (setq inc-by (if arg arg 1))
+        (skip-chars-backward "0123456789")
+        (when (re-search-forward "[0-9]+" nil t)
+          (setq field-width (- (match-end 0) (match-beginning 0)))
+          (setq answer (+ (string-to-number (match-string 0) 10) inc-by))
+          (when (< answer 0)
+            (setq answer (+ (expt 10 field-width) answer)))
+          (replace-match (format (concat "%0" (int-to-string field-width) "d")
+                                 answer)))))))
+(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c +") 'my-increment-number-decimal)))
 (setq-default tab-width 4)
 (setq tab-width 4)
 ;; make indent commands use space only (never tab character)
@@ -114,7 +131,7 @@
 ;;; Appearence
 (setq cursor-type 'bar)
 
-(setq toggle-truncate-lines +1)
+(setq-default truncate-lines +1)
 (up git-gutter
   :straight t
   :config
@@ -234,6 +251,7 @@
 ;;; Expand region
 (use-package expand-region
   :straight t
+  :ensure t
   :bind
   ("C-=" . er/expand-region)
   ("C--" . er/contract-region)
@@ -322,7 +340,7 @@
 	     ("M-x"     . counsel-M-x)
 	     ("C-c fr"  . counsel-recentf)
 	     ("C-c g" . counsel-rg)
-	     ("C-c er" . restart-emacs)
+	     ;;( "C-c er" . restart-emacs)
 	     :map minibuffer-local-map
 	     ("C-r" . counsel-minibuffer-history)
 	     ))
@@ -330,9 +348,9 @@
 (setq dired-dwim-target t)
 (setq dired-hide-details-hide-information-lines t)
 (setq dired-hide-details-hide-symlink-targets t)
-
 (setq dired-kill-when-opening-new-dired-buffer nil)
-(global-set-key (kbd "C-c +") 'dired-create-empty-file)
+(add-hook 'dired-mode-hook (lambda () (define-key dired-mode-map (kbd "C-c +") 'dired-create-empty-file)))
+
 (defun dired-dotfiles-toggle ()
   "Show/hide dot-files"
   (interactive)
@@ -576,7 +594,9 @@
         fzf/position-bottom t
         fzf/window-height 15))
 ;;; Convenience
-(up restart-emacs :straight t)
+(up restart-emacs
+  :straight t
+  :bind ("C-c r" . restart-emacs))
 (up format-all
   :straight t
   :diminish
@@ -617,3 +637,86 @@
 (global-set-key (kbd "C-c s s") 'strokes-global-set-stroke)
 
 
+(if (string-equal system-type "windows-nt")
+    (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
+  (setq my-emacs-root-path "~/.emacs.d"))
+
+(defun read-lines-from-file-as-list (file-path)
+  "Return a quoted list of lines of a file at FILE-PATH."
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (mapcar (lambda (line) (format "%s" line)) (split-string (buffer-string) "\n" t))))
+
+(up elfeed
+  :straight t
+  :defer 10
+  :config
+  (setq my-rss-feed-list "~/.emacs.d/my-packages/rss-feeds.el")
+  (load-file my-rss-feed-list)
+  (defun elfeed-edit-my-rss-feed-list ()
+    (interactive)
+    (find-file my-rss-feed-list))
+  (defun elfeed-db-delete ()
+    (interactive)
+    (delete-directory "~/.elfeed" t))
+  (advice-add 'elfeed :before 'elfeed-update)
+  :bind
+  ("C-c e f f" . elfeed)
+  ("C-c e f e" . elfeed-edit-my-rss-feed-list)
+  ("C-c e f d" . elfeed-db-delete)
+  )
+
+(defun my-open-init-file ()
+    (interactive)
+  (find-file user-init-file))
+
+(global-set-key (kbd "C-c i") 'my-open-init-file)
+(global-set-key (kbd "C-c f f") 'find-file-at-point)
+
+;; (if (file-exists-p (concat my-emacs-root-path "/" "other-packages/aide/aide.el")))
+;; (straight-use-package)
+
+(straight-use-package
+ '(aide :type git :host github :repo "junjizhi/aide.el"))
+(up request :straight t)
+(up aide
+  :config
+  ;; TODO get this from an environment variable (setq openai-api-key "my-api-key")
+  (setq aide-max-tokens 200))
+
+(up persistent-scratch
+  :straight t
+  :config
+  (persistent-scratch-setup-default))
+
+
+(defun er-copy-file-name-to-clipboard ()
+  "Copy the current buffer file name to the clipboard."
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (kill-new filename)
+      (message "Copied buffer file name '%s' to the clipboard." filename))))
+
+
+;; https://emacsredux.com/blog/2016/01/31/use-tab-to-indent-or-complete/
+;; (setq tab-always-indent 'complete)
+
+(global-set-key (kbd "ESC ESC h") 'help)
+(global-set-key (kbd "ESC ESC c") 'comment-line)
+(global-set-key (kbd "ESC ESC e x") 'eval-last-sexp)
+(global-set-key (kbd "ESC ESC r") 'restart-emacs)
+(global-set-key (kbd "ESC ESC e f") 'elfeed)
+(global-set-key (kbd "ESC ESC e e") 'elfeed-edit-my-rss-feed-list)
+(up crux
+  :straight t)
+(global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region)
+(global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
+(global-set-key (kbd "ESC ESC a") 'avy-goto-char)
+(global-set-key (kbd "ESC ESC i") 'my-open-init-file)
+(global-set-key (kbd "ESC ESC f") 'ffap)
+(global-set-key (kbd "ESC ESC /") 'swiper)
+(global-set-key (kbd "ESC ESC b") 'counsel-buffer-or-recentf)
+(global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
