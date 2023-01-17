@@ -50,9 +50,6 @@
 (mouse-avoidance-mode 'cat-and-mouse)
 ;; This will set first buffer shown as scratch
 ;; (setq initial-buffer-choice t)
-(global-set-key (kbd "C-c t") 'toggle-truncate-lines)
-(global-set-key (kbd "C-c n") 'tmm-menubar)
-(global-set-key (kbd "C-c m") 'menu-bar-open)
 (toggle-frame-maximized)
 (put 'narrow-to-region 'disabled nil)
 (use-package dashboard
@@ -72,7 +69,7 @@
                           (bookmarks . 10)
                           (projects . 5))))
 ;;;; Editing
-(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c c") 'comment-line)))
+(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "ESC ESC c") 'comment-line)))
 
 (defun my-increment-number-decimal (&optional arg)
   "Increment the number forward from point by 'arg'."
@@ -89,7 +86,7 @@
             (setq answer (+ (expt 10 field-width) answer)))
           (replace-match (format (concat "%0" (int-to-string field-width) "d")
                                  answer)))))))
-(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c +") 'my-increment-number-decimal)))
+(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "ESC ESC +") 'my-increment-number-decimal)))
 (setq-default tab-width 4)
 (setq tab-width 4)
 ;; make indent commands use space only (never tab character)
@@ -300,7 +297,7 @@
 (use-package rainbow-delimiters :straight t :config (rainbow-delimiters-mode 1))
 (use-package avy
   :straight t
-  :bind ("C-c a" . avy-goto-char))
+  :bind ("ESC ESC a" . avy-goto-char))
 ;;; Minibuffer completions
 (use-package marginalia :straight t :config (marginalia-mode 1))
 (up ivy
@@ -324,7 +321,8 @@
   :straight t
   :bind (
 	     ;; ("C-c i L" . counsel-git-log)
-	     ("C-c b"   . counsel-bookmark)
+	     ("ESC ESC B"   . counsel-bookmark)
+         ("ESC ESC b" . 'counsel-buffer-or-recentf)
 	     ;;( "C-c c"   . counsel-compile)
 	     ("C-c d"   . counsel-descbinds)
 	     ;; ("C-c g"   . counsel-git)
@@ -334,12 +332,12 @@
 	     ("C-c o"   . counsel-outline)
 	     ;;( "C-c t"   . counsel-load-theme)
 	     ("C-c w"   . counsel-wmctrl)
-	     ("C-c z"   . counsel-fzf)
+	     ("ESC ESC z"   . counsel-fzf)
 	     ("C-x C-f" . counsel-find-file)
-	     ("C-x l"   . counsel-locate)
+	     ;;( "C-x l"   . counsel-locate)
 	     ("M-x"     . counsel-M-x)
 	     ("C-c fr"  . counsel-recentf)
-	     ("C-c g" . counsel-rg)
+	     ("ESC ESC g" . counsel-rg)
 	     ;;( "C-c er" . restart-emacs)
 	     :map minibuffer-local-map
 	     ("C-r" . counsel-minibuffer-history)
@@ -634,8 +632,7 @@
 (strokes-mode +1)
 (global-set-key (kbd "<down-mouse-3>") 'strokes-do-stroke) ; Draw strokes with RMB
 (setq strokes-use-strokes-buffer t)
-(global-set-key (kbd "C-c s s") 'strokes-global-set-stroke)
-
+(global-set-key (kbd "ESC ESC s s") 'strokes-global-set-stroke)
 
 (if (string-equal system-type "windows-nt")
     (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
@@ -661,17 +658,14 @@
     (delete-directory "~/.elfeed" t))
   (advice-add 'elfeed :before 'elfeed-update)
   :bind
-  ("C-c e f f" . elfeed)
-  ("C-c e f e" . elfeed-edit-my-rss-feed-list)
-  ("C-c e f d" . elfeed-db-delete)
+  ("ESC e f f" . elfeed)
+  ("ESC e f e" . elfeed-edit-my-rss-feed-list)
+  ("ESC e f d" . elfeed-db-delete)
   )
 
 (defun my-open-init-file ()
-    (interactive)
+  (interactive)
   (find-file user-init-file))
-
-(global-set-key (kbd "C-c i") 'my-open-init-file)
-(global-set-key (kbd "C-c f f") 'find-file-at-point)
 
 ;; (if (file-exists-p (concat my-emacs-root-path "/" "other-packages/aide/aide.el")))
 ;; (straight-use-package)
@@ -704,19 +698,28 @@
 ;; https://emacsredux.com/blog/2016/01/31/use-tab-to-indent-or-complete/
 ;; (setq tab-always-indent 'complete)
 
-(global-set-key (kbd "ESC ESC h") 'help)
-(global-set-key (kbd "ESC ESC c") 'comment-line)
-(global-set-key (kbd "ESC ESC e x") 'eval-last-sexp)
-(global-set-key (kbd "ESC ESC r") 'restart-emacs)
-(global-set-key (kbd "ESC ESC e f") 'elfeed)
-(global-set-key (kbd "ESC ESC e e") 'elfeed-edit-my-rss-feed-list)
 (up crux
-  :straight t)
-(global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region)
-(global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
-(global-set-key (kbd "ESC ESC a") 'avy-goto-char)
-(global-set-key (kbd "ESC ESC i") 'my-open-init-file)
-(global-set-key (kbd "ESC ESC f") 'ffap)
+  :straight t
+  :bind
+  (global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
+  (global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region)
+  )
+
 (global-set-key (kbd "ESC ESC /") 'swiper)
-(global-set-key (kbd "ESC ESC b") 'counsel-buffer-or-recentf)
+(global-set-key (kbd "ESC ESC e x") 'eval-last-sexp)
+(global-set-key (kbd "ESC ESC f") 'ffap)
+(global-set-key (kbd "ESC ESC h") 'help)
+(global-set-key (kbd "ESC ESC i") 'my-open-init-file)
+(global-set-key (kbd "ESC ESC o") 'delete-other-windows)
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
+(global-set-key (kbd "ESC ESC r") 'restart-emacs)
+(global-set-key (kbd "ESC ESC s") 'split-window-below)
+(global-set-key (kbd "ESC ESC v") 'split-window-right)
+(global-set-key (kbd "ESC ESC m") 'menu-bar-open)
+(global-set-key (kbd "ESC ESC t") 'toggle-truncate-lines)
+(global-set-key (kbd "ESC ESC =") 'my-indent-whole-buffer)
+(global-set-key (kbd "ESC ESC x d") 'dired)
+
+;;; Autosave files every 1 second if visited and changed
+(auto-save-visited-mode +1)
+(setq auto-save-visited-interval 1)
