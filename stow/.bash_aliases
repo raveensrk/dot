@@ -95,8 +95,8 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias ei="e ~/.emacs"
-alias eek="emacsclient -e \"(server-force-delete)\""
+alias ed="emacs --daemon"
+alias eck="emacsclient -nw -e \"(server-force-delete)\""
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
@@ -207,7 +207,8 @@ fi
 # export ALTERNATE_EDITOR="emacs -nw"
 # export VISUAL="emacsclient -c"
 # export EDITOR="emacsclient -c"
-export EDITOR="vim"
+export EDITOR="emacsclient -nw"
+alias e="$EDITOR"
 
 ,magit () {
     emacs --eval "(progn (magit)  (delete-other-windows))" &
@@ -395,5 +396,8 @@ fi
 # {{{1 TODO IDEAS
 # TODO Restart vim
 # https://stackoverflow.com/questions/43113569/how-to-close-vim-editor-with-non-zero-return-value
-
 alias chop="tr ' ' '\n'"
+# {{{1 GIT
+git config --global pull.rebase true
+# {{{1 Other
+alias srun_fast="srun --pty --cpus-per-task=4 --mem=8192 --cpu-freq=3400"
