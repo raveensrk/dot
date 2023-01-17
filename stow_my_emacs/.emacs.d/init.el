@@ -648,7 +648,7 @@
 (strokes-mode +1)
 (global-set-key (kbd "<down-mouse-3>") 'strokes-do-stroke) ; Draw strokes with RMB
 (setq strokes-use-strokes-buffer t)
-(global-set-key (kbd "ESC ESC s s") 'strokes-global-set-stroke)
+(global-set-key (kbd "ESC ESC e s") 'strokes-global-set-stroke)
 
 (if (string-equal system-type "windows-nt")
     (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
@@ -700,7 +700,6 @@
   :config
   (persistent-scratch-setup-default))
 
-
 (defun er-copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
@@ -716,23 +715,19 @@
 ;; (setq tab-always-indent 'complete)
 
 (up crux
-  :straight t)
+  :straight t
+  :config
+  (global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
+  (global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region))
 (up web-mode
   :straight t)
 (global-set-key (kbd "ESC ESC a") 'avy-goto-char)
 (global-set-key (kbd "ESC ESC i") 'my-open-init-file)
 (global-set-key (kbd "ESC ESC f") 'ffap)
-  :straight t
-  :config
-  (global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
-  (global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region)
-  )
-
 (defun nuke-all-buffers ()
   (interactive)
   (mapcar 'kill-buffer (buffer-list))
   (delete-other-windows))
-
 (global-set-key (kbd "ESC ESC /") 'swiper)
 (global-set-key (kbd "ESC ESC =") 'my-indent-whole-buffer)
 (global-set-key (kbd "ESC ESC K") 'nuke-all-buffers)
@@ -743,12 +738,9 @@
 (global-set-key (kbd "ESC ESC f") 'ffap)
 (global-set-key (kbd "ESC ESC h") 'help)
 (global-set-key (kbd "ESC ESC i") 'my-open-init-file)
-(global-set-key (kbd "ESC ESC m") 'menu-bar-open)
 (global-set-key (kbd "ESC ESC o") 'delete-other-windows)
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
-
-
-
+(global-set-key (kbd "ESC ESC e m") 'menu-bar-open)
 (global-set-key (kbd "ESC ESC m m") 'magit)
 (global-set-key (kbd "ESC ESC m l") 'magit-list-repositories)
 (global-set-key (kbd "ESC ESC r") 'restart-emacs)
@@ -767,8 +759,8 @@
   (progn
     (message "Emacs version is 28.1 or newer")
     (context-menu-mode +1)))
-
 (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
 (setq comint-buffer-maximum-size 10000)
-
 (global-display-line-numbers-mode +1)
+
+
