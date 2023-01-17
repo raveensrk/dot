@@ -95,8 +95,8 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
-alias ei="e ~/.emacs"
-alias eek="emacsclient -e \"(server-force-delete)\""
+alias ed="emacs --daemon"
+alias eck="emacsclient -nw -e \"(server-force-delete)\""
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
@@ -207,7 +207,8 @@ fi
 # export ALTERNATE_EDITOR="emacs -nw"
 # export VISUAL="emacsclient -c"
 # export EDITOR="emacsclient -c"
-export EDITOR="vim"
+export EDITOR="emacsclient -nw"
+alias e="$EDITOR"
 
 ,magit () {
     emacs --eval "(progn (magit)  (delete-other-windows))" &
