@@ -33,4 +33,4 @@ else
 fi
 
 vim -c "PlugInstall | PlugClean | qa"
-tldr -u
+# tldr -u
