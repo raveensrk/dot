@@ -325,7 +325,8 @@
   :bind (
 	     ;; ("C-c i L" . counsel-git-log)
 	     ("C-c b"   . counsel-bookmark)
-	     ;;( "C-c c"   . counsel-compile)
+	     ( "ESC ESC C"   . compile)
+	     ;; ( "ESC ESC C"   . counsel-compile)
 	     ("C-c d"   . counsel-descbinds)
 	     ;; ("C-c g"   . counsel-git)
 	     ;; ("C-c j"   . counsel-git-grep)
@@ -718,5 +719,15 @@
 (global-set-key (kbd "ESC ESC i") 'my-open-init-file)
 (global-set-key (kbd "ESC ESC f") 'ffap)
 (global-set-key (kbd "ESC ESC /") 'swiper)
-(global-set-key (kbd "ESC ESC b") 'counsel-buffer-or-recentf)
+(global-set-key (kbd "ESC ESC b b") 'counsel-buffer-or-recentf)
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
+(global-set-key (kbd "ESC ESC p") 'projectile-switch-project)
+(global-set-key (kbd "ESC ESC b k") 'kill-buffer)
+
+(defun nuke-all-buffers ()
+  (interactive)
+  (mapcar 'kill-buffer (buffer-list))
+  (delete-other-windows))
+
+(global-set-key (kbd "ESC ESC K") 'nuke-all-buffers)
+
