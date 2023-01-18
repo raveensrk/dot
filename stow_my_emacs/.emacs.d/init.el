@@ -1,3 +1,12 @@
+;; Emacs versions supported
+;; 28.2
+(message (concat "EMACS VERSION: " (version)))
+(if (version< emacs-version "28.2")
+    (progn
+      (message "Current version: %s is not supported. Exiting..." emacs-version)
+      (save-buffers-kill-emacs)))
+  
+
 ;;; Straight
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -942,3 +951,9 @@
  )
 
 (global-set-key (kbd "ESC ESC b o") 'ivy-switch-buffer-other-window)
+
+(if (string-equal system-type "windows-nt")
+    (progn
+      (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
+      (prefer-coding-system 'utf-8)))
+
