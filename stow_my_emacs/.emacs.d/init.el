@@ -970,3 +970,6 @@ Saves to a temp file and puts the filename in the kill ring."
       browse-kill-ring-show-preview t)
 (define-key browse-kill-ring-mode-map (kbd "j") 'browse-kill-ring-forward)
 (define-key browse-kill-ring-mode-map (kbd "k") 'browse-kill-ring-previous))
+
+;; TODO https://github.com/Malabarba/spinner.el
+;; https://github.com/ferfebles/redtick
