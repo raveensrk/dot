@@ -957,3 +957,8 @@
       (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
       (prefer-coding-system 'utf-8)))
 
+
+;; Load all files in my-pacakges directory if it exists
+(if (file-directory-p "~/.emacs.d/my-packages")
+    (mapc 'load-file (directory-files-recursively "~/.emacs.d/my-packages" ".*\.el")))
+
