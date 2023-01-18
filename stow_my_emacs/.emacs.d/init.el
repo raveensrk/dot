@@ -973,3 +973,4 @@ Saves to a temp file and puts the filename in the kill ring."
 
 ;; TODO https://github.com/Malabarba/spinner.el
 ;; https://github.com/ferfebles/redtick
+(setq magit-repository-directories '(("~/my_repos" . 1)))
