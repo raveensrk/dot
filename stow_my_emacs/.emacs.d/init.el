@@ -59,7 +59,7 @@
 (mouse-avoidance-mode 'cat-and-mouse)
 ;; This will set first buffer shown as scratch
 ;; (setq initial-buffer-choice t)
-(toggle-frame-maximized)
+;; (toggle-frame-maximized)
 (put 'narrow-to-region 'disabled nil)
 (use-package dashboard
   :straight t
@@ -575,7 +575,7 @@
     (evil-paste-after 1)
     ))
 ;;; Maximize frame after starting emacsclient
-(add-hook 'server-after-make-frame-hook 'toggle-frame-maximized)
+;; (add-hook 'server-after-make-frame-hook 'toggle-frame-maximized)
 ;;; Load all elisp files under ~/.emacs.d/site-lisp
 ;; (setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
 
