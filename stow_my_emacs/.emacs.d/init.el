@@ -144,10 +144,10 @@
   :config
   (unicode-fonts-setup))
 (global-prettify-symbols-mode +1)
-(use-package emojify
-  :straight t
-  :defer 10
-  :hook (after-init . global-emojify-mode))
+;; (use-package emojify
+;;   :straight t
+;;   :defer 10
+;;   :hook (after-init . global-emojify-mode))
 (use-package centaur-tabs
   :straight t
   ;; https://github.com/ema2159/centaur-tabs
