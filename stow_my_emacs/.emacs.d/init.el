@@ -146,17 +146,17 @@
   )
 (setq display-line-numbers 'visual)
 (setq display-line-numbers-type 'visual)
-(use-package unicode-fonts
-  :straight t
-  :defer 10
-  :ensure t
-  :config
-  (unicode-fonts-setup))
+;; (use-package unicode-fonts
+;;   :straight t
+;;   :defer 10
+;;   :ensure t
+;;   :config
+;;   (unicode-fonts-setup))
 (global-prettify-symbols-mode +1)
-(use-package emojify
-  :straight t
-  :defer 10
-  :hook (after-init . global-emojify-mode))
+;; (use-package emojify
+;;   :straight t
+;;   :defer 10
+;;   :hook (after-init . global-emojify-mode))
 
 
 ;; Reference
@@ -169,7 +169,7 @@
   ;; Nyan mode
   ;; https://github.com/TeMPOraL/nyan-mode
   :config
-  (nyan-mode)
+  (nyan-mode +1)
   )
 (up zoom
   :straight t
@@ -478,73 +478,73 @@
 (add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
 (add-hook 'Custom-mode-hook 'turn-off-evil-mode)
 
-;;;; UNDO
-;; Vim style undo not needed for emacs 28
-(use-package undo-fu
-  :disabled t
-  :straight t)
-;;;; Vim Bindings
-(use-package evil
-  :disabled t
-  :straight t
-  :demand t
-  :bind (("<escape>" . keyboard-escape-quit))
-  :init
-  ;; allows for using cgn
-  ;; (setq evil-search-module 'evil-search)
-  (setq evil-want-keybinding nil)
-  ;; no vim insert bindings
-  (setq evil-undo-system 'undo-fu)
-  :config
-  (evil-mode 1))
-;;;; Vim Bindings Everywhere else
-(use-package evil-collection
-  :after evil
-  :straight t
-  :config
-  (setq evil-want-integration t)
-  (evil-collection-init))
-;;;; Evil leader
-(up evil-leader
-  :straight t
-  :after evil
-  :config
-  (global-evil-leader-mode 1)
-  (evil-leader/set-leader "<SPC>")
-  (evil-leader/set-key
-    "y" 'copy-whole-buffer
-    "=" 'my-indent-whole-buffer
-    "b" 'switch-to-buffer
-    "fr" 'counsel-recentf
-    "ff" 'counsel-find-file
-    "r" 'restart-emacs
-    "pl" 'package-list-packages
-    "pi" 'my-package-refresh-and-install-selected-packages
-    "h" 'help
-    "d" 'dired
-    "w" 'my-indent-whole-buffer-and-save
-    "q" 'save-buffers-kill-terminal
-    "i" 'my-find-init-file
-    "+" 'text-scale-increase
-    "-" 'text-scale-decrease
-    "x" 'execute-extended-command
-    "." 'embark-act
-    ";" 'embark-dwim
-    "B" 'embark-bindings
-    "s" 'swiper
-    "lr" 'ledger-report
-    "a" 'mark-whole-buffer
-    "pp" 'evil-paste-after-newline
-    "c" 'comment-region
-    "y" 'copy-whole-buffer
-    )
-  )
-(defun evil-paste-after-newline ()
-  (interactive)
-  (progn
-    (evil-insert-newline-below)
-    (evil-paste-after 1)
-    ))
+;; ;;;; UNDO
+;; ;; Vim style undo not needed for emacs 28
+;; (use-package undo-fu
+;;   :disabled t
+;;   :straight t)
+;; ;;;; Vim Bindings
+;; (use-package evil
+;;   :disabled t
+;;   :straight t
+;;   :demand t
+;;   :bind (("<escape>" . keyboard-escape-quit))
+;;   :init
+;;   ;; allows for using cgn
+;;   ;; (setq evil-search-module 'evil-search)
+;;   (setq evil-want-keybinding nil)
+;;   ;; no vim insert bindings
+;;   (setq evil-undo-system 'undo-fu)
+;;   :config
+;;   (evil-mode 1))
+;; ;;;; Vim Bindings Everywhere else
+;; (use-package evil-collection
+;;   :after evil
+;;   :straight t
+;;   :config
+;;   (setq evil-want-integration t)
+;;   (evil-collection-init))
+;; ;;;; Evil leader
+;; (up evil-leader
+;;   :straight t
+;;   :after evil
+;;   :config
+;;   (global-evil-leader-mode 1)
+;;   (evil-leader/set-leader "<SPC>")
+;;   (evil-leader/set-key
+;;     "y" 'copy-whole-buffer
+;;     "=" 'my-indent-whole-buffer
+;;     "b" 'switch-to-buffer
+;;     "fr" 'counsel-recentf
+;;     "ff" 'counsel-find-file
+;;     "r" 'restart-emacs
+;;     "pl" 'package-list-packages
+;;     "pi" 'my-package-refresh-and-install-selected-packages
+;;     "h" 'help
+;;     "d" 'dired
+;;     "w" 'my-indent-whole-buffer-and-save
+;;     "q" 'save-buffers-kill-terminal
+;;     "i" 'my-find-init-file
+;;     "+" 'text-scale-increase
+;;     "-" 'text-scale-decrease
+;;     "x" 'execute-extended-command
+;;     "." 'embark-act
+;;     ";" 'embark-dwim
+;;     "B" 'embark-bindings
+;;     "s" 'swiper
+;;     "lr" 'ledger-report
+;;     "a" 'mark-whole-buffer
+;;     "pp" 'evil-paste-after-newline
+;;     "c" 'comment-region
+;;     "y" 'copy-whole-buffer
+;;     )
+;;   )
+;; (defun evil-paste-after-newline ()
+;;   (interactive)
+;;   (progn
+;;     (evil-insert-newline-below)
+;;     (evil-paste-after 1)
+;;     ))
 ;;; Maximize frame after starting emacsclient
 ;; (add-hook 'server-after-make-frame-hook 'toggle-frame-maximized)
 ;;; Load all elisp files under ~/.emacs.d/site-lisp
@@ -745,7 +745,6 @@
 ;;; Autosave files every 1 second if visited and changed
 (setq auto-save-visited-interval 1)
 (auto-save-visited-mode +1)
-(setq large-file-warning-threshold 100000000)
 (setq auto-revert-interval 1)
 (if (version< emacs-version "28.1")
     (message "Emacs version is older than 28.1")
@@ -760,7 +759,7 @@
 (setq magit-repolist-columns
       '(("Name"    25 magit-repolist-column-ident ())
         ("Version" 25 magit-repolist-column-version ())
-        ("D"        1 magit-repolist-column-dirty ())
+        ;; ("D"        1 magit-repolist-column-dirty ())
         ("B<U"      3 magit-repolist-column-unpulled-from-upstream
          ((:right-align t)
           (:help-echo "Upstream changes not in branch")))
@@ -835,78 +834,26 @@
 
 (add-hook 'context-menu-functions #'context-menu-highlight-symbol)
 
-;; TODO this is not working
-;; (defun duplicate-tab (e)
-;;   "Highlight symbol at mouse click E."
-;;   (interactive "e")
-;;   (save-excursion
-;;     (mouse-set-point e)
-;;     (tab-bar-new-tab)))
-
-;; (defun my-context-menu-duplicate-tab (menu click)
-;;   (save-excursion
-;;     (mouse-set-point click)
-;;     (define-key-after menu [tab-separator] menu-bar-separator)
-;;     (define-key-after menu [tab-seperator-mouse]
-;;       '(menu-item "Duplicate Tab" duplicate-tab
-;;                   :help "Create a duplicate tab")))
-;;   menu)
-
-;; (add-hook 'context-menu-functions #'my-context-menu-duplicate-tab)
-
-
-(defun mouse-online-search-at-point (e)
-  "Search for word at point or selection."
-  (interactive "e")
-  (let ((query (if (use-region-p)
-                   (buffer-substring (region-beginning)
-                                     (region-end))
-                 (save-excursion
-                   (mouse-set-point e)
-                   (thing-at-point 'symbol)))))
-    (unless query
-      (user-error "Nothing to search for"))
-    (browse-url (concat
-                 eww-search-prefix
-                 (mapconcat #'url-hexify-string (split-string query) "+")))))
-
-(defun context-menu-online-search (menu click)
-  "Populate MENU with command to search online."
-  (save-excursion
-    (mouse-set-point click)
-    (define-key-after menu [online-search-separator] menu-bar-separator)
-    (define-key-after menu [online-search-at-mouse]
-      '(menu-item "Online search" mouse-online-search-at-point
-                  :help "Search for region or word online")))
-  menu)
-
-
-(add-hook 'context-menu-functions #'mouse-online-search-at-point)
-
-
-(defun man-at-mouse (e)
-  "Open man manual at point."
+(defun duplicate-tab (e)
+  "Highlight symbol at mouse click E."
   (interactive "e")
   (save-excursion
     (mouse-set-point e)
-    (man (Man-default-man-entry))))
+    (tab-bar-new-tab)))
 
-(defun man-context-menu (menu click)
-  "Populate MENU with commands that open a man page at point."
+(defun my-context-menu-duplicate-tab (menu click)
   (save-excursion
     (mouse-set-point click)
-    (when (save-excursion
-            (skip-syntax-backward "^ ")
-            (and (looking-at
-                  "[[:space:]]*\\([[:alnum:]_-]+([[:alnum:]]+)\\)")
-                 (match-string 1)))
-      (define-key-after menu [man-separator] menu-bar-separator)
-      (define-key-after menu [man-at-mouse]
-        '(menu-item "Open man page" man-at-mouse
-                    :help "Open man page around mouse click"))))
+    (define-key-after menu [tab-separator] menu-bar-separator)
+    (define-key-after menu [tab-seperator-mouse]
+      '(menu-item "Duplicate Tab" duplicate-tab
+                  :help "Create a duplicate tab")))
   menu)
 
-(add-hook 'context-menu-functions #'man-context-menu)
+(add-hook 'context-menu-functions #'my-context-menu-duplicate-tab)
+
+
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -933,3 +880,93 @@
 (if (file-directory-p "~/.emacs.d/my-packages")
     (mapc 'load-file (directory-files-recursively "~/.emacs.d/my-packages" ".*\.el")))
 
+(defun start-pomodoro ()
+  (interactive)
+  (org-timer-set-timer "0:20:02"))
+
+(defun start-break ()
+  (interactive)
+  (org-timer-set-timer "0:10:02"))
+
+(global-set-key (kbd "ESC ESC 1 1") 'start-pomodoro)
+(global-set-key (kbd "ESC ESC 1 2") 'start-break)
+
+;; from https://github.com/munen/emacs.d/
+
+(setq gc-cons-threshold 20000000)
+(setq make-backup-files nil)
+(setq large-file-warning-threshold 200000000)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+(put 'dired-find-alternate-file 'disabled nil)
+(setq-default dired-listing-switches "-alh")
+(setq dired-recursive-copies 'always)
+(up dired-narrow
+  :straight t
+  :config
+(define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy)
+  )
+
+(fset 'yes-or-no-p 'y-or-n-p)
+
+(display-time-mode t)
+(tab-bar-mode t)
+
+(setq save-place-file "~/.emacs.d/saveplace")
+
+(setq visible-bell t)
+
+
+(defun server-shutdown ()
+  "Save buffers, Quit, and Shutdown (kill) server"
+  (interactive)
+  (save-some-buffers)
+  (kill-emacs))
+
+(defmacro measure-time (&rest body)
+  "Measure the time it takes to evaluate BODY."
+  `(let ((time (current-time)))
+     ,@body
+     (message "%.06f" (float-time (time-since time)))))
+
+(defadvice server-visit-files (before parse-numbers-in-lines (files proc &optional nowait) activate)
+  "Open file with emacsclient with cursors positioned on requested line.
+Most of console-based utilities prints filename in format
+'filename:linenumber'.  So you may wish to open filename in that format.
+Just call:
+  emacsclient filename:linenumber
+and file 'filename' will be opened and cursor set on line 'linenumber'"
+  (ad-set-arg 0
+              (mapcar (lambda (fn)
+                        (let ((name (car fn)))
+                          (if (string-match "^\\(.*?\\):\\([0-9]+\\)\\(?::\\([0-9]+\\)\\)?$" name)
+                              (cons
+                               (match-string 1 name)
+                               (cons (string-to-number (match-string 2 name))
+                                     (string-to-number (or (match-string 3 name) ""))))
+                            fn))) files)))
+
+
+;; https://www.reddit.com/r/emacs/comments/idz35e/emacs_27_can_take_svg_screenshots_of_itself/
+(defun screenshot-svg ()
+  "Save a screenshot of the current frame as an SVG image.
+Saves to a temp file and puts the filename in the kill ring."
+  (interactive)
+  (let* ((filename (make-temp-file "Emacs" nil ".svg"))
+         (data (x-export-frames nil 'svg)))
+    (with-temp-file filename
+      (insert data))
+    (kill-new filename)
+    (message filename)))
+
+
+(up browse-kill-ring
+  :straight t
+  :config
+(setq browse-kill-ring-highlight-inserted-item t
+      browse-kill-ring-highlight-current-entry nil
+      browse-kill-ring-show-preview t)
+(define-key browse-kill-ring-mode-map (kbd "j") 'browse-kill-ring-forward)
+(define-key browse-kill-ring-mode-map (kbd "k") 'browse-kill-ring-previous))
