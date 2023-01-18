@@ -157,35 +157,6 @@
   :straight t
   :defer 10
   :hook (after-init . global-emojify-mode))
-(use-package centaur-tabs
-  :straight t
-  ;; https://github.com/ema2159/centaur-tabs
-  :demand
-  :config
-  (centaur-tabs-mode t)
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward)
-  :config
-  (centaur-tabs-headline-match)
-  (setq centaur-tabs-style "bar")
-  (setq centaur-tabs-height 32)
-  (setq centaur-tabs-set-icons nil)
-  (setq centaur-tabs-set-bar 'over)
-  (setq centaur-tabs-close-button "X")
-  (setq centaur-tabs-set-modified-marker t)
-  (setq centaur-tabs-modified-marker "*")
-  (centaur-tabs-change-fonts "arial" 160)
-  (centaur-tabs-enable-buffer-reordering)
-  (setq centaur-tabs-adjust-buffer-order t)
-  (setq centaur-tabs-adjust-buffer-order 'right)
-  (setq centaur-tabs-show-new-tab-button t)
-  (setq centaur-tabs-show-count t)
-  (setq centaur-tabs-set-icons nil)
-  (setq centaur-tabs-show-navigation-buttons nil)
-
-  )
-
 
 
 ;; Reference
