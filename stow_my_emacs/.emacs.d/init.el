@@ -681,7 +681,6 @@
 (up request :straight t)
 (up aide
   :config
-  ;; TODO get this from an environment variable (setq openai-api-key "my-api-key")
   (setq aide-max-tokens 200))
 
 (up persistent-scratch
