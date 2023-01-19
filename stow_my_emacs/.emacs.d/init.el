@@ -982,3 +982,5 @@ Saves to a temp file and puts the filename in the kill ring."
           (:help-echo "Local changes not in upstream")))
         ("Path"    99 magit-repolist-column-path ())))
 
+(setq org-export-backends '(ascii html icalendar latex md odt org))
+
