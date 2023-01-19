@@ -984,3 +984,28 @@ Saves to a temp file and puts the filename in the kill ring."
 
 (setq org-export-backends '(ascii html icalendar latex md odt org))
 
+
+
+
+(defun my-magit-repolist-pull-repos (repos)
+  "This will get all repos name in repolist"
+  (interactive (list (magit-repolist--get-repos ?*)))
+  (run-hooks 'magit-credential-hook)
+  (dolist (repo (magit-list-repos))
+    (message repo))
+  (magit-repolist--mapc
+   (apply-partially #'magit-run-git "pull")
+   repos "Pulling in %s..."))
+
+(defun my-magit-repolist-push-repos (repos)
+  "This will get all repos name in repolist and push them on by one"
+  (interactive (list (magit-repolist--get-repos ?*)))
+  (run-hooks 'magit-credential-hook)
+  (dolist (repo (magit-list-repos))
+    (message repo))
+  (magit-repolist--mapc
+   (apply-partially #'magit-run-git "push")
+   repos "Pushing in %s...")
+  )
+
+
