@@ -217,7 +217,9 @@
   (set-frame-font "Inconsolata-12")))
 
 ;; (use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
-(use-package magit :ensure t :bind ("C-x g" . magit-status))
+(use-package magit
+  :straight t
+  :bind ("C-x g" . magit-status))
 ;; (unless (package-installed-p 'compat)
 ;;   (package-install 'compat))
 ;; 57834ac3f93aa3c6af02e4484241c59bcbc676d0
@@ -789,8 +791,8 @@
   (outline-minor-faces-mode +1))
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
 
-(up magit-section
-  :straight t)
+;; (up magit-section
+;;   :straight t)
 
 (up smex
   :straight t)
@@ -1009,3 +1011,4 @@ Saves to a temp file and puts the filename in the kill ring."
   )
 
 
+(setq org-todo-keywords '((sequence "TODO" "KILL" "SKIP" "DONE")))
