@@ -32,5 +32,5 @@ else
     echo Skipping linux stow command since this system is not linux...
 fi
 
-vim -c "PlugInstall | PlugClean | qa"
+# vim -c "PlugInstall | PlugClean | qa"
 # tldr -u
