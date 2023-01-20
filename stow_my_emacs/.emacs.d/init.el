@@ -1012,3 +1012,35 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 (setq org-todo-keywords '((sequence "TODO" "KILL" "SKIP" "DONE")))
+
+
+;;; Better emacs narrowing, narrow ring 🛣️
+(up zones
+  :straight t)
+
+;;; Edit multiple files at the same time 🤹
+
+(straight-use-package
+ '(multifile :type git :host github :repo "magnars/multifiles.el"))
+(up multifiles
+  :load-path "~/.emacs.d/straight/build/multifile")
+(global-set-key (kbd "ESC ESC !") 'mf/mirror-region-in-multifile)
+
+
+;;; TODO Emojis not working
+
+;;; Enable tabs in buffers
+(global-tab-line-mode t)
+
+;;; Save sessions in emacs
+(setq desktop-save t)
+(desktop-save-mode 1)
+;;; Set desktop save path
+;; (setq desktop-path "c:/Users/ravee/")
+;; (desktop-read "c:/Users/ravee")
+
+(unless (file-directory-p "~/.emacs.d/desktop")
+(eshell-command "mkdir ~/.emacs.d/desktop"))
+(setq desktop-path "~/.emacs.d/desktop")
+(desktop-read "~/.emacs.d/desktop")
+
