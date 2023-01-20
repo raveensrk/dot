@@ -741,6 +741,7 @@
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
 (global-set-key (kbd "ESC ESC e m") 'menu-bar-open)
 (global-set-key (kbd "ESC ESC m m") 'magit)
+(global-set-key (kbd "ESC ESC m c c") 'with-editor-finish)
 (defun my-magit-list-repositories ()
   "This will load magit-status libraries then open magit-list-repositories. Otherwise i get errors... This will make sure all libraries are loaded"
   (interactive)
