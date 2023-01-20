@@ -27,8 +27,8 @@
 
 (straight-use-package 'use-package)
 
-(require 'package)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+;; (require 'package)
+;; (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;; ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 ;; ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
@@ -39,7 +39,7 @@
 ;;; Use package
 (defalias 'up 'use-package)
 
-(up benchmark-init :straight t :ensure t :config (add-hook 'after-init-hook 'benchmark-init/deactivate))
+(up benchmark-init :straight t :straight t :config (add-hook 'after-init-hook 'benchmark-init/deactivate))
 ;;; Startup, behaviour, basics
 (setq tab-width 4)
 
@@ -65,7 +65,7 @@
   :straight t
   :diminish
   ;; https://github.com/emacs-dashboard/emacs-dashboard
-  :ensure t
+  :straight t
   :config
   (dashboard-setup-startup-hook)
 
@@ -149,7 +149,7 @@
 ;; (use-package unicode-fonts
 ;;   :straight t
 ;;   :defer 10
-;;   :ensure t
+;;   :straight t
 ;;   :config
 ;;   (unicode-fonts-setup))
 (global-prettify-symbols-mode +1)
@@ -231,7 +231,7 @@
 ;;; Expand region
 (use-package expand-region
   :straight t
-  :ensure t
+  :straight t
   :bind
   ("C-=" . er/expand-region)
   ("C--" . er/contract-region)
@@ -448,24 +448,24 @@
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
-  :ensure t)
+  :straight t)
 
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
+  :straight t)
 
 (use-package treemacs-magit
   :after (treemacs magit)
-  :ensure t)
+  :straight t)
 
 (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
   :after (treemacs persp-mode) ;;or perspective vs. persp-mode
-  :ensure t
+  :straight t
   :config (treemacs-set-scope-type 'Perspectives))
 
 (use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
   :after (treemacs)
-  :ensure t
+  :straight t
   :config (treemacs-set-scope-type 'Tabs))
 
 
@@ -1026,7 +1026,6 @@ Saves to a temp file and puts the filename in the kill ring."
   (run-hooks 'magit-credential-hook)
   (dolist (repo (magit-list-repos))
     (message repo))
-  (my-magit-list-repositories)
   (magit-repolist--mapc
    (apply-partially #'magit-run-git "pull")
    repos "Pulling in %s..."))
@@ -1037,11 +1036,14 @@ Saves to a temp file and puts the filename in the kill ring."
   (run-hooks 'magit-credential-hook)
   (dolist (repo (magit-list-repos))
     (message repo))
-  (my-magit-list-repositories)
   (magit-repolist--mapc
    (apply-partially #'magit-run-git "push")
    repos "Pushing in %s...")
   )
+
+;; (advice-add 'my-magit-repolist-pull-repos :before 'my-magit-list-repositories)
+
+
 
 
 (setq org-todo-keywords '((sequence "TODO" "KILL" "SKIP" "DONE")))
@@ -1085,3 +1087,4 @@ Saves to a temp file and puts the filename in the kill ring."
   (persp-mode-prefix-key (kbd "ESC ESC v v"))  ; pick your own prefix key here
   :init
   (persp-mode))
+
