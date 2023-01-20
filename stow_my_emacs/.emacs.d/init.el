@@ -1,7 +1,7 @@
 ;; Emacs versions supported
 ;; 28.2
 (message (concat "EMACS VERSION: " (version)))
-(if (version< emacs-version "28.2")
+(if (version< emacs-version "28.1")
     (progn
       (message "Current version: %s is not supported. Exiting..." emacs-version)
       (save-buffers-kill-emacs)))
@@ -731,15 +731,15 @@
 (global-set-key (kbd "ESC ESC f") 'ffap)
 (global-set-key (kbd "ESC ESC h") 'help)
 (global-set-key (kbd "ESC ESC i") 'my-open-init-file)
-(global-set-key (kbd "ESC ESC o") 'delete-other-windows)
+(global-set-key (kbd "ESC ESC w o") 'delete-other-windows)
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
 (global-set-key (kbd "ESC ESC e m") 'menu-bar-open)
 (global-set-key (kbd "ESC ESC m m") 'magit)
 (global-set-key (kbd "ESC ESC m l") 'magit-list-repositories)
 (global-set-key (kbd "ESC ESC r") 'restart-emacs)
-(global-set-key (kbd "ESC ESC s") 'split-window-below)
+(global-set-key (kbd "ESC ESC w s") 'split-window-below)
 (global-set-key (kbd "ESC ESC t") 'toggle-truncate-lines)
-(global-set-key (kbd "ESC ESC v") 'split-window-right)
+(global-set-key (kbd "ESC ESC w v") 'split-window-right)
 (global-set-key (kbd "ESC ESC x d") 'dired)
 
 ;;; Autosave files every 1 second if visited and changed
