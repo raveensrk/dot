@@ -736,6 +736,8 @@
 (global-set-key (kbd "ESC ESC h") 'help)
 (global-set-key (kbd "ESC ESC i") 'my-open-init-file)
 (global-set-key (kbd "ESC ESC w o") 'delete-other-windows)
+(global-set-key (kbd "ESC ESC w c") 'delete-window)
+(global-set-key (kbd "ESC ESC w f") 'toggle-frame-maximized)
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
 (global-set-key (kbd "ESC ESC e m") 'menu-bar-open)
 (global-set-key (kbd "ESC ESC m m") 'magit)

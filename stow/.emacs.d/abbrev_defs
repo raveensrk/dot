@@ -1,7 +1,8 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'global-abbrev-table
   '(
-    ("ru" "Reorganizing and updating" nil :count 2)
-    ("d" "and")
-    ("t" "the")
+    
+    ("ru" "Reorganizing and updating, minor bug fixes, etc..." nil :count 2)
+    
    ))
+
