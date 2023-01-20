@@ -742,6 +742,7 @@
 (global-set-key (kbd "ESC ESC e m") 'menu-bar-open)
 (global-set-key (kbd "ESC ESC m m") 'magit)
 (global-set-key (kbd "ESC ESC m c c") 'with-editor-finish)
+
 (defun my-magit-list-repositories ()
   "This will load magit-status libraries then open magit-list-repositories. Otherwise i get errors... This will make sure all libraries are loaded"
   (interactive)
@@ -750,6 +751,10 @@
   )
 
 (global-set-key (kbd "ESC ESC m l") 'my-magit-list-repositories)
+(global-set-key (kbd "ESC ESC m f") 'my-magit-repolist-pull-repos)
+(global-set-key (kbd "ESC ESC m p") 'my-magit-repolist-push-repos)
+
+
 (global-set-key (kbd "ESC ESC r") 'restart-emacs)
 (global-set-key (kbd "ESC ESC w s") 'split-window-below)
 (global-set-key (kbd "ESC ESC t") 'toggle-truncate-lines)
@@ -998,6 +1003,7 @@ Saves to a temp file and puts the filename in the kill ring."
   (run-hooks 'magit-credential-hook)
   (dolist (repo (magit-list-repos))
     (message repo))
+  (my-magit-list-repositories)
   (magit-repolist--mapc
    (apply-partially #'magit-run-git "pull")
    repos "Pulling in %s..."))
@@ -1008,6 +1014,7 @@ Saves to a temp file and puts the filename in the kill ring."
   (run-hooks 'magit-credential-hook)
   (dolist (repo (magit-list-repos))
     (message repo))
+  (my-magit-list-repositories)
   (magit-repolist--mapc
    (apply-partially #'magit-run-git "push")
    repos "Pushing in %s...")
