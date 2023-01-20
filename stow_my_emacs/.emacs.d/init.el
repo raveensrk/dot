@@ -445,6 +445,30 @@
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+
+(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+  :ensure t
+  :config (treemacs-set-scope-type 'Perspectives))
+
+(use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
+  :after (treemacs)
+  :ensure t
+  :config (treemacs-set-scope-type 'Tabs))
+
+
 ;;; Projectile
 (up projectile
   :straight t
@@ -574,7 +598,6 @@
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
   (setq yas-snippet-dirs
         '("~/.emacs.d/snippets/"                 ;; personal snippets
-          "c:/github/dotfiles-main/stow/.emacs.d/snippets"           ;; foo-mode and bar-mode snippet collection
           )))
 
 (up yasnippet-snippets
@@ -1044,3 +1067,11 @@ Saves to a temp file and puts the filename in the kill ring."
 (setq desktop-path "~/.emacs.d/desktop")
 (desktop-read "~/.emacs.d/desktop")
 
+(use-package perspective
+  :straight t
+  :bind
+  ("ESC ESC v b" . persp-list-buffers)         ; or use a nicer switcher, see below
+  :custom
+  (persp-mode-prefix-key (kbd "ESC ESC v v"))  ; pick your own prefix key here
+  :init
+  (persp-mode))
