@@ -217,7 +217,9 @@
   (set-frame-font "Inconsolata-12")))
 
 ;; (use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
-(use-package magit :ensure t :bind ("C-x g" . magit-status))
+(use-package magit
+  :straight t
+  :bind ("C-x g" . magit-status))
 ;; (unless (package-installed-p 'compat)
 ;;   (package-install 'compat))
 ;; 57834ac3f93aa3c6af02e4484241c59bcbc676d0
@@ -356,7 +358,6 @@
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 (use-package treemacs
   :straight t
-  :defer 10
   :init
   (with-eval-after-load 'winum
     (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
@@ -376,7 +377,7 @@
           treemacs-find-workspace-method           'find-for-file-or-pick-first
           treemacs-git-command-pipe                ""
           treemacs-goto-tag-strategy               'refetch-index
-          treemacs-header-scroll-indicators        '(nil . "^^^^^^")
+          treemacs-header-scroll-indicators        '(t . "^^^^^^")
           treemacs-hide-dot-git-directory          t
           treemacs-indentation                     2
           treemacs-indentation-string              " "
@@ -397,20 +398,20 @@
           treemacs-recenter-after-project-expand   'on-distance
           treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
           treemacs-project-follow-into-home        nil
-          treemacs-show-cursor                     nil
+          treemacs-show-cursor                     t
           treemacs-show-hidden-files               t
           treemacs-silent-filewatch                nil
           treemacs-silent-refresh                  nil
           treemacs-sorting                         'alphabetic-asc
           treemacs-select-when-already-in-treemacs 'move-back
-          treemacs-space-between-root-nodes        t
+          treemacs-space-between-root-nodes        nil
           treemacs-tag-follow-cleanup              t
           treemacs-tag-follow-delay                1.5
           treemacs-text-scale                      nil
           treemacs-user-mode-line-format           nil
           treemacs-user-header-line-format         nil
           treemacs-wide-toggle-width               70
-          treemacs-width                           35
+          treemacs-width                           50
           treemacs-width-increment                 1
           treemacs-width-is-initially-locked       t
           treemacs-workspace-switch-cleanup        nil)
@@ -432,7 +433,9 @@
       (`(t . _)
        (treemacs-git-mode 'simple)))
 
-    (treemacs-hide-gitignored-files-mode nil))
+    (treemacs-hide-gitignored-files-mode nil)
+    (treemacs-indent-guide-mode t)
+    )
   :bind
   (:map global-map
         ("M-0"       . treemacs-select-window)
@@ -446,37 +449,39 @@
 (up projectile
   :straight t
   :diminish
-  :config (projectile-mode +1)
+  :config
+  (projectile-mode +1)
   (defun my-projectile-add-to-known-projects (args)
     "Add a project to projectile interactively"
     (interactive "D")
     (projectile-add-known-project args)
     )
+  (setq projectile-generic-command "fd -L . -0 --type f --color=never --strip-cwd-prefix")
   :bind
   (:map projectile-mode-map ("ESC ESC p" . projectile-command-map))
   ("ESC ESC p a" . my-projectile-add-to-known-projects)
   )
 (setq projectile-project-search-path nil)
 (setq projectile-auto-discover nil)
-;;; Evil
-(setq evil-want-keybinding nil)
-(up evil-numbers
-  :after evil
-  :straight t
-  :config
-  (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
-  (evil-define-key '(normal visual) 'global (kbd "C-x") 'evil-numbers/dec-at-pt)
-  (evil-define-key '(normal visual) 'global (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
-  (evil-define-key '(normal visual) 'global (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental))
-(up evil-snipe
-  :after evil
-  :straight t
-  :config
-  (evil-snipe-mode 1)
-  (evil-snipe-override-mode 1))
-(up evil-mc :straight t :config (evil-mc-mode 1))
-(add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
-(add-hook 'Custom-mode-hook 'turn-off-evil-mode)
+;; ;;; Evil
+;; (setq evil-want-keybinding nil)
+;; (up evil-numbers
+;;   :after evil
+;;   :straight t
+;;   :config
+;;   (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
+;;   (evil-define-key '(normal visual) 'global (kbd "C-x") 'evil-numbers/dec-at-pt)
+;;   (evil-define-key '(normal visual) 'global (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
+;;   (evil-define-key '(normal visual) 'global (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental))
+;; (up evil-snipe
+;;   :after evil
+;;   :straight t
+;;   :config
+;;   (evil-snipe-mode 1)
+;;   (evil-snipe-override-mode 1))
+;; (up evil-mc :straight t :config (evil-mc-mode 1))
+;; (add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
+;; (add-hook 'Custom-mode-hook 'turn-off-evil-mode)
 
 ;; ;;;; UNDO
 ;; ;; Vim style undo not needed for emacs 28
@@ -681,7 +686,6 @@
 (up request :straight t)
 (up aide
   :config
-  ;; TODO get this from an environment variable (setq openai-api-key "my-api-key")
   (setq aide-max-tokens 200))
 
 (up persistent-scratch
@@ -735,7 +739,14 @@
 (global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
 (global-set-key (kbd "ESC ESC e m") 'menu-bar-open)
 (global-set-key (kbd "ESC ESC m m") 'magit)
-(global-set-key (kbd "ESC ESC m l") 'magit-list-repositories)
+(defun my-magit-list-repositories ()
+  "This will load magit-status libraries then open magit-list-repositories. Otherwise i get errors... This will make sure all libraries are loaded"
+  (interactive)
+  (load-library "magit-status")
+  (magit-list-repositories)
+  )
+
+(global-set-key (kbd "ESC ESC m l") 'my-magit-list-repositories)
 (global-set-key (kbd "ESC ESC r") 'restart-emacs)
 (global-set-key (kbd "ESC ESC w s") 'split-window-below)
 (global-set-key (kbd "ESC ESC t") 'toggle-truncate-lines)
@@ -746,27 +757,14 @@
 (setq auto-save-visited-interval 1)
 (auto-save-visited-mode +1)
 (setq auto-revert-interval 1)
-(if (version< emacs-version "28.1")
-    (message "Emacs version is older than 28.1")
-  (progn
-    (message "Emacs version is 28.1 or newer")
-    (context-menu-mode +1)))
+;; (if (version< emacs-version "28.1")
+;;     (message "Emacs version is older than 28.1")
+;;   (progn
+;;     (message "Emacs version is 28.1 or newer")
+;;     (context-menu-mode +1)))
 (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
 (setq comint-buffer-maximum-size 10000)
 (global-display-line-numbers-mode +1)
-
-
-(setq magit-repolist-columns
-      '(("Name"    25 magit-repolist-column-ident ())
-        ("Version" 25 magit-repolist-column-version ())
-        ;; ("D"        1 magit-repolist-column-dirty ())
-        ("B<U"      3 magit-repolist-column-unpulled-from-upstream
-         ((:right-align t)
-          (:help-echo "Upstream changes not in branch")))
-        ("B>U"      3 magit-repolist-column-unpushed-to-upstream
-         ((:right-align t)
-          (:help-echo "Local changes not in upstream")))
-        ("Path"    99 magit-repolist-column-path ())))
 
 (up markdown-mode
   :straight t)
@@ -793,8 +791,8 @@
   (outline-minor-faces-mode +1))
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
 
-(up magit-section
-  :straight t)
+;; (up magit-section
+;;   :straight t)
 
 (up smex
   :straight t)
@@ -806,67 +804,50 @@
 
 
 
-
-(setq tmp '(a b c))
-(add-to-list 'tmp 'e t)
-
-
-
 ;; https://ruzkuku.com/texts/emacs-mouse.html
 
-(defun highlight-symbol-at-mouse (e)
-  "Highlight symbol at mouse click E."
-  (interactive "e")
-  (save-excursion
-    (mouse-set-point e)
-    (highlight-symbol-at-point)))
+;; (defun highlight-symbol-at-mouse (e)
+;;   "Highlight symbol at mouse click E."
+;;   (interactive "e")
+;;   (save-excursion
+;;     (mouse-set-point e)
+;;     (highlight-symbol-at-point)))
 
-(defun context-menu-highlight-symbol (menu click)
-  "Populate MENU with command to search online."
-  (save-excursion
-    (mouse-set-point click)
-    (when (symbol-at-point)
-      (define-key-after menu [highlight-search-separator] menu-bar-separator)
-      (define-key-after menu [highlight-search-mouse]
-        '(menu-item "Highlight Symbol" highlight-symbol-at-mouse
-                    :help "Highlight symbol at point"))))
-  menu)
+;; (defun context-menu-highlight-symbol (menu click)
+;;   "Populate MENU with command to search online."
+;;   (save-excursion
+;;     (mouse-set-point click)
+;;     (when (symbol-at-point)
+;;       (define-key-after menu [highlight-search-separator] menu-bar-separator)
+;;       (define-key-after menu [highlight-search-mouse]
+;;         '(menu-item "Highlight Symbol" highlight-symbol-at-mouse
+;;                     :help "Highlight symbol at point"))))
+;;   menu)
 
-(add-hook 'context-menu-functions #'context-menu-highlight-symbol)
+;; (add-hook 'context-menu-functions #'context-menu-highlight-symbol)
 
-(defun duplicate-tab (e)
-  "Highlight symbol at mouse click E."
-  (interactive "e")
-  (save-excursion
-    (mouse-set-point e)
-    (tab-bar-new-tab)))
+;; (defun duplicate-tab (e)
+;;   "Highlight symbol at mouse click E."
+;;   (interactive "e")
+;;   (save-excursion
+;;     (mouse-set-point e)
+;;     (tab-bar-new-tab)))
 
-(defun my-context-menu-duplicate-tab (menu click)
-  (save-excursion
-    (mouse-set-point click)
-    (define-key-after menu [tab-separator] menu-bar-separator)
-    (define-key-after menu [tab-seperator-mouse]
-      '(menu-item "Duplicate Tab" duplicate-tab
-                  :help "Create a duplicate tab")))
-  menu)
+;; (defun my-context-menu-duplicate-tab (menu click)
+;;   (save-excursion
+;;     (mouse-set-point click)
+;;     (define-key-after menu [tab-separator] menu-bar-separator)
+;;     (define-key-after menu [tab-seperator-mouse]
+;;       '(menu-item "Duplicate Tab" duplicate-tab
+;;                   :help "Create a duplicate tab")))
+;;   menu)
 
-(add-hook 'context-menu-functions #'my-context-menu-duplicate-tab)
-
-
+;; (add-hook 'context-menu-functions #'my-context-menu-duplicate-tab)
 
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(projectile-generic-command "fd -L . -0 --type f --color=never --strip-cwd-prefix"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+
+
 
 (global-set-key (kbd "ESC ESC b o") 'ivy-switch-buffer-other-window)
 
@@ -973,3 +954,93 @@ Saves to a temp file and puts the filename in the kill ring."
 
 ;; TODO https://github.com/Malabarba/spinner.el
 ;; https://github.com/ferfebles/redtick
+(setq magit-repository-directories '(("~/my_repos" . 1)))
+
+(global-set-key (kbd "ESC ESC o a a") 'org-agenda)
+(global-set-key (kbd "ESC ESC o a t") 'org-todo-list)
+
+
+;; TODO For some reason this function is not present in my magit repo
+;; https://github.com/magit/magit/commit/801cbfd83797600f4a38479c6ae4f8d474860aad#diff-d6a81474395687b058c1941f4e9fb8a3b21731e84a4f26b7fd5fdf2e9a800de5
+;; (defun magit-repolist-column-dirty (_id)
+;;   "Insert a letter if there are uncommitted changes.
+;; Show N if there is at least one untracked file.
+;; Show U if there is at least one unstaged file.
+;; Show S if there is at least one staged file.
+;; Only one letter is shown, the first that applies."
+;;   (cond ((magit-untracked-files) "N")
+;;         ((magit-unstaged-files)  "U")
+;;         ((magit-staged-files     "S"))))
+
+(setq magit-repolist-columns
+      '(("Name"    25 magit-repolist-column-ident ())
+        ("Version" 25 magit-repolist-column-version ())
+        ("D"        1 magit-repolist-column-flag ())
+        ("⇣"      3 magit-repolist-column-unpulled-from-upstream
+         ((:right-align t)
+          (:help-echo "Upstream changes not in branch")))
+        ("⇡"      3 magit-repolist-column-unpushed-to-upstream
+         ((:right-align t)
+          (:help-echo "Local changes not in upstream")))
+        ("Path"    99 magit-repolist-column-path ())))
+
+(setq org-export-backends '(ascii html icalendar latex md odt org))
+
+
+
+
+(defun my-magit-repolist-pull-repos (repos)
+  "This will get all repos name in repolist"
+  (interactive (list (magit-repolist--get-repos ?*)))
+  (run-hooks 'magit-credential-hook)
+  (dolist (repo (magit-list-repos))
+    (message repo))
+  (magit-repolist--mapc
+   (apply-partially #'magit-run-git "pull")
+   repos "Pulling in %s..."))
+
+(defun my-magit-repolist-push-repos (repos)
+  "This will get all repos name in repolist and push them on by one"
+  (interactive (list (magit-repolist--get-repos ?*)))
+  (run-hooks 'magit-credential-hook)
+  (dolist (repo (magit-list-repos))
+    (message repo))
+  (magit-repolist--mapc
+   (apply-partially #'magit-run-git "push")
+   repos "Pushing in %s...")
+  )
+
+
+(setq org-todo-keywords '((sequence "TODO" "KILL" "SKIP" "DONE")))
+
+
+;;; Better emacs narrowing, narrow ring 🛣️
+(up zones
+  :straight t)
+
+;;; Edit multiple files at the same time 🤹
+
+(straight-use-package
+ '(multifile :type git :host github :repo "magnars/multifiles.el"))
+(up multifiles
+  :load-path "~/.emacs.d/straight/build/multifile")
+(global-set-key (kbd "ESC ESC !") 'mf/mirror-region-in-multifile)
+
+
+;;; TODO Emojis not working
+
+;;; Enable tabs in buffers
+(global-tab-line-mode t)
+
+;;; Save sessions in emacs
+(setq desktop-save t)
+(desktop-save-mode 1)
+;;; Set desktop save path
+;; (setq desktop-path "c:/Users/ravee/")
+;; (desktop-read "c:/Users/ravee")
+
+(unless (file-directory-p "~/.emacs.d/desktop")
+(eshell-command "mkdir ~/.emacs.d/desktop"))
+(setq desktop-path "~/.emacs.d/desktop")
+(desktop-read "~/.emacs.d/desktop")
+

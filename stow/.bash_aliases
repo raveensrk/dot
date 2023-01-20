@@ -110,7 +110,15 @@ ec () {
         $EDITOR $@
     fi
 }
-alias e=ec
+ec () {
+    if [[ $* == "" ]]; then
+        emacsclient -c --eval "(switch-to-dashboard-buffer)"
+    else
+        # shellcheck disable=SC2068
+        $EDITOR $@
+    fi
+}
+
 
 # This will cd and do ls but sometimes it gets broken
 
@@ -397,3 +405,8 @@ alias chop="tr ' ' '\n'"
 git config --global pull.merge true
 # {{{1 Other
 alias srun_fast="srun --pty --cpus-per-task=4 --mem=8192 --cpu-freq=3400"
+
+if command -v bat; then
+    alias cat=bat
+fi
+
