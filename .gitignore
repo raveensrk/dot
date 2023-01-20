@@ -63,3 +63,4 @@ stow/.emacs.d/var/pcache/ucs-utils
 /stow/.emacs.d/bookmarks
 stow/.emacs.d/newsticker/feeds/Emacs Wiki/data
 stow/.emacs.d/.persistent-scratch
+/stow_my_emacs/.emacs.d/my-packages/open-ai-api-key.el
