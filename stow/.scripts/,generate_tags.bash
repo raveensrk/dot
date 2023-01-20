@@ -28,6 +28,6 @@ done
 [ "$dir" = "" ] && echo -e "${RED}-i option is mandatory...${NC}" && exit 2
 
 pushd "$dir" || exit 2
-ctags --exclude="stow_vim_plugins" -R ./*
+# ctags --exclude="stow_vim_plugins" -R ./*
 ctags --exclude="stow_vim_plugins" -e -R ./*
 popd || exit 2
