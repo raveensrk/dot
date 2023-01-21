@@ -350,7 +350,10 @@ git config --global pull.merge true
 # {{{1 Other
 alias srun_fast="srun --pty --cpus-per-task=4 --mem=8192 --cpu-freq=3400"
 
-if command -v bat; then
+if command -v bat > /dev/null; then
     alias cat=bat
 fi
 
+alias pg='cd $(realpath ~/my_repos/* | fzf); lazygit'
+alias pe='cd $(realpath ~/my_repos/* | fzf); vim -c :FZF'
+alias rr='cd $(realpath ~/my_repos/* | fzf); ranger'

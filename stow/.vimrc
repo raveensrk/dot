@@ -214,3 +214,8 @@ endfor
 " runtime ftplugin/man.vim
 " packadd! editexisting
 " source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
+" {{{1 Mouse
+
+set mousemodel=popup
+nnoremenu 1.40 PopUp.&Paste	"+gP
+menu PopUp
