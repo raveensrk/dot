@@ -39,7 +39,7 @@ Plug 'git@github.com:tpope/vim-fugitive'
 " Plug 'preservim/tagbar'
 Plug 'git@github.com:mhinz/vim-signify'
 Plug 'git@github.com:azabiong/vim-highlighter'
-Plug 'git@github.com:vim-syntastic/syntastic'
+" Plug 'git@github.com:vim-syntastic/syntastic'
 "Plug 'jceb/vim-orgmode'
 
 " Plug 'godlygeek/tabular'

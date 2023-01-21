@@ -11,7 +11,6 @@ fi
 
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/.scripts:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
@@ -100,26 +99,6 @@ alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
 alias ,exp="explorer.exe"
-alias ed="emacs -nw --daemon"
-alias ek="emacs -nw -Q --eval \"(progn (server-force-delete) (save-buffers-kill-terminal))\""
-ec () {
-    if [[ $* == "" ]]; then
-        emacsclient -nw --eval "(switch-to-dashboard-buffer)"
-    else
-        # shellcheck disable=SC2068
-        $EDITOR $@
-    fi
-}
-ec () {
-    if [[ $* == "" ]]; then
-        emacsclient -c --eval "(switch-to-dashboard-buffer)"
-    else
-        # shellcheck disable=SC2068
-        $EDITOR $@
-    fi
-}
-
-
 # This will cd and do ls but sometimes it gets broken
 
 # cd () {
@@ -205,46 +184,10 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 # {{{ VIM STUFF
-# export EDITOR="emacsclient -nw"
-# export VISUAL="emacsclient -nw"
-# export ALTERNATE_EDITOR="emacs -nw"
-# export VISUAL="emacsclient -c"
-# export EDITOR="emacsclient -c"
-export EDITOR="emacsclient -nw"
+export EDITOR="vim"
 alias e="$EDITOR"
-
-,magit () {
-    emacs --eval "(progn (magit)  (delete-other-windows))" &
-}
-
-alias vs="command vim --servername VIM"
-v () {
-    local servername
-    local nservers
-
-    nservers=$(vim --serverlist | wc -l)
-    if [ "$nservers" -gt 1 ]; then
-        echo -e "${RED}More than one vim server found... Open manually...${NC}"
-        command vim --serverlist
-        echo -e "${YELLOW}vim --servername \$servername --remote filename${NC}"
-        return 1
-    elif [ "$nservers" -eq 0 ]; then
-        echo -e "${RED}No vim servers found...${NC}"
-        # shellcheck disable=SC2068
-        vim $@
-        return 1
-    fi
-
-    servername=$(vim --serverlist)
-    if [[ $# -ge 1 ]]; then
-        # shellcheck disable=SC2068
-        command vim --servername "$servername" --remote $@
-    else
-        command vim --servername "$servername" --remote-send ":History<CR>"
-    fi
-}
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
-alias vimrc="v ~/.vimrc"
+alias vimrc="e ~/.vimrc"
 # }}}
 # RANGER {{{
 # shellcheck shell=sh
@@ -288,6 +231,7 @@ bind '"\C-o":"ranger-cd\C-m"'
 # {{{ FZF
 export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
 export FZF_CTRL_T_COMMAND="command find -L . $HOME/my_repos"
+export FZF_DEFAULT_COMMAND="command find -L ."
 export FZF_ALT_C_COMMAND="command find -L . -type d"
 # shellcheck disable=SC1090
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

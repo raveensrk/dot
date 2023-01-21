@@ -47,14 +47,7 @@ else
 
     # git commit -t ~/.scripts/git_commit_template.txt
 
-    # emacs -nw --eval "(magit);(kill-buffer *scratch*)"
-
-    # #TODO https://trycatchchris.co.uk/post/view/Open-Emacs-magit-from-command-line
-    # emacsclient -nw -c --eval '"'"'(progn (let ((display-buffer-alist `(("^\\*magit: " display-buffer-same-window) ,dis bplay-buffer-alist))) (magit-status)) (delete-other-windows))'"'"'
-    
-    emacsclient -nw --eval "(progn (magit) (delete-other-windows))"
-    # vim -c "Git"
-
+    lazygit
 fi
 
 echo -e "${YELLOW} Preparing to pull, merge and push... ${NC}"

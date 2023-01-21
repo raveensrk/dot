@@ -8,3 +8,6 @@ doom_install:
 	~/.emacs.d/bin/doom install
 doom_sync:
 	~/.emacs.d/bin/doom sync
+vim_plug:
+	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
