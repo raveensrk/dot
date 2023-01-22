@@ -216,6 +216,6 @@ endfor
 " source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
 " {{{1 Mouse
 
-set mousemodel=popup
-nnoremenu 1.40 PopUp.&Paste	"+gP
-menu PopUp
+" set mousemodel=popup
+" nnoremenu 1.40 PopUp.&Paste	"+gP
+" menu PopUp

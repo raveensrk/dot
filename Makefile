@@ -11,3 +11,5 @@ doom_sync:
 vim_plug:
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+upgrade_ubuntu:
+	bash ./installer_scripts/install_ubuntu_packages.bash
