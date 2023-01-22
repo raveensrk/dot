@@ -219,3 +219,5 @@ endfor
 " set mousemodel=popup
 " nnoremenu 1.40 PopUp.&Paste	"+gP
 " menu PopUp
+let g:markdown_folding = 1
+noremap <2-LeftMouse> za

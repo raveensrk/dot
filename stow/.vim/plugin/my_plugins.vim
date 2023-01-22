@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'chrisbra/NrrwRgn'
 Plug '907th/vim-auto-save'
 " " Track the engine.
 " Plug 'SirVer/ultisnips'
