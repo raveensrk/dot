@@ -40,6 +40,7 @@ parser = argparse.ArgumentParser(
 # Add an argument to the parser
 parser.add_argument("string", nargs="*", help="Input string")
 parser.add_argument("--test", default=0, type=int, help="If test is set to 1, it will enter testing mode and does not make any response", required=False)
+parser.add_argument("--verbose", default=0, type=int, help="If test is set to 1, it will verbose", required=False)
 parser.add_argument("--max_tokens", default=15, type=int, help="Maximum number of response tokens, default 15, increase if the response is incomplete or short and as required.", required=False)
 parser.add_argument("--openai_api_key", default=None, help="OpenAI API Key, Get OPENAI_API_KEY at https://beta.openai.com/account/api-keys", required=False)
 
@@ -48,6 +49,7 @@ args = parser.parse_args()
 test = args.test
 max_tokens = args.max_tokens
 openai_api_key=args.openai_api_key
+verbose=args.verbose
 
 if openai_api_key is None:
     if os.getenv("OPENAI_API_KEY") is None:
@@ -68,29 +70,31 @@ if test == 1:
     print('OPENAI_API_KEY: ', openai_api_key)
     print('Maximum Tokens: ', max_tokens)
 
-print(Fore.BLUE)
-print("You Entered:")
-print(Fore.RESET)
+if verbose == 1:
+    print(Fore.BLUE)
+    print("You Entered:")
+    print(Fore.RESET)
 
 # Check if the optional argument was passed
 if args.string:
     # Print the argument
     line = " ".join(args.string)
-    print(line)
+    # print(line)
 else:
     # Read a line of input from stdin
     line = sys.stdin.readline()
     # Print the input
-    print(line)
+    # print(line)
 
 
 prompt=line
 
 
 def complete(line, test, max_tokens):
-    print(Fore.GREEN)
-    print("Resonse:")
-    print(Fore.RESET)
+    if verbose == 1:
+        print(Fore.GREEN)
+        print("Resonse:")
+        print(Fore.RESET)
     if test==1:
         with open("./example_chatgpt_output.json", "r") as f:
             line=f.read()

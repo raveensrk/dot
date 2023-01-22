@@ -19,7 +19,6 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
         automake \
         cscope \
         curl \
-        emacs \
         ffmpeg \
         ffmpegthumbnailer \
         firefox \
@@ -69,3 +68,6 @@ if [ "$is_ubuntu" = "Ubuntu" ]; then
 
     pip install xlsx2csv xlsxwriter pandas openpyxl
 fi
+
+# {{{1 ***DISABLED*** Archived Applications
+# emacs

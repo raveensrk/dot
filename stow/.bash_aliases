@@ -354,6 +354,17 @@ if command -v bat > /dev/null; then
     alias cat=bat
 fi
 
+# {{{1 Projectile?
 alias pg='cd $(realpath ~/my_repos/* | fzf); lazygit'
 alias pe='cd $(realpath ~/my_repos/* | fzf); vim -c :FZF'
 alias rr='cd $(realpath ~/my_repos/* | fzf); ranger'
+alias rc='ranger'
+pa () {
+    realpath "$1" >> ~/.projects
+}
+# Note that p command will only work in all the paths in ~/.projects are realpaths
+alias p='vim "$(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" | fzf)"'
+alias pl='rg --no-filename . $(cat ~/.projects) | fzf'
+alias pL='rg --with-filename -n  . $(cat ~/.projects) | fzf'
+
+

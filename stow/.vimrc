@@ -1,4 +1,4 @@
-" source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/vimrc_example.vim
 
 " Help {{{
 " Press <F1> for help
@@ -64,7 +64,7 @@ set nonumber norelativenumber
 " set list
 " }}}
 " {{{ INTERFACE
-set nowrap
+set wrap
 set cursorline
 set cursorcolumn
 set hlsearch

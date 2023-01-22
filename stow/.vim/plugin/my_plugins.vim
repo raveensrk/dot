@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug '907th/vim-auto-save'
 " " Track the engine.
 " Plug 'SirVer/ultisnips'
 " " Snippets are separated from the engine. Add this if you want them:
@@ -72,6 +73,10 @@ Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 
 call plug#end()
 "{{{1 Plugin configs
+
+let g:auto_save = 1  " enable AutoSave on Vim startup
+
+
 " " Trigger configuration. You need to change this to something other than <tab>
 " " if you use one of the following:
 " " " - https://github.com/Valloric/YouCompleteMe
