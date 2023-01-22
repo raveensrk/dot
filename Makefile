@@ -13,3 +13,6 @@ vim_plug:
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 upgrade_ubuntu:
 	bash ./installer_scripts/install_ubuntu_packages.bash
+todo.txt:
+	bash ./installer_scripts/todo.txt.bash
+

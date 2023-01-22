@@ -91,7 +91,7 @@ alias mv="mv -vi"
 alias rm="rm -vi"
 alias r='ranger'
 alias tmux="tmux -2"
-alias t="tmux attach || tmux"
+alias tx="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
@@ -112,14 +112,14 @@ alias ,exp="explorer.exe"
 # }
 
 ,convert-softlinks () {
-    link_name="$1"
-    # Get real path of original file
-    orig=$(realpath "$link_name")
-    # Remove link
-    rm "$link_name"
-    # Replace link with original
-    cp "$orig" "$link_name"
-    unset link_name orig
+link_name="$1"
+# Get real path of original file
+orig=$(realpath "$link_name")
+# Remove link
+rm "$link_name"
+# Replace link with original
+cp "$orig" "$link_name"
+unset link_name orig
 }
 # }}}
 # {{{ PAGERS
@@ -150,8 +150,8 @@ source "$HOME/.bash_prompt"
 updatedb_path="$HOME/.local/locate_db"
 updatedb_home="$updatedb_path/home.db"
 ,updatedb () {
-    [[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
-    updatedb -l 0 -o "$updatedb_home" -U ~/
+[[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
+updatedb -l 0 -o "$updatedb_home" -U ~/
 }
 
 sd () {
@@ -292,7 +292,7 @@ zz () {
 
 unset -f zzz
 zzz () {
-    z "$(fzf < ~/.dirs_stack | tail -n 50 | uniq | sed "s|^~|${HOME}|")" || return
+    z "$(cat ~/.dirs_stack | tail -n 50 | sort | uniq | sed "s|^~|${HOME}|" | fzf)" || return
 }
 # }}}
 # {{{ Fedora BUG fix
@@ -355,16 +355,72 @@ if command -v bat > /dev/null; then
 fi
 
 # {{{1 Projectile?
+ph () {
+    echo "
+    Help for projectile
+    ---------------------
+
+    pg: project git
+    pe: project fzf file find and edit
+    rr: project ranger
+    rc: ranger continue
+    pa: project add path to known projects
+    p: all projects fzf find
+    pp: all projects grep specific string ascii only
+    pl: print line all projects
+    pL: same with file name
+    "
+
+}
+# Open git for my repos
 alias pg='cd $(realpath ~/my_repos/* | fzf); lazygit'
+# Edit files in my repos with vim
 alias pe='cd $(realpath ~/my_repos/* | fzf); vim -c :FZF'
+# Open ranger in my repos
 alias rr='cd $(realpath ~/my_repos/* | fzf); ranger'
+# Ranger continue session
 alias rc='ranger'
+# Add path as a project
 pa () {
     realpath "$1" >> ~/.projects
 }
+# Find files in all project
 # Note that p command will only work in all the paths in ~/.projects are realpaths
 alias p='vim "$(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" | fzf)"'
+# Find sepecific text in all projects
+pp () {
+    local match
+    local files
+    local line
+    local line_no
+    local path
+
+    [ "$1" = "" ] && match="^\#\#" || match="$1";
+
+        mapfile -t files < <(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" -exec file {} \; | grep -E "text|ASCII")
+
+    line=$(
+    {
+        for file in "${files[@]}"; do
+            grep -nH -i "$match" "$(echo "$file" | cut -d ":" -f 1)"
+        done
+    } | fzf -e -d ":" -n 3)
+    line_no="$(echo "$line" | cut -d : -f 2)";
+    path="$(echo "$line" | cut -d : -f 1)";
+    vim +"$line_no" "$path"
+}
+# Print any line in my projects
 alias pl='rg --no-filename . $(cat ~/.projects) | fzf'
+# Same with file name included
 alias pL='rg --with-filename -n  . $(cat ~/.projects) | fzf'
-
-
+alias b='bash'
+alias t='todo.sh -d "$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)"'
+ta () {
+    local config
+    config=$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)
+    while true; do 
+        todo.sh -d "$config" ls
+        sleep 2
+        clear
+    done
+}

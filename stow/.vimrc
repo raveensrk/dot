@@ -214,6 +214,7 @@ endfor
 " runtime ftplugin/man.vim
 " packadd! editexisting
 " source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
+
 " {{{1 Mouse
 
 " set mousemodel=popup
@@ -221,3 +222,7 @@ endfor
 " menu PopUp
 let g:markdown_folding = 1
 noremap <2-LeftMouse> za
+
+vmap <silent> +y :w ~/.vim_clip<cr>
+nmap <silent> +p :read ~/.vim_clip<cr>
+
