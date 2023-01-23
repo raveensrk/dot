@@ -15,4 +15,8 @@ upgrade_ubuntu:
 	bash ./installer_scripts/install_ubuntu_packages.bash
 todo.txt:
 	bash ./installer_scripts/todo.txt.bash
+vim:
+	bash ./installer_scripts/install_vim_from_source.bash
+pip:
+	bash ./installer_scripts/pip_packages.bash
 
