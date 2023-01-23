@@ -11,9 +11,9 @@ echo -e "${BLUE}Do you want to Install with x? [Y/n]:${NC}"
 read -r choice
 unset choice
 if [ "$choice" = "Y" ]; then
-    ./configure --prefix="$HOME/.local" --with-features=huge --with-x
+    ./configure --prefix="$HOME/.local" --with-features=huge --with-x  --enable-python3interp
 else
-    ./configure --prefix="$HOME/.local" --disable-gui --without-x
+    ./configure --prefix="$HOME/.local" --disable-gui --without-x  --enable-python3interp
 fi 
 make
 make install
