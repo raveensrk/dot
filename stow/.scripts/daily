@@ -1,0 +1,6 @@
+#!/bin/bash 
+
+tmux new-window -k -S -n MAJOR 'bash -i -c tall'
+tmux new-window -k -S -n MINOR 'bash -i -c todos_minor'
+tmux new-window -k -S -n ROUTINE 'bash -i -c routine'
+tmux new-window -S -n REPL 'bash -i'

@@ -274,6 +274,12 @@ z () {
     else
         dir="$1"
     fi
+
+    if [ -f "$dir" ]; then
+        echo Choosen directory is a file. Changing directory to its enclosed path...
+        dir="$(dirname "$dir")"
+    fi 
+
     dir=$(realpath "$dir")
     pushd "$dir" || return
     dirs -v | awk '{print $2}' | sort | uniq >> ~/.dirs_stack
@@ -468,15 +474,24 @@ t_repeat () {
     done
 }
 
-tall () {
-    local config
-    readarray -t config < <(find -L "$HOME/my_repos" -iname "todo.cfg")
-    for c in "${config[@]}"; do
-        tmux split-window -h -c "#{pane_current_path}" "watch -d -c \"todo.sh -d \"$c\" ls\""
-    done
-}
 alias v=vim
 alias routine="~/.scripts/,cat_repeat_file.bash routine"
-alias tasks="tall && routine"
-alias todos="pp \"todo\|\- \[ \]\""
-alias daily="tasks && todos"
+alias todos_major="tall && routine"
+todos_minor () {
+    while :; do
+        pp "todo\|\- \[ \]"
+        sleep 1
+    done
+}
+timer () {
+    local count=0
+    while ((count < 60*$1)); do
+        sleep 1
+        let count++
+    done
+    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
+    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
+    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
+    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
+    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
+}
