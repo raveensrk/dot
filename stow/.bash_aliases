@@ -386,7 +386,7 @@ pa () {
 }
 # Find files in all project
 # Note that p command will only work in all the paths in ~/.projects are realpaths
-alias p='vim "$(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" | fzf)"'
+alias p='vim "$(find -L $(command cat ~/.projects)  -type f -not -path "*/.git/*" | fzf)"'
 # Find sepecific text in all projects
 pp () {
     local match
@@ -397,7 +397,7 @@ pp () {
 
     [ "$1" = "" ] && match="^\#\#" || match="$1";
 
-        mapfile -t files < <(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" -exec file {} \; | grep -E "text|ASCII")
+        mapfile -t files < <(find -L $(command cat ~/.projects)  -type f -not -path "*/.git/*" -exec file {} \; | grep -E "text|ASCII")
 
     line=$(
     {

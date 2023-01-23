@@ -2,7 +2,7 @@
 
 pushd $HOME/.tmp
 git clone "git@github.com:todotxt/todo.txt-cli.git"
-pushd "todo.txt-cli-master"
+pushd "todo.txt-cli"
 make
 make install \
     CONFIG_DIR=$HOME/.local/etc \

@@ -1,3 +1,5 @@
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export LESSOPEN="|/opt/homebrew/bin/lesspipe.sh %s"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+alias find="/opt/homebrew/opt/findutils/bin/gfind"
+alias xargs="/opt/homebrew/opt/findutils/bin/gxargs"

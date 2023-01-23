@@ -43,7 +43,8 @@ if [ "$is_linux" = "Darwin" ]; then
         cscope \
         w3m \
         mactex \
-        klavaro
+        klavaro \
+        findutils
 
 fi
 
