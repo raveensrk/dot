@@ -98,7 +98,7 @@
 (global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
 
 
-;; TODO (strokes-mode +1)
+;; (strokes-mode +1)
 ;; (global-set-key (kbd "<down-mouse-3>") 'strokes-do-stroke) ; Draw strokes with RMB
 ;; (setq strokes-use-strokes-buffer t)
 ;; (global-set-key (kbd "ESC ESC e s") 'strokes-global-set-stroke)

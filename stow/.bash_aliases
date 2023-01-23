@@ -477,4 +477,6 @@ tall () {
 }
 alias v=vim
 alias routine="~/.scripts/,cat_repeat_file.bash routine"
-alias tasks="tall; routine"
+alias tasks="tall && routine"
+alias todos="pp \"todo\|\- \[ \]\""
+alias daily="tasks && todos"
