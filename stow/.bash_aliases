@@ -387,6 +387,34 @@ pa () {
 # Find files in all project
 # Note that p command will only work in all the paths in ~/.projects are realpaths
 alias p='vim "$(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" | fzf)"'
+
+bar_size=40
+bar_char_done="#"
+bar_char_todo="-"
+bar_percentage_scale=2
+
+function show_progress {
+    current="$1"
+    total="$2"
+
+    # calculate the progress in percentage 
+    percent=$(bc <<< "scale=$bar_percentage_scale; 100 * $current / $total" )
+    # The number of done and todo characters
+done=$(bc <<< "scale=0; $bar_size * $percent / 100" )
+todo=$(bc <<< "scale=0; $bar_size - $done" )
+
+    # build the done and todo sub-bars
+    done_sub_bar=$(printf "%${done}s" | tr " " "${bar_char_done}")
+    todo_sub_bar=$(printf "%${todo}s" | tr " " "${bar_char_todo}")
+
+    # output the bar
+    echo -ne "\rProgress : [${done_sub_bar}${todo_sub_bar}] ${percent}%"
+
+    if [ $total -eq $current ]; then
+        echo -e "\nDONE"
+    fi
+}
+
 # Find sepecific text in all projects
 pp () {
     local match
@@ -395,9 +423,24 @@ pp () {
     local line_no
     local path
 
+    show_progress 1 3
+    printf ": Starting search..."
+
     [ "$1" = "" ] && match="^\#\#" || match="$1";
 
         mapfile -t files < <(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" -exec file {} \; | grep -E "text|ASCII")
+
+    printf "\r\033[2K"
+    show_progress 2 3
+    printf ": Found potential candidates..."
+    sleep 1
+
+    printf "\r\033[2K"
+    show_progress 3 3
+    printf ": Searching..."
+    sleep 1
+
+    printf "\r\033[2K"
 
     line=$(
     {
@@ -414,8 +457,8 @@ alias pl='rg --no-filename . $(cat ~/.projects) | fzf'
 # Same with file name included
 alias pL='rg --with-filename -n  . $(cat ~/.projects) | fzf'
 alias b='bash'
-alias t='todo.sh -d "$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)"'
-ta () {
+alias t='$HOME/.local/bin/todo.sh -d "$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)"'
+t_repeat () {
     local config
     config=$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)
     while true; do 
@@ -424,3 +467,14 @@ ta () {
         clear
     done
 }
+
+tall () {
+    local config
+    readarray -t config < <(find -L "$HOME/my_repos" -iname "todo.cfg")
+    for c in "${config[@]}"; do
+        tmux split-window -h -c "#{pane_current_path}" "watch -d -c \"todo.sh -d \"$c\" ls\""
+    done
+}
+alias v=vim
+alias routine="~/.scripts/,cat_repeat_file.bash routine"
+alias tasks="tall; routine"
