@@ -496,3 +496,4 @@ timer () {
     mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
     mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
 }
+alias n=newsboat
