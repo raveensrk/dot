@@ -149,7 +149,6 @@
 ;; (use-package unicode-fonts
 ;;   :straight t
 ;;   :defer 10
-;;   :straight t
 ;;   :config
 ;;   (unicode-fonts-setup))
 (global-prettify-symbols-mode +1)
@@ -337,7 +336,13 @@
 	     ("C-r" . counsel-minibuffer-history)
 	     ))
 ;;; Dired
+;; Guess emacs dired destination
+;; Lets say that you want to copy files from one dired split to the other
+;; split, emacs can automatically guess the destination directory to make
+;; this simpler.
 (setq dired-dwim-target t)
+<;; https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired>
+
 (setq dired-hide-details-hide-information-lines t)
 (setq dired-hide-details-hide-symlink-targets t)
 (setq dired-kill-when-opening-new-dired-buffer nil)
@@ -699,7 +704,7 @@
 
 (defun my-open-init-file ()
   (interactive)
-  (find-file user-init-file))
+  (find-file-other-window user-init-file))
 
 ;; (if (file-exists-p (concat my-emacs-root-path "/" "other-packages/aide/aide.el")))
 ;; (straight-use-package)
