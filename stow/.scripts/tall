@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/usr/bin/env bash
 
 readarray -t config < <(find -L "$HOME/my_repos" -iname "todo.cfg")
 for c in "${config[@]}"; do
