@@ -225,4 +225,3 @@ noremap <2-LeftMouse> za
 
 vmap <silent> +y :w ~/.vim_clip<cr>
 nmap <silent> +p :read ~/.vim_clip<cr>
-

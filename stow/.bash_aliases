@@ -433,8 +433,9 @@ pp () {
     printf ": Starting search..."
 
     [ "$1" = "" ] && match="^\#\#" || match="$1";
+    [ "$2" = "" ] && fname="*\.md" || fname="$2";
 
-        mapfile -t files < <(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" -exec file {} \; | grep -E "text|ASCII")
+        mapfile -t files < <(find -L $(cat ~/.projects)  -type f -iname "$fname" -not -path "*/.git/*" -exec file {} \; | grep -E "text|ASCII")
 
     printf "\r\033[2K"
     show_progress 2 3
