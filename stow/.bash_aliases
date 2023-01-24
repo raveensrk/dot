@@ -465,3 +465,4 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 
 alias amake="make -C $HOME/my_repos/dotfiles-main -I $HOME/my_repos/dotfiles-main"
 alias ai="sudo apt install -y"
+alias jjc="$EDITOR $HOME/.config/jrnl/jrnl.yaml"
