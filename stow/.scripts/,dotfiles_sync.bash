@@ -50,19 +50,19 @@ else
 fi
 
 # echo -e "Preparing to pull, merge and push.."
-git fetch
+git fetch > /dev/null 
 git merge --no-commit --no-ff main
 if [ $? -ne 0 ]; then
     git merge --abort
     echo -e "${RED}MERGE FAILED... Running lazygit...${NC}" 
     lazygit
 else
-    git merge
-    git push
+    git merge > /dev/null 
+    git push > /dev/null 
 fi
 
 echo -e "${GREEN}Done${NC}" 
 
-popd
+popd > /dev/null 
 
 rm "$tmp_file"
