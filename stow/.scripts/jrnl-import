@@ -75,8 +75,8 @@ pushd "$(realpath "$d")" > /dev/null
 mapfile -t files < <(find -L -iname "*.md" -o -iname "*.org" -o -iname "*.org_archive")
 
 > tmp_imported
+> tmp_deleted
 for f in "${files[@]}"; do
-    clear
     echo "$f" >> tmp_imported
     if [[ "$f" =~ ^.*([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]).*.md$ ]]; then
         date="${BASH_REMATCH[1]}"
@@ -86,7 +86,7 @@ for f in "${files[@]}"; do
     fi
     cat "$f"  >> tmp
     jrnl "$jrnl" < tmp
-    rm -fv "$f" | tee tmp_deleted
+    rm -fv "$f" | tee -a tmp_deleted
 done
 blue
 echo "List of files Imported:"
