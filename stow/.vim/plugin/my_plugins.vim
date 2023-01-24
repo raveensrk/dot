@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }

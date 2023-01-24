@@ -35,27 +35,34 @@ if [[ "$clean" == "1" ]]; then
     echo "Nothing to commit"
 else
     # git diff
-    # git status
-    # pwd
-    # read -p "Add these changes? [y/n]: " choice
-    # if [[ $choice == y ]]; then
-    #     git add . && git status
-    # else
-    #     echo -e "${YELLOW} Skipping add and commit for $DOTFILES ${NC} "
-    #     exit 0
-    # fi
-
-    # git commit -t ~/.scripts/git_commit_template.txt
-
-    lazygit
+    git status
+    pwd
+    read -t 5 -p "Adding these changes in 5 seconds... Press ^C to cancel or type m to create a new commit message" message 
+    if [ "$message" = "m" ]; then
+        echo Enter Message:
+        read -re message2
+        git add . && git status
+        git commit -m "$message2"
+    else
+        git add . && git status
+        git commit -m "Reorganizing and Updating"
+    fi
 fi
 
-echo -e "${YELLOW} Preparing to pull, merge and push... ${NC}"
-git pull
-git push
-echo -e "${GREEN}Done${NC}✅" 
+echo -e "Preparing to pull, merge and push.."
+git fetch
+git merge --no-commit --no-ff main
+if [ $? -ne 0 ]; then
+    git merge --abort
+    echo -e "${RED}MERGE FAILED... Running lazygit...${NC}" 
+    lazygit
+else
+    git merge
+    git push
+fi
+
+echo -e "${GREEN}Done${NC}" 
 
 popd
-
 
 rm "$tmp_file"
