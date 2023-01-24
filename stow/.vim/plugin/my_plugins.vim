@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'chrisbra/NrrwRgn'
 Plug '907th/vim-auto-save'
 " " Track the engine.
@@ -75,6 +76,7 @@ Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 call plug#end()
 "{{{1 Plugin configs
 
+let g:table_mode_corner='|'
 let g:auto_save = 1  " enable AutoSave on Vim startup
 
 
