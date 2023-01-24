@@ -16,7 +16,7 @@ git config --global user.name "Raveen Kumar"
 git config --global user.email "raveen.srk.kumar@gmail.com"
 
 dir="$(realpath "$1")"
-echo "$dir" is top dir
+# echo "$dir" is top dir
 pushd "$dir" > /dev/null 
 for d in $(find ./* -maxdepth 0 -type d); do
     # clear

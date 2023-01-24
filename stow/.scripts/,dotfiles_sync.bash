@@ -11,10 +11,6 @@ DOTFILES=$1 # Can also sync other repos not just dotfiles. DOTFILES variable inp
 
 pushd $DOTFILES >/dev/null
 
-if [ -f "./Makefile" ]; then
-    make clean  
-fi
-
 if [ ! -d .git ]; then
     exit 0
 fi
@@ -36,7 +32,7 @@ if [[ "$clean" == "1" ]]; then
     echo ""
 else
     # git diff
-    git status
+    git status -s
     read -t 5 -p "Adding these changes in 5 seconds... Press ^C to cancel or type m to create a new commit message" message 
     if [ "$message" = "m" ]; then
         echo Enter Message:

@@ -21,3 +21,4 @@ pip:
 	bash ./installer_scripts/pip_packages.bash
 ctags:
 	bash ./installer_scripts/install_ctags_from_source.bash
+clean:
