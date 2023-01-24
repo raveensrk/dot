@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/usr/bin/env bash
 
 # Basically this command will find a file in my ~/.projects and cat it into the termainal and keep refreshing
 

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+
+# Find sepecific text in all projects
+
+printf ": Starting search..."
+
+[ "$1" = "" ] && match="^\#\#" || match="$1"
+
+[ "$2" = "" ] && fname="*\.md" || fname="$2"
+
+exclude='-not -path *vim_plugins*'
+[ ! "$3" = "" ] && exclude="$exclude -not -path *$3*"
+
+mapfile -t files < <(find -L $(cat ~/.projects)  -type f -iname "$fname" $exclude -not -path "*/.git/*" -exec file {} \; | grep -E "text|ASCII")
+
+
+printf "\r\033[2K"
+printf ": Found potential candidates..."
+sleep 1
+
+printf "\r\033[2K"
+printf ": Searching..."
+sleep 1
+
+printf "\r\033[2K"
+
+line=$(
+{
+    for file in "${files[@]}"; do
+        grep -nH -i "$match" "$(echo "$file" | cut -d ":" -f 1)" | grep -v "\#ignore"
+    done
+} | fzf -e -d ":" -n 3)
+line_no="$(echo "$line" | cut -d : -f 2)";
+path="$(echo "$line" | cut -d : -f 1)";
+vim +"$line_no" "$path"

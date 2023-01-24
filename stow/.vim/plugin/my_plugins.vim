@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -83,6 +84,7 @@ Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 call plug#end()
 "{{{1 Plugin configs
 
+let g:table_mode_corner='|'
 let g:deoplete#enable_at_startup = 1
 
 let g:auto_save = 1  " enable AutoSave on Vim startup
