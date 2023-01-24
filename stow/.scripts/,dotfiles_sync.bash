@@ -37,10 +37,10 @@ else
     if [ "$message" = "m" ]; then
         echo Enter Message:
         read -re message2
-        git add . && git status
+        git add . && git status -s
         git commit -m "$message2"
     else
-        git add . && git status
+        git add . && git status -s
         git commit -m "Reorganizing and Updating"
     fi
 fi
