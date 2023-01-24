@@ -461,3 +461,5 @@ for f in ~/.my_bash_aliases/*; do
 done
 # }}}
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
+
+alias amake="make -C $HOME/my_repos/dotfiles-main -I $HOME/my_repos/dotfiles-main"
