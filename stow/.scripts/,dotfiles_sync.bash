@@ -55,8 +55,8 @@ if [ $? -ne 0 ]; then
     lazygit
 else
     git merge > /dev/null 
-exit
     git push > /dev/null 
+exit
 fi
 
 echo -e "${GREEN}Done${NC}" 
