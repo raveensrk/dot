@@ -9,7 +9,7 @@ DOTFILES=$1 # Can also sync other repos not just dotfiles. DOTFILES variable inp
 
 [ -d $DOTFILES ] || ( echo Not a directory; exit 2 )
 
-pushd $DOTFILES
+pushd $DOTFILES >/dev/null
 
 if [ -f "./Makefile" ]; then
     make clean  
@@ -31,12 +31,12 @@ while read -r line; do
 done < "$tmp_file"
 
 
+pwd
 if [[ "$clean" == "1" ]]; then
-    echo "Nothing to commit"
+    echo ""
 else
     # git diff
     git status
-    pwd
     read -t 5 -p "Adding these changes in 5 seconds... Press ^C to cancel or type m to create a new commit message" message 
     if [ "$message" = "m" ]; then
         echo Enter Message:
@@ -49,7 +49,7 @@ else
     fi
 fi
 
-echo -e "Preparing to pull, merge and push.."
+# echo -e "Preparing to pull, merge and push.."
 git fetch
 git merge --no-commit --no-ff main
 if [ $? -ne 0 ]; then
