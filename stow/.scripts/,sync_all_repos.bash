@@ -24,6 +24,5 @@ for d in $(find ./* -maxdepth 0 -type d); do
 done
 popd > /dev/null 
 
-exit
 
 ,reinstall.bash 
