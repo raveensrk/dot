@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bash_prompt
+
 # This will auto commit, pull and push a given repository
 
 # set -x
@@ -58,7 +60,6 @@ else
     green
     git push > /dev/null 
     nc
-exit
 fi
 
 echo -e "${GREEN}Done${NC}" 
