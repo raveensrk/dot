@@ -45,11 +45,11 @@ else
     fi
 fi
 
-exit
 
 # echo -e "Preparing to pull, merge and push.."
 git fetch > /dev/null 
 git merge --no-commit --no-ff main > /dev/null 
+exit
 if [ $? -ne 0 ]; then
     git merge --abort
     echo -e "${RED}MERGE FAILED... Running lazygit...${NC}" 
