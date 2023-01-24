@@ -54,8 +54,10 @@ if [ $? -ne 0 ]; then
     echo -e "${RED}MERGE FAILED... Running lazygit...${NC}" 
     lazygit
 else
-    git merge > /dev/null 
+    git merge > /dev/null
+    green
     git push > /dev/null 
+    nc
 exit
 fi
 
