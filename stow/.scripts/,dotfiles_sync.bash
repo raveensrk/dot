@@ -57,8 +57,13 @@ if [ $? -ne 0 ]; then
     lazygit
 else
     git merge > /dev/null
+    git push -q
     green
-    git push > /dev/null 
+    echo "
+┌────┐                                  
+│Done│                                  
+└────┘                   
+"
     nc
 fi
 
