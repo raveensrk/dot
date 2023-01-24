@@ -22,3 +22,5 @@ pip:
 ctags:
 	bash ./installer_scripts/install_ctags_from_source.bash
 clean:
+stow:
+	bash ./installer_scripts/install_stow_from_source.bash

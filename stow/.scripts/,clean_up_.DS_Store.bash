@@ -8,6 +8,6 @@ help () {
 
 input="$HOME/my_repos"
 
-pushd "$input" || exit 2
+pushd "$input" > /dev/null  || exit 2
 find . | grep ".DS_Store" | grep -v ",clean_up_.DS_Store.bash" | xargs rm -fv
-popd || exit 2
+popd > /dev/null || exit 2
