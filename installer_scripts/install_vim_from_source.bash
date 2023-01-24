@@ -15,6 +15,7 @@ if [ "$choice" = "Y" ]; then
 else
     ./configure --prefix="$HOME/.local" --disable-gui --without-x  --enable-python3interp
 fi 
+pip install pynvim
 make
 make install
 popd || exit 2
