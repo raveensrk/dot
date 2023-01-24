@@ -62,8 +62,6 @@ else
     nc
 fi
 
-echo -e "${GREEN}Done${NC}" 
-
 popd > /dev/null 
 
 rm "$tmp_file"
