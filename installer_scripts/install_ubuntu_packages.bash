@@ -52,21 +52,19 @@ sudo apt install -y  \
     x11-xserver-utils \
     yank \
     xclip \
-    gifsicle
+    gifsicle \
+    bat \
+    bc
 
 
-sudo apt install gnome-software-plugin-flatpak
+sudo apt install -y gnome-software-plugin-flatpak
+sudo apt autoremove -y
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 # TODO flatpak not working in ubuntu wsl
 # flatpak install flathub com.spotify.Client
 # flatpak install flathub org.mozilla.firefox
 
-pip install \
-    xlsx2csv \
-    xlsxwriter \
-    pandas \
-    openpyxl \
-    termdown
+
 
 # {{{1 ***DISABLED*** Archived Applications
 # emacs

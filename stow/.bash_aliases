@@ -327,16 +327,6 @@ if [ "$(uname -a | awk '{print $1}')" = "Darwin" ]; then
 fi
 
 # }}}
-# {{{ Other Sources
-[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
-#export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
-[ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
-touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
-for f in ~/.my_bash_aliases/*; do
-    # shellcheck disable=SC1090
-    source "$f"
-done
-# }}}
 # {{{ WSL 2 specific - Ubuntu
 if [ -e /etc/os-release ]; then
     which_linux=$(grep ^NAME= /etc/os-release | cut -d = -f 2 | tr -d "\"")
@@ -421,43 +411,7 @@ todo=$(bc <<< "scale=0; $bar_size - $done" )
     fi
 }
 
-# Find sepecific text in all projects
-pp () {
-    local match
-    local files
-    local line
-    local line_no
-    local path
-
-    show_progress 1 3
-    printf ": Starting search..."
-
-    [ "$1" = "" ] && match="^\#\#" || match="$1";
-
-        mapfile -t files < <(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" -exec file {} \; | grep -E "text|ASCII")
-
-    printf "\r\033[2K"
-    show_progress 2 3
-    printf ": Found potential candidates..."
-    sleep 1
-
-    printf "\r\033[2K"
-    show_progress 3 3
-    printf ": Searching..."
-    sleep 1
-
-    printf "\r\033[2K"
-
-    line=$(
-    {
-        for file in "${files[@]}"; do
-            grep -nH -i "$match" "$(echo "$file" | cut -d ":" -f 1)"
-        done
-    } | fzf -e -d ":" -n 3)
-    line_no="$(echo "$line" | cut -d : -f 2)";
-    path="$(echo "$line" | cut -d : -f 1)";
-    vim +"$line_no" "$path"
-}
+# /Users/raveenkumar/my_repos/dotfiles-main/stow/.scripts/pp
 # Print any line in my projects
 alias pl='rg --no-filename . $(cat ~/.projects) | fzf'
 # Same with file name included
@@ -495,3 +449,14 @@ timer () {
     mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
     mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
 }
+alias n=newsboat
+# {{{1 Other Sources
+[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
+#export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
+[ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
+touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
+for f in ~/.my_bash_aliases/*; do
+    # shellcheck disable=SC1090
+    source "$f"
+done
+# }}}

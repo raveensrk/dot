@@ -1,6 +1,14 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 Plug 'dhruvasagar/vim-table-mode'
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'wellle/tmux-complete.vim'
 Plug 'chrisbra/NrrwRgn'
 Plug '907th/vim-auto-save'
 " " Track the engine.
@@ -77,6 +85,8 @@ call plug#end()
 "{{{1 Plugin configs
 
 let g:table_mode_corner='|'
+let g:deoplete#enable_at_startup = 1
+
 let g:auto_save = 1  " enable AutoSave on Vim startup
 
 
@@ -148,19 +158,19 @@ colo gruvbox
 " colo default
 set background=dark
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-" }}}
-" {{{1 NERDTree
-" "nnoremap <leader>n :NERDTreeFocus<CR>
-" "nnoremap <C-n> :NERDTree<CR>
-" "nnoremap <C-t> :NERDTreeToggle<CR>
-" "nnoremap <C-f> :NERDTreeFind<CR>
-" "" Exit Vim if NERDTree is the only window remaining in the only tab.
-\" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-"  Close the tab if NERDTree is the only window remaining in it.
-" "autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" "" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-\" autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-\"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+            " }}}
+            " {{{1 NERDTree
+            " "nnoremap <leader>n :NERDTreeFocus<CR>
+            " "nnoremap <C-n> :NERDTree<CR>
+            " "nnoremap <C-t> :NERDTreeToggle<CR>
+            " "nnoremap <C-f> :NERDTreeFind<CR>
+            " "" Exit Vim if NERDTree is the only window remaining in the only tab.
+            \" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+            "  Close the tab if NERDTree is the only window remaining in it.
+            " "autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+            " "" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+            \" autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+            \"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 "  Open the existing NERDTree on each new tab.
 " "autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
