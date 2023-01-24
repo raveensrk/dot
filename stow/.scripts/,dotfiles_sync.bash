@@ -45,6 +45,8 @@ else
     fi
 fi
 
+exit
+
 # echo -e "Preparing to pull, merge and push.."
 git fetch > /dev/null 
 git merge --no-commit --no-ff main > /dev/null 
