@@ -1,0 +1,5 @@
+#!/usr/bin/env bash 
+
+journal=$(jrnl --list | fzf | cut -f 3 -d " ")
+
+jrnl "$journal" -on today --edit
