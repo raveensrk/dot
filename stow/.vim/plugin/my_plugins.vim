@@ -1,12 +1,8 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
-<<<<<<< HEAD
 Plug 'chrisbra/Colorizer'
 Plug 'wren/jrnl.vim'
-=======
 Plug 'justinmk/vim-sneak'
-
->>>>>>> refs/remotes/origin/main
 Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
