@@ -199,11 +199,6 @@ endfor
 " }}}
 " {{{1 ***DISABLED*** Testing
 " let b:systemverilog_indent_ifdef_off
-" {{{1 NEW stuff
-" runtime ftplugin/man.vim
-" packadd! editexisting
-" source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
-
 " {{{1 Mouse
 
 " set mousemodel=popup
@@ -216,3 +211,19 @@ vmap <silent> +y :w! ~/.vim_clip<cr>
 nmap <silent> +p :read ~/.vim_clip<cr>
 
 set clipboard=unnamed
+
+" {{{1 Custom Highlights
+augroup myTodo
+      autocmd!
+        autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+augroup END
+
+highlight link myTodo Todo
+
+au BufRead,BufNewFile *.jrnl setfiletype jrnl
+au BufRead,BufNewFile *.jrnl source ~/.vim/ftplugin/jrnl.vim
+
+" {{{1 NEW stuff
+" runtime ftplugin/man.vim
+" packadd! editexisting
+" source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim

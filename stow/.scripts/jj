@@ -1,5 +1,6 @@
 #!/usr/bin/env bash 
 
+tag="$1"
 journal=$(jrnl --list | fzf | cut -f 3 -d " ")
 when="$(printf "today\nnow\n" | fzf)"
 
@@ -9,5 +10,5 @@ else
     on=""
 fi 
 
-jrnl "$journal" "$on" --edit
+jrnl "$journal" "$tag" "$on" --edit
 
