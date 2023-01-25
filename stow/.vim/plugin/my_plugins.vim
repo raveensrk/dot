@@ -1,5 +1,7 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'chrisbra/Colorizer'
+Plug 'wren/jrnl.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
