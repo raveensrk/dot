@@ -1,5 +1,13 @@
 #!/usr/bin/env bash 
 
 journal=$(jrnl --list | fzf | cut -f 3 -d " ")
+when="$(printf "today\nnow\n" | fzf)"
 
-jrnl "$journal" -on today --edit
+if [ "$when" = "today" ]; then
+    on="-on today"
+else
+    on=""
+fi 
+
+jrnl "$journal" "$on" --edit
+

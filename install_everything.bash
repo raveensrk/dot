@@ -28,8 +28,6 @@ fi
 is_linux=$(uname -a | cut -d ' ' -f 1)
 if [ "$is_linux" = "Linux" ]; then
     stow -R stow_linux -t "$HOME" --no-folding
-else
-    echo Skipping linux stow command since this system is not linux...
 fi
 
 # vim -c "PlugInstall | PlugClean | qa"

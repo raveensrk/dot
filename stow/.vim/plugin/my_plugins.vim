@@ -1,7 +1,12 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+<<<<<<< HEAD
 Plug 'chrisbra/Colorizer'
 Plug 'wren/jrnl.vim'
+=======
+Plug 'justinmk/vim-sneak'
+
+>>>>>>> refs/remotes/origin/main
 Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
@@ -86,6 +91,12 @@ Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 
 call plug#end()
 "{{{1 Plugin configs
+
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+let g:sneak#label = 1
 
 let g:table_mode_corner='|'
 let g:deoplete#enable_at_startup = 1
