@@ -54,7 +54,8 @@ sudo apt install -y  \
     xclip \
     gifsicle \
     bat \
-    bc
+    bc \
+    texlive
 
 
 sudo apt install -y gnome-software-plugin-flatpak

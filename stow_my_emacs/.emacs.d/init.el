@@ -928,7 +928,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (display-time-mode t)
-(tab-bar-mode t)
+(tab-bar-mode -1)
 
 (setq save-place-file "~/.emacs.d/saveplace")
 
@@ -1069,26 +1069,7 @@ Saves to a temp file and puts the filename in the kill ring."
 ;;; TODO Emojis not working
 
 ;;; Enable tabs in buffers
-(global-tab-line-mode t)
+(global-tab-line-mode -1)
 
-;;; ***DISABLED - Buggy*** Save sessions in emacs
-;; (setq desktop-save t)
-;; (desktop-save-mode 1)
-;;; Set desktop save path
-;; (setq desktop-path "c:/Users/ravee/")
-;; (desktop-read "c:/Users/ravee")
 
-;; (unless (file-directory-p "~/.emacs.d/desktop")
-;; (eshell-command "mkdir ~/.emacs.d/desktop"))
-;; (setq desktop-path "~/.emacs.d/desktop")
-;; (desktop-read "~/.emacs.d/desktop")
-
-(use-package perspective
-  :straight t
-  :bind
-  ("ESC ESC v b" . persp-list-buffers)         ; or use a nicer switcher, see below
-  :custom
-  (persp-mode-prefix-key (kbd "ESC ESC v v"))  ; pick your own prefix key here
-  :init
-  (persp-mode))
-
+(setq org-archive-location "%s::* Archived Tasks")

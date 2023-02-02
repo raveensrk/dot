@@ -1,5 +1,9 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'chrisbra/Colorizer'
+Plug 'wren/jrnl.vim'
+Plug 'justinmk/vim-sneak'
+Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -84,6 +88,13 @@ Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 call plug#end()
 "{{{1 Plugin configs
 
+map f <Plug>Sneak_f
+map F <Plug>Sneak_F
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+let g:sneak#label = 1
+
+
 let g:table_mode_corner='|'
 let g:deoplete#enable_at_startup = 1
 
@@ -157,6 +168,7 @@ nnoremap <leader>/ :BLines<CR>
 colo gruvbox
 " colo default
 set background=dark
+let g:gruvbox_contrast_dark="hard"
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
             " }}}
             " {{{1 NERDTree

@@ -154,13 +154,13 @@ nnoremap <leader>src :b ~/.vimrc<CR>:w<CR>:source ~/.vimrc<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
 
-" Move blocks on lines in visual mode
-vnoremap <Up>   :move -2<CR>gv=gv
-vnoremap <Down> :move +2<CR>gv=gv
-
-" Move single lines in normal mode
-nnoremap <Up>   :move -2<CR>
-nnoremap <Down> :move +1<CR>
+" " Move blocks on lines in visual mode
+" vnoremap <Up>   :move -2<CR>gv=gv
+" vnoremap <Down> :move +2<CR>gv=gv
+"
+" " Move single lines in normal mode
+" nnoremap <Up>   :move -2<CR>
+" nnoremap <Down> :move +1<CR>
 
 " TODO Move vertial lines left or right in visual mode
 
@@ -186,17 +186,6 @@ vnoremap <leader>align !column --table -s <input_seperator> -o <output_seperator
 " Date
 nnoremap <leader>date :-1read !date +\%Y-\%m-\%d-\%H-\%M-\%S<cr>
 
-" {{{2 Map meta key to movement 
-nnoremap n h
-nnoremap e j
-nnoremap i k
-nnoremap o l
-vnoremap n h
-vnoremap e j
-vnoremap i k
-vnoremap o l
-
-
 " }}}
 " {{{1 Resource plugin directory
 " This is done so the plugin directory is sourced again at the end of this
@@ -210,11 +199,6 @@ endfor
 " }}}
 " {{{1 ***DISABLED*** Testing
 " let b:systemverilog_indent_ifdef_off
-" {{{1 NEW stuff
-" runtime ftplugin/man.vim
-" packadd! editexisting
-" source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
-
 " {{{1 Mouse
 
 " set mousemodel=popup
@@ -223,8 +207,23 @@ endfor
 let g:markdown_folding = 1
 noremap <2-LeftMouse> za
 
-vmap <silent> +y :w ~/.vim_clip<cr>
+vmap <silent> +y :w! ~/.vim_clip<cr>
 nmap <silent> +p :read ~/.vim_clip<cr>
 
-set clipboard=unnamedplus
+set clipboard=unnamed
 
+" {{{1 Custom Highlights
+augroup myTodo
+      autocmd!
+        autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
+augroup END
+
+highlight link myTodo Todo
+
+au BufRead,BufNewFile *.jrnl setfiletype jrnl
+au BufRead,BufNewFile *.jrnl source ~/.vim/ftplugin/jrnl.vim
+
+" {{{1 NEW stuff
+" runtime ftplugin/man.vim
+" packadd! editexisting
+" source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim

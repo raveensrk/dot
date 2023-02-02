@@ -1,0 +1,95 @@
+#!/usr/bin/env bash 
+
+unset -f red; red () { tput setaf 1; }
+unset -f green; green () { tput setaf 2; }
+unset -f yellow; yellow () { tput setaf 3; }
+unset -f blue; blue () { tput setaf 4; }
+unset -f nc; nc () { tput sgr0; }
+unset -f reset; reset () { tput sgr0; }
+unset -f blink; blink () { tput blink; }
+unset -f bold; bold () { tput bold; }
+unset -f reverse; reverse () { tput smso; }
+unset -f underline; underline () { tput smul; }
+
+echob () {
+    blue
+    echo "$1"
+    nc
+}
+
+echor () {
+    red
+    echo "$1"
+    nc
+}
+
+echoy () {
+    yellow
+    echo "$1"
+    nc
+}
+
+echog () {
+    green
+    echo "$1"
+    nc
+}
+
+
+
+jrnl=""
+
+while [ "$1" ]; do
+    case "$1" in
+        --jrnl|-j)
+            shift
+            jrnl="$1"
+            ;;
+        --directory|-d)
+            shift
+            d="$1"
+            ;;
+        --help|-h)
+            help
+            exit 0
+            ;;
+        *)
+            echo -e "${RED}Wrong option!${NC}"
+            exit 2
+            ;;
+    esac
+    shift
+done 
+
+check_empty () {
+    [ "$1" = "" ] && echo check args && exit 2
+    echo "$1"
+}
+
+check_empty "$jrnl"
+check_empty "$d"
+
+pushd "$(realpath "$d")" > /dev/null  
+
+
+mapfile -t files < <(find -L -iname "*.md" -o -iname "*.org" -o -iname "*.org_archive")
+
+> tmp_imported
+> tmp_deleted
+for f in "${files[@]}"; do
+    echo "$f" >> tmp_imported
+    if [[ "$f" =~ ^.*([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]).*.md$ ]]; then
+        date="${BASH_REMATCH[1]}"
+        echo "$date: Import journal entry" > tmp
+    else
+        echo "Import Essays" > tmp
+    fi
+    cat "$f"  >> tmp
+    jrnl "$jrnl" < tmp
+    rm -fv "$f" | tee -a tmp_deleted
+done
+blue
+echo "List of files Imported:"
+nc
+cat tmp_imported
+popd > /dev/null  

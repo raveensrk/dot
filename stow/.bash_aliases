@@ -450,6 +450,7 @@ timer () {
     mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
 }
 alias n=newsboat
+alias aa=",sync.bash"
 # {{{1 Other Sources
 [ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
 #export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
@@ -463,3 +464,5 @@ done
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 
 alias amake="make -C $HOME/my_repos/dotfiles-main -I $HOME/my_repos/dotfiles-main"
+alias ai="sudo apt install -y"
+alias jjc="$EDITOR $HOME/.config/jrnl/jrnl.yaml"

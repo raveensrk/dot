@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bash_prompt
+
 # This will auto commit, pull and push a given repository
 
 # set -x
@@ -9,11 +11,7 @@ DOTFILES=$1 # Can also sync other repos not just dotfiles. DOTFILES variable inp
 
 [ -d $DOTFILES ] || ( echo Not a directory; exit 2 )
 
-pushd $DOTFILES
-
-if [ -f "./Makefile" ]; then
-    make clean  
-fi
+pushd $DOTFILES >/dev/null
 
 if [ ! -d .git ]; then
     exit 0
@@ -31,31 +29,44 @@ while read -r line; do
 done < "$tmp_file"
 
 
+pwd
 if [[ "$clean" == "1" ]]; then
-    echo "Nothing to commit"
+    echo ""
 else
     # git diff
-    # git status
-    # pwd
-    # read -p "Add these changes? [y/n]: " choice
-    # if [[ $choice == y ]]; then
-    #     git add . && git status
-    # else
-    #     echo -e "${YELLOW} Skipping add and commit for $DOTFILES ${NC} "
-    #     exit 0
-    # fi
-
-    # git commit -t ~/.scripts/git_commit_template.txt
-
-    lazygit
+    git status -s
+    read -t 5 -p "Adding these changes in 5 seconds... Press ^C to cancel or type m to create a new commit message" message 
+    if [ "$message" = "m" ]; then
+        echo Enter Message:
+        read -re message2
+        git add . && git status -s
+        git commit -m "$message2"
+    else
+        git add . && git status -s
+        git commit -m "Reorganizing and Updating"
+    fi
 fi
 
-echo -e "${YELLOW} Preparing to pull, merge and push... ${NC}"
-git pull
-git push
-echo -e "${GREEN}Done${NC}✅" 
 
-popd
+# echo -e "Preparing to pull, merge and push.."
+git fetch > /dev/null 
+git merge --no-commit --no-ff main > /dev/null 
+if [ $? -ne 0 ]; then
+    git merge --abort
+    echo -e "${RED}MERGE FAILED... Running lazygit...${NC}" 
+    lazygit
+else
+    git merge > /dev/null
+    git push -q
+    green
+    echo "
+┌────┐                                  
+│Done│                                  
+└────┘                   
+"
+    nc
+fi
 
+popd > /dev/null 
 
 rm "$tmp_file"

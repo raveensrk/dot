@@ -1,0 +1,14 @@
+#!/usr/bin/env bash 
+
+tag="$1"
+journal=$(jrnl --list | fzf | cut -f 3 -d " ")
+when="$(printf "today\nnow\n" | fzf)"
+
+if [ "$when" = "today" ]; then
+    on="-on today"
+else
+    on=""
+fi 
+
+jrnl "$journal" "$tag" "$on" --edit
+
