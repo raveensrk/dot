@@ -413,9 +413,9 @@ todo=$(bc <<< "scale=0; $bar_size - $done" )
 
 # /Users/raveenkumar/my_repos/dotfiles-main/stow/.scripts/pp
 # Print any line in my projects
-alias pl='rg --no-filename . $(cat ~/.projects) | fzf'
+alias pprint='rg --no-filename . $(cat ~/.projects) | fzf'
 # Same with file name included
-alias pL='rg --with-filename -n  . $(cat ~/.projects) | fzf'
+alias pPrint='rg --with-filename -n  . $(cat ~/.projects) | fzf'
 alias b='bash'
 alias t='$HOME/.local/bin/todo.sh -d "$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)"'
 t_repeat () {

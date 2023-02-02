@@ -341,7 +341,7 @@
 ;; split, emacs can automatically guess the destination directory to make
 ;; this simpler.
 (setq dired-dwim-target t)
-<;; https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired>
+;; https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired>
 
 (setq dired-hide-details-hide-information-lines t)
 (setq dired-hide-details-hide-symlink-targets t)
@@ -492,52 +492,51 @@
   )
 (setq projectile-project-search-path nil)
 (setq projectile-auto-discover nil)
-;; ;;; Evil
-;; (setq evil-want-keybinding nil)
-;; (up evil-numbers
-;;   :after evil
-;;   :straight t
-;;   :config
-;;   (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
-;;   (evil-define-key '(normal visual) 'global (kbd "C-x") 'evil-numbers/dec-at-pt)
-;;   (evil-define-key '(normal visual) 'global (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
-;;   (evil-define-key '(normal visual) 'global (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental))
-;; (up evil-snipe
-;;   :after evil
-;;   :straight t
-;;   :config
-;;   (evil-snipe-mode 1)
-;;   (evil-snipe-override-mode 1))
-;; (up evil-mc :straight t :config (evil-mc-mode 1))
-;; (add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
-;; (add-hook 'Custom-mode-hook 'turn-off-evil-mode)
+ ;;; Evil
+ (setq evil-want-keybinding nil)
+ (up evil-numbers
+   :after evil
+   :straight t
+   :config
+   (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
+   (evil-define-key '(normal visual) 'global (kbd "C-x") 'evil-numbers/dec-at-pt)
+   (evil-define-key '(normal visual) 'global (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
+   (evil-define-key '(normal visual) 'global (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental))
+ (up evil-snipe
+   :after evil
+   :straight t
+   :config
+   (evil-snipe-mode 1)
+   (evil-snipe-override-mode 1))
+ (up evil-mc :straight t :config (evil-mc-mode 1))
+ (add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
+ (add-hook 'Custom-mode-hook 'turn-off-evil-mode)
 
 ;; ;;;; UNDO
 ;; ;; Vim style undo not needed for emacs 28
 ;; (use-package undo-fu
 ;;   :disabled t
 ;;   :straight t)
-;; ;;;; Vim Bindings
-;; (use-package evil
-;;   :disabled t
-;;   :straight t
-;;   :demand t
-;;   :bind (("<escape>" . keyboard-escape-quit))
-;;   :init
-;;   ;; allows for using cgn
-;;   ;; (setq evil-search-module 'evil-search)
-;;   (setq evil-want-keybinding nil)
-;;   ;; no vim insert bindings
-;;   (setq evil-undo-system 'undo-fu)
-;;   :config
-;;   (evil-mode 1))
-;; ;;;; Vim Bindings Everywhere else
-;; (use-package evil-collection
-;;   :after evil
-;;   :straight t
-;;   :config
-;;   (setq evil-want-integration t)
-;;   (evil-collection-init))
+ ;;;; Vim Bindings
+ (use-package evil
+   :straight t
+   :demand t
+   :bind (("<escape>" . keyboard-escape-quit))
+   :init
+   ;; allows for using cgn
+   ;; (setq evil-search-module 'evil-search)
+   (setq evil-want-keybinding nil)
+   ;; no vim insert bindings
+   (setq evil-undo-system 'undo-fu)
+   :config
+   (evil-mode 1))
+ ;;;; Vim Bindings Everywhere else
+ (use-package evil-collection
+   :after evil
+   :straight t
+   :config
+   (setq evil-want-integration t)
+   (evil-collection-init))
 ;; ;;;; Evil leader
 ;; (up evil-leader
 ;;   :straight t
@@ -1072,17 +1071,17 @@ Saves to a temp file and puts the filename in the kill ring."
 ;;; Enable tabs in buffers
 (global-tab-line-mode t)
 
-;;; Save sessions in emacs
-(setq desktop-save t)
-(desktop-save-mode 1)
+;;; ***DISABLED - Buggy*** Save sessions in emacs
+;; (setq desktop-save t)
+;; (desktop-save-mode 1)
 ;;; Set desktop save path
 ;; (setq desktop-path "c:/Users/ravee/")
 ;; (desktop-read "c:/Users/ravee")
 
-(unless (file-directory-p "~/.emacs.d/desktop")
-(eshell-command "mkdir ~/.emacs.d/desktop"))
-(setq desktop-path "~/.emacs.d/desktop")
-(desktop-read "~/.emacs.d/desktop")
+;; (unless (file-directory-p "~/.emacs.d/desktop")
+;; (eshell-command "mkdir ~/.emacs.d/desktop"))
+;; (setq desktop-path "~/.emacs.d/desktop")
+;; (desktop-read "~/.emacs.d/desktop")
 
 (use-package perspective
   :straight t

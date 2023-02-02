@@ -1,0 +1,7 @@
+#!/usr/bin/env bash 
+
+while : ; do
+    "$1"
+    echo Repeating previous command in 3 seconds...
+    sleep 3
+done
