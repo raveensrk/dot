@@ -1073,3 +1073,10 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 (setq org-archive-location "%s::* Archived Tasks")
+
+
+(define-minor-mode sticky-buffer-mode
+  "Make the current window always display this buffer."
+  nil " sticky" nil
+  (set-window-dedicated-p (selected-window) sticky-buffer-mode))
+
