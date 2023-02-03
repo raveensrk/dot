@@ -279,7 +279,7 @@
 (use-package rainbow-delimiters :straight t :config (rainbow-delimiters-mode 1))
 (use-package avy
   :straight t
-  :bind ("ESC ESC a" . avy-goto-char))
+  :bind ("C-c a" . avy-goto-char))
 ;;; Minibuffer completions
 (use-package marginalia :straight t :config (marginalia-mode 1))
 (up ivy
@@ -304,37 +304,33 @@
     (interactive)
     (swiper (word-at-point)))
   :bind
-  ("C-s" . my-word-at-point)
-  ("ESC ESC *" . my-word-at-point)
+  ("C-s" . swiper)
+  ("C-c *" . my-word-at-point)
   )
 
 (up counsel
   :straight t
   :bind (
-	     ;; ("C-c i L" . counsel-git-log)
-	     ;; ("C-c b"   . counsel-bookmark)
-	     ( "ESC ESC C"   . compile)
-	     ;; ( "ESC ESC C"   . counsel-compile)
-	     ("ESC ESC B"   . counsel-bookmark)
-	     ;;( "C-c c"   . counsel-compile)
+	     ("C-c i L" . counsel-git-log)
+	     ("C-c b"   . counsel-bookmark)
+	     ( "C-c c"   . counsel-compile)
 	     ("C-c d"   . counsel-descbinds)
-	     ;; ("C-c g"   . counsel-git)
-	     ;; ("C-c j"   . counsel-git-grep)
-	     ;; ("C-c k"   . counsel-rg)
+	     ("C-c g"   . counsel-git)
+	     ("C-c j"   . counsel-git-grep)
+	     ("C-c k"   . counsel-rg)
 	     ("C-c m"   . counsel-linux-app)
-	     ("C-c o"   . counsel-outline)
-	     ;;( "C-c t"   . counsel-load-theme)
+	     ("C-c o o"   . counsel-outline)
+	     ( "C-c t"   . counsel-load-theme)
 	     ("C-c w"   . counsel-wmctrl)
-	     ("ESC ESC z"   . counsel-fzf)
+	     ("C-c z"   . counsel-fzf)
 	     ("C-x C-f" . counsel-find-file)
-	     ;;( "C-x l"   . counsel-locate)
+	     ("C-x l"   . counsel-locate)
 	     ("M-x"     . counsel-M-x)
 	     ("C-c fr"  . counsel-recentf)
-	     ("ESC ESC g" . counsel-rg)
-	     ;;( "C-c er" . restart-emacs)
 	     :map minibuffer-local-map
 	     ("C-r" . counsel-minibuffer-history)
 	     ))
+
 ;;; Dired
 ;; Guess emacs dired destination
 ;; Lets say that you want to copy files from one dired split to the other
@@ -360,118 +356,8 @@
 	      (dired-do-kill-lines))
       (progn (revert-buffer) ; otherwise just revert to re-show
 	         (set (make-local-variable 'dired-dotfiles-show-p) t)))))
+
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
-(use-package treemacs
-  :straight t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
-          treemacs-deferred-git-apply-delay        0.5
-          treemacs-directory-name-transformer      #'identity
-          treemacs-display-in-side-window          t
-          treemacs-eldoc-display                   'simple
-          treemacs-file-event-delay                2000
-          treemacs-file-extension-regex            treemacs-last-period-regex-value
-          treemacs-file-follow-delay               0.2
-          treemacs-file-name-transformer           #'identity
-          treemacs-follow-after-init               t
-          treemacs-expand-after-init               t
-          treemacs-find-workspace-method           'find-for-file-or-pick-first
-          treemacs-git-command-pipe                ""
-          treemacs-goto-tag-strategy               'refetch-index
-          treemacs-header-scroll-indicators        '(t . "^^^^^^")
-          treemacs-hide-dot-git-directory          t
-          treemacs-indentation                     2
-          treemacs-indentation-string              " "
-          treemacs-is-never-other-window           nil
-          treemacs-max-git-entries                 5000
-          treemacs-missing-project-action          'ask
-          treemacs-move-forward-on-expand          nil
-          treemacs-no-png-images                   nil
-          treemacs-no-delete-other-windows         t
-          treemacs-project-follow-cleanup          nil
-          treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-position                        'left
-          treemacs-read-string-input               'from-child-frame
-          treemacs-recenter-distance               0.1
-          treemacs-recenter-after-file-follow      nil
-          treemacs-recenter-after-tag-follow       nil
-          treemacs-recenter-after-project-jump     'always
-          treemacs-recenter-after-project-expand   'on-distance
-          treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
-          treemacs-project-follow-into-home        nil
-          treemacs-show-cursor                     t
-          treemacs-show-hidden-files               t
-          treemacs-silent-filewatch                nil
-          treemacs-silent-refresh                  nil
-          treemacs-sorting                         'alphabetic-asc
-          treemacs-select-when-already-in-treemacs 'move-back
-          treemacs-space-between-root-nodes        nil
-          treemacs-tag-follow-cleanup              t
-          treemacs-tag-follow-delay                1.5
-          treemacs-text-scale                      nil
-          treemacs-user-mode-line-format           nil
-          treemacs-user-header-line-format         nil
-          treemacs-wide-toggle-width               70
-          treemacs-width                           50
-          treemacs-width-increment                 1
-          treemacs-width-is-initially-locked       t
-          treemacs-workspace-switch-cleanup        nil)
-
-    ;; The default width and height of the icons is 22 pixels. If you are
-    ;; using a Hi-DPI display, uncomment this to double the icon size.
-    ;;(treemacs-resize-icons 44)
-
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode 'always)
-    (when treemacs-python-executable
-      (treemacs-git-commit-diff-mode t))
-
-    (pcase (cons (not (null (executable-find "git")))
-                 (not (null treemacs-python-executable)))
-      (`(t . t)
-       (treemacs-git-mode 'deferred))
-      (`(t . _)
-       (treemacs-git-mode 'simple)))
-
-    (treemacs-hide-gitignored-files-mode nil)
-    (treemacs-indent-guide-mode t)
-    )
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t d"   . treemacs-select-directory)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
-
-(use-package treemacs-projectile
-  :after (treemacs projectile)
-  :straight t)
-
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :straight t)
-
-(use-package treemacs-magit
-  :after (treemacs magit)
-  :straight t)
-
-(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
-  :straight t
-  :config (treemacs-set-scope-type 'Perspectives))
-
-(use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
-  :after (treemacs)
-  :straight t
-  :config (treemacs-set-scope-type 'Tabs))
 
 
 ;;; Projectile
@@ -487,30 +373,31 @@
     )
   (setq projectile-generic-command "fd -L . -0 --type f --color=never --strip-cwd-prefix")
   :bind
-  (:map projectile-mode-map ("ESC ESC p" . projectile-command-map))
-  ("ESC ESC p a" . my-projectile-add-to-known-projects)
+  (:map projectile-mode-map ("C-c p" . projectile-command-map))
+  ("C-c p a" . my-projectile-add-to-known-projects)
   )
+
 (setq projectile-project-search-path nil)
 (setq projectile-auto-discover nil)
- ;;; Evil
- (setq evil-want-keybinding nil)
- (up evil-numbers
-   :after evil
-   :straight t
-   :config
-   (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
-   (evil-define-key '(normal visual) 'global (kbd "C-x") 'evil-numbers/dec-at-pt)
-   (evil-define-key '(normal visual) 'global (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
-   (evil-define-key '(normal visual) 'global (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental))
- (up evil-snipe
-   :after evil
-   :straight t
-   :config
-   (evil-snipe-mode 1)
-   (evil-snipe-override-mode 1))
- (up evil-mc :straight t :config (evil-mc-mode 1))
- (add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
- (add-hook 'Custom-mode-hook 'turn-off-evil-mode)
+;;  ;;; Evil
+;;  (setq evil-want-keybinding nil)
+;;  (up evil-numbers
+;;    :after evil
+;;    :straight t
+;;    :config
+;;    (evil-define-key '(normal visual) 'global (kbd "C-a") 'evil-numbers/inc-at-pt)
+;;    (evil-define-key '(normal visual) 'global (kbd "C-x") 'evil-numbers/dec-at-pt)
+;;    (evil-define-key '(normal visual) 'global (kbd "g C-a") 'evil-numbers/inc-at-pt-incremental)
+;;    (evil-define-key '(normal visual) 'global (kbd "g C-x") 'evil-numbers/dec-at-pt-incremental))
+;;  (up evil-snipe
+;;    :after evil
+;;    :straight t
+;;    :config
+;;    (evil-snipe-mode 1)
+;;    (evil-snipe-override-mode 1))
+;;  (up evil-mc :straight t :config (evil-mc-mode 1))
+;;  (add-hook 'xref--xref-buffer-mode-hook 'turn-off-evil-mode)
+;;  (add-hook 'Custom-mode-hook 'turn-off-evil-mode)
 
 ;; ;;;; UNDO
 ;; ;; Vim style undo not needed for emacs 28
@@ -518,25 +405,25 @@
 ;;   :disabled t
 ;;   :straight t)
  ;;;; Vim Bindings
- (use-package evil
-   :straight t
-   :demand t
-   :bind (("<escape>" . keyboard-escape-quit))
-   :init
-   ;; allows for using cgn
-   ;; (setq evil-search-module 'evil-search)
-   (setq evil-want-keybinding nil)
-   ;; no vim insert bindings
-   (setq evil-undo-system 'undo-fu)
-   :config
-   (evil-mode 1))
- ;;;; Vim Bindings Everywhere else
- (use-package evil-collection
-   :after evil
-   :straight t
-   :config
-   (setq evil-want-integration t)
-   (evil-collection-init))
+;;  (use-package evil
+;;    :straight t
+;;    :demand t
+;;    :bind (("<escape>" . keyboard-escape-quit))
+;;    :init
+;;    ;; allows for using cgn
+;;    ;; (setq evil-search-module 'evil-search)
+;;    (setq evil-want-keybinding nil)
+;;    ;; no vim insert bindings
+;;    (setq evil-undo-system 'undo-fu)
+;;    :config
+;;    (evil-mode 1))
+;;  ;;;; Vim Bindings Everywhere else
+;;  (use-package evil-collection
+;;    :after evil
+;;    :straight t
+;;    :config
+;;    (setq evil-want-integration t)
+;;    (evil-collection-init))
 ;; ;;;; Evil leader
 ;; (up evil-leader
 ;;   :straight t
@@ -597,7 +484,7 @@
   :defer 5
   :diminish
   :bind
-  ("ESC ESC y" . 'yas-new-snippet)
+  ("C-c y" . 'yas-new-snippet)
   :config
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
   (setq yas-snippet-dirs
@@ -696,9 +583,9 @@
     (delete-directory "~/.elfeed" t))
   (advice-add 'elfeed :before 'elfeed-update)
   :bind
-  ("ESC ESC e f f" . elfeed)
-  ("ESC ESC e f e" . elfeed-edit-my-rss-feed-list)
-  ("ESC ESC e f d" . elfeed-db-delete)
+  ("C-c e f f" . elfeed)
+  ("C-c e f e" . elfeed-edit-my-rss-feed-list)
+  ("C-c e f d" . elfeed-db-delete)
   )
 
 (defun my-open-init-file ()
@@ -737,38 +624,24 @@
 (up crux
   :straight t
   :config
-  (global-set-key (kbd "ESC ESC D") 'crux-smart-kill-line)
-  (global-set-key (kbd "ESC ESC d") 'crux-duplicate-current-line-or-region))
+  (global-set-key (kbd "C-c D") 'crux-smart-kill-line)
+  (global-set-key (kbd "C-c d") 'crux-duplicate-current-line-or-region))
 (up web-mode
   :straight t)
-(global-set-key (kbd "ESC ESC a") 'avy-goto-char)
-(global-set-key (kbd "ESC ESC i") 'my-open-init-file)
-(global-set-key (kbd "ESC ESC f f") 'ffap)
-(global-set-key (kbd "ESC ESC f a") 'append-to-file)
+(global-set-key (kbd "C-c i") 'my-open-init-file)
+(global-set-key (kbd "C-c f f") 'ffap)
+(global-set-key (kbd "C-c f a") 'append-to-file)
 (defun nuke-all-buffers ()
   (interactive)
   (mapcar 'kill-buffer (buffer-list))
   (delete-other-windows))
-(global-set-key (kbd "ESC ESC /") 'swiper)
-(global-set-key (kbd "ESC ESC =") 'my-indent-whole-buffer)
-(global-set-key (kbd "ESC ESC K") 'nuke-all-buffers)
-(global-set-key (kbd "ESC ESC b b") 'ivy-switch-buffer)(up magit-section
-                                                         :straight t)
+(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
+(global-set-key (kbd "C-c K") 'nuke-all-buffers)
 
-;; (global-set-key (kbd "ESC ESC b b") 'counsel-buffer-or-recentf)
-(global-set-key (kbd "ESC ESC b k") 'kill-buffer)
-(global-set-key (kbd "ESC ESC e x") 'eval-last-sexp)
-(global-set-key (kbd "ESC ESC e r") 'eval-region)
-(global-set-key (kbd "ESC ESC f") 'ffap)
-(global-set-key (kbd "ESC ESC h") 'help)
-(global-set-key (kbd "ESC ESC i") 'my-open-init-file)
-(global-set-key (kbd "ESC ESC w o") 'delete-other-windows)
-(global-set-key (kbd "ESC ESC w c") 'delete-window)
-(global-set-key (kbd "ESC ESC w f") 'toggle-frame-maximized)
-(global-set-key (kbd "ESC ESC q") 'save-buffers-kill-terminal)
-(global-set-key (kbd "ESC ESC e m") 'menu-bar-open)
-(global-set-key (kbd "ESC ESC m m") 'magit)
-(global-set-key (kbd "ESC ESC m c c") 'with-editor-finish)
+(up magit-section
+  :straight t)
+
+(global-set-key (kbd "C-c m") 'menu-bar-open)
 
 (defun my-magit-list-repositories ()
   "This will load magit-status libraries then open magit-list-repositories. Otherwise i get errors... This will make sure all libraries are loaded"
@@ -777,16 +650,8 @@
   (magit-list-repositories)
   )
 
-(global-set-key (kbd "ESC ESC m l") 'my-magit-list-repositories)
-(global-set-key (kbd "ESC ESC m f") 'my-magit-repolist-pull-repos)
-(global-set-key (kbd "ESC ESC m p") 'my-magit-repolist-push-repos)
+(global-set-key (kbd "C-c t") 'toggle-truncate-lines)
 
-
-(global-set-key (kbd "ESC ESC r") 'restart-emacs)
-(global-set-key (kbd "ESC ESC w s") 'split-window-below)
-(global-set-key (kbd "ESC ESC t") 'toggle-truncate-lines)
-(global-set-key (kbd "ESC ESC w v") 'split-window-right)
-(global-set-key (kbd "ESC ESC x d") 'dired)
 
 ;;; Autosave files every 1 second if visited and changed
 (setq auto-save-visited-interval 1)
@@ -806,14 +671,13 @@
 
 
 (defun my-list-packages ()
+  "If already refresehed dont refresh. List only."
   (interactive)
   (if (bound-and-true-p my-package-refreshed-once)
       (list-packages)
     (package-refresh-contents t)
     (setq my-package-refreshed-once t)
     (list-packages)))
-
-(global-set-key (kbd "ESC ESC l") 'my-list-packages)
 
 
 ;;; Outline mode extend headings backline
@@ -884,8 +748,6 @@
 
 
 
-(global-set-key (kbd "ESC ESC b o") 'ivy-switch-buffer-other-window)
-
 (if (string-equal system-type "windows-nt")
     (progn
       (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
@@ -904,8 +766,8 @@
   (interactive)
   (org-timer-set-timer "0:10:02"))
 
-(global-set-key (kbd "ESC ESC 1 1") 'start-pomodoro)
-(global-set-key (kbd "ESC ESC 1 2") 'start-break)
+(global-set-key (kbd "C-c 1 1") 'start-pomodoro)
+(global-set-key (kbd "C-c 1 2") 'start-break)
 
 ;; from https://github.com/munen/emacs.d/
 
@@ -991,8 +853,8 @@ Saves to a temp file and puts the filename in the kill ring."
 ;; https://github.com/ferfebles/redtick
 (setq magit-repository-directories '(("~/my_repos" . 1)))
 
-(global-set-key (kbd "ESC ESC o a a") 'org-agenda)
-(global-set-key (kbd "ESC ESC o a t") 'org-todo-list)
+(global-set-key (kbd "C-c o a a") 'org-agenda)
+(global-set-key (kbd "C-c o a t") 'org-todo-list)
 
 
 ;; TODO For some reason this function is not present in my magit repo
@@ -1063,7 +925,7 @@ Saves to a temp file and puts the filename in the kill ring."
  '(multifile :type git :host github :repo "magnars/multifiles.el"))
 (up multifiles
   :load-path "~/.emacs.d/straight/build/multifile")
-(global-set-key (kbd "ESC ESC !") 'mf/mirror-region-in-multifile)
+(global-set-key (kbd "C-c 3") 'mf/mirror-region-in-multifile)
 
 
 ;;; TODO Emojis not working
