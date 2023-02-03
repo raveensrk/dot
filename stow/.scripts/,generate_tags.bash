@@ -29,6 +29,6 @@ done
 
 pushd "$dir" || exit 2
 ctags --exclude="stow_vim_plugins" -R ./*
-# ctags --exclude="stow_vim_plugins" -e -R ./*
+ctags --exclude="stow_vim_plugins" -e -R ./*
 popd || exit 2
 
