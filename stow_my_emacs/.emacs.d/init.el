@@ -5,7 +5,7 @@
     (progn
       (message "Current version: %s is not supported. Exiting..." emacs-version)
       (save-buffers-kill-emacs)))
-  
+
 
 ;;; Straight
 (defvar bootstrap-version)
@@ -107,6 +107,7 @@
   :diminish
   :config (smartparens-global-mode +1))
 (up drag-stuff
+  :disabled t
   :straight t
   :defer 5
   :diminish
@@ -784,7 +785,7 @@
 (up dired-narrow
   :straight t
   :config
-(define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy)
+  (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy)
   )
 
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -843,11 +844,11 @@ Saves to a temp file and puts the filename in the kill ring."
 (up browse-kill-ring
   :straight t
   :config
-(setq browse-kill-ring-highlight-inserted-item t
-      browse-kill-ring-highlight-current-entry nil
-      browse-kill-ring-show-preview t)
-(define-key browse-kill-ring-mode-map (kbd "j") 'browse-kill-ring-forward)
-(define-key browse-kill-ring-mode-map (kbd "k") 'browse-kill-ring-previous))
+  (setq browse-kill-ring-highlight-inserted-item t
+        browse-kill-ring-highlight-current-entry nil
+        browse-kill-ring-show-preview t)
+  (define-key browse-kill-ring-mode-map (kbd "j") 'browse-kill-ring-forward)
+  (define-key browse-kill-ring-mode-map (kbd "k") 'browse-kill-ring-previous))
 
 ;; TODO https://github.com/Malabarba/spinner.el
 ;; https://github.com/ferfebles/redtick
@@ -935,3 +936,54 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 (setq org-archive-location "%s::* Archived Tasks")
+
+(setq auto-save-visited-mode t
+      calendar-date-style 'iso
+      cursor-in-non-selected-windows 'hollow
+      cursor-type '(bar . 2)
+      dired-listing-switches "-alh"
+      evil-cross-lines t
+      evil-want-minibuffer t
+      global-company-mode t
+      global-visual-line-mode t
+      inhibit-startup-screen t
+      modus-themes-bold-constructs t
+      modus-themes-fringes 'intense
+      modus-themes-scale-headings t
+      modus-themes-subtle-line-numbers nil
+      modus-themes-tabs-accented t
+      modus-themes-variable-pitch-headings t
+      modus-themes-variable-pitch-ui t
+      org-archive-location "::* Archived Tasks"
+      org-export-backends
+      '(ascii beamer html icalendar latex man md odt org confluence)
+      org-export-use-babel nil
+      org-export-with-broken-links 'mark
+      org-html-allow-name-attribute-in-anchors t
+      org-html-checkbox-type 'unicode
+      org-html-html5-fancy t
+      org-html-self-link-headlines t
+      org-support-shift-select t
+      org-todo-keywords '((sequence "TODO" "DOING" "SKIP" "KILL" "DONE"))
+      recentf-mode t
+      visible-bell t
+      winner-mode t)
+
+(setq cursor-type '(bar . 2))
+
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 200 :width normal :foundry "outline" :family "Fira Code Retina"))))
+ '(cursor ((t (:background "MediumOrchid1"))))
+ '(modus-themes-heading-1 ((t (:inherit (bold variable-pitch) :foreground "aquamarine1" :height 1.2))) t)
+ '(org-block-begin-line ((t (:inherit modus-themes-fixed-pitch :extend t :background "black" :foreground "#ff9580"))))
+ '(org-date ((t (:inherit (button fixed-pitch) :background "SystemTitleText" :foreground "#00d3d0" :underline t))))
+ '(org-default ((t (:inherit default :family "Fira Code"))))
+ '(org-level-1 ((t (:inherit outline-1 :extend nil :inverse-video t :box (:line-width (2 . 2) :color "indian red" :style released-button) :width extra-expanded :family "Fira Code"))))
+ '(org-level-3 ((t (:inherit modus-themes-heading-3 :extend nil))))
+ '(org-meta-line ((t (:inherit modus-themes-fixed-pitch :foreground "#a8a8a8" :family "Fira Code"))))
+ '(org-table ((t (:inherit modus-themes-fixed-pitch :foreground "#c6eaff" :family "Fira Code")))))
