@@ -987,3 +987,9 @@ Saves to a temp file and puts the filename in the kill ring."
  '(org-level-3 ((t (:inherit modus-themes-heading-3 :extend nil))))
  '(org-meta-line ((t (:inherit modus-themes-fixed-pitch :foreground "#a8a8a8" :family "Fira Code"))))
  '(org-table ((t (:inherit modus-themes-fixed-pitch :foreground "#c6eaff" :family "Fira Code")))))
+
+(define-minor-mode sticky-buffer-mode
+  "Make the current window always display this buffer."
+  nil " sticky" nil
+  (set-window-dedicated-p (selected-window) sticky-buffer-mode))
+
