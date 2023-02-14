@@ -969,7 +969,7 @@ Saves to a temp file and puts the filename in the kill ring."
       visible-bell t
       winner-mode t)
 
-(setq cursor-type '(bar . 2))
+(setq-default cursor-type '(bar . 2))
 
 
 (custom-set-faces
@@ -992,4 +992,8 @@ Saves to a temp file and puts the filename in the kill ring."
   "Make the current window always display this buffer."
   nil " sticky" nil
   (set-window-dedicated-p (selected-window) sticky-buffer-mode))
+
+
+;; (add-hook 'prog-mode-hook 'turn-on-evil-mode)
+
 
