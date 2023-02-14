@@ -937,6 +937,10 @@ Saves to a temp file and puts the filename in the kill ring."
 
 (setq org-archive-location "%s::* Archived Tasks")
 
+(use-package ranger
+  :straight t)
+
+(setq vc-follow-symlinks nil)
 (setq auto-save-visited-mode t
       calendar-date-style 'iso
       cursor-in-non-selected-windows 'hollow
