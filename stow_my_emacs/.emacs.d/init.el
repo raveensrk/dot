@@ -1000,4 +1000,7 @@ Saves to a temp file and puts the filename in the kill ring."
 
 ;; (add-hook 'prog-mode-hook 'turn-on-evil-mode)
 
+(global-set-key (kbd "C-c e") 'eshell)
 
+(use-package openai
+  :straight (openai :type git :host github :repo "emacs-openai/openai"))
