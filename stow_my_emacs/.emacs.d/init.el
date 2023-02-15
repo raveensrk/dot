@@ -973,7 +973,7 @@ Saves to a temp file and puts the filename in the kill ring."
       visible-bell t
       winner-mode t)
 
-(setq cursor-type '(bar . 2))
+(setq-default cursor-type '(bar . 2))
 
 
 (custom-set-faces
@@ -997,3 +997,10 @@ Saves to a temp file and puts the filename in the kill ring."
   nil " sticky" nil
   (set-window-dedicated-p (selected-window) sticky-buffer-mode))
 
+
+;; (add-hook 'prog-mode-hook 'turn-on-evil-mode)
+
+(global-set-key (kbd "C-c e") 'eshell)
+
+(use-package openai
+  :straight (openai :type git :host github :repo "emacs-openai/openai"))
