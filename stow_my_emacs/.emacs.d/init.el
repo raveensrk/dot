@@ -545,7 +545,7 @@
   [menu-bar mymenu treemacs]
   '("toggle treemacs" . treemacs))
 ;;; Outline minor mode
-(setq outline-minor-mode-cycle t)
+;; (setq outline-minor-mode-cycle t)
 ;;; Others
 (global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
 
