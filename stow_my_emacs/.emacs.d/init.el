@@ -942,3 +942,27 @@ Saves to a temp file and puts the filename in the kill ring."
   nil " sticky" nil
   (set-window-dedicated-p (selected-window) sticky-buffer-mode))
 
+
+(use-package ranger
+  :straight t)
+
+(global-set-key (kbd "C-x d") 'ranger)
+
+(defun insert-date ()
+  "This will insert todays date in YYYY-MM-DD format"
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d")))
+
+(defun return-date ()
+  "This will return todays date in YYYY-MM-DD format"
+  (interactive)
+  (format-time-string "%Y-%m-%d"))
+
+(defalias 'today 'return-date)
+
+(global-set-key (kbd "C-c 0") 'insert-date)
+
+(add-hook 'markdown-mode-hook (lambda () (text-scale-set 3)))
+
+
+
