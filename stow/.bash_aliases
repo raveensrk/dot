@@ -184,7 +184,7 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 # {{{ VIM STUFF
-export EDITOR="vim"
+export EDITOR="emacs -nw"
 alias e="$EDITOR"
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
 alias vimrc="e ~/.vimrc"
