@@ -24,3 +24,6 @@ ctags:
 clean:
 stow:
 	bash ./installer_scripts/install_stow_from_source.bash
+
+macos:
+	bash ./installer_scripts/macos.bash

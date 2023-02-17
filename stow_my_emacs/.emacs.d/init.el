@@ -546,9 +546,6 @@
   '("toggle treemacs" . treemacs))
 ;;; Outline minor mode
 ;; (setq outline-minor-mode-cycle t)
-;;; Others
-(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
-
 
 (defun switch-to-dashboard-buffer ()
   (interactive)
@@ -636,7 +633,6 @@
   (interactive)
   (mapcar 'kill-buffer (buffer-list))
   (delete-other-windows))
-(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
 (global-set-key (kbd "C-c K") 'nuke-all-buffers)
 
 (up magit-section
@@ -1037,3 +1033,5 @@ Saves to a temp file and puts the filename in the kill ring."
 (global-set-key (kbd "C-c e e") 'eshell)
 
 (global-set-key (kbd "C-c e n") 'eshell-new-buffer)
+
+(define-key global-map (kbd "C-c =") 'my-indent-whole-buffer)
