@@ -24,3 +24,5 @@ ctags:
 clean:
 stow:
 	bash ./installer_scripts/install_stow_from_source.bash
+emacs:
+	bash ./installer_scripts/install_emacs_from_source.bash

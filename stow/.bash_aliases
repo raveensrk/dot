@@ -68,10 +68,10 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 if command -v exa > /dev/null; then
     alias ls='exa'
-    alias l="exa -la"
+    alias l="exa -lah"
 else
     alias ls='ls --color=auto'
-    alias l="ls -Al"
+    alias l="ls -Alh"
 fi
 alias y="yt-dlp"
 alias ,edit_zzz="\$EDITOR ~/.dirs_stack"

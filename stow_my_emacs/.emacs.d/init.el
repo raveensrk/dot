@@ -1,11 +1,4 @@
-;; Emacs versions supported
-;; 28.2
-(message (concat "EMACS VERSION: " (version)))
-(if (version< emacs-version "28.1")
-    (progn
-      (message "Current version: %s is not supported. Exiting..." emacs-version)
-      (save-buffers-kill-emacs)))
-
+;; Emacs versions supported: 28.2+
 
 ;;; Straight
 (defvar bootstrap-version)

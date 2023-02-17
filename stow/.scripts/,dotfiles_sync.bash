@@ -30,21 +30,26 @@ done < "$tmp_file"
 
 
 pwd
+
 if [[ "$clean" == "1" ]]; then
     echo ""
 else
+    # Following code will wait for 5 seconds and auto commit
     # git diff
-    git status -s
-    read -t 5 -p "Adding these changes in 5 seconds... Press ^C to cancel or type m to create a new commit message" message 
-    if [ "$message" = "m" ]; then
-        echo Enter Message:
-        read -re message2
-        git add . && git status -s
-        git commit -m "$message2"
-    else
-        git add . && git status -s
-        git commit -m "Reorganizing and Updating"
-    fi
+    # git status -s
+    # read -t 5 -p "Adding these changes in 5 seconds... Press ^C to cancel or type m to create a new commit message" message 
+    # if [ "$message" = "m" ]; then
+    #     echo Enter Message:
+    #     read -re message2
+    #     git add . && git status -s
+    #     git commit -m "$message2"
+    # else
+    #     git add . && git status -s
+    #     git commit -m "Reorganizing and Updating"
+    # fi
+
+    # Run lazygit for commit
+    lazygit
 fi
 
 
