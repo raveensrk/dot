@@ -1,11 +1,4 @@
-;; Emacs versions supported
-;; 28.2
-(message (concat "EMACS VERSION: " (version)))
-(if (version< emacs-version "28.1")
-    (progn
-      (message "Current version: %s is not supported. Exiting..." emacs-version)
-      (save-buffers-kill-emacs)))
-
+;; Emacs versions supported: 28.2+
 
 ;;; Straight
 (defvar bootstrap-version)
@@ -933,8 +926,6 @@ Saves to a temp file and puts the filename in the kill ring."
 
 (setq org-archive-location "%s::* Archived Tasks")
 
-(use-package ranger
-  :straight t)
 
 (setq vc-follow-symlinks nil)
 (setq auto-save-visited-mode t
@@ -995,7 +986,9 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 (use-package ranger
-  :straight t)
+  :straight t
+  :config
+  (setq ranger-show-hidden t))
 
 (global-set-key (kbd "C-x d") 'ranger)
 
