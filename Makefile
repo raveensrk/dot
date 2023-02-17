@@ -24,3 +24,5 @@ ctags:
 clean:
 stow:
 	bash ./installer_scripts/install_stow_from_source.bash
+lazygit:
+	bash ./installer_scripts/lazygit.bash
