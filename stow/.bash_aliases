@@ -184,7 +184,7 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 # {{{ VIM STUFF
-export EDITOR="emacs -nw"
+export EDITOR="emacs"
 alias e="$EDITOR"
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
 alias vimrc="e ~/.vimrc"
@@ -467,3 +467,4 @@ alias amake="make -C $HOME/my_repos/dotfiles-main -I $HOME/my_repos/dotfiles-mai
 alias ai="sudo apt install -y"
 alias jjc="$EDITOR $HOME/.config/jrnl/jrnl.yaml"
 ahugo="hugo server --navigateTochanged"
+

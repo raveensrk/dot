@@ -475,7 +475,6 @@
 ;;; Yas snippets
 (up yasnippet
   :straight t
-  :defer 5
   :diminish
   :bind
   ("C-c y" . 'yas-new-snippet)
@@ -925,6 +924,8 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 (setq org-archive-location "%s::* Archived Tasks")
+
+
 
 
 (setq vc-follow-symlinks nil)
