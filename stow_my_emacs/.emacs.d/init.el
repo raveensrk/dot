@@ -1018,30 +1018,57 @@ Saves to a temp file and puts the filename in the kill ring."
 (define-key global-map (kbd "C-c =") 'my-indent-whole-buffer)
 
 
+;; Check if a font exists
+(defun font-exists-p (font)
+  "Check if FONT exists on the system."
+  (member font (x-list-fonts "*")))
+
 ;; Set the default font to Fira Code with size 14
-(set-face-attribute 'default nil :font "Fira Code-14")
+(if (font-exists-p "Fira Code")
+    (progn
+      (set-face-attribute 'default nil :font "Fira Code-14")
 
+      ;; Define the prettified symbol list
+      (defvar my-fira-code-prettify-symbols-alist
+        '(("lambda" . ?λ)
+          ("->" . ?→)
+          ("=>" . ?⇒)
+          ("!=" . ?≠)
+          (">=" . ?≥)
+          ("<=" . ?≤)
+          ))
 
-;; Define the prettified symbol list
-(defvar my-fira-code-prettify-symbols-alist
-  '(("lambda" . ?λ)
-    ("->" . ?→)
-    ("=>" . ?⇒)
-    ("!=" . ?≠)
-    (">=" . ?≥)
-    ("<=" . ?≤)
-    ))
+      ;; Enable Fira Code ligatures in programming and text modes
+      (add-hook 'prog-mode-hook
+                (lambda ()
+                  (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
+                  (prettify-symbols-mode)))
+      (add-hook 'text-mode-hook
+                (lambda ()
+                  (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
+                  (prettify-symbols-mode)))))
 
+;; File-info
+(use-package hydra
+  :straight t)
+(use-package browse-at-remote
+  :straight t)
+(use-package posframe
+  :straight t)
+(use-package file-info
+  :straight (:host github :repo "artawower/file-info.el")
+  :bind (("C-c f i" . 'file-info-show))
+  :config
+  (setq hydra-hint-display-type 'posframe)
+  (setq hydra-posframe-show-params `(:poshandler posframe-poshandler-frame-center
+                                               :internal-border-width 2
+                                               :internal-border-color "#61AFEF"
+                                               :left-fringe 16
+                                               :right-fringe 16)))
 
-;; Enable Fira Code ligatures in programming and text modes
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
-            (prettify-symbols-mode)))
-(add-hook 'text-mode-hook
-          (lambda ()
-            (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
-            (prettify-symbols-mode)))
-
-
-
+(use-package wrap-region
+  :straight t
+  :config
+  (wrap-region-global-mode)
+  (wrap-region-add-wrapper "*" "*")
+  )

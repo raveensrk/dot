@@ -14,7 +14,7 @@ encrypted_file="$compressed_file.enc"
 
 if [[ "$operation" == "encrypt" ]]; then
     # Create a tar archive of the file or directory
-    tar -cvf "$tar_file" "$file_or_directory"
+    tar -hcvf "$tar_file" "$file_or_directory"
 
     # Compress the tar archive with maximum compression
     gzip -9 "$tar_file"
