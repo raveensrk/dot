@@ -1,11 +1,4 @@
-;; Emacs versions supported
-;; 28.2
-(message (concat "EMACS VERSION: " (version)))
-(if (version< emacs-version "28.1")
-    (progn
-      (message "Current version: %s is not supported. Exiting..." emacs-version)
-      (save-buffers-kill-emacs)))
-
+;; Emacs versions supported: 28.2+
 
 ;;; Straight
 (defvar bootstrap-version)
@@ -482,7 +475,6 @@
 ;;; Yas snippets
 (up yasnippet
   :straight t
-  :defer 5
   :diminish
   :bind
   ("C-c y" . 'yas-new-snippet)
@@ -546,9 +538,6 @@
   '("toggle treemacs" . treemacs))
 ;;; Outline minor mode
 ;; (setq outline-minor-mode-cycle t)
-;;; Others
-(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
-
 
 (defun switch-to-dashboard-buffer ()
   (interactive)
@@ -636,7 +625,6 @@
   (interactive)
   (mapcar 'kill-buffer (buffer-list))
   (delete-other-windows))
-(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
 (global-set-key (kbd "C-c K") 'nuke-all-buffers)
 
 (up magit-section
@@ -918,7 +906,9 @@ Saves to a temp file and puts the filename in the kill ring."
 
 ;;; Better emacs narrowing, narrow ring 🛣️
 (up zones
-  :straight t)
+  :straight t
+  :disabled t
+  )
 
 ;;; Edit multiple files at the same time 🤹
 
@@ -936,6 +926,8 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 (setq org-archive-location "%s::* Archived Tasks")
+
+
 
 
 (setq vc-follow-symlinks nil)
@@ -974,21 +966,6 @@ Saves to a temp file and puts the filename in the kill ring."
 (setq-default cursor-type '(bar . 2))
 
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 200 :width normal :foundry "outline" :family "Fira Code Retina"))))
- '(cursor ((t (:background "MediumOrchid1"))))
- '(modus-themes-heading-1 ((t (:inherit (bold variable-pitch) :foreground "aquamarine1" :height 1.2))) t)
- '(org-block-begin-line ((t (:inherit modus-themes-fixed-pitch :extend t :background "black" :foreground "#ff9580"))))
- '(org-date ((t (:inherit (button fixed-pitch) :background "SystemTitleText" :foreground "#00d3d0" :underline t))))
- '(org-default ((t (:inherit default :family "Fira Code"))))
- '(org-level-1 ((t (:inherit outline-1 :extend nil :inverse-video t :box (:line-width (2 . 2) :color "indian red" :style released-button) :width extra-expanded :family "Fira Code"))))
- '(org-level-3 ((t (:inherit modus-themes-heading-3 :extend nil))))
- '(org-meta-line ((t (:inherit modus-themes-fixed-pitch :foreground "#a8a8a8" :family "Fira Code"))))
- '(org-table ((t (:inherit modus-themes-fixed-pitch :foreground "#c6eaff" :family "Fira Code")))))
 
 (define-minor-mode sticky-buffer-mode
   "Make the current window always display this buffer."
@@ -1037,3 +1014,54 @@ Saves to a temp file and puts the filename in the kill ring."
 (global-set-key (kbd "C-c e e") 'eshell)
 
 (global-set-key (kbd "C-c e n") 'eshell-new-buffer)
+
+(define-key global-map (kbd "C-c =") 'my-indent-whole-buffer)
+
+
+(defun font-exists-p (font)
+  "Check if FONT exists on the system."
+  (member font (x-list-fonts "*")))
+
+;; Set the default font to Fira Code with size 14
+(if (font-exists-p "Fira Code")
+    (progn
+      (set-face-attribute 'default nil :font "Fira Code-14")
+
+      ;; Define the prettified symbol list
+      (defvar my-fira-code-prettify-symbols-alist
+        '(("lambda" . ?λ)
+          ("->" . ?→)
+          ("=>" . ?⇒)
+          ("!=" . ?≠)
+          ("!=" . ?≠)
+          ("!=" . ?≠)
+          ("!=" . ?≠)
+          ("==" . ?≡)
+          (">=" . ?≥)
+          ("<=" . ?≤)
+          ("&&" . ?∧)
+          ("||" . ?∨)
+          (".." . ?…)
+          ("..." . ?…)
+          ("++" . ?‖)
+          ("[]" . ?Ø)
+          ("/=" . ?≠)
+          ("*" . ?×)
+          ("# " . ?▷)             ; Heading level 1
+          ("## " . ?▷)            ; Heading level 2
+          ("### " . ?▷)           ; Heading level 3
+          ("#### " . ?▷)          ; Heading level 4
+          ("##### " . ?▷)         ; Heading level 5
+          ("###### " . ?▷)))      ; Heading level 6
+
+
+      ;; Enable Fira Code ligatures in programming and text modes
+      (add-hook 'prog-mode-hook
+                (lambda ()
+                  (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
+                  (prettify-symbols-mode)))
+      (add-hook 'text-mode-hook
+                (lambda ()
+                  (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
+                  (prettify-symbols-mode)))
+      ))

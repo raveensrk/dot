@@ -24,5 +24,10 @@ ctags:
 clean:
 stow:
 	bash ./installer_scripts/install_stow_from_source.bash
+
+macos:
+	bash ./installer_scripts/macos.bash
+emacs:
+	bash ./installer_scripts/install_emacs_from_source.bash
 lazygit:
 	bash ./installer_scripts/lazygit.bash
