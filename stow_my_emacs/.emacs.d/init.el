@@ -1018,44 +1018,50 @@ Saves to a temp file and puts the filename in the kill ring."
 (define-key global-map (kbd "C-c =") 'my-indent-whole-buffer)
 
 
+(defun font-exists-p (font)
+  "Check if FONT exists on the system."
+  (member font (x-list-fonts "*")))
+
 ;; Set the default font to Fira Code with size 14
-(set-face-attribute 'default nil :font "Fira Code-14")
+(if (font-exists-p "Fira Code")
+    (progn
+      (set-face-attribute 'default nil :font "Fira Code-14")
+
+      ;; Define the prettified symbol list
+      (defvar my-fira-code-prettify-symbols-alist
+        '(("lambda" . ?λ)
+          ("->" . ?→)
+          ("=>" . ?⇒)
+          ("!=" . ?≠)
+          ("!=" . ?≠)
+          ("!=" . ?≠)
+          ("!=" . ?≠)
+          ("==" . ?≡)
+          (">=" . ?≥)
+          ("<=" . ?≤)
+          ("&&" . ?∧)
+          ("||" . ?∨)
+          (".." . ?…)
+          ("..." . ?…)
+          ("++" . ?‖)
+          ("[]" . ?Ø)
+          ("/=" . ?≠)
+          ("*" . ?×)
+          ("# " . ?▷)             ; Heading level 1
+          ("## " . ?▷)            ; Heading level 2
+          ("### " . ?▷)           ; Heading level 3
+          ("#### " . ?▷)          ; Heading level 4
+          ("##### " . ?▷)         ; Heading level 5
+          ("###### " . ?▷)))      ; Heading level 6
 
 
-;; Define the prettified symbol list
-(defvar my-fira-code-prettify-symbols-alist
-  '(("lambda" . ?λ)
-    ("->" . ?→)
-    ("=>" . ?⇒)
-    ("!=" . ?≠)
-    ("!=" . ?≠)
-    ("!=" . ?≠)
-    ("!=" . ?≠)
-    ("==" . ?≡)
-    (">=" . ?≥)
-    ("<=" . ?≤)
-    ("&&" . ?∧)
-    ("||" . ?∨)
-    (".." . ?…)
-    ("..." . ?…)
-    ("++" . ?‖)
-    ("[]" . ?Ø)
-    ("/=" . ?≠)
-    ("*" . ?×)
- ("# " . ?▷)             ; Heading level 1
-    ("## " . ?▷)            ; Heading level 2
-    ("### " . ?▷)           ; Heading level 3
-    ("#### " . ?▷)          ; Heading level 4
-    ("##### " . ?▷)         ; Heading level 5
-    ("###### " . ?▷)))      ; Heading level 6
-
-
-;; Enable Fira Code ligatures in programming and text modes
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
-            (prettify-symbols-mode)))
-(add-hook 'text-mode-hook
-          (lambda ()
-            (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
-            (prettify-symbols-mode)))
+      ;; Enable Fira Code ligatures in programming and text modes
+      (add-hook 'prog-mode-hook
+                (lambda ()
+                  (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
+                  (prettify-symbols-mode)))
+      (add-hook 'text-mode-hook
+                (lambda ()
+                  (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
+                  (prettify-symbols-mode)))
+      ))
