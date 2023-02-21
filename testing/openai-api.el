@@ -30,7 +30,7 @@
 
 ;;; Code:
 
-(setenv "OPENAI_API_KEY" "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")
+;; (setenv "OPENAI_API_KEY" "enter-your-api-key")
 
 
 

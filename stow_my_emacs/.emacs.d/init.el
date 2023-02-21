@@ -480,9 +480,13 @@
   ("C-c y" . 'yas-new-snippet)
   :config
   (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
-  (setq yas-snippet-dirs
-        '("~/.emacs.d/snippets/"                 ;; personal snippets
-          )))
+  (setq yas-snippet-dirs-windows "c:/github/dotfiles-main/stow_my_emacs/.emacs.d/snippets")
+  (if (file-exists-p yas-snippet-dirs-windows)
+      (add-to-list 'yas-snippet-dirs yas-snippet-dirs-windows)
+    (setq yas-snippet-dirs        '("~/.emacs.d/snippets/")))
+  )
+
+
 
 (up yasnippet-snippets
   :after yasnippet
