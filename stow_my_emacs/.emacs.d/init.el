@@ -1065,3 +1065,19 @@ Saves to a temp file and puts the filename in the kill ring."
                   (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
                   (prettify-symbols-mode)))
       ))
+
+
+
+(defun copy-file-path-to-clipboard ()
+  "Copy the current file path to the kill ring and clipboard."
+  (interactive)
+  (let ((file-path (buffer-file-name)))
+    (when file-path
+      (kill-new file-path)
+      (message "Copied file path: %s" file-path)
+      (when (region-active-p)
+        (deactivate-mark))
+      (x-select-text file-path))))
+
+
+
