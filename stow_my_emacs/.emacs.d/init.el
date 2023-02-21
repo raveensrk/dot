@@ -1018,6 +1018,7 @@ Saves to a temp file and puts the filename in the kill ring."
 (define-key global-map (kbd "C-c =") 'my-indent-whole-buffer)
 
 
+;; Check if a font exists
 (defun font-exists-p (font)
   "Check if FONT exists on the system."
   (member font (x-list-fonts "*")))
@@ -1033,27 +1034,9 @@ Saves to a temp file and puts the filename in the kill ring."
           ("->" . ?→)
           ("=>" . ?⇒)
           ("!=" . ?≠)
-          ("!=" . ?≠)
-          ("!=" . ?≠)
-          ("!=" . ?≠)
-          ("==" . ?≡)
           (">=" . ?≥)
           ("<=" . ?≤)
-          ("&&" . ?∧)
-          ("||" . ?∨)
-          (".." . ?…)
-          ("..." . ?…)
-          ("++" . ?‖)
-          ("[]" . ?Ø)
-          ("/=" . ?≠)
-          ("*" . ?×)
-          ("# " . ?▷)             ; Heading level 1
-          ("## " . ?▷)            ; Heading level 2
-          ("### " . ?▷)           ; Heading level 3
-          ("#### " . ?▷)          ; Heading level 4
-          ("##### " . ?▷)         ; Heading level 5
-          ("###### " . ?▷)))      ; Heading level 6
-
+          ))
 
       ;; Enable Fira Code ligatures in programming and text modes
       (add-hook 'prog-mode-hook
@@ -1081,3 +1064,27 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 
+;; File-info
+(use-package hydra
+  :straight t)
+(use-package browse-at-remote
+  :straight t)
+(use-package posframe
+  :straight t)
+(use-package file-info
+  :straight (:host github :repo "artawower/file-info.el")
+  :bind (("C-c f i" . 'file-info-show))
+  :config
+  (setq hydra-hint-display-type 'posframe)
+  (setq hydra-posframe-show-params `(:poshandler posframe-poshandler-frame-center
+                                               :internal-border-width 2
+                                               :internal-border-color "#61AFEF"
+                                               :left-fringe 16
+                                               :right-fringe 16)))
+
+(use-package wrap-region
+  :straight t
+  :config
+  (wrap-region-global-mode)
+  (wrap-region-add-wrapper "*" "*")
+  )
