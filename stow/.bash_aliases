@@ -468,3 +468,4 @@ alias ai="sudo apt install -y"
 alias jjc="$EDITOR $HOME/.config/jrnl/jrnl.yaml"
 ahugo="hugo server --navigateTochanged"
 
+alias magit="emacs --eval '(magit-status)'"

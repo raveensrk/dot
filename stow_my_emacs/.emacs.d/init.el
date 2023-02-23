@@ -83,7 +83,7 @@
   (wrap-region-global-mode)
   (wrap-region-add-wrapper "*" "*")
   )
-(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "ESC ESC c") 'comment-line)))
+(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c c") 'comment-line)))
 
 (defun my-increment-number-decimal (&optional arg)
   "Increment the number forward from point by 'arg'."
@@ -389,7 +389,7 @@
   :bind (
 	     ("C-c g l" . counsel-git-log)
 	     ("C-c b"   . counsel-bookmark)
-	     ( "C-c c"   . counsel-compile)
+	     ("C-c x"   . counsel-compile)
 	     ("C-c d"   . counsel-descbinds)
 	     ("C-c g g"   . counsel-git)
 	     ("C-c j"   . counsel-git-grep)
@@ -1172,7 +1172,7 @@ Saves to a temp file and puts the filename in the kill ring."
   :straight t)
 (use-package zone
   :config
-  (zone-when-idle 10)
+  (zone-when-idle 120)
   (zone-select-add-program 'zone-pgm-sl)
   )
 (use-package zone-rainbow
@@ -1182,3 +1182,9 @@ Saves to a temp file and puts the filename in the kill ring."
   (setq zone-programs (vconcat [zone-rainbow] zone-programs)))
 
 
+
+;;; Python
+(use-package elpy
+  :straight t
+  :init
+  (elpy-enable))
