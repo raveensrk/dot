@@ -706,12 +706,6 @@
 ;; (if (file-exists-p (concat my-emacs-root-path "/" "other-packages/aide/aide.el")))
 ;; (straight-use-package)
 
-(straight-use-package
- '(aide :type git :host github :repo "junjizhi/aide.el"))
-(use-package request :straight t)
-(use-package aide
-  :config
-  (setq aide-max-tokens 200))
 
 (use-package persistent-scratch
   :straight t
@@ -1108,8 +1102,32 @@ Saves to a temp file and puts the filename in the kill ring."
 
 ;; (add-hook 'prog-mode-hook 'turn-on-evil-mode)
 
+;;; OpenAI
+
+;; Enter the keys in the following variables in base64 format in the below file
+;; (setq openai-api-key (base64-decode-string "key"))
+;; (setq openai-key (base64-decode-string "key"))
+
+(setq my-openai-api-key-file "~/.emacs.d/openai-api-key.el")
+
+(if (file-exists-p my-openai-api-key-file)
+    (load-file my-openai-api-key-file))
+
 (use-package openai
-  :straight (openai :type git :host github :repo "emacs-openai/openai"))
+  :straight (openai :type git :host github :repo "emacs-openai/openai")
+  :bind
+  ("C-c , r" . openai-completion-select-insert)
+  ("C-c , b" . openai-completion-buffer-insert)
+  )
+
+(straight-use-package
+ '(aide :type git :host github :repo "junjizhi/aide.el"))
+(use-package request :straight t)
+(use-package aide
+  :config
+  (setq aide-max-tokens 200))
+
+
 
 ;;; Eshell
 (use-package eshell
@@ -1162,3 +1180,5 @@ Saves to a temp file and puts the filename in the kill ring."
   :after zone
   :config
   (setq zone-programs (vconcat [zone-rainbow] zone-programs)))
+
+
