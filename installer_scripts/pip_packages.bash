@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-pip install \
+pip3 install \
     xlsx2csv \
     xlsxwriter \
     pandas \

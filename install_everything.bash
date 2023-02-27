@@ -20,12 +20,13 @@ stow -R stow -t "$HOME" --no-folding
 bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
 bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
 
+is_linux=$(uname -a | cut -d ' ' -f 1)
+
 if [ "$is_linux" = "Darwin" ]; then
     stow -R stow_macos -t "$HOME" --no-folding
     defaults write com.apple.desktopservices DSDontWriteNetworkStores true
 fi
 
-is_linux=$(uname -a | cut -d ' ' -f 1)
 if [ "$is_linux" = "Linux" ]; then
     stow -R stow_linux -t "$HOME" --no-folding
 fi

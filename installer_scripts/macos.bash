@@ -45,14 +45,21 @@ packages=(
     w3m  
     mactex  
     findutils
+    tmux
 )
 
+export HOMEBREW_NO_AUTO_UPDATE=1
+
 for package in "${packages[@]}"; do
-    if brew install --cask "$package"; then
-        echo "Package $package, installed as cask..."
+    if brew list --versions "$package"; then
+        echo "Package $package, is already installed..."
     else
-        brew install "$package"
-        echo "Package $package, installed as not cask..."
-    fi    
+        if brew install --cask "$package"; then
+            echo "Package $package, installed as cask..."
+        else
+            brew install "$package"
+            echo "Package $package, installed as not cask..."
+        fi
+    fi
 done
 
