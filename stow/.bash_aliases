@@ -184,10 +184,11 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 # {{{ VIM STUFF
-export EDITOR="emacs"
+export EDITOR="emacsclient -nw"
+alias ed="emacs -nw --daemon"
 alias e="$EDITOR"
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
-alias vimrc="e ~/.vimrc"
+alias vimrc="vim ~/.vimrc"
 # }}}
 # RANGER {{{
 # shellcheck shell=sh
@@ -467,6 +468,5 @@ alias amake="make -C $HOME/my_repos/dotfiles-main -I $HOME/my_repos/dotfiles-mai
 alias ai="sudo apt install -y"
 alias jjc="$EDITOR $HOME/.config/jrnl/jrnl.yaml"
 ahugo="hugo server --navigateTochanged"
+alias magit="emacs -nw --eval '(magit-status)'"
 
-alias magit="emacs --eval '(magit-status)'"
-alias e="emacsclient -c -a emacs"

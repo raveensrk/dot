@@ -1187,3 +1187,7 @@ Saves to a temp file and puts the filename in the kill ring."
   :straight t
   :init
   (elpy-enable))
+
+;;; Verilog
+(add-hook 'verilog-mode-hook 'hs-minor-mode)
+(put 'upcase-region 'disabled nil)
