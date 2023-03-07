@@ -112,14 +112,14 @@ alias ,exp="explorer.exe"
 # }
 
 ,convert-softlinks () {
-link_name="$1"
-# Get real path of original file
-orig=$(realpath "$link_name")
-# Remove link
-rm "$link_name"
-# Replace link with original
-cp "$orig" "$link_name"
-unset link_name orig
+    link_name="$1"
+    # Get real path of original file
+    orig=$(realpath "$link_name")
+    # Remove link
+    rm "$link_name"
+    # Replace link with original
+    cp "$orig" "$link_name"
+    unset link_name orig
 }
 # }}}
 # {{{ PAGERS
@@ -150,8 +150,8 @@ source "$HOME/.bash_prompt"
 updatedb_path="$HOME/.local/locate_db"
 updatedb_home="$updatedb_path/home.db"
 ,updatedb () {
-[[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
-updatedb -l 0 -o "$updatedb_home" -U ~/
+    [[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
+    updatedb -l 0 -o "$updatedb_home" -U ~/
 }
 
 sd () {
@@ -397,8 +397,8 @@ function show_progress {
     # calculate the progress in percentage 
     percent=$(bc <<< "scale=$bar_percentage_scale; 100 * $current / $total" )
     # The number of done and todo characters
-done=$(bc <<< "scale=0; $bar_size * $percent / 100" )
-todo=$(bc <<< "scale=0; $bar_size - $done" )
+    done=$(bc <<< "scale=0; $bar_size * $percent / 100" )
+    todo=$(bc <<< "scale=0; $bar_size - $done" )
 
     # build the done and todo sub-bars
     done_sub_bar=$(printf "%${done}s" | tr " " "${bar_char_done}")
@@ -470,3 +470,8 @@ alias jjc="$EDITOR $HOME/.config/jrnl/jrnl.yaml"
 ahugo="hugo server --navigateTochanged"
 alias magit="emacs -nw --eval '(magit-status)'"
 
+find-grep () {
+    echo '''
+find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
+'''
+}
