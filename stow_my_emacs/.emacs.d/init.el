@@ -348,6 +348,7 @@
   :diminish
   :config
   (ivy-mode 1)
+  (setq ivy-height 20)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t)
   (setq ivy-count-format "(%d/%d) ")
@@ -1190,8 +1191,22 @@ Saves to a temp file and puts the filename in the kill ring."
   (elpy-enable))
 
 
+;;; Verilog
+(add-hook 'verilog-mode-hook 'hs-minor-mode)
+(put 'upcase-region 'disabled nil)
+
+;;; Perl
+;; cperl-mode is preferred to perl-mode                                        
+;; "Brevity is the soul of wit" <foo at acm.org>                               
+(defalias 'perl-mode 'cperl-mode)
+
+(setq cperl-invalid-face nil) 
+
+(setq cperl-electric-keywords t) ;; expands for keywords such as
+;; foreach, while, etc...
+(setq cperl-hairy t) ;; Turns on most of the CPerlMode options
+
+
 (use-package speedrect
   :straight (speedrect :type git :host github :repo "jdtsmith/speedrect")
   )
-
-

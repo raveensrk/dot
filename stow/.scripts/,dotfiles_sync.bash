@@ -52,7 +52,7 @@ else
     # lazygit
 
     # Run Magit for commit
-    emacs --eval '(magit-status)'
+    emacs -nw --eval '(magit-status)'
 fi
 
 
@@ -63,7 +63,7 @@ if [ $? -ne 0 ]; then
     git merge --abort
     echo -e "${RED}MERGE FAILED... Running lazygit...${NC}" 
     # lazygit
-    emacs --eval '(magit-status)' 
+    emacs -nw --eval '(magit-status)' 
 else
     git merge > /dev/null
     git push -q
