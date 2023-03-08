@@ -805,6 +805,7 @@
 
 (use-package back-button
   :straight t
+  :disabled t
   :diminish
   :config
   (back-button-mode +1))
@@ -1187,3 +1188,10 @@ Saves to a temp file and puts the filename in the kill ring."
   :straight t
   :init
   (elpy-enable))
+
+
+(use-package speedrect
+  :straight (speedrect :type git :host github :repo "jdtsmith/speedrect")
+  )
+
+
