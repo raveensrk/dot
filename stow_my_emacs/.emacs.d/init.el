@@ -796,7 +796,6 @@
   :after outline
   :config (advice-add 'outline-flag-region :after 'backline-update)
   (outline-minor-faces-mode +1))
-(add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
 
 ;; (use-package magit-section
 ;;   :straight t)
@@ -1210,3 +1209,32 @@ Saves to a temp file and puts the filename in the kill ring."
 (use-package speedrect
   :straight (speedrect :type git :host github :repo "jdtsmith/speedrect")
   )
+
+;;; Lisp
+(add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
+(use-package eros
+  ;; Emacs Lisp evaluation results as inline overlays.
+  :straight t
+  :init
+  (eros-mode 1)
+  :bind
+  ("C-x x" . 'eval-defun)
+  )
+
+
+;;; Remove extra space from a region or current line
+(defun remove-extra-spaces (start end)
+  "Remove extra spaces from region START to END, or current line if no region is given,
+and replace them with single spaces."
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (list (line-beginning-position) (line-end-position))))
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (while (re-search-forward "\\s-+" nil t)
+        (replace-match " ")))))
+
+(global-set-key (kbd "C-c <SPC>") 'remove-extra-spaces)

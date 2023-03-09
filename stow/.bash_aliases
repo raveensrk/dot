@@ -91,7 +91,7 @@ alias mv="mv -vi"
 alias rm="rm -vi"
 alias r='ranger'
 alias tmux="tmux -2"
-alias tx="tmux attach || tmux"
+alias t="tmux attach || tmux"
 alias tree="tree -C"
 alias xo="xdg-open"
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
@@ -418,7 +418,7 @@ alias pprint='rg --no-filename . $(cat ~/.projects) | fzf'
 # Same with file name included
 alias pPrint='rg --with-filename -n  . $(cat ~/.projects) | fzf'
 alias b='bash'
-alias t='$HOME/.local/bin/todo.sh -d "$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)"'
+# alias t='$HOME/.local/bin/todo.sh -d "$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)"'
 t_repeat () {
     local config
     config=$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)
