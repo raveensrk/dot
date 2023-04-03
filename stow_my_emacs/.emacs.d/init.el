@@ -376,7 +376,7 @@
     (swiper (word-at-point)))
   :bind
   ("C-s" . swiper)
-  ("C-c *" . my-word-at-point)
+  ("C-c s" . my-word-at-point)
   )
 
 (use-package counsel
@@ -1238,3 +1238,16 @@ and replace them with single spaces."
         (replace-match " ")))))
 
 (global-set-key (kbd "C-c <SPC>") 'remove-extra-spaces)
+
+(use-package octave
+  :straight t
+  :bind
+  ("C-c x" . 'octave-eval-print-last-sexp))
+
+
+(setq tags-add-tables nil)
+(global-set-key (kbd "C-c '") 'helm-all-mark-rings)
+
+		
+
+

@@ -187,6 +187,8 @@ fi
 export EDITOR="emacsclient -nw"
 alias ed="emacs -nw --daemon"
 alias e="$EDITOR"
+alias ee="emacsclient -c"
+alias ek="e --eval \"(server-shutdown)\""
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
 alias vimrc="vim ~/.vimrc"
 # }}}
