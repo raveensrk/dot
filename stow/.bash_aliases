@@ -475,3 +475,5 @@ find-grep () {
 find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
 '''
 }
+
+alias ee="emacsclient -c"
