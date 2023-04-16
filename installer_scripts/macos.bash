@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+
 if ! command -v brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
@@ -63,3 +65,7 @@ for package in "${packages[@]}"; do
     fi
 done
 
+
+brew install --cask basictex
+
+bash ../add_sources.bash 'export PATH="/Library/TeX/texbin:$PATH"' "$HOME/.bashrc"
