@@ -48,6 +48,10 @@ packages=(
     mactex  
     findutils
     tmux
+    ispell
+    wkhtmltopdf
+    languagetool
+    basictex
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
@@ -66,8 +70,5 @@ for package in "${packages[@]}"; do
 done
 
 
-brew install --cask basictex
-
 bash ../add_sources.bash 'export PATH="/Library/TeX/texbin:$PATH"' "$HOME/.bashrc"
 
-brew install ispell wkhtmltopdf

@@ -1249,5 +1249,8 @@ and replace them with single spaces."
 (global-set-key (kbd "C-c '") 'helm-all-mark-rings)
 
 		
-
-
+(use-package lsp-grammarly
+  :straight t
+  :hook (text-mode . (lambda ()
+                       (require 'lsp-grammarly)
+                       (lsp))))
