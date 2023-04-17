@@ -69,3 +69,5 @@ done
 brew install --cask basictex
 
 bash ../add_sources.bash 'export PATH="/Library/TeX/texbin:$PATH"' "$HOME/.bashrc"
+
+brew install ispell wkhtmltopdf
