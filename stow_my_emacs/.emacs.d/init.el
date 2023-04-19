@@ -1173,7 +1173,7 @@ Saves to a temp file and puts the filename in the kill ring."
   :straight t)
 (use-package zone
   :config
-  (zone-when-idle 120)
+  (zone-when-idle 420)
   (zone-select-add-program 'zone-pgm-sl)
   )
 (use-package zone-rainbow
@@ -1247,7 +1247,5 @@ and replace them with single spaces."
 
 (setq tags-add-tables nil)
 (global-set-key (kbd "C-c '") 'helm-all-mark-rings)
-
-		
 
 
