@@ -1,3 +1,4 @@
+clean:
 emacs:
 	stow -R stow_my_emacs -t ~/ --no-folding
 doom:
@@ -17,10 +18,8 @@ pip:
 	bash ./installer_scripts/pip_packages.bash
 ctags:
 	bash ./installer_scripts/ctags_from_source.bash
-clean:
-stow:
+stow_from_source:
 	bash ./installer_scripts/stow_from_source.bash
-
 macos:
 	bash ./installer_scripts/macos.bash
 emacs_from_source:
@@ -36,4 +35,5 @@ bash_completion:
 	bash ./installer_scripts/bash_completions.bash
 yt_dlp:
 	bash ./installer_scripts/yt-dlp.bash
-
+stow_init_files:
+	./stow/.scripts/,reinstall.bash
