@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 if ! command -v brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
@@ -71,4 +69,3 @@ done
 
 
 bash ../add_sources.bash 'export PATH="/Library/TeX/texbin:$PATH"' "$HOME/.bashrc"
-

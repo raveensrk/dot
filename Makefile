@@ -1,3 +1,5 @@
+install:
+	bash ./install_everything.bash
 clean:
 emacs:
 	stow -R stow_my_emacs -t ~/ --no-folding
