@@ -160,8 +160,9 @@
   (setq git-gutter:always-show-separator t)
   (diminish 'global-git-gutter-mode)
   )
-(setq display-line-numbers 'visual)
-(setq display-line-numbers-type 'visual)
+(setq display-line-numbers t)
+(setq display-line-numbers-type t)
+(global-display-line-numbers-mode +1)
 ;; (use-package unicode-fonts
 ;;   :straight t
 ;;   :defer 10
@@ -769,7 +770,7 @@
 ;;     (context-menu-mode +1)))
 (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
 (setq comint-buffer-maximum-size 10000)
-(global-display-line-numbers-mode +1)
+
 
 (use-package markdown-mode
   :straight t)
@@ -1248,4 +1249,9 @@ and replace them with single spaces."
 (setq tags-add-tables nil)
 (global-set-key (kbd "C-c '") 'helm-all-mark-rings)
 
-
+		
+(use-package lsp-grammarly
+  :straight t
+  :hook (text-mode . (lambda ()
+                       (require 'lsp-grammarly)
+                       (lsp))))

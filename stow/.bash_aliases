@@ -414,32 +414,8 @@ function show_progress {
     fi
 }
 
-# /Users/raveenkumar/my_repos/dotfiles-main/stow/.scripts/pp
-# Print any line in my projects
-alias pprint='rg --no-filename . $(cat ~/.projects) | fzf'
-# Same with file name included
-alias pPrint='rg --with-filename -n  . $(cat ~/.projects) | fzf'
-alias b='bash'
-# alias t='$HOME/.local/bin/todo.sh -d "$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)"'
-t_repeat () {
-    local config
-    config=$(find -L "$HOME/my_repos" -iname "todo.cfg" | fzf)
-    while true; do 
-        todo.sh -d "$config" ls
-        sleep 2
-        clear
-    done
-}
 
 alias v=vim
-alias routine="~/.scripts/,cat_repeat_file.bash routine"
-alias todos_major="tall && routine"
-todos_minor () {
-    while :; do
-        pp "todo\|\- \[ \]"
-        sleep 1
-    done
-}
 timer () {
     local count=0
     while ((count < 60*$1)); do
@@ -468,8 +444,7 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 
 alias amake="make -C $HOME/my_repos/dotfiles-main -I $HOME/my_repos/dotfiles-main"
 alias ai="sudo apt install -y"
-alias jjc="$EDITOR $HOME/.config/jrnl/jrnl.yaml"
-ahugo="hugo server --navigateTochanged"
+alias ahugo="hugo server --navigateTochanged"
 alias magit="emacs -nw --eval '(magit-status)'"
 
 find-grep () {
@@ -477,3 +452,5 @@ find-grep () {
 find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
 '''
 }
+
+alias ee="emacsclient -c"

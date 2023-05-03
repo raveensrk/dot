@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+
 if ! command -v brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
@@ -46,6 +48,10 @@ packages=(
     mactex  
     findutils
     tmux
+    ispell
+    wkhtmltopdf
+    languagetool
+    basictex
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
@@ -62,4 +68,7 @@ for package in "${packages[@]}"; do
         fi
     fi
 done
+
+
+bash ../add_sources.bash 'export PATH="/Library/TeX/texbin:$PATH"' "$HOME/.bashrc"
 
