@@ -1255,3 +1255,7 @@ and replace them with single spaces."
   :hook (text-mode . (lambda ()
                        (require 'lsp-grammarly)
                        (lsp))))
+
+
+(use-package chatgpt
+  :straight (chatgpt :type git :host github :repo "emacs-openai/chatgpt"))
