@@ -1,5 +1,22 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+
+if has('nvim')
+  function! UpdateRemotePlugins(...)
+    " Needed to refresh runtime files
+    let &rtp=&rtp
+    UpdateRemotePlugins
+  endfunction
+
+  Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
+else
+  Plug 'gelguy/wilder.nvim'
+
+  " To use Python remote plugin features in Vim, can be skipped
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
 Plug 'chrisbra/Colorizer'
 Plug 'wren/jrnl.vim'
 Plug 'justinmk/vim-sneak'
@@ -88,12 +105,15 @@ Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 call plug#end()
 "{{{1 Plugin configs
 
+" Key bindings can be changed, see below
+call wilder#setup({'modes': [':', '/', '?']})
+" {{{ Vim Sneak 
 map f <Plug>Sneak_f
 map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 let g:sneak#label = 1
-
+" }}}
 
 let g:table_mode_corner='|'
 let g:deoplete#enable_at_startup = 1
