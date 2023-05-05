@@ -314,7 +314,10 @@
 (use-package company
   :straight t
   :diminish
-  :config (global-company-mode 1))
+  :config
+  (global-company-mode 1)
+  (global-set-key (kbd "C-c f .") 'company-files)
+  )
 ;;; Hippie expand
 ;; https://www.masteringemacs.org/article/text-expansion-hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
@@ -1258,3 +1261,5 @@ and replace them with single spaces."
 
 (use-package chatgpt
   :straight (chatgpt :type git :host github :repo "emacs-openai/chatgpt"))
+
+
