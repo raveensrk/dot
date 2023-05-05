@@ -58,6 +58,7 @@ set foldmethod=marker
 " }}}
 " {{{ NUMBERING
 set nonumber norelativenumber
+nnoremap <leader>n :set nu!<cr>
 " set number relativenumber
 " set listchars=eol:$
 " set listchars=nbsp:_,tab:>-,trail:~,extends:>,precedes:<

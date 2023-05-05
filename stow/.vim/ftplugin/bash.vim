@@ -1,1 +1,1 @@
-iab abif if [ ];then<CR>fi
+iab if, if [ ];then<CR>fi
