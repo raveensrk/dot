@@ -160,8 +160,9 @@
   (setq git-gutter:always-show-separator t)
   (diminish 'global-git-gutter-mode)
   )
-(setq display-line-numbers 'visual)
-(setq display-line-numbers-type 'visual)
+(setq display-line-numbers t)
+(setq display-line-numbers-type t)
+(global-display-line-numbers-mode +1)
 ;; (use-package unicode-fonts
 ;;   :straight t
 ;;   :defer 10
@@ -772,7 +773,7 @@
 ;;     (context-menu-mode +1)))
 (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
 (setq comint-buffer-maximum-size 10000)
-(global-display-line-numbers-mode +1)
+
 
 (use-package markdown-mode
   :straight t)
@@ -1176,7 +1177,7 @@ Saves to a temp file and puts the filename in the kill ring."
   :straight t)
 (use-package zone
   :config
-  (zone-when-idle 120)
+  (zone-when-idle 420)
   (zone-select-add-program 'zone-pgm-sl)
   )
 (use-package zone-rainbow

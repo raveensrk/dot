@@ -61,6 +61,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 # }}}
 # {{{ ALIASES
+alias hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -184,7 +185,7 @@ if [ -f /etc/bash_completion ]; then
 fi
 # }}}
 # {{{ VIM STUFF
-export EDITOR="emacsclient -nw"
+export EDITOR="vim"
 alias ed="emacs -nw --daemon"
 alias e="$EDITOR"
 alias ee="emacsclient -c"
