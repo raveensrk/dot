@@ -1,13 +1,11 @@
 # BASH ALIASES sourced at ~/.bashrc
 # set -o vi
-
+# {{{ ENVIRONMENT VARIABLES
 if [ -d "$HOME/my_repos" ]; then
     export MY_REPOS="$HOME/my_repos"
 elif [ -d "$HOME/repos" ]; then
     export MY_REPOS="$HOME/repos"
 fi
-
-# {{{ ENVIRONMENT VARIABLES
 
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
@@ -61,6 +59,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 # }}}
 # {{{ ALIASES
+alias untar="tar xf"
 alias hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -430,7 +429,6 @@ timer () {
     mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
 }
 alias n=newsboat
-alias aa=",sync.bash"
 # {{{1 Other Sources
 [ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
 #export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
@@ -442,10 +440,6 @@ for f in ~/.my_bash_aliases/*; do
 done
 # }}}
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
-
-alias amake="make -C $HOME/my_repos/dotfiles-main -I $HOME/my_repos/dotfiles-main"
-alias ai="sudo apt install -y"
-alias ahugo="hugo server --navigateTochanged"
 alias magit="emacs -nw --eval '(magit-status)'"
 
 find-grep () {
@@ -453,6 +447,3 @@ find-grep () {
 find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
 '''
 }
-
-alias ee="emacsclient -c"
-alias untar="tar xf"
