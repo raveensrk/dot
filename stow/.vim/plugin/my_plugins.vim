@@ -1,6 +1,15 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
+" Track the engine.
+Plug 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
+
+
+Plug 'madox2/vim-ai'
+
 if has('nvim')
   function! UpdateRemotePlugins(...)
     " Needed to refresh runtime files
@@ -32,10 +41,6 @@ endif
 Plug 'wellle/tmux-complete.vim'
 Plug 'chrisbra/NrrwRgn'
 Plug '907th/vim-auto-save'
-" " Track the engine.
-" Plug 'SirVer/ultisnips'
-" " Snippets are separated from the engine. Add this if you want them:
-" Plug 'honza/vim-snippets'
 " Plug 'git@github.com:junegunn/limelight.vim'
 Plug 'rstacruz/vim-xtract'
 " Plug 'preservim/nerdtree'
@@ -105,6 +110,17 @@ Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 call plug#end()
 "{{{1 Plugin configs
 
+" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
+" - https://github.com/Valloric/YouCompleteMe
+" - https://github.com/nvim-lua/completion-nvim
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
+
 " Key bindings can be changed, see below
 call wilder#setup({'modes': [':', '/', '?']})
 " {{{ Vim Sneak 
@@ -119,17 +135,6 @@ let g:table_mode_corner='|'
 let g:deoplete#enable_at_startup = 1
 
 let g:auto_save = 1  " enable AutoSave on Vim startup
-
-
-" " Trigger configuration. You need to change this to something other than <tab>
-" " if you use one of the following:
-" " " - https://github.com/Valloric/YouCompleteMe
-" " " - https://github.com/nvim-lua/completion-nvim
-" let g:UltiSnipsExpandTrigger="<tab>"
-" let g:UltiSnipsJumpForwardTrigger="<c-b>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" " If you want :UltiSnipsEdit to split your window.
-" let g:UltiSnipsEditSplit="vertical"
 
 " MBE
 " MiniBufExpl Colors

@@ -1,12 +1,12 @@
 # dotfiles-main
+
 My dotfiles
+
+## WSL GUI Apps
 
 https://docs.microsoft.com/en-us/windows/wsl/tutorials/gui-apps
 
-## Font
+## Fonts
 
-https://madmalik.github.io/mononoki/
-
-## IDEAS
-
-- Vim remote server like emacs, check --remote option
+- https://madmalik.github.io/mononoki/
+- Firacode

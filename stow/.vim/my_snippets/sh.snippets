@@ -1,0 +1,48 @@
+extends bash sh
+
+snippet ask "Ask for user choice, yes or no."
+echo "Do you want to ${1:code}?"
+PS3='Choose an option: '
+options=("Yes" "No" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Yes")
+            echo "You selected $opt"
+			break
+            ;;
+        "No")
+            echo "You selected $opt"
+			break
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "Invalid option $REPLY";;
+    esac
+done
+endsnippet
+
+
+snippet arg-parse "While and Case statement to parse input arguments easily"
+while [ "\$1" ]; do
+      case "\$1" in
+           --help|-h)
+                help
+                exit 0
+                ;;
+           --input|-i)
+                shift
+                input="\$1"
+                ;;
+           --output|-o)
+                shift
+                output="\$1"
+                ;;
+           --arg|-a)
+                arg="true"
+                ;;
+      esac
+      shift
+done
+endsnippet

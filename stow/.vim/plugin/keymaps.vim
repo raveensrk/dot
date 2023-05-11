@@ -3,6 +3,9 @@
 nmap <leader>gf :e <cfile><CR>
 " Find all reference of the string under cursor
 nnoremap <leader>ref :grep  * -r<CR>
-nmap <leader>= magg=G`a<CR>
+nmap     <leader>= magg=G`a<CR>
 nnoremap Y yg_
-nmap <leader>b :Buffers<CR>
+nmap     <leader>b :Buffers<CR>
+nnoremap <leader>t :set nowrap!<cr>
+nnoremap <leader>n :set nu!<cr>
+nnoremap <leader>s :so %<cr>
