@@ -29,8 +29,8 @@ $if Bash
 "\C-xr": re-read-init-file
 "\C-xx": ",sync.bash\n"
 "\C-xd": "zzz\n"
-"\C-xc": "cd ~/my_repos/dotfiles-main\nmake install_colemak\n"
-"\C-xo": "xdg-open . &\n"
+# "\C-xc": "cd ~/my_repos/dotfiles-main\nmake install_colemak\n"
+# "\C-xo": "xdg-open . &\n"
 "\C-xl": "\C-e | less\n"
 "\C-xh": "\C-e --help | less\n"
 "\C-xf": "\C-afno \C-e\n"

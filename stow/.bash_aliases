@@ -1,13 +1,15 @@
 # BASH ALIASES sourced at ~/.bashrc
 # set -o vi
-
+# {{{ PROMPT AND COLORS
+# shellcheck disable=SC1091
+source "$HOME/.bash_prompt"
+# }}}
+# {{{ ENVIRONMENT VARIABLES
 if [ -d "$HOME/my_repos" ]; then
     export MY_REPOS="$HOME/my_repos"
 elif [ -d "$HOME/repos" ]; then
     export MY_REPOS="$HOME/repos"
 fi
-
-# {{{ ENVIRONMENT VARIABLES
 
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
@@ -61,6 +63,14 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 # }}}
 # {{{ ALIASES
+alias n=newsboat
+if command -v bat > /dev/null; then
+    alias cat=bat
+fi
+alias chop="tr -d '\n'" # Remove newline
+alias transposevh="tr '\n' ' '" # Transpose vertical to horizontal
+alias transposehv="tr ' ' '\n'" # Transpose horizontal to vertical
+alias untar="tar xf"
 alias hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -75,17 +85,12 @@ else
     alias l="ls -Alh"
 fi
 alias y="yt-dlp"
-alias ,edit_zzz="\$EDITOR ~/.dirs_stack"
 alias ..="cd .."
 alias ,.="open ."
 alias ,top='top -d 0.125'
-alias dam="sudo !!"
 alias ,date_sshort="date +%Y%m%d%H%M%S"
 alias ,date='date -I'
 alias ,dates='date -Iseconds | sed "s/:/-/g"'
-alias g='grep --color'
-alias gr='grep --color -r'
-alias h="history"
 alias mkdir="mkdir -v"
 alias cp="cp -vi"
 alias mv="mv -vi"
@@ -94,12 +99,9 @@ alias r='ranger'
 alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias tree="tree -C"
-alias xo="xdg-open"
 alias tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
-alias hg="hg --pager=off"
 alias rsync="rsync -CazhPvu" # -C
 alias rp="realpath"
-alias ,exp="explorer.exe"
 # This will cd and do ls but sometimes it gets broken
 
 # cd () {
@@ -137,61 +139,27 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
 # Man colors
 #------------------
 man() {
     LESS_TERMCAP_md=$'\e[01;31m'          LESS_TERMCAP_me=$'\e[0m'          LESS_TERMCAP_se=$'\e[0m'          LESS_TERMCAP_so=$'\e[01;44;33m'          LESS_TERMCAP_ue=$'\e[0m'          LESS_TERMCAP_us=$'\e[01;32m'          command man "$@"
 }
 # }}}
-# {{{ PROMPT AND COLORS
-# shellcheck disable=SC1091
-source "$HOME/.bash_prompt"
-# }}}
-# {{{ LOCATE FILES AND DIRS
-updatedb_path="$HOME/.local/locate_db"
-updatedb_home="$updatedb_path/home.db"
-,updatedb () {
-    [[ ! -d "$updatedb_path" ]] && mkdir -p "$updatedb_path"
-    updatedb -l 0 -o "$updatedb_home" -U ~/
-}
-
-sd () {
-    local dir
-    dir=$(locate -d "$updatedb_home" .* | fzf)
-    echo -e "${BLUE} The following command is executed... ${NC}"
-    echo -e "${YELLOW} pushd $dir ${NC}"
-    pushd "$dir" || return
-}
-
-sl () {
-    locate -d "$updatedb_home" .* | fzf
-}
-
-sx () {
-    local file
-    file=$(locate -d "$updatedb_home" .* | fzf)
-    echo -e "${BLUE} The following command is executed... ${NC}"
-    echo -e "${YELLOW} source $file ${NC}"
-    # shellcheck disable=SC1090
-    source "$file"
-}
-
-
-# }}}
-# {{{ UBUNTU SPECIFIC
-if [ -f /etc/bash_completion ]; then
-    # shellcheck disable=SC1091
-    . /etc/bash_completion
-fi
-# }}}
-# {{{ VIM STUFF
+# {{{ VIM
 export EDITOR="vim"
+alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
+alias vimrc="vim ~/.vimrc"
+alias v=vim
+# }}}
+# {{{ EMACS
 alias ed="emacs -nw --daemon"
 alias e="$EDITOR"
 alias ee="emacsclient -c"
 alias ek="e --eval \"(server-shutdown)\""
-alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
-alias vimrc="vim ~/.vimrc"
+alias magit="emacs -nw --eval '(magit-status)'"
 # }}}
 # RANGER {{{
 # shellcheck shell=sh
@@ -241,6 +209,12 @@ export FZF_ALT_C_COMMAND="command find -L . -type d"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # }}}
 # {{{ Completion system
+# {{{ UBUNTU SPECIFIC
+if [ -f /etc/bash_completion ]; then
+    # shellcheck disable=SC1091
+    . /etc/bash_completion
+fi
+# }}}
 # shellcheck disable=SC1090
 [ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
 
@@ -263,9 +237,7 @@ if ! shopt -oq posix; then
 fi
 
 # }}} 
-# {{{ zzz ALIASES
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# {{{ zzz ALIASES for fast directory navigation
 alias cd="z"
 unset -f z
 z () {
@@ -305,6 +277,7 @@ zzz () {
     z "$(cat ~/.dirs_stack | tail -n 50 | sort | uniq | sed "s|^~|${HOME}|" | fzf)" || return
 }
 # }}}
+# {{{ BUG FIXES
 # {{{ Fedora BUG fix
 # BUGFIX: bash: __vte_prompt_command: command not found
 # https://ask.fedoraproject.org/t/how-to-fix-bash-vte-prompt-command-command-not-found-when-using-tmux/17704/3
@@ -340,21 +313,12 @@ if [ -e /etc/os-release ]; then
     fi 
 fi
 # }}}
-# {{{1 TODO IDEAS
-# TODO Restart vim
-# https://stackoverflow.com/questions/43113569/how-to-close-vim-editor-with-non-zero-return-value
-alias chop="tr ' ' '\n'"
-# {{{1 GIT
+# }}}
+# {{{ GIT
 # I tried rebase before and it totally sucked. Its good if the changes are are different parts of a file, if its in the same path the changes are missed
 git config --global pull.merge true
-# {{{1 Other
-alias srun_fast="srun --pty --cpus-per-task=4 --mem=8192 --cpu-freq=3400"
-
-if command -v bat > /dev/null; then
-    alias cat=bat
-fi
-
-# {{{1 Projectile?
+# }}}
+# {{{ Projectile
 ph () {
     echo "
     Help for projectile
@@ -415,25 +379,19 @@ function show_progress {
     fi
 }
 
+# }}}
+# {{{ GREP
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 
-alias v=vim
-timer () {
-    local count=0
-    while ((count < 60*$1)); do
-        sleep 1
-        let count++
-    done
-    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
-    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
-    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
-    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
-    mpv ~/my_repos/dotfiles-main/sounds/ding.mp3 1> /dev/null 2>&1
+find-grep () {
+    echo '''
+find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
+'''
 }
-alias n=newsboat
-alias aa=",sync.bash"
-# {{{1 Other Sources
+# }}}
+# {{{ Other Sources
 [ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
-#export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
+# export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
 [ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
 touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
@@ -441,18 +399,3 @@ for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
 # }}}
-export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
-
-alias amake="make -C $HOME/my_repos/dotfiles-main -I $HOME/my_repos/dotfiles-main"
-alias ai="sudo apt install -y"
-alias ahugo="hugo server --navigateTochanged"
-alias magit="emacs -nw --eval '(magit-status)'"
-
-find-grep () {
-    echo '''
-find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
-'''
-}
-
-alias ee="emacsclient -c"
-alias untar="tar xf"

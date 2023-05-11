@@ -30,7 +30,6 @@ lazygit_linux:
 	bash ./installer_scripts/lazygit.bash
 fzf:
 	bash ./installer_scripts/fzf.bash
-
 tpm:
 	bash ./installer_scripts/tpm.bash
 bash_completion:

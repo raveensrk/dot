@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 [ ! -d ~/my_repos ] && mkdir ~/my_repos
 pushd ~/my_repos || exit 2

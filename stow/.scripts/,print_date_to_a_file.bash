@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-> ~/.tmp/printing_date.txt
+file="~/.tmp/printing_date.txt"
+echo "Printing to $file..."
+> "$file"
 
 while :; do
     sleep 1
-    date >> ~/.tmp/printing_date.txt
+    date >> "$file"
 done

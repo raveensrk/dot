@@ -59,6 +59,12 @@ echob () {
     nc
 }
 
+echog () {
+    green
+    echo "$1"
+    nc
+}
+
 echor () {
     red
     echo "$1"
@@ -71,8 +77,3 @@ echoy () {
     nc
 }
 
-# TODO: This command will read a line from std input and apply a random color to it.
-
-random-color () {
-    grep :
-}
