@@ -109,14 +109,6 @@ set autochdir
 " FILE SPECIFIC {{{
 autocmd BufRead .vimrc :set foldmethod=marker
 " }}}
-" ***DISABLED*** Copy Paste to/from Vim/system clipboard {{{
-" vnoremap <leader>y "+y
-" vnoremap <leader>x "+x
-" nnoremap <leader>p "+p
-" vnoremap <leader>y "+y
-" vnoremap <leader>x "+x
-" nnoremap <leader>p "+p
-" }}}
 " {{{ CUSTOM KEYMAPS
 let mapleader = " "
 
@@ -198,8 +190,6 @@ for f in split(glob('~/.vim/plugin/*.vim'), '\n')
 endfor
 
 " }}}
-" {{{1 ***DISABLED*** Testing
-" let b:systemverilog_indent_ifdef_off
 " {{{1 Mouse
 
 " set mousemodel=popup
