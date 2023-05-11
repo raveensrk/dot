@@ -52,8 +52,8 @@ Plug 'git@github.com:junegunn/fzf.vim'
 Plug 'git@github.com:morhetz/gruvbox'
 " Plug 'vim/killersheep'
 Plug 'git@github.com:frazrepo/vim-rainbow'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Plug 'ctrlpvim/ctrlp.vim'
 Plug 'git@github.com:junegunn/vim-easy-align'
 Plug 'git@github.com:easymotion/vim-easymotion'
@@ -163,8 +163,8 @@ set updatetime=100 " For gitgutter
 
 " nmap <F8> :TagbarToggle<CR>
 
-" let g:rainbow_active = 1
-" let g:airline#extensions#tabline#enabled = 1
+let g:rainbow_active = 1
+let g:airline#extensions#tabline#enabled = 1
 
 " Vim Easy Align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
