@@ -1,5 +1,6 @@
 # BASH ALIASES sourced at ~/.bashrc
 # set -o vi
+set -o emacs
 # {{{ PROMPT AND COLORS
 # shellcheck disable=SC1091
 source "$HOME/.bash_prompt"
