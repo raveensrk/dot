@@ -53,6 +53,7 @@ packages=(
     languagetool
     basictex
     lazygit
+    espanso
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
