@@ -11,23 +11,23 @@ Plug 'honza/vim-snippets'
 Plug 'madox2/vim-ai'
 
 if has('nvim')
-  function! UpdateRemotePlugins(...)
-    " Needed to refresh runtime files
-    let &rtp=&rtp
-    UpdateRemotePlugins
-  endfunction
+    function! UpdateRemotePlugins(...)
+        " Needed to refresh runtime files
+        let &rtp=&rtp
+        UpdateRemotePlugins
+    endfunction
 
-  Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
+    Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
 else
-  Plug 'gelguy/wilder.nvim'
+    Plug 'gelguy/wilder.nvim'
 
-  " To use Python remote plugin features in Vim, can be skipped
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+    " To use Python remote plugin features in Vim, can be skipped
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 Plug 'chrisbra/Colorizer'
-Plug 'wren/jrnl.vim'
+" Plug 'wren/jrnl.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
@@ -132,7 +132,10 @@ let g:sneak#label = 1
 " }}}
 
 let g:table_mode_corner='|'
-let g:deoplete#enable_at_startup = 1
+
+if has('python3')
+    let g:deoplete#enable_at_startup = 1
+endif
 
 let g:auto_save = 1  " enable AutoSave on Vim startup
 

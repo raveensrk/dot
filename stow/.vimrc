@@ -43,6 +43,7 @@ set isk+=-
 set ignorecase
 set smartcase
 set incsearch
+set dictionary="/usr/share/dict/words"
 " }}}
 " TABBING AND INDENT {{{
 set tabstop=4 softtabstop=4
@@ -218,3 +219,13 @@ au BufRead,BufNewFile *.jrnl source ~/.vim/ftplugin/jrnl.vim
 " runtime ftplugin/man.vim
 " packadd! editexisting
 " source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
+
+
+"{{{ Finally Source custom per user congifs
+
+for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
+    exe 'source' f
+endfor
+
+"}}}
+
