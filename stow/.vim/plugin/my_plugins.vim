@@ -1,6 +1,8 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
+Plug 'AndrewRadev/simple_bookmarks.vim'
+
 " Track the engine.
 Plug 'SirVer/ultisnips'
 
@@ -17,9 +19,9 @@ if has('nvim')
         UpdateRemotePlugins
     endfunction
 
-    Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
+    " Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
 else
-    Plug 'gelguy/wilder.nvim'
+    " Plug 'gelguy/wilder.nvim'
 
     " To use Python remote plugin features in Vim, can be skipped
     Plug 'roxma/nvim-yarp'
@@ -122,7 +124,7 @@ let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
 
 " Key bindings can be changed, see below
-call wilder#setup({'modes': [':', '/', '?']})
+" call wilder#setup({'modes': [':', '/', '?']})
 " {{{ Vim Sneak 
 map f <Plug>Sneak_f
 map F <Plug>Sneak_F
