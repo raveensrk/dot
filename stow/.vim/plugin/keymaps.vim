@@ -9,3 +9,4 @@ nmap     <leader>b :Buffers<CR>
 nnoremap <leader>t :set nowrap!<cr>
 nnoremap <leader>n :set nu!<cr>
 nnoremap <leader>s :so %<cr>
+nnoremap <leader>fp :let @* = expand("%:p")<cr>

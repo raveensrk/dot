@@ -1,6 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
-
+Plug 'lfv89/vim-interestingwords'
 Plug 'AndrewRadev/simple_bookmarks.vim'
 
 " Track the engine.
