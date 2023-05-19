@@ -38,7 +38,7 @@ UNDERLINE=$(tput smul)
 export BLACK RED GREEN LIME_YELLOW YELLOW POWDER_BLUE BLUE MAGENTA CYAN WHITE BRIGHT NORMAL NC RESET BLINK REVERSE UNDERLINE
 
 
-PS1="\[${RED}\][\s] \[${LIME_YELLOW}\][\V] \[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\W \[${NC}\]\n$ "
+PS1="\[${RED}\][\s] \[${LIME_YELLOW}\][\V] \[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\w \[${NC}\]\n$ "
 export PS1
 # export PS1="\u @ \h : \W\n $ "
 
