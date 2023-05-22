@@ -2,6 +2,7 @@
 call plug#begin('~/.vim/plugged')
 
 
+Plug 'mtth/scratch.vim'
 Plug 'vim-scripts/YankRing.vim'
 " Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
 Plug 'houtsnip/vim-emacscommandline'
