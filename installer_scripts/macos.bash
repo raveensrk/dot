@@ -54,6 +54,7 @@ packages=(
     basictex
     lazygit
     espanso
+    up
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
