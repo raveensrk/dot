@@ -32,7 +32,6 @@ let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
 " }}}
 " NAVIGATION {{{
-set noautochdir " This will change your pwd to current file
 set title
 "set splitbelow splitright
 " }}}
@@ -58,9 +57,10 @@ set smartindent
 set foldmethod=marker
 " }}}
 " {{{ NUMBERING
-set nonumber norelativenumber
+" set nonumber norelativenumber
 nnoremap <leader>n :set nu!<cr>
-" set number relativenumber
+set number 
+" set relativenumber
 " set listchars=eol:$
 " set listchars=nbsp:_,tab:>-,trail:~,extends:>,precedes:<
 " set list
@@ -106,6 +106,7 @@ set tags=tags
 " {{{ PATH
 set path+=**
 set autochdir
+" set noautochdir " This will change your pwd to current file
 " }}}
 " FILE SPECIFIC {{{
 autocmd BufRead .vimrc :set foldmethod=marker

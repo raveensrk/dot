@@ -1,8 +1,13 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
-Plug 'AndrewRadev/simple_bookmarks.vim'
 
+Plug 'mtth/scratch.vim'
+Plug 'vim-scripts/YankRing.vim'
+" Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
+Plug 'houtsnip/vim-emacscommandline'
+Plug 'lfv89/vim-interestingwords'
+Plug 'MattesGroeger/vim-bookmarks'
 " Track the engine.
 Plug 'SirVer/ultisnips'
 
@@ -47,7 +52,6 @@ Plug '907th/vim-auto-save'
 Plug 'rstacruz/vim-xtract'
 " Plug 'preservim/nerdtree'
 Plug 'mhinz/vim-startify'
-Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
 Plug 'git@github.com:tpope/vim-sensible'
 Plug 'git@github.com:junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'git@github.com:junegunn/fzf.vim'
