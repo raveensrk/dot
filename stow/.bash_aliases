@@ -154,6 +154,7 @@ export EDITOR="vim"
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
 alias vimrc="vim ~/.vimrc"
 alias v=vim
+alias vn="vim -u NONE"
 # }}}
 # {{{ EMACS
 alias ed="emacs -nw --daemon"
