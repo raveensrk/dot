@@ -44,8 +44,6 @@ nnoremap <leader>y mmggVGy'm
 nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
 nnoremap <leader>e   :Ex<CR>jj
 nnoremap <leader>pi :PlugClean<CR>:PlugInstall<CR>
-nnoremap <leader>vrc :e $MYVIMRC<CR>
-nnoremap <leader>src :b ~/.vimrc<CR>:w<CR>:source ~/.vimrc<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
 
@@ -80,4 +78,3 @@ vnoremap <leader>align !column --table -s <input_seperator> -o <output_seperator
 
 " Date
 nnoremap <leader>date :-1read !date +\%Y-\%m-\%d-\%H-\%M-\%S<cr>
-
