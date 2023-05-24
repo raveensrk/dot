@@ -3,7 +3,9 @@ let mapleader = " "
 " This will create a file under cursor
 nmap <leader>gf :e <cfile><CR>
 " Find all reference of the string under cursor
-nmap     <leader>= magg=G`a<CR>
+nnoremap <leader>ref :grep  * -r<CR>
+nmap     <leader>= gg=G2<C-o>
+nnoremap Y yg_
 nmap     <leader>b :Buffers<CR>
 nnoremap <leader>n :set nu!<cr>
 nnoremap <leader>fp :let @* = expand("%:p")<cr>

@@ -1,6 +1,7 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
+Plug 'chamindra/marvim' " Named macros in vim
 
 Plug 'mtth/scratch.vim'
 Plug 'vim-scripts/YankRing.vim'
@@ -13,7 +14,6 @@ Plug 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
-
 
 Plug 'madox2/vim-ai'
 

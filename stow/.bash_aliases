@@ -154,6 +154,7 @@ export EDITOR="vim"
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
 alias vimrc="vim ~/.vimrc"
 alias v=vim
+alias vn="vim -u NONE"
 # }}}
 # {{{ EMACS
 alias ed="emacs -nw --daemon"
@@ -177,7 +178,11 @@ alias magit="emacs -nw --eval '(magit-status)'"
 
 ranger_cd() {
     temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"
-    ranger --choosedir="$temp_file" -- "${@:-$PWD}"
+    local dir_or_file
+
+    [[ -f "$@" ]] && dir_or_file=$(dirname "$@") || dir_or_file="$@"
+
+    ranger --choosedir="$temp_file" -- "${dir_or_file:-$PWD}"
     if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
         # cd -- "$chosen_dir"
         z "$chosen_dir"
