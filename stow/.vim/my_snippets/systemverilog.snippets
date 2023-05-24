@@ -1,0 +1,27 @@
+extends systemverilog verilog
+
+snippet constructor "Create a constructor for this class."
+
+	// Constructor
+	function new(string name, uvm_component p = null);
+		super.new(name,p);
+		${1:code} = new("${1:code}",this);
+	endfunction
+
+endsnippet
+
+snippet class "Create a class"
+class ${1:name} extends uvm_component;
+	${2}
+endclass // ${1:name}
+endsnippet
+
+snippet task_run "Create a run phase task"
+task run_phase(uvm_phase phase);
+	
+endtask
+endsnippet
+
+snippet uvm_info "uvm_info snippet"
+`uvm_info(get_name(), $sformatf("receiving %4d", ${2:val}), UVM_MEDIUM);
+endsnippet

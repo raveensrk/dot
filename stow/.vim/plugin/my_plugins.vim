@@ -6,7 +6,7 @@ Plug 'chamindra/marvim' " Named macros in vim
 Plug 'mtth/scratch.vim'
 Plug 'vim-scripts/YankRing.vim'
 " Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
-Plug 'houtsnip/vim-emacscommandline'
+" Plug 'houtsnip/vim-emacscommandline'
 Plug 'lfv89/vim-interestingwords'
 Plug 'MattesGroeger/vim-bookmarks'
 " Track the engine.
@@ -18,19 +18,19 @@ Plug 'honza/vim-snippets'
 Plug 'madox2/vim-ai'
 
 if has('nvim')
-    function! UpdateRemotePlugins(...)
-        " Needed to refresh runtime files
-        let &rtp=&rtp
-        UpdateRemotePlugins
-    endfunction
+  function! UpdateRemotePlugins(...)
+    " Needed to refresh runtime files
+    let &rtp=&rtp
+    UpdateRemotePlugins
+  endfunction
 
-    " Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
+" Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
 else
-    " Plug 'gelguy/wilder.nvim'
+  " Plug 'gelguy/wilder.nvim'
 
-    " To use Python remote plugin features in Vim, can be skipped
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
+  " To use Python remote plugin features in Vim, can be skipped
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 Plug 'chrisbra/Colorizer'
@@ -39,11 +39,11 @@ Plug 'justinmk/vim-sneak'
 Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 Plug 'wellle/tmux-complete.vim'
 Plug 'chrisbra/NrrwRgn'
@@ -119,7 +119,8 @@ call plug#end()
 " Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
 " - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
-let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
@@ -140,7 +141,7 @@ let g:sneak#label = 1
 let g:table_mode_corner='|'
 
 if has('python3')
-    let g:deoplete#enable_at_startup = 1
+  let g:deoplete#enable_at_startup = 1
 endif
 
 let g:auto_save = 1  " enable AutoSave on Vim startup
@@ -204,19 +205,19 @@ colo gruvbox
 set background=dark
 let g:gruvbox_contrast_dark="hard"
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-            " }}}
-            " {{{1 NERDTree
-            " "nnoremap <leader>n :NERDTreeFocus<CR>
-            " "nnoremap <C-n> :NERDTree<CR>
-            " "nnoremap <C-t> :NERDTreeToggle<CR>
-            " "nnoremap <C-f> :NERDTreeFind<CR>
-            " "" Exit Vim if NERDTree is the only window remaining in the only tab.
-            \" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-            "  Close the tab if NERDTree is the only window remaining in it.
-            " "autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-            " "" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-            \" autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-            \"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+      " }}}
+      " {{{1 NERDTree
+      " "nnoremap <leader>n :NERDTreeFocus<CR>
+      " "nnoremap <C-n> :NERDTree<CR>
+      " "nnoremap <C-t> :NERDTreeToggle<CR>
+      " "nnoremap <C-f> :NERDTreeFind<CR>
+      " "" Exit Vim if NERDTree is the only window remaining in the only tab.
+      \" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+      "  Close the tab if NERDTree is the only window remaining in it.
+      " "autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+      " "" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+      \" autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+      \"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 "  Open the existing NERDTree on each new tab.
 " "autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
