@@ -158,3 +158,11 @@ endfor
 
 "}}}
 
+" {{{
+autocmd BufWinLeave *.* mkview!
+autocmd BufWinEnter *.* silent loadview
+" augroup my_folding
+"   au BufReadPre * setlocal foldmethod=indent
+"   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
+" augroup END
+" }}}

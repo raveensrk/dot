@@ -1,10 +1,11 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
+Plug 'preservim/nerdtree'
 Plug 'chamindra/marvim' " Named macros in vim
 
 Plug 'mtth/scratch.vim'
-Plug 'vim-scripts/YankRing.vim'
+" Plug 'vim-scripts/YankRing.vim'
 " Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
 " Plug 'houtsnip/vim-emacscommandline'
 Plug 'lfv89/vim-interestingwords'
@@ -205,22 +206,24 @@ colo gruvbox
 set background=dark
 let g:gruvbox_contrast_dark="hard"
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-      " }}}
-      " {{{1 NERDTree
-      " "nnoremap <leader>n :NERDTreeFocus<CR>
-      " "nnoremap <C-n> :NERDTree<CR>
-      " "nnoremap <C-t> :NERDTreeToggle<CR>
-      " "nnoremap <C-f> :NERDTreeFind<CR>
-      " "" Exit Vim if NERDTree is the only window remaining in the only tab.
-      \" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-      "  Close the tab if NERDTree is the only window remaining in it.
-      " "autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-      " "" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-      \" autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-      \"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+" }}}
+" {{{ NERDTree
+nnoremap <leader>T :NERDTreeFocus<CR>
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+"  Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |  let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 "  Open the existing NERDTree on each new tab.
-" "autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
+" Find current file in NERDTree window by default 
+" https://superuser.com/questions/195022/vim-how-to-synchronize-nerdtree-with-current-opened-tab-file-path
+autocmd BufEnter * if &modifiable | NERDTreeFind | wincmd p | endif
 
+"}}}
 " {{{ Limelight
 " nmap <Leader>l <Plug>(Limelight)
 " xmap <Leader>l <Plug>(Limelight)
