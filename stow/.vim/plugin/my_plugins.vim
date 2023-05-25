@@ -219,6 +219,10 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 " Start NERDTree and put the cursor back in the other window.
 autocmd VimEnter * NERDTree | wincmd p
+" Find current file in NERDTree window by default 
+" https://superuser.com/questions/195022/vim-how-to-synchronize-nerdtree-with-current-opened-tab-file-path
+autocmd BufEnter * if &modifiable | NERDTreeFind | wincmd p | endif
+
 "}}}
 " {{{ Limelight
 " nmap <Leader>l <Plug>(Limelight)
