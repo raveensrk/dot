@@ -7,7 +7,7 @@ Plug 'chamindra/marvim' " Named macros in vim
 Plug 'mtth/scratch.vim'
 " Plug 'vim-scripts/YankRing.vim'
 " Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
-Plug 'houtsnip/vim-emacscommandline'
+" Plug 'houtsnip/vim-emacscommandline'
 Plug 'lfv89/vim-interestingwords'
 Plug 'MattesGroeger/vim-bookmarks'
 " Track the engine.
@@ -19,19 +19,19 @@ Plug 'honza/vim-snippets'
 Plug 'madox2/vim-ai'
 
 if has('nvim')
-    function! UpdateRemotePlugins(...)
-        " Needed to refresh runtime files
-        let &rtp=&rtp
-        UpdateRemotePlugins
-    endfunction
+  function! UpdateRemotePlugins(...)
+    " Needed to refresh runtime files
+    let &rtp=&rtp
+    UpdateRemotePlugins
+  endfunction
 
-    " Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
+" Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
 else
-    " Plug 'gelguy/wilder.nvim'
+  " Plug 'gelguy/wilder.nvim'
 
-    " To use Python remote plugin features in Vim, can be skipped
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
+  " To use Python remote plugin features in Vim, can be skipped
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 Plug 'chrisbra/Colorizer'
@@ -40,11 +40,11 @@ Plug 'justinmk/vim-sneak'
 Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 Plug 'wellle/tmux-complete.vim'
 Plug 'chrisbra/NrrwRgn'
@@ -120,7 +120,8 @@ call plug#end()
 " Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
 " - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
-let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
@@ -141,7 +142,7 @@ let g:sneak#label = 1
 let g:table_mode_corner='|'
 
 if has('python3')
-    let g:deoplete#enable_at_startup = 1
+  let g:deoplete#enable_at_startup = 1
 endif
 
 let g:auto_save = 1  " enable AutoSave on Vim startup
