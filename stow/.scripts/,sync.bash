@@ -1,6 +1,7 @@
 #!/bin/bash 
 
 ,reinstall_before.bash
+,dotscripts_checker.bash
 ,sync_all_repos.bash "$MY_REPOS"
 ,reinstall.bash 
 
