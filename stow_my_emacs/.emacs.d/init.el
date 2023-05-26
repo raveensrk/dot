@@ -1387,3 +1387,21 @@ and replace them with single spaces."
   :after (treemacs)
   :straight t
   :config (treemacs-set-scope-type 'Tabs))
+
+
+
+(defun my-extract-region-to-variable (variable)
+  "Cut and extract selected text region and replace it with a variable name."
+  (interactive "sEnter variable name: ")
+  (save-excursion
+  (let ((selection (buffer-substring (region-beginning) (region-end))))
+    (delete-region (region-beginning) (region-end))
+    (insert (format "$%s" variable))
+    (beginning-of-line)
+    (open-line 1)
+    (insert (format "%s=\"%s\"" variable selection))
+    (move-beginning-of-line nil))
+  ))
+
+(global-set-key (kbd "C-c e x") 'my-extract-region-to-variable)
+
