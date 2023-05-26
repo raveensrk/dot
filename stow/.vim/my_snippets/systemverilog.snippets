@@ -25,3 +25,25 @@ endsnippet
 snippet uvm_info "uvm_info snippet"
 `uvm_info(get_name(), $sformatf("receiving %4d", ${2:val}), UVM_MEDIUM);
 endsnippet
+
+snippet uvm_error "uvm_error snippet"
+`uvm_error(get_name(), $sformatf("receiving %4d", ${2:val}));
+endsnippet
+
+snippet connect_phase "Creates a connect phase function"
+	function void connect_phase(uvm_phase phase);
+		${1}
+	endfunction
+endsnippet
+	
+snippet initial "Create initial block"
+    initial begin
+        $1
+    end
+endsnippet
+
+snippet always "Create always block"
+    always begin
+        $1
+    end
+endsnippet

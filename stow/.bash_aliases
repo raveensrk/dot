@@ -160,7 +160,7 @@ alias vn="vim -u NONE"
 alias ed="emacs -nw --daemon"
 alias e="$EDITOR"
 alias ee="emacsclient -c"
-alias ek="e --eval \"(server-shutdown)\""
+alias ek="emacs --eval \"(server-shutdown)\""
 alias magit="emacs -nw --eval '(magit-status)'"
 # }}}
 # RANGER {{{
