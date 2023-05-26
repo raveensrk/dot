@@ -34,5 +34,6 @@ $if Bash
 "\C-xl": "\C-e | less\n"
 "\C-xh": "\C-e --help | less\n"
 "\C-xf": "\C-afno \C-e\n"
+"\C-x\C-f": "e $(fzf -m -e)\n"
 "adn": " > /dev/null "
 $endif

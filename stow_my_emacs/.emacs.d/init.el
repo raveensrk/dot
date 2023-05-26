@@ -969,6 +969,8 @@ Saves to a temp file and puts the filename in the kill ring."
 (global-set-key (kbd "C-c o a a") 'org-agenda)
 (global-set-key (kbd "C-c o a t") 'org-todo-list)
 
+(global-set-key (kbd "C-c l") 'org-store-link)
+
 
 ;; TODO For some reason this function is not present in my magit repo
 ;; https://github.com/magit/magit/commit/801cbfd83797600f4a38479c6ae4f8d474860aad#diff-d6a81474395687b058c1941f4e9fb8a3b21731e84a4f26b7fd5fdf2e9a800de5
