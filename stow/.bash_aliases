@@ -150,13 +150,14 @@ man() {
 }
 # }}}
 # {{{ VIM
-export EDITOR="vim"
+# export EDITOR="vim"
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
 alias vimrc="vim ~/.vimrc"
 alias v=vim
 alias vn="vim -u NONE"
 # }}}
 # {{{ EMACS
+export EDITOR="emacsclient -c -a emacs"
 alias ed="emacs -nw --daemon"
 alias e="$EDITOR"
 alias ee="emacsclient -c"
