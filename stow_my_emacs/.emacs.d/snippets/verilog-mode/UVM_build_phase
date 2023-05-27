@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: UVM Build phase
+# key: build
+# --
+
+
+function void build_phase(uvm_phase phase);
+         string inst_name;
+         super.build_phase(phase);
+endfunction

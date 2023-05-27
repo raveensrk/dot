@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: UVM Config DB
+# key: uvm_config_db
+# --
+
+uvm_config_db#(virtual dut_if)::get(this, "vif", vif)

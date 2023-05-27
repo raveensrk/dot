@@ -1,5 +1,10 @@
 ;; Emacs versions supported: 28.2+
 
+
+;;; TESTING
+
+
+
 ;;; IDEAS
 ;; https://github.com/abo-abo/auto-yasnippet
 
@@ -223,15 +228,20 @@
 ;;;; Fonts
 
 ;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
+
 (cond
  ((find-font (font-spec :name "Cascadia Code"))
-  (set-frame-font "Cascadia Code-12"))
+  (set-frame-font "Cascadia Code-24"))
  ((find-font (font-spec :name "Menlo"))
   (set-frame-font "Menlo-12"))
  ((find-font (font-spec :name "DejaVu Sans Mono"))
-  (set-frame-font "DejaVu Sans Mono-12"))
+  (set-frame-font "DejaVu Sans Mono-24"))
  ((find-font (font-spec :name "Inconsolata"))
-  (set-frame-font "Inconsolata-12")))
+  (set-frame-font "Inconsolata-24")))
+
+(add-to-list 'default-frame-alist
+             '(font . "Fira Code-24"))
+
 
 ;; (use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
 
@@ -323,6 +333,7 @@
 ;; https://www.masteringemacs.org/article/text-expansion-hippie-expand
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 ;;; Outline minor mode
+(global-set-key (kbd "M-o") 'counsel-outline)
 ;;; Multiple cursors
 (use-package multiple-cursors
   :straight t
@@ -559,6 +570,7 @@
 ;;     (setq list (cdr list))))
 ;;
 ;; (my-load-elisp-files my-lisp-files)
+
 ;;; Yas snippets
 (use-package yasnippet
   :straight t
@@ -1120,12 +1132,12 @@ Saves to a temp file and puts the filename in the kill ring."
 (if (file-exists-p my-openai-api-key-file)
     (load-file my-openai-api-key-file))
 
-(use-package openai
-  :straight (openai :type git :host github :repo "emacs-openai/openai")
-  :bind
-  ("C-c , r" . openai-completion-select-insert)
-  ("C-c , b" . openai-completion-buffer-insert)
-  )
+;; (use-package openai
+;;   :straight (openai :type git :host github :repo "emacs-openai/openai")
+;;   :bind
+;;   ("C-c , r" . openai-completion-select-insert)
+;;   ("C-c , b" . openai-completion-buffer-insert)
+;;   )
 
 (straight-use-package
  '(aide :type git :host github :repo "junjizhi/aide.el"))
@@ -1199,6 +1211,11 @@ Saves to a temp file and puts the filename in the kill ring."
 ;;; Verilog
 (add-hook 'verilog-mode-hook 'hs-minor-mode)
 (put 'upcase-region 'disabled nil)
+(defun verilog-mode-outline-regexp ()
+  "Sets the outline regexp for verilog mode"
+  (interactive)
+  (setq-local outline-regexp ".*{{{*"))
+(add-hook 'verilog-mode-hook 'verilog-mode-outline-regexp)
 
 ;;; Perl
 ;; cperl-mode is preferred to perl-mode                                        
@@ -1253,6 +1270,7 @@ and replace them with single spaces."
 
 (setq tags-add-tables nil)
 (global-set-key (kbd "C-c '") 'helm-all-mark-rings)
+(global-set-key (kbd "C-,") 'pop-global-mark)
 
 		
 (use-package lsp-grammarly
@@ -1262,8 +1280,8 @@ and replace them with single spaces."
                        (lsp))))
 
 
-(use-package chatgpt
-  :straight (chatgpt :type git :host github :repo "emacs-openai/chatgpt"))
+;; (use-package chatgpt
+;;   :straight (chatgpt :type git :host github :repo "emacs-openai/chatgpt"))
 
 
 
@@ -1405,3 +1423,14 @@ and replace them with single spaces."
 
 (global-set-key (kbd "C-c e x") 'my-extract-region-to-variable)
 
+
+
+;;; sh-mode
+(defun sh-mode-outline-regexp ()
+  "Sets the outline regexp for sh mode"
+  (interactive)
+  (setq-local outline-regexp "# {{{*"))
+(add-hook 'sh-mode-hook 'sh-mode-outline-regexp)
+
+;;; End of init
+(straight-remove-unused-repos t)

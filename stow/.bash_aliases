@@ -1,6 +1,7 @@
 # BASH ALIASES sourced at ~/.bashrc
 # set -o vi
 set -o emacs
+export EDITOR="emacsclient -c -a emacs"
 # {{{ PROMPT AND COLORS
 # shellcheck disable=SC1091
 source "$HOME/.bash_prompt"
@@ -157,7 +158,6 @@ alias v=vim
 alias vn="vim -u NONE"
 # }}}
 # {{{ EMACS
-export EDITOR="emacsclient -c -a emacs"
 alias ed="emacs -nw --daemon"
 alias e="$EDITOR"
 alias ee="emacsclient -c"
@@ -406,3 +406,9 @@ for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
 # }}}
+
+# {{{{ New
+# {{{{{ New2
+
+
+

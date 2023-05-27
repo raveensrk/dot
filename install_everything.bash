@@ -3,6 +3,9 @@
 set -e
 # set -x
 
+ln -sf ~/my_repos ~/.1_my_repos # Creating this softlink so my_repos will always be shown at first
+ln -sf ~/my_repos ~/1_my_repos # Creating this softlink so my_repos will always be shown at first
+
 # Basic files and directories setup
 [ ! -d "$HOME/.tmp"        ] && mkdir "$HOME/.tmp"
 [ ! -d "$HOME/.vim"        ] && mkdir "$HOME/.vim"
@@ -33,3 +36,4 @@ fi
 
 # vim -c "PlugInstall | PlugClean | qa"
 # tldr -u
+
