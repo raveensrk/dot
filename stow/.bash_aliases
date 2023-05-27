@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # BASH ALIASES sourced at ~/.bashrc
 # set -o vi
 set -o emacs

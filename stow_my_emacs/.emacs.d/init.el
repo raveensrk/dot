@@ -1,9 +1,6 @@
 ;; Emacs versions supported: 28.2+
 
 
-;;; TESTING
-
-
 
 ;;; IDEAS
 ;; https://github.com/abo-abo/auto-yasnippet
@@ -1434,3 +1431,8 @@ and replace them with single spaces."
 
 ;;; End of init
 (straight-remove-unused-repos t)
+
+;;; TESTING
+
+(use-package breadcrumb :straight (:host github :repo "joaotavora/breadcrumb"))
+
