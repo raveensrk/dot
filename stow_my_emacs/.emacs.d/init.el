@@ -143,6 +143,9 @@
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
 ;;; Appearence
+(use-package volatile-highlights :straight t)
+(volatile-highlights-mode t)
+
 (diminish 'eldoc-mode)
 (use-package dimmer
   :straight t
@@ -153,7 +156,7 @@
   (dimmer-configure-posframe)
   (dimmer-mode t)
   )
-(setq-default truncate-lines +1)
+;; (setq-default truncate-lines +1)
 (use-package git-gutter
   :diminish
   :straight t
@@ -165,6 +168,8 @@
 (setq display-line-numbers t)
 (setq display-line-numbers-type t)
 (global-display-line-numbers-mode +1)
+(global-visual-line-mode t)
+(setq-default visual-line-fringe-indicators t)
 ;; (use-package unicode-fonts
 ;;   :straight t
 ;;   :defer 10
@@ -191,6 +196,7 @@
   )
 (use-package zoom
   :straight t
+  :disabled t
   :diminish
   ;; https://github.com/cyrus-and/zoom
   :config (zoom-mode t))
@@ -1116,33 +1122,6 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 
-;; (add-hook 'prog-mode-hook 'turn-on-evil-mode)
-
-;;; OpenAI
-
-;; Enter the keys in the following variables in base64 format in the below file
-;; (setq openai-api-key (base64-decode-string "key"))
-;; (setq openai-key (base64-decode-string "key"))
-
-(setq my-openai-api-key-file "~/.emacs.d/openai-api-key.el")
-
-(if (file-exists-p my-openai-api-key-file)
-    (load-file my-openai-api-key-file))
-
-;; (use-package openai
-;;   :straight (openai :type git :host github :repo "emacs-openai/openai")
-;;   :bind
-;;   ("C-c , r" . openai-completion-select-insert)
-;;   ("C-c , b" . openai-completion-buffer-insert)
-;;   )
-
-(straight-use-package
- '(aide :type git :host github :repo "junjizhi/aide.el"))
-(use-package request :straight t)
-(use-package aide
-  :config
-  (setq aide-max-tokens 200))
-
 
 
 ;;; Eshell
@@ -1188,7 +1167,7 @@ Saves to a temp file and puts the filename in the kill ring."
   :straight t)
 (use-package zone
   :config
-  (zone-when-idle 420)
+  (zone-when-idle (* 420 69))
   (zone-select-add-program 'zone-pgm-sl)
   )
 (use-package zone-rainbow
@@ -1208,11 +1187,7 @@ Saves to a temp file and puts the filename in the kill ring."
 ;;; Verilog
 (add-hook 'verilog-mode-hook 'hs-minor-mode)
 (put 'upcase-region 'disabled nil)
-(defun verilog-mode-outline-regexp ()
-  "Sets the outline regexp for verilog mode"
-  (interactive)
-  (setq-local outline-regexp ".*{{{*"))
-(add-hook 'verilog-mode-hook 'verilog-mode-outline-regexp)
+(add-hook 'verilog-mode-hook (lambda () (setq-local outline-regexp ".*{{{*")))
 
 ;;; Perl
 ;; cperl-mode is preferred to perl-mode                                        
@@ -1420,19 +1395,28 @@ and replace them with single spaces."
 
 (global-set-key (kbd "C-c e x") 'my-extract-region-to-variable)
 
-
-
 ;;; sh-mode
-(defun sh-mode-outline-regexp ()
-  "Sets the outline regexp for sh mode"
-  (interactive)
-  (setq-local outline-regexp "# {{{*"))
-(add-hook 'sh-mode-hook 'sh-mode-outline-regexp)
+(add-hook 'sh-mode-hook (lambda () (setq-local outline-regexp "# {{{*")))
 
-;;; End of init
-(straight-remove-unused-repos t)
+;;; OpenAI
+
+(setq my-openai-api-key-file "~/.emacs.d/openai-api-key.el")
+
+(if (file-exists-p my-openai-api-key-file)
+    (load-file my-openai-api-key-file))
+
+(use-package shell-maker
+  :straight (:host github :repo "xenodium/chatgpt-shell" :files ("shell-maker.el")))
+
+(use-package chatgpt-shell
+  :requires shell-maker
+  :straight (:host github :repo "xenodium/chatgpt-shell" :files ("chatgpt-shell.el")))
 
 ;;; TESTING
 
 (use-package breadcrumb :straight (:host github :repo "joaotavora/breadcrumb"))
 
+
+;;; End of init
+
+(straight-remove-unused-repos t)
