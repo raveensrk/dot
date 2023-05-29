@@ -620,12 +620,8 @@ and replace them with single spaces."
 
 (use-package imenu-list
   :straight t
-  :hook
-  (org-mode)
-  (prog-mode)
-  (outline-mode)
-  (outline-minor-mode)
   )
+
 ;; TODO https://github.com/bmag/imenu-list
 
 ;;;; YASNIPPET
