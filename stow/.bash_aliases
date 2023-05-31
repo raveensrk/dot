@@ -3,9 +3,8 @@
 # BASH ALIASES sourced at ~/.bashrc
 # set -o vi
 set -o emacs
-export EDITOR="emacsclient -c -a emacs"
-alias e="$EDITOR"
 # export EDITOR="emacsclient -c -a emacs"
+alias e="$EDITOR"
 export EDITOR="vim"
 # {{{ PROMPT AND COLORS
 # shellcheck disable=SC1091
@@ -401,18 +400,7 @@ find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
 '''
 }
 # }}}
-# {{{ Other Sources
-[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
-# export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
-[ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
-touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
-for f in ~/.my_bash_aliases/*; do
-    # shellcheck disable=SC1090
-    source "$f"
-done
-# }}}
-
-
+# {{{ MY FUNCTIONS
 bookmarks () {
 local item
 item=$(cat ~/.bookmarks | fzf -m -e --height 30%)
@@ -429,9 +417,15 @@ fi
 set +x
 
 }
-
-# {{{{ New
-# {{{{{ New2
-
-
+# }}}
+# {{{ Other Sources
+[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
+# export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
+[ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
+touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
+for f in ~/.my_bash_aliases/*; do
+    # shellcheck disable=SC1090
+    source "$f"
+done
+# }}}
 

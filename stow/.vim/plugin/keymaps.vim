@@ -26,7 +26,7 @@ nnoremap <leader>h :History<CR>
 nnoremap <leader><Left> :bp<CR>
 nnoremap <leader><Right> :bn<CR>
 
-" Write quit shortcut FINALLY!!!!!!!!!!!!!!
+" Write quit shortcut FINALLY!!!!!!!!!!!!!!{{{
 " -----------------------------------------------
 nnoremap <leader>w   :w<CR>
 nnoremap <leader>wq  :wq<CR>
@@ -35,9 +35,9 @@ nnoremap <leader>q   :q<CR>
 nnoremap <leader>qq  :q!<CR>
 nnoremap <leader>qa  :qa<CR>
 nnoremap <leader>qqa :qa!<CR>
-
+"}}}
 nnoremap <leader>a ggVG
-nnoremap <leader>y mmggVGy'm
+nnoremap <leader>y ggVGy2<C-o>
 
 " Other time savers
 " -------------------------------

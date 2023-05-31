@@ -1,6 +1,6 @@
 source $VIMRUNTIME/vimrc_example.vim
 
-" Help {{{
+" HELP {{{
 " Press <F1> for help
 " Press <F3> for help for word under cursor
 " :map <F3> "zyiw:exe "h ".@z.""<CR>
@@ -91,7 +91,7 @@ set undofile
 set undodir=~/.vim/undo
 set backupdir=~/.vim/backup
 " }}}
-" TRIM WHITE SPACE AFTER EXIT - DISBALED {{{
+" {{{ DISBALED - TRIM WHITE SPACE AFTER EXIT
 fun! TrimWhitespace()
     let l:save = winsaveview()
     keeppatterns %s/\s\+$//e
@@ -110,7 +110,7 @@ set autochdir
 " FILE SPECIFIC {{{
 autocmd BufRead .vimrc :set foldmethod=marker
 " }}}
-" {{{1 Resource plugin directory
+" {{{1 RESOURCE PLUGIN DIRECTORY
 " This is done so the plugin directory is sourced again at the end of this
 " vimrc file. This will make plugins work properly
 
@@ -120,45 +120,24 @@ for f in split(glob('~/.vim/plugin/*.vim'), '\n')
 endfor
 
 " }}}
-" {{{1 Mouse
-
-" set mousemodel=popup
-" nnoremenu 1.40 PopUp.&Paste	"+gP
-" menu PopUp
-let g:markdown_folding = 1
-noremap <2-LeftMouse> za
-
-vmap <silent> +y :w! ~/.vim_clip<cr>
-nmap <silent> +p :read ~/.vim_clip<cr>
-
-set clipboard=unnamed
-
-" {{{1 Custom Highlights
-augroup myTodo
-      autocmd!
-        autocmd Syntax * syntax match myTodo /\v\_.<(TODO|FIXME).*/hs=s+1 containedin=.*Comment
-augroup END
-
-highlight link myTodo Todo
-
-au BufRead,BufNewFile *.jrnl setfiletype jrnl
-au BufRead,BufNewFile *.jrnl source ~/.vim/ftplugin/jrnl.vim
-
-" {{{1 NEW stuff
-" runtime ftplugin/man.vim
-" packadd! editexisting
-" source $VIMRUNTIME/pack/dist/opt/shellmenu/plugin/shellmenu.vim
-
-
-"{{{ Finally Source custom per user congifs
+"{{{ FINALLY SOURCE CUSTOM PER USER CONGIFS
 
 for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
     exe 'source' f
 endfor
 
 "}}}
+"{{{ FOLDING
+let g:markdown_folding = 1
+noremap <2-LeftMouse> za
+"}}}
+"{{{ CLIPBOARD
+vmap <silent> +y :w! ~/.vim_clip<cr>
+nmap <silent> +p :read ~/.vim_clip<cr>
 
-" {{{
+set clipboard=unnamed
+"}}}
+" {{{ VIM SESSIONS AND VIEWS
 autocmd BufWinLeave *.* mkview!
 autocmd BufWinEnter *.* silent loadview
 " augroup my_folding

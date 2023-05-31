@@ -109,26 +109,25 @@ Plug 'git@github.com:yoshi1123/vim-linebox'
 
 Plug 'git@github.com:mechatroner/rainbow_csv'
 " Plug 'yegappan/taglist'
-" Plug 'fholgado/minibufexpl.vim'
 Plug 'git@github.com:ervandew/supertab'
 Plug 'git@github.com:ledger/vim-ledger'
 Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 
 call plug#end()
 "{{{1 Plugin configs
-
+"{{{ UltiSnips
 " Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
 " - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
-" let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsExpandTrigger="<c-e>"
+let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
-
+"}}}
 " Key bindings can be changed, see below
 " call wilder#setup({'modes': [':', '/', '?']})
 " {{{ Vim Sneak 
@@ -147,17 +146,7 @@ endif
 
 let g:auto_save = 1  " enable AutoSave on Vim startup
 
-" MBE
-" MiniBufExpl Colors
-" hi MBENormal               guifg=#808080 guibg=fg
-" hi MBEChanged              guifg=#CD5907 guibg=fg
-" hi MBEVisibleNormal        guifg=#5DC2D6 guibg=fg
-" hi MBEVisibleChanged       guifg=#F1266F guibg=fg
-" hi MBEVisibleActiveNormal  guifg=#A6DB29 guibg=fg
-" hi MBEVisibleActiveChanged guifg=#F1266F guibg=fg
-
-
-" Linebox
+" Linebox{{{
 
 let g:linebox_default_maps = 0
 let g:linebox_marks = ["'a", "'b"]
@@ -168,7 +157,7 @@ nnoremap <leader><leader>b :call linebox#boxes#box()<cr>
 vnoremap <leader><leader>b :call linebox#boxes#box()<cr>
 nnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
 vnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
-
+"}}}
 
 set updatetime=100 " For gitgutter
 
@@ -177,37 +166,30 @@ set updatetime=100 " For gitgutter
 let g:rainbow_active = 1
 let g:airline#extensions#tabline#enabled = 1
 
-" Vim Easy Align
+" Vim Easy Align{{{
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-
+"}}}
 " Vim Expand Region
 " map K <Plug>(expand_region_expand)
 " map J <Plug>(expand_region_shrink)
-
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
+"{{{ DISABLED - Syntastic
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+"
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+"}}}
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 nnoremap <leader>/ :BLines<CR>
 
 "}}}
-" {{{ COLOR / THEME
-colo gruvbox
-" colo default
-set background=dark
-let g:gruvbox_contrast_dark="hard"
-set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-" }}}
-" {{{ NERDTree
+" {{{ DISABLED - NERDTree
 " nnoremap <leader>T :NERDTreeFocus<CR>
 " " Exit Vim if NERDTree is the only window remaining in the only tab.
 " autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
@@ -224,7 +206,7 @@ set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 " autocmd BufEnter * if &modifiable | NERDTreeFind | wincmd p | endif
 
 "}}}
-" {{{ Limelight
+" {{{ DISABLED - Limelight
 " nmap <Leader>l <Plug>(Limelight)
 " xmap <Leader>l <Plug>(Limelight)
 "
@@ -251,3 +233,11 @@ set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 " " Highlighting priority (default: 10)
 " "   Set it to -1 not to overrule hlsearch
 " let g:limelight_priority = -1
+" }}}
+" {{{ COLOR / THEME
+colo gruvbox
+" colo default
+set background=dark
+let g:gruvbox_contrast_dark="hard"
+set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+" }}}
