@@ -4,6 +4,7 @@
 # set -o vi
 set -o emacs
 export EDITOR="emacsclient -c -a emacs"
+alias e="$EDITOR"
 # {{{ PROMPT AND COLORS
 # shellcheck disable=SC1091
 source "$HOME/.bash_prompt"
@@ -161,8 +162,8 @@ alias vn="vim -u NONE"
 # }}}
 # {{{ EMACS
 alias ed="emacs -nw --daemon"
-alias e="$EDITOR"
-alias ee="emacsclient -c"
+alias en="emacsclient -nw"
+alias ec="emacsclient -c"
 alias ek="emacs --eval \"(server-shutdown)\""
 alias magit="emacs -nw --eval '(magit-status)'"
 # }}}
