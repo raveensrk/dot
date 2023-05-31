@@ -1285,6 +1285,13 @@ Saves to a temp file and puts the filename in the kill ring."
 (global-set-key (kbd "C-c 3") 'mf/mirror-region-in-multifile)
 
 
+;;; TESTING: PDF TOOLS
+
+(use-package pdf-tools :straight t)
+(use-package google-this
+  :straight t
+  :bind ("C-c h" . google-this))
+
 ;;; End of init
 
 (straight-remove-unused-repos t)

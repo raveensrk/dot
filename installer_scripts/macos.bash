@@ -55,6 +55,7 @@ packages=(
     lazygit
     espanso
     up
+    poppler
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
