@@ -3,7 +3,8 @@
 # BASH ALIASES sourced at ~/.bashrc
 # set -o vi
 set -o emacs
-export EDITOR="emacsclient -c -a emacs"
+# export EDITOR="emacsclient -c -a emacs"
+export EDITOR="vim"
 # {{{ PROMPT AND COLORS
 # shellcheck disable=SC1091
 source "$HOME/.bash_prompt"
