@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+name="$(realpath $1)"
+tags="${@:2}"
+echo "$name $tags" >> ~/.bookmarks
+

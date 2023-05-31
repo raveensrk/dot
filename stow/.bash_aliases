@@ -409,6 +409,24 @@ for f in ~/.my_bash_aliases/*; do
 done
 # }}}
 
+
+bookmarks () {
+local item
+item=$(cat ~/.bookmarks | fzf -m -e --height 30%)
+item=$(echo $item | cut -d " " -f 1)
+
+set -x
+
+if [[ -d "$item" ]]; then
+    command cd "$item"
+else
+    less "$item"
+fi
+
+set +x
+
+}
+
 # {{{{ New
 # {{{{{ New2
 
