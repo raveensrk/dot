@@ -1331,3 +1331,5 @@ Saves to a temp file and puts the filename in the kill ring."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(use-package sticky-windows :load-path "~/.emacs.d/lisp/sticky-windows.el")
