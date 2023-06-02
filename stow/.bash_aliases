@@ -401,22 +401,41 @@ find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
 }
 # }}}
 # {{{ MY FUNCTIONS
-bookmarks () {
-local item
-item=$(cat ~/.bookmarks | fzf -m -e --height 30%)
-item=$(echo $item | cut -d " " -f 1)
+b () {
+    local item
+    item=$(cat ~/.bookmarks   | sed "s/ / $(tput setaf 1)/" | sed "s/$/$(tput sgr0)/" | awk '{for(i=2;i<=NF;i++) printf $i" "; print $1}'| fzf --ansi -m -e --height 30%)
+    item=$(echo $item | awk -F " " '{print $NF}')
 
-set -x
+    set -x
 
-if [[ -d "$item" ]]; then
-    command cd "$item"
-else
-    less "$item"
-fi
+    if [[ -d "$item" ]]; then
+        command cd "$item"
+    else
+        less "$item"
+    fi
 
-set +x
+    set +x
 
 }
+
+bp () {
+    cat ~/.bookmarks   | sed "s/ / $(tput setaf 1)/" | sed "s/$/$(tput sgr0)/" | awk '{for(i=2;i<=NF;i++) printf $i" "; print $1}'| fzf --ansi -m -e --height 30%  | awk '{print $NF}'
+}
+
+bl () {
+    cat ~/.bookmarks  | sed "s/ / $(tput setaf 1)/" | sed "s/$/$(tput sgr0)/" | awk '{for(i=2;i<=NF;i++) printf $i" "; print $1}'
+}
+
+bm () {
+    local name="$(realpath $1)"
+    local tags="${@:2}"
+    echo "$name $tags" | tr '\n' ' ' | sed 's/^/\n/' >> ~/.bookmarks
+}
+
+bf () {
+    $EDITOR ~/.bookmarks
+}
+
 # }}}
 # {{{ Other Sources
 [ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts

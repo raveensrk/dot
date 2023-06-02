@@ -4,5 +4,5 @@ IFS=$'\n\t'
 
 name="$(realpath $1)"
 tags="${@:2}"
-echo "$name $tags" >> ~/.bookmarks
+echo "$name $tags" | tr '\n' ' ' >> ~/.bookmarks
 
