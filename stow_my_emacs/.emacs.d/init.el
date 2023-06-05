@@ -198,9 +198,9 @@ and replace them with single spaces."
 (setq display-line-numbers t)
 (setq display-line-numbers-type t)
 (global-display-line-numbers-mode +1)
-(global-visual-line-mode t)
-(setq-default visual-line-fringe-indicators t)
-;; (setq-default truncate-lines +1)
+;; (global-visual-line-mode t)
+;; (setq-default visual-line-fringe-indicators t)
+(setq-default truncate-lines +1)
 
 ;; (use-package unicode-fonts
 ;;   :straight t
@@ -243,22 +243,25 @@ and replace them with single spaces."
 ;;   )
 
 ;;;; THEME
-(straight-use-package 'modus-themes)
-(require 'modus-themes) ; OR for the built-in themes: (require-theme 'modus-themes)
+;; (straight-use-package 'modus-themes)
+;; (require 'modus-themes) ; OR for the built-in themes: (require-theme 'modus-themes)
 
-;; Add all your customizations prior to loading the themes
-(setq modus-themes-italic-constructs t)
-(setq modus-themes-bold-constructs t)
+;; ;; Add all your customizations prior to loading the themes
+;; (setq modus-themes-italic-constructs t)
+;; (setq modus-themes-bold-constructs t)
 
-;; Maybe define some palette overrides, such as by using our presets
-(setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
+;; ;; Maybe define some palette overrides, such as by using our presets
+;; (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
 
-;; Load the theme of your choice
-(load-theme 'modus-vivendi :no-confim)
-(use-package indent-guide
-  :straight t
-  :diminish
-  :config (indent-guide-global-mode 1))
+;; ;; Load the theme of your choice
+;; (load-theme 'modus-vivendi :no-confim)
+;; (use-package indent-guide
+;;   :straight t
+;;   :diminish
+;;   :config (indent-guide-global-mode 1))
+
+;; (load-theme "gruvbox-dark-hard" t)
+
 
 ;;;; FONTS
 
@@ -1160,7 +1163,7 @@ Saves to a temp file and puts the filename in the kill ring."
 ;;; VERILOG
 (add-hook 'verilog-mode-hook 'hs-minor-mode)
 (put 'upcase-region 'disabled nil)
-(add-hook 'verilog-mode-hook (lambda () (setq-local outline-regexp ".*{{{*")))
+(add-hook 'verilog-mode-hook (lambda () (setq-local outline-regexp ".*/// *")))
 
 ;;; PERL
 ;; cperl-mode is preferred to perl-mode                                        
@@ -1306,6 +1309,9 @@ Saves to a temp file and puts the filename in the kill ring."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(doom-gruvbox))
+ '(custom-safe-themes
+   '("b1a691bb67bd8bd85b76998caf2386c9a7b2ac98a116534071364ed6489b695d" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" default))
  '(outli-heading-config
    '((sh-mode "# " 123 t nil)
      (emacs-lisp-mode ";;" 59 t nil)

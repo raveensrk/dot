@@ -285,7 +285,7 @@ zz () {
 
 unset -f zzz
 zzz () {
-    z "$(cat ~/.dirs_stack | tail -n 50 | sort | uniq | sed "s|^~|${HOME}|" | fzf)" || return
+    z "$(cat ~/.dirs_stack | sort | uniq | sed "s|^~|${HOME}|" | fzf)" || return
 }
 # }}}
 # {{{ BUG FIXES

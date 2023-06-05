@@ -51,11 +51,11 @@ unset -f reverse; reverse () { tput smso; }
 unset -f underline; underline () { tput smul; }
 
 update_prompt () {
-    local tag
-    if cat ~/.bookmarks | grep -E "^$PWD .*" > /dev/null; then
-        tag=$(cat ~/.bookmarks | grep -E "^$PWD .*" | cut -d " " -f 2- | sed 's/ \+/ /g')
-    fi
-    PS1="\[${RED}\][\s] \[${LIME_YELLOW}\][\V] \[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\w \[${NC}\]\n $(green)$tag$(nc) $ "
+    # local tag
+    # if cat ~/.bookmarks | grep -E "^$PWD .*" > /dev/null; then
+    #     tag=$(cat ~/.bookmarks | grep -E "^$PWD .*" | cut -d " " -f 2- | sed 's/ \+/ /g')
+    # fi
+    PS1="\[${RED}\][\s] \[${LIME_YELLOW}\][\V] \[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\w \[${NC}\]\n$ "
     export PS1
 }
 export PROMPT_COMMAND="update_prompt"
