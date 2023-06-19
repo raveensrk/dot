@@ -110,23 +110,6 @@ set autochdir
 " FILE SPECIFIC {{{
 autocmd BufRead .vimrc :set foldmethod=marker
 " }}}
-" {{{1 RESOURCE PLUGIN DIRECTORY
-" This is done so the plugin directory is sourced again at the end of this
-" vimrc file. This will make plugins work properly
-
-" ~/.vim/plugin
-for f in split(glob('~/.vim/plugin/*.vim'), '\n')
-    exe 'source' f
-endfor
-
-" }}}
-"{{{ FINALLY SOURCE CUSTOM PER USER CONGIFS
-
-for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
-    exe 'source' f
-endfor
-
-"}}}
 "{{{ FOLDING
 let g:markdown_folding = 1
 noremap <2-LeftMouse> za
@@ -144,4 +127,24 @@ autocmd BufWinEnter *.* silent loadview
 "   au BufReadPre * setlocal foldmethod=indent
 "   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 " augroup END
+" }}}
+" {{{1 RESOURCE PLUGIN DIRECTORY
+" This is done so the plugin directory is sourced again at the end of this
+" vimrc file. This will make plugins work properly
+
+" ~/.vim/plugin
+for f in split(glob('~/.vim/plugin/*.vim'), '\n')
+    exe 'source' f
+endfor
+
+" }}}
+"{{{ FINALLY SOURCE CUSTOM PER USER CONGIFS
+
+for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
+    exe 'source' f
+endfor
+
+"}}}
+" TESTING {{{
+"-----
 " }}}
