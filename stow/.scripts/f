@@ -1,0 +1,13 @@
+#!/bin/bash
+
+path=$(realpath $(which "$1"))
+
+
+
+if [ -f "$path" ] && [[ "$path" =~ .*my_repos.* ]]; then
+    $EDITOR "$path"
+else
+    which "$path"
+    type "$path"
+    whereis "$path"
+fi

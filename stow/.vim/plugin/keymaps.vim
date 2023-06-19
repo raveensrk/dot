@@ -1,4 +1,7 @@
 let mapleader = " "
+
+nnoremap <leader><up> :tabprevious<cr>
+nnoremap <leader><down> :tabnext<cr>
 " imap nnn <Esc>
 " This will create a file under cursor
 nmap <leader>gf :e <cfile><CR>

@@ -347,6 +347,7 @@ ph () {
     "
 
 }
+alias pd="source $HOME/.scripts/pd"
 # Open git for my repos
 alias pg='cd $(realpath ~/my_repos/* | fzf); lazygit'
 # Edit files in my repos with vim
