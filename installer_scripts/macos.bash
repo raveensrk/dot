@@ -42,7 +42,6 @@ packages=(
     grep  
     bfg  
     jq  
-    emacs  
     cscope  
     w3m  
     mactex  

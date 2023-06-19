@@ -161,13 +161,6 @@ alias vimrc="vim ~/.vimrc"
 alias v=vim
 alias vn="vim -u NONE"
 # }}}
-# {{{ EMACS
-alias ed="emacs -nw --daemon"
-alias en="emacsclient -nw"
-alias ec="emacsclient -c"
-alias ek="emacs --eval \"(server-shutdown)\""
-alias magit="emacs -nw --eval '(magit-status)'"
-# }}}
 # RANGER {{{
 # shellcheck shell=sh
 

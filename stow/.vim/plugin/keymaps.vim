@@ -9,7 +9,6 @@ nmap <leader>gf :e <cfile><CR>
 nnoremap <leader>ref :grep  * -r<CR>
 nmap     <leader>= gg=G2<C-o>
 nnoremap Y yg_
-nmap     <leader>b :Buffers<CR>
 nnoremap <leader>n :set nu!<cr>
 nnoremap <leader>fp :let @* = expand("%:p")<cr>
 nnoremap <leader>ref :grep  * -r<CR>
@@ -81,3 +80,10 @@ vnoremap <leader>align !column --table -s <input_seperator> -o <output_seperator
 
 " Date
 nnoremap <leader>date :-1read !date +\%Y-\%m-\%d-\%H-\%M-\%S<cr>
+
+nnoremap <leader>bx :%bd\|e#<cr>
+nmap     <leader>bb :Buffers<CR>
+nmap     <leader>bh :History<CR>
+
+vnoremap <leader>ex mmxOvar="<esc>pa"<esc>`mi$var<esc>
+

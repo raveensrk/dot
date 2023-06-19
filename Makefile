@@ -1,14 +1,6 @@
 install:
 	bash ./install_everything.bash
 clean:
-emacs:
-	stow -R stow_my_emacs -t ~/ --no-folding
-doom:
-	stow -R doom_emacs -t ~/ --no-folding
-	git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-	~/.emacs.d/bin/doom install
-doom_sync:
-	~/.emacs.d/bin/doom sync
 vim_plug:
 	curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -24,8 +16,6 @@ stow_from_source:
 	bash ./installer_scripts/stow_from_source.bash
 macos:
 	bash ./installer_scripts/macos.bash
-emacs_from_source:
-	bash ./installer_scripts/emacs_from_source.bash
 lazygit_linux:
 	bash ./installer_scripts/lazygit.bash
 fzf:

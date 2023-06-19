@@ -65,7 +65,3 @@ flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flath
 # flatpak install flathub com.spotify.Client
 # flatpak install flathub org.mozilla.firefox
 
-
-
-# {{{1 ***DISABLED*** Archived Applications
-# emacs

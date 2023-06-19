@@ -71,7 +71,7 @@ set cursorcolumn
 set hlsearch
 set ruler
 "set columns=80
-set colorcolumn=80
+" set colorcolumn=80
 "highlight ColorColumn ctermbg=0 guibg=lightgrey
 " set wildmode=longest,list,full
 set wildmenu
