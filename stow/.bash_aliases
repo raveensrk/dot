@@ -203,14 +203,6 @@ bind '"\C-o":"ranger-cd\C-m"'
 
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 # }}}
-# {{{ FZF
-export FZF_DEFAULT_OPTS="--history=$HOME/.fzf_history"
-export FZF_CTRL_T_COMMAND="command find -L . $HOME/my_repos 2> /dev/null"
-export FZF_DEFAULT_COMMAND="command find -L . 2> /dev/null"
-export FZF_ALT_C_COMMAND="command find -L . $HOME/my_repos -type d 2> /dev/null"
-# shellcheck disable=SC1090
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-# }}}
 # {{{ Completion system
 # {{{ UBUNTU SPECIFIC
 if [ -f /etc/bash_completion ]; then
@@ -434,9 +426,8 @@ bf () {
 [ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
 # export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
 [ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
-touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
+# touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
-    # shellcheck disable=SC1090
     source "$f"
 done
 # }}}
