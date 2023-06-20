@@ -55,6 +55,7 @@ packages=(
     espanso
     up
     poppler
+    zoxide
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1

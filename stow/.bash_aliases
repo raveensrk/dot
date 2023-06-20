@@ -182,8 +182,7 @@ ranger_cd() {
 
     ranger --choosedir="$temp_file" -- "${dir_or_file:-$PWD}"
     if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
-        # cd -- "$chosen_dir"
-        z "$chosen_dir"
+        cd -- "$chosen_dir"
     fi
     rm -f -- "$temp_file"
 }
@@ -241,45 +240,45 @@ if ! shopt -oq posix; then
 fi
 
 # }}} 
-# {{{ zzz ALIASES for fast directory navigation
-alias cd="z"
-unset -f z
-z () {
-    local tmp="/tmp/.dirs_stack_tmp_$$"
-    local dir=""
-    if [ "$1" = "" ]; then
-        dir="$HOME"
-    elif [ "$1" = "-" ]; then
-        dir="+1"
-    else
-        dir="$1"
-    fi
-
-    if [ -f "$dir" ]; then
-        echo Choosen directory is a file. Changing directory to its enclosed path...
-        dir="$(dirname "$dir")"
-    fi 
-
-    dir=$(realpath "$dir")
-    pushd "$dir" || return
-    dirs -v | awk '{print $2}' | sort | uniq >> ~/.dirs_stack
-    cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
-    cat "$tmp" > ~/.dirs_stack_uniq
-    command rm "$tmp"
-}
-complete -o dirnames z
-
-unset -f zz
-zz () {
-    local pushd_stack_index
-    pushd_stack_index=$(dirs -v | fzf | awk '{print $1}')
-    pushd +"$pushd_stack_index" || return
-}
-
-unset -f zzz
-zzz () {
-    z "$(cat ~/.dirs_stack | sort | uniq | sed "s|^~|${HOME}|" | fzf)" || return
-}
+# {{{ DISABLED - zzz ALIASES for fast directory navigation
+# alias cd="z"
+# unset -f z
+# z () {
+#     local tmp="/tmp/.dirs_stack_tmp_$$"
+#     local dir=""
+#     if [ "$1" = "" ]; then
+#         dir="$HOME"
+#     elif [ "$1" = "-" ]; then
+#         dir="+1"
+#     else
+#         dir="$1"
+#     fi
+#
+#     if [ -f "$dir" ]; then
+#         echo Choosen directory is a file. Changing directory to its enclosed path...
+#         dir="$(dirname "$dir")"
+#     fi 
+#
+#     dir=$(realpath "$dir")
+#     pushd "$dir" || return
+#     dirs -v | awk '{print $2}' | sort | uniq >> ~/.dirs_stack
+#     cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
+#     cat "$tmp" > ~/.dirs_stack_uniq
+#     command rm "$tmp"
+# }
+# complete -o dirnames z
+#
+# unset -f zz
+# zz () {
+#     local pushd_stack_index
+#     pushd_stack_index=$(dirs -v | fzf | awk '{print $1}')
+#     pushd +"$pushd_stack_index" || return
+# }
+#
+# unset -f zzz
+# zzz () {
+#     z "$(cat ~/.dirs_stack | sort | uniq | sed "s|^~|${HOME}|" | fzf)" || return
+# }
 # }}}
 # {{{ BUG FIXES
 # {{{ Fedora BUG fix
@@ -441,4 +440,5 @@ for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
 # }}}
-
+# {{{ TESTING
+# }}}
