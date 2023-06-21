@@ -45,7 +45,7 @@ nnoremap <leader>y ggVGy2<C-o>
 " -------------------------------
 nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
 nnoremap <leader>e   :Ex<CR>jj
-nnoremap <leader>pi :PlugClean<CR>:PlugInstall<CR>
+nnoremap <leader>i :PlugClean<CR>:PlugInstall<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
 
@@ -87,3 +87,4 @@ nmap     <leader>bh :History<CR>
 
 vnoremap <leader>ex mmxOvar="<esc>pa"<esc>`mi$var<esc>
 
+ 

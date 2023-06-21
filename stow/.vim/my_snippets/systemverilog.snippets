@@ -23,7 +23,7 @@ endtask
 endsnippet
 
 snippet uvm_info "uvm_info snippet"
-`uvm_info(get_name(), $sformatf("receiving %4d", ${2:val}), UVM_MEDIUM);
+`uvm_info(get_name(), $sformatf("${1:name} = 0x%08h, %0d", ${1:name}), UVM_NONE);
 endsnippet
 
 snippet uvm_error "uvm_error snippet"
@@ -51,3 +51,8 @@ endsnippet
 snippet uvm_other "random uvm snippets for future use"
 
 endsnippet
+
+snippet display "$display statement"
+$display("$1 = %0d", $1);
+endsnippet
+
