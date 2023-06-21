@@ -9,6 +9,7 @@ fi
 brew update
 
 packages=(
+    fortune
     graphicsmagick  
     autoconf  
     automake  

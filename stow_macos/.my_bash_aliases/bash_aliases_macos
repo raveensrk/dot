@@ -6,3 +6,4 @@ alias find="/opt/homebrew/opt/findutils/bin/gfind"
 alias xargs="/opt/homebrew/opt/findutils/bin/gxargs"
 export PATH="$HOME/.local/bin:$PATH"
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+fortune
