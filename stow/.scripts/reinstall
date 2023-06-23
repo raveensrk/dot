@@ -1,8 +1,5 @@
 #!/bin/bash
 
-~/.scripts/find_broken_symlinks ~/.scripts
-~/.scripts/delete_empty_directories ~/.scripts
-~/.scripts/find_infinite_loop_symlinks ~/.scripts
 
 pushd "$MY_REPOS" > /dev/null  || exit 2
 for f in $(find . -iname install_everything.bash); do
@@ -13,4 +10,6 @@ for f in $(find . -iname install_everything.bash); do
 done
 popd > /dev/null  || exit 2
 
-
+~/.scripts/find_broken_symlinks ~/.scripts
+~/.scripts/delete_empty_directories ~/.scripts
+~/.scripts/find_infinite_loop_symlinks ~/.scripts

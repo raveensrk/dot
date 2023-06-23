@@ -1,0 +1,20 @@
+#!/bin/bash
+
+help () {
+    echo "
+    First argument = input directory path for tag generation
+    "
+    exit 0
+}
+
+[ "$1" == "--help" ] && help
+[ "$1" == "-h" ] && help
+
+dir=$(realpath "$1")
+
+[ "$dir" = "" ] && echo -e "${RED}Path argument missing!${NC}" && exit 2
+
+pushd "$dir" || exit 2
+ctags --exclude="stow_vim_plugins" -R ./*
+popd || exit 2
+
