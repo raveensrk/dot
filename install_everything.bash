@@ -16,7 +16,7 @@ ln -sf ~/my_repos ~/1_my_repos # Creating this softlink so my_repos will always 
 [ -d "$HOME/.local/bin" ] || mkdir -p "$HOME/.local/bin"
 [ -d "$HOME/.status" ]    || mkdir -p "$HOME/.status"
 [ -d "$HOME/.doom.d/my_elisp" ]    || mkdir -p "$HOME/.doom.d/my_elisp"
-[ -e ~/.scripts/,clean_up_.DS_Store.bash ] && ~/.scripts/,clean_up_.DS_Store.bash
+[ -e ~/.scripts/clean_up_DS_Store ] && ~/.scripts/clean_up_DS_Store
 
 stow -R stow -t "$HOME" --no-folding
 
