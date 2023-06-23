@@ -43,8 +43,9 @@ nnoremap <leader>y ggVGy2<C-o>
 
 " Other time savers
 " -------------------------------
-nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
-nnoremap <leader>e   :Ex<CR>jj
+" nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
+" nnoremap <leader>e   :Ex<CR>jj
+nnoremap <leader>e   :NERDTreeCWD<CR>
 nnoremap <leader>i :PlugClean<CR>:PlugInstall<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
@@ -78,12 +79,12 @@ nnoremap <leader>lp :lprevious<cr>
 " Align data set / make table
 vnoremap <leader>align !column --table -s <input_seperator> -o <output_seperator>
 
-" Date
-nnoremap <leader>date :-1read !date +\%Y-\%m-\%d-\%H-\%M-\%S<cr>
+command Date -1read !date +\%Y-\%m-\%d-\%H-\%M-\%S
 
-nnoremap <leader>bx :%bd\|e#<cr>
-nmap     <leader>bb :Buffers<CR>
-nmap     <leader>bh :History<CR>
+nmap <leader>bx :%bd\|e#<cr>
+nmap <leader>bb :Buffers<CR>
+nmap <leader>bh :History<CR>
+nmap <leader>d  :bd<cr>
 
 vnoremap <leader>ex mmxOvar="<esc>pa"<esc>`mi$var<esc>
 

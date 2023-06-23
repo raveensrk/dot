@@ -182,7 +182,7 @@ ranger_cd() {
 
     ranger --choosedir="$temp_file" -- "${dir_or_file:-$PWD}"
     if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
-        cd -- "$chosen_dir"
+        cd "$chosen_dir"
     fi
     rm -f -- "$temp_file"
 }
