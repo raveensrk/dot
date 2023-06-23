@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# set -x
+
+is_linux=$(uname -a | cut -d ' ' -f 1)
+
+if [ "$is_linux" = "Darwin" ]; then
+    find="/opt/homebrew/opt/findutils/bin/gfind"
+    xargs="/opt/homebrew/opt/findutils/bin/gxargs"
+else
+    find=find
+    xargs=xargs
+fi
+
+$find -L $1 -type l
+
+[ $? -eq 0 ] && exit 0 
+
+readarray -t infinite_links < <($find -L  $1 -type l 2>&1 | cut -d ';' -f 2 | cut -d ' ' -f 2  | tr -d '‘' | tr -d '’')
+
+for link in "${infinite_links[@]}"; do
+    rm -i $link
+done
