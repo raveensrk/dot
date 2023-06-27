@@ -115,6 +115,7 @@ Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 
 call plug#end()
 "{{{1 Plugin configs
+let g:indent_guides_enable_on_vim_startup = 1
 "{{{ UltiSnips
 " Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
 " - https://github.com/Valloric/YouCompleteMe
