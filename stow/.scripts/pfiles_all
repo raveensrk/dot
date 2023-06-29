@@ -2,4 +2,4 @@
 
 # Find files in all project
 # Note that p command will only work in all the paths in ~/.projects are realpaths
-alias pfiles_all='vim "$(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" | fzf)"'
+$EDITOR "$(find -L $(cat $HOME/.projects)  -type f -not -path "*/.git/*" | fzf)"
