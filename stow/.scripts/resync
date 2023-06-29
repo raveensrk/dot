@@ -2,10 +2,10 @@
 
 
 pushd "$MY_REPOS" || exit 2
-for f in $(find . -iname sync.bash); do
+for f in $(find . -iname sync); do
     pushd "$(dirname "$f")" || exit 2
-    chmod +x ./sync.bash
-    ./sync.bash
+    chmod +x ./sync
+    ./sync
     popd || exit 2
 done
 popd || exit 2

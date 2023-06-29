@@ -27,14 +27,9 @@ $if Bash
 "\C-xq": "\eb\"\ef\""
 "\C-x\"": "\"\C-b\""
 "\C-xr": re-read-init-file
-"\C-xx": ",sync.bash\n"
-"\C-xd": "zzz\n"
-# "\C-xc": "cd ~/my_repos/dotfiles-main\nmake install_colemak\n"
-# "\C-xo": "xdg-open . &\n"
+"\C-xx": "sync_everything\n"
 "\C-xl": "\C-e | less\n"
 "\C-xh": "\C-e --help | less\n"
-"\C-xf": "\C-afno \C-e\n"
-"\C-x\C-f": "e $(fzf -m -e)\n"
+"\C-xf": "\C-af \C-e\n"
 "\C-xb": "\C-z bg\n"
-"adn": " > /dev/null "
 $endif

@@ -3,20 +3,12 @@
 # BASH ALIASES sourced at ~/.bashrc
 # set -o vi
 set -o emacs
-# export EDITOR="emacsclient -c -a emacs"
-alias e="$EDITOR"
 export EDITOR="vim"
 # {{{ PROMPT AND COLORS
-# shellcheck disable=SC1091
 source "$HOME/.bash_prompt"
 # }}}
 # {{{ ENVIRONMENT VARIABLES
-if [ -d "$HOME/my_repos" ]; then
-    export MY_REPOS="$HOME/my_repos"
-elif [ -d "$HOME/repos" ]; then
-    export MY_REPOS="$HOME/repos"
-fi
-
+export MY_REPOS="$HOME/my_repos"
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.scripts:$PATH"
@@ -25,9 +17,7 @@ export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
     export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
-# shellcheck disable=SC2044
 for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
-
 # }}}
 # {{{ BASH SHOPTS
 # This will exit bash shell as soon as it receives C-d as the last command
@@ -69,7 +59,6 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 # }}}
 # {{{ ALIASES
-alias n=newsboat
 if command -v bat > /dev/null; then
     alias cat=bat
 fi
@@ -90,13 +79,11 @@ else
     alias ls='ls --color=auto'
     alias l="ls -Alh"
 fi
-alias y="yt-dlp"
 alias ..="cd .."
-alias ,.="open ."
-alias ,top='top -d 0.125'
-alias ,date_sshort="date +%Y%m%d%H%M%S"
-alias ,date='date -I'
-alias ,dates='date -Iseconds | sed "s/:/-/g"'
+alias top_faster_refresh='top -d 0.125'
+alias date1="date +%Y%m%d%H%M%S"
+alias date2='date -I'
+alias date3='date -Iseconds | sed "s/:/-/g"'
 alias mkdir="mkdir -v"
 alias cp="cp -vi"
 alias mv="mv -vi"
@@ -120,16 +107,6 @@ alias rp="realpath"
 #     ls
 # }
 
-,convert-softlinks () {
-    link_name="$1"
-    # Get real path of original file
-    orig=$(realpath "$link_name")
-    # Remove link
-    rm "$link_name"
-    # Replace link with original
-    cp "$orig" "$link_name"
-    unset link_name orig
-}
 # }}}
 # {{{ PAGERS
 export PAGER='less'
@@ -159,7 +136,7 @@ man() {
 alias bashal="\$EDITOR ~/.bash_aliases && source ~/.bash_aliases"
 alias vimrc="vim ~/.vimrc"
 alias v=vim
-alias vn="vim -u NONE"
+alias vl='vim -c "normal '\''0"'
 # }}}
 # RANGER {{{
 # shellcheck shell=sh
@@ -232,46 +209,6 @@ if ! shopt -oq posix; then
 fi
 
 # }}} 
-# {{{ DISABLED - zzz ALIASES for fast directory navigation
-# alias cd="z"
-# unset -f z
-# z () {
-#     local tmp="/tmp/.dirs_stack_tmp_$$"
-#     local dir=""
-#     if [ "$1" = "" ]; then
-#         dir="$HOME"
-#     elif [ "$1" = "-" ]; then
-#         dir="+1"
-#     else
-#         dir="$1"
-#     fi
-#
-#     if [ -f "$dir" ]; then
-#         echo Choosen directory is a file. Changing directory to its enclosed path...
-#         dir="$(dirname "$dir")"
-#     fi 
-#
-#     dir=$(realpath "$dir")
-#     pushd "$dir" || return
-#     dirs -v | awk '{print $2}' | sort | uniq >> ~/.dirs_stack
-#     cat ~/.dirs_stack_uniq ~/.dirs_stack | sort | uniq > "$tmp"
-#     cat "$tmp" > ~/.dirs_stack_uniq
-#     command rm "$tmp"
-# }
-# complete -o dirnames z
-#
-# unset -f zz
-# zz () {
-#     local pushd_stack_index
-#     pushd_stack_index=$(dirs -v | fzf | awk '{print $1}')
-#     pushd +"$pushd_stack_index" || return
-# }
-#
-# unset -f zzz
-# zzz () {
-#     z "$(cat ~/.dirs_stack | sort | uniq | sed "s|^~|${HOME}|" | fzf)" || return
-# }
-# }}}
 # {{{ BUG FIXES
 # {{{ Fedora BUG fix
 # BUGFIX: bash: __vte_prompt_command: command not found
@@ -313,68 +250,8 @@ fi
 # I tried rebase before and it totally sucked. Its good if the changes are are different parts of a file, if its in the same path the changes are missed
 git config --global pull.merge true
 # }}}
-# {{{ Projectile
-ph () {
-    echo "
-    Help for projectile
-    ---------------------
-
-    pg: project git
-    pe: project fzf file find and edit
-    rr: project ranger
-    rc: ranger continue
-    pa: project add path to known projects
-    p: all projects fzf find
-    pp: all projects grep specific string ascii only
-    pl: print line all projects
-    pL: same with file name
-    "
-
-}
+# {{{ My Projectile
 alias pd="source $HOME/.scripts/pd"
-# Open git for my repos
-alias pg='cd $(realpath ~/my_repos/* | fzf); lazygit'
-# Edit files in my repos with vim
-alias pe='cd $(realpath ~/my_repos/* | fzf); vim -c :FZF'
-# Open ranger in my repos
-alias rr='cd $(realpath ~/my_repos/* | fzf); ranger'
-# Ranger continue session
-alias rc='ranger'
-# Add path as a project
-pa () {
-    realpath "$1" >> ~/.projects
-}
-# Find files in all project
-# Note that p command will only work in all the paths in ~/.projects are realpaths
-alias p='vim "$(find -L $(cat ~/.projects)  -type f -not -path "*/.git/*" | fzf)"'
-
-bar_size=40
-bar_char_done="#"
-bar_char_todo="-"
-bar_percentage_scale=2
-
-function show_progress {
-    current="$1"
-    total="$2"
-
-    # calculate the progress in percentage 
-    percent=$(bc <<< "scale=$bar_percentage_scale; 100 * $current / $total" )
-    # The number of done and todo characters
-    done=$(bc <<< "scale=0; $bar_size * $percent / 100" )
-    todo=$(bc <<< "scale=0; $bar_size - $done" )
-
-    # build the done and todo sub-bars
-    done_sub_bar=$(printf "%${done}s" | tr " " "${bar_char_done}")
-    todo_sub_bar=$(printf "%${todo}s" | tr " " "${bar_char_todo}")
-
-    # output the bar
-    echo -ne "\rProgress : [${done_sub_bar}${todo_sub_bar}] ${percent}%"
-
-    if [ $total -eq $current ]; then
-        echo -e "\nDONE"
-    fi
-}
-
 # }}}
 # {{{ GREP
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
@@ -386,40 +263,6 @@ find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
 }
 # }}}
 # {{{ MY FUNCTIONS
-b () {
-    local item
-    item=$(cat ~/.bookmarks   | sed "s/ / $(tput setaf 1)/" | sed "s/$/$(tput sgr0)/" | awk '{for(i=2;i<=NF;i++) printf $i" "; print $1}'| fzf --ansi -m -e --height 30%)
-    item=$(echo $item | awk -F " " '{print $NF}')
-
-    set -x
-
-    if [[ -d "$item" ]]; then
-        command cd "$item"
-    else
-        less "$item"
-    fi
-
-    set +x
-
-}
-
-bp () {
-    cat ~/.bookmarks   | sed "s/ / $(tput setaf 1)/" | sed "s/$/$(tput sgr0)/" | awk '{for(i=2;i<=NF;i++) printf $i" "; print $1}'| fzf --ansi -m -e --height 30%  | awk '{print $NF}'
-}
-
-bl () {
-    cat ~/.bookmarks  | sed "s/ / $(tput setaf 1)/" | sed "s/$/$(tput sgr0)/" | awk '{for(i=2;i<=NF;i++) printf $i" "; print $1}'
-}
-
-bm () {
-    local name="$(realpath $1)"
-    local tags="${@:2}"
-    echo "$name $tags" | tr '\n' ' ' | sed 's/^/\n/' >> ~/.bookmarks
-}
-
-bf () {
-    $EDITOR ~/.bookmarks
-}
 
 # }}}
 # {{{ Other Sources
