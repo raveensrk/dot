@@ -16,5 +16,5 @@ nc
 
 readarray -t broken_links < <(find $1 -type l ! -exec test -e {} \; -print)
 for link in ${broken_links[@]}; do
-    rm -i $link
+    rm -v $link
 done

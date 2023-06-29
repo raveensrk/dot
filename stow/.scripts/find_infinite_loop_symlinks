@@ -19,5 +19,5 @@ $find -L $1 -type l
 readarray -t infinite_links < <($find -L  $1 -type l 2>&1 | cut -d ';' -f 2 | cut -d ' ' -f 2  | tr -d '‘' | tr -d '’')
 
 for link in "${infinite_links[@]}"; do
-    rm -i $link
+    rm -v $link
 done
