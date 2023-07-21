@@ -1,6 +1,8 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
+Plug 'junegunn/vim-peekaboo'
+
 Plug 'preservim/nerdtree'
 Plug 'chamindra/marvim' " Named macros in vim
 
