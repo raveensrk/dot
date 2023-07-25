@@ -1,9 +1,10 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+
 Plug 'tpope/vim-vinegar'
 " Plug 'preservim/nerdtree'
+Plug 'junegunn/vim-peekaboo'
 Plug 'chamindra/marvim' " Named macros in vim
-
 Plug 'mtth/scratch.vim'
 " Plug 'vim-scripts/YankRing.vim'
 " Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
