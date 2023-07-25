@@ -1,7 +1,7 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
-
-Plug 'preservim/nerdtree'
+Plug 'tpope/vim-vinegar'
+" Plug 'preservim/nerdtree'
 Plug 'chamindra/marvim' " Named macros in vim
 
 Plug 'mtth/scratch.vim'

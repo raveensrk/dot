@@ -45,7 +45,9 @@ nnoremap <leader>y ggVGy2<C-o>
 " -------------------------------
 " nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
 " nnoremap <leader>e   :Ex<CR>jj
-nnoremap <leader>e   :NERDTreeCWD<CR>
+" nnoremap <leader>e   :NERDTreeCWD<CR>
+" nnoremap <leader>e   :cd %:p:h<CR>:Vex .<CR>
+nnoremap <leader>e   :set autochdir<CR>:Ex<CR>
 nnoremap <leader>i :PlugClean<CR>:PlugInstall<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>

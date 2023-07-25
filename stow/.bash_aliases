@@ -251,7 +251,7 @@ fi
 git config --global pull.merge true
 # }}}
 # {{{ My Projectile
-alias pd="source $HOME/.scripts/pd"
+alias pdirs="source $HOME/.scripts/pdirs"
 # }}}
 # {{{ GREP
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
