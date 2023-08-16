@@ -57,6 +57,7 @@ packages=(
     up
     poppler
     zoxide
+    sqlite
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
