@@ -11,6 +11,7 @@ nmap     <leader>= gg=G2<C-o>
 nnoremap Y yg_
 nnoremap <leader>n :set nu!<cr>
 nnoremap <leader>fp :let @* = expand("%:p")<cr>
+nnoremap <leader>fi :echo expand("%:p")<cr>
 nnoremap <leader>ref :grep  * -r<CR>
 nnoremap <leader>s :so %<cr>
 nnoremap <leader>t :set nowrap!<cr>
