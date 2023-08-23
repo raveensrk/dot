@@ -91,4 +91,4 @@ nmap <leader>d  :bd<cr>
 
 vnoremap <leader>ex mmxOvar="<esc>pa"<esc>`mi$var<esc>
 
- 
+cabbrev .. cd .. \| pwd

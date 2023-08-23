@@ -1,6 +1,7 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
+Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 " Plug 'preservim/nerdtree'
 Plug 'junegunn/vim-peekaboo'

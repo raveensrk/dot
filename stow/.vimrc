@@ -158,4 +158,9 @@ endfor
 "}}}
 " TESTING {{{
 "-----
+function! ViewNonCommentedLines(comment_char)
+    execute 'g/^[^' . a:comment_char . ']/p'
+endfunction
+
+command! -nargs=1 ViewNonCommentedLinesCommand call ViewNonCommentedLines(<q-args>)
 " }}}
