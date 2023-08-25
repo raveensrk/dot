@@ -91,6 +91,22 @@ set undofile
 set undodir=~/.vim/undo
 set backupdir=~/.vim/backup
 " }}}
+" {{{ PATH
+set path+=**
+set autochdir
+" set noautochdir " This will change your pwd to current file
+" }}}
+" {{{ NETRW
+" let g:netrw_altv = 1
+" let g:netrw_banner = 0
+" let g:netrw_browse_split = 2
+" let g:netrw_liststyle = 3
+" let g:netrw_winsize = 25
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
+"}}}
 " {{{ DISBALED - TRIM WHITE SPACE AFTER EXIT
 fun! TrimWhitespace()
     let l:save = winsaveview()
@@ -101,11 +117,6 @@ endfun
 " }}}
 " CTAGS {{{
 set tags=tags
-" }}}
-" {{{ PATH
-set path+=**
-set autochdir
-" set noautochdir " This will change your pwd to current file
 " }}}
 " FILE SPECIFIC {{{
 autocmd BufRead .vimrc :set foldmethod=marker
@@ -147,4 +158,9 @@ endfor
 "}}}
 " TESTING {{{
 "-----
+function! ViewNonCommentedLines(comment_char)
+    execute 'g/^[^' . a:comment_char . ']/p'
+endfunction
+
+command! -nargs=1 ViewNonCommentedLinesCommand call ViewNonCommentedLines(<q-args>)
 " }}}

@@ -1,0 +1,6 @@
+#!/bin/bash 
+
+reinstall_before
+dotscripts_checker
+sync_all_repos "$MY_REPOS"
+reinstall

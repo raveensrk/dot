@@ -11,6 +11,7 @@ nmap     <leader>= gg=G2<C-o>
 nnoremap Y yg_
 nnoremap <leader>n :set nu!<cr>
 nnoremap <leader>fp :let @* = expand("%:p")<cr>
+nnoremap <leader>fi :echo expand("%:p")<cr>
 nnoremap <leader>ref :grep  * -r<CR>
 nnoremap <leader>s :so %<cr>
 nnoremap <leader>t :set nowrap!<cr>
@@ -45,7 +46,9 @@ nnoremap <leader>y ggVGy2<C-o>
 " -------------------------------
 " nnoremap <leader>dm  :set diffopt=filler,context:0<CR>
 " nnoremap <leader>e   :Ex<CR>jj
-nnoremap <leader>e   :NERDTreeCWD<CR>
+" nnoremap <leader>e   :NERDTreeCWD<CR>
+" nnoremap <leader>e   :cd %:p:h<CR>:Vex .<CR>
+nnoremap <leader>e   :set autochdir<CR>:Ex<CR>
 nnoremap <leader>i :PlugClean<CR>:PlugInstall<CR>
 nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
@@ -88,4 +91,4 @@ nmap <leader>d  :bd<cr>
 
 vnoremap <leader>ex mmxOvar="<esc>pa"<esc>`mi$var<esc>
 
- 
+cabbrev .. cd .. \| pwd

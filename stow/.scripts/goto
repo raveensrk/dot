@@ -15,13 +15,13 @@ source ~/.bash_prompt
 # Help: --------------
 # Help: Example Usage:
 # Help: --------------
-# Help: ,goto.bash 
-# Help: ,goto.bash --help
-# Help: ,goto.bash --ext md
-# Help: ,goto.bash --ext md --input /path/to/dir
+# Help: goto 
+# Help: goto --help
+# Help: goto --ext md
+# Help: goto --ext md --input /path/to/dir
 
 help () {
-    write_help.bash "$0"
+    less "$0"
 }
 
 while [ "$1" ]; do
@@ -79,7 +79,7 @@ if [ "$input" != "" ]; then
     pushd "$input" || exit 2
 fi
 
-selection="/tmp/,goto_selection_$$.txt"
+selection="/tmp/goto_selection_$$.txt"
 touch "$selection"
 
 

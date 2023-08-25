@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+realpath "$1" >> ~/.projects

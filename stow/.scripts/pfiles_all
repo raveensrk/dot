@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Find files in all project
+# Note that p command will only work in all the paths in ~/.projects are realpaths
+$EDITOR "$(find -L $(cat $HOME/.projects)  -type f -not -path "*/.git/*" | fzf)"
