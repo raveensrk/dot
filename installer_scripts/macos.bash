@@ -79,3 +79,4 @@ bash ../add_sources.bash 'export PATH="/Library/TeX/texbin:$PATH"' "$HOME/.bashr
 
 python3 -m pip install --upgrade pip
 python3 -m pip install --user pynvim
+python3 -m pip install --user yewtube

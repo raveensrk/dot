@@ -7,3 +7,4 @@ alias xargs="/opt/homebrew/opt/findutils/bin/gxargs"
 export PATH="$HOME/.local/bin:$PATH"
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 fortune
+export PATH="$HOME/Library/Python/3.11/bin:$PATH"
