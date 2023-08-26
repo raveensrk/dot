@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# This script basically converts input subscriptions.csv file from youtube takeout and converts to rss feed format. You can add this to ~/.newsboat/urls
+
+cat "$1" | cut -d , -f 2 | xargs -n 1 get_youtube_rss_feed_from_channel_url
