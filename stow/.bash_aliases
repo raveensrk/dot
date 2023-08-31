@@ -79,6 +79,7 @@ else
     alias ls='ls --color=auto'
     alias l="ls -Alh"
 fi
+alias ltr="ls -tr"
 alias ..="cd .."
 alias top_faster_refresh='top -d 0.125'
 alias date1="date +%Y%m%d%H%M%S"
