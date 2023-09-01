@@ -5,3 +5,8 @@ reinstall_before
 dotscripts_checker
 sync_all_repos "$MY_REPOS"
 reinstall
+
+if [ "$1" = "x" ]; then
+    echo "Shutting down in 5 seconds..."
+    sudo shutdown -h now
+fi
