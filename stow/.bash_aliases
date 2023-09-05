@@ -276,4 +276,5 @@ for f in ~/.my_bash_aliases/*; do
 done
 # }}}
 # {{{ TESTING
+export is_linux=$(uname -a | cut -d ' ' -f 1)
 # }}}

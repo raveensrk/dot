@@ -10,3 +10,5 @@ if [ "$1" = "x" ]; then
     echo "Shutting down in 5 seconds..."
     sudo shutdown -h now
 fi
+
+uninstall_and_cleanup_after_sync
