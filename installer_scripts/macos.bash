@@ -58,6 +58,7 @@ packages=(
     poppler
     zoxide
     sqlite
+    universal-ctags
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
