@@ -949,6 +949,7 @@ Saves to a temp file and puts the filename in the kill ring."
  '(custom-enabled-themes '(tango-dark))
  '(custom-safe-themes
    '("b1a691bb67bd8bd85b76998caf2386c9a7b2ac98a116534071364ed6489b695d" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" default))
+ '(org-agenda-files '("~/iCloud/org"))
  '(outli-heading-config
    '((sh-mode "# " 123 t nil)
      (emacs-lisp-mode ";;" 59 t nil)
