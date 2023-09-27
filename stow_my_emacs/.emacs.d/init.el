@@ -164,13 +164,6 @@ and replace them with single spaces."
 
 ;; (add-hook 'server-after-make-frame-hook 'toggle-frame-maximized) ;; Maximize frame after starting emacsclient
 
-;; (use-package rainbow-delimiters
-;;   :straight t
-;;   :config
-;;   (rainbow-delimiters-mode 1)
-;;   :hook emacs-lisp-mode
-;;   )
-
 (use-package volatile-highlights :straight t)
 (volatile-highlights-mode t)
 
@@ -202,18 +195,8 @@ and replace them with single spaces."
 ;; (setq-default visual-line-fringe-indicators t)
 (setq-default truncate-lines +1)
 
-;; (use-package unicode-fonts
-;;   :straight t
-;;   :defer 10
-;;   :config
-;;   (unicode-fonts-setup))
-
 (global-prettify-symbols-mode +1)
 
-;; (use-package emojify
-;;   :straight t
-;;   :defer 10
-;;   :hook (after-init . global-emojify-mode))
 
 (use-package nyan-mode
   :straight t
@@ -223,97 +206,10 @@ and replace them with single spaces."
   (nyan-mode +1)
   )
 
-;; (use-package zoom
-;;   :straight t
-;;   :disabled t
-;;   :diminish
-;;   ;; https://github.com/cyrus-and/zoom
-;;   :config (zoom-mode t))
-
-;; https://github.com/emacs-tw/awesome-emacs
 (use-package all-the-icons
   :straight t
   :if (display-graphic-p))
 ;; TODO make sure you do this on windows https://www.reddit.com/r/emacs/comments/gznezn/alltheicons/
-
-;; (use-package focus
-;;   :straight t
-;;   :diminish
-;;   :hook emacs-lisp-mode
-;;   )
-
-;;;; THEME
-;; (straight-use-package 'modus-themes)
-;; (require 'modus-themes) ; OR for the built-in themes: (require-theme 'modus-themes)
-
-;; ;; Add all your customizations prior to loading the themes
-;; (setq modus-themes-italic-constructs t)
-;; (setq modus-themes-bold-constructs t)
-
-;; ;; Maybe define some palette overrides, such as by using our presets
-;; (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
-
-;; ;; Load the theme of your choice
-;; (load-theme 'modus-vivendi :no-confim)
-;; (use-package indent-guide
-;;   :straight t
-;;   :diminish
-;;   :config (indent-guide-global-mode 1))
-
-;; (load-theme "gruvbox-dark-hard" t)
-
-
-;;;; FONTS
-
-;; https://emacsredux.com/blog/2021/12/22/check-if-a-font-is-available-with-emacs-lisp/
-
-(cond
- ((find-font (font-spec :name "Fira Code"))
-  (add-to-list 'default-frame-alist
-               '(font . "Fira Code-24"))) 
- ((find-font (font-spec :name "Cascadia Code"))
-  (set-frame-font "Cascadia Code-24"))
- ((find-font (font-spec :name "Menlo"))
-  (set-frame-font "Menlo-24"))
- ((find-font (font-spec :name "DejaVu Sans Mono"))
-  (set-frame-font "DejaVu Sans Mono-24"))
- ((find-font (font-spec :name "Inconsolata"))
-  (set-frame-font "Inconsolata-24")))
-
-;; (use-package dynamic-fonts :init (dynamic-fonts-setup))     ; finds "best" fonts and sets faces: default, fixed-pitch, variable-pitch
-
-
-;; ;; Check if a font exists
-;; (defun font-exists-p (font)
-;;   "Check if FONT exists on the system."
-;;   (member font (x-list-fonts "*")))
-
-;; ;; Set the default font to Fira Code with size 14
-;; (if (font-exists-p "Fira Code")
-;;     (progn
-;;       (set-face-attribute 'default nil :font "Fira Code-14")
-
-;;       ;; Define the prettified symbol list
-;;       (defvar my-fira-code-prettify-symbols-alist
-;;         '(("lambda" . ?λ)
-;;           ("->" . ?→)
-;;           ("=>" . ?⇒)
-;;           ("!=" . ?≠)
-;;           (">=" . ?≥)
-;;           ("<=" . ?≤)
-;;           ))
-
-;;       ;; Enable Fira Code ligatures in programming and text modes
-;;       (add-hook 'prog-mode-hook
-;;                 (lambda ()
-;;                   (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
-;;                   (prettify-symbols-mode)))
-;;       (add-hook 'text-mode-hook
-;;                 (lambda ()
-;;                   (setq prettify-symbols-alist my-fira-code-prettify-symbols-alist)
-;;                   (prettify-symbols-mode)))
-;;       ))
-
 
 (use-package beacon
   :straight t
@@ -447,54 +343,6 @@ and replace them with single spaces."
 (use-package magit
   :straight t
   :bind ("C-x g" . magit-status))
-
-(use-package magit-section
-  :straight t)
-
-(defun my-magit-list-repositories ()
-  "This will load magit-status libraries then open magit-list-repositories. Otherwise i get errors... This will make sure all libraries are loaded"
-  (interactive)
-  (load-library "magit-status")
-  (magit-list-repositories)
-  )
-
-(setq magit-repository-directories '(("~/my_repos" . 1)))
-
-
-(setq magit-repolist-columns
-      '(("Name"    25 magit-repolist-column-ident ())
-        ("Version" 25 magit-repolist-column-version ())
-        ("D"        1 magit-repolist-column-flag ())
-        ("⇣"      3 magit-repolist-column-unpulled-from-upstream
-         ((:right-align t)
-          (:help-echo "Upstream changes not in branch")))
-        ("⇡"      3 magit-repolist-column-unpushed-to-upstream
-         ((:right-align t)
-          (:help-echo "Local changes not in upstream")))
-        ("Path"    99 magit-repolist-column-path ())))
-
-(defun my-magit-repolist-pull-repos (repos)
-  "This will get all repos name in repolist"
-  (interactive (list (magit-repolist--get-repos ?*)))
-  (run-hooks 'magit-credential-hook)
-  (dolist (repo (magit-list-repos))
-    (message repo))
-  (magit-repolist--mapc
-   (apply-partially #'magit-run-git "pull")
-   repos "Pulling in %s..."))
-
-(defun my-magit-repolist-push-repos (repos)
-  "This will get all repos name in repolist and push them on by one"
-  (interactive (list (magit-repolist--get-repos ?*)))
-  (run-hooks 'magit-credential-hook)
-  (dolist (repo (magit-list-repos))
-    (message repo))
-  (magit-repolist--mapc
-   (apply-partially #'magit-run-git "push")
-   repos "Pushing in %s...")
-  )
-
-;; (advice-add 'my-magit-repolist-pull-repos :before 'my-magit-list-repositories)
 
 
 ;;;; COMPANY AND COMPLETIONS
@@ -766,13 +614,6 @@ and replace them with single spaces."
   :config
   (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy)
   )
-;;;; RANGER
-(use-package ranger
-  :straight t
-  :config
-  (setq ranger-show-hidden t))
-
-(global-set-key (kbd "C-x d") 'ranger)
 
 ;;;; MISC
 (use-package smex
@@ -946,13 +787,6 @@ Saves to a temp file and puts the filename in the kill ring."
       global-company-mode t
       global-visual-line-mode t
       inhibit-startup-screen t
-      modus-themes-bold-constructs t
-      modus-themes-fringes 'intense
-      modus-themes-scale-headings t
-      modus-themes-subtle-line-numbers nil
-      modus-themes-tabs-accented t
-      modus-themes-variable-pitch-headings t
-      modus-themes-variable-pitch-ui t
       org-archive-location "::* Archived Tasks"
       org-export-backends
       '(ascii beamer html icalendar latex man md odt org confluence)
@@ -1072,76 +906,6 @@ Saves to a temp file and puts the filename in the kill ring."
 
 (use-package breadcrumb :straight (:host github :repo "joaotavora/breadcrumb"))
 
-;;; TESTING: MENU
-;;;; My Menu
-(define-key-after
-  global-map
-  [menu-bar mymenu]
-  (cons "My Menu" (make-sparse-keymap "hoot hoot"))
-  'tools )
-;; creating another menu item
-(define-key
-  global-map
-  [menu-bar mymenu treemacs]
-  '("toggle treemacs" . treemacs))
-;;; TESTING: LOAD ALL ELISP FILES UNDER ~/.emacs.d/site-lisp
-;; (setq my-lisp-files (directory-files-recursively "~/.emacs.d/site-lisp/" ""))
-
-;; (defun my-load-elisp-files (list)
-;;   "Print each element of LIST on a line of its own."
-;;   (while list
-;;     (print (car list))
-;;     (load-file (print (car list)))
-;;     (setq list (cdr list))))
-;;
-;; (my-load-elisp-files my-lisp-files)
-
-;;; TESTING: WINDOWS
-
-(if (string-equal system-type "windows-nt")
-    (setq my-emacs-root-path "c:/github/dotfiles-main/stow_my_emacs/.emacs.d")
-  (setq my-emacs-root-path "~/.emacs.d"))
-;;; TESTING: EMACS MOUSE HIGHLIGHT SYMBOL
-;; https://ruzkuku.com/texts/emacs-mouse.html
-
-;; (defun highlight-symbol-at-mouse (e)
-;;   "Highlight symbol at mouse click E."
-;;   (interactive "e")
-;;   (save-excursion
-;;     (mouse-set-point e)
-;;     (highlight-symbol-at-point)))
-
-;; (defun context-menu-highlight-symbol (menu click)
-;;   "Populate MENU with command to search online."
-;;   (save-excursion
-;;     (mouse-set-point click)
-;;     (when (symbol-at-point)
-;;       (define-key-after menu [highlight-search-separator] menu-bar-separator)
-;;       (define-key-after menu [highlight-search-mouse]
-;;         '(menu-item "Highlight Symbol" highlight-symbol-at-mouse
-;;                     :help "Highlight symbol at point"))))
-;;   menu)
-
-;; (add-hook 'context-menu-functions #'context-menu-highlight-symbol)
-
-;; (defun duplicate-tab (e)
-;;   "Highlight symbol at mouse click E."
-;;   (interactive "e")
-;;   (save-excursion
-;;     (mouse-set-point e)
-;;     (tab-bar-new-tab)))
-
-;; (defun my-context-menu-duplicate-tab (menu click)
-;;   (save-excursion
-;;     (mouse-set-point click)
-;;     (define-key-after menu [tab-separator] menu-bar-separator)
-;;     (define-key-after menu [tab-seperator-mouse]
-;;       '(menu-item "Duplicate Tab" duplicate-tab
-;;                   :help "Create a duplicate tab")))
-;;   menu)
-
-;; (add-hook 'context-menu-functions #'my-context-menu-duplicate-tab)
-
 ;;;; Load all files in my-pacakges directory if it exists
 (if (file-directory-p "~/.emacs.d/my-packages")
     (mapc 'load-file (directory-files-recursively "~/.emacs.d/my-packages" ".*\.el")))
@@ -1182,7 +946,7 @@ Saves to a temp file and puts the filename in the kill ring."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(doom-gruvbox))
+ '(custom-enabled-themes '(tango-dark))
  '(custom-safe-themes
    '("b1a691bb67bd8bd85b76998caf2386c9a7b2ac98a116534071364ed6489b695d" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" default))
  '(outli-heading-config
@@ -1210,5 +974,3 @@ Saves to a temp file and puts the filename in the kill ring."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-(use-package sticky-windows :load-path "~/.emacs.d/lisp/sticky-windows.el")

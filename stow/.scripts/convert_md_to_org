@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+readarray -t files < <(gfind -iname "*.md")
+
+for file in  "${files[@]}"; do
+    echo "---"
+    echo "File: $file"
+    new_name=$(basename -s .md "$file")
+    echo "Name: $new_name"
+    dir=$(dirname "$file")
+    echo "Path: $dir"
+    pushd "$dir"
+    pandoc -s -t org "$new_name.md" --output="$new_name.org"
+    popd
+    rm -f "$file"
+done
