@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: uvm run phase
+# key: run_phase
+# --
+
+task run_phase(uvm_phase phase);
+     forever begin
+     end
+endtask
