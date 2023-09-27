@@ -979,3 +979,13 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 (set-face-attribute 'default nil :height 200)
+
+(defun read-file-as-string (file-path)
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (buffer-string)))
+
+(setq chatgpt-shell-openai-key (read-file-as-string "~/.config/openai.token"))
+
+
+(global-set-key (kbd "C-c f s") 'toggle-frame-fullscreen)
