@@ -797,7 +797,6 @@ Saves to a temp file and puts the filename in the kill ring."
       org-html-html5-fancy t
       org-html-self-link-headlines t
       org-support-shift-select t
-      org-todo-keywords '((sequence "TODO" "DOING" "SKIP" "KILL" "DONE"))
       recentf-mode t
       visible-bell t
       winner-mode t)
@@ -815,7 +814,7 @@ Saves to a temp file and puts the filename in the kill ring."
 (global-set-key (kbd "C-c o a c") 'org-capture)
 (global-set-key (kbd "C-c o a t") 'org-todo-list)
 (global-set-key (kbd "C-c l") 'org-store-link)
-(setq org-todo-keywords '((sequence "TODO" "KILL" "SKIP" "DONE")))
+(setq org-todo-keywords '((sequence "TODO" "DONE")))
 (setq org-archive-location "%s::* Archived Tasks")
 
 (defun insert-date ()
@@ -951,7 +950,6 @@ Saves to a temp file and puts the filename in the kill ring."
  '(custom-safe-themes
    '("b1a691bb67bd8bd85b76998caf2386c9a7b2ac98a116534071364ed6489b695d" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" default))
  '(org-agenda-files '("~/iCloud/org"))
- '(org-directory "~/iCloud/org")
  '(outli-heading-config
    '((sh-mode "# " 123 t nil)
      (emacs-lisp-mode ";;" 59 t nil)
@@ -1013,10 +1011,15 @@ Saves to a temp file and puts the filename in the kill ring."
 
 (global-set-key (kbd "C-c f s") 'toggle-frame-fullscreen)
 
-
 (setq org-default-notes-file (concat org-directory "/capture.org"))
 
 (use-package org-auto-tangle
   :defer t
   :straight t
   :hook (org-mode . org-auto-tangle-mode))
+
+
+(use-package org-modern
+  :straight t
+  :config
+  (with-eval-after-load 'org (global-org-modern-mode)))
