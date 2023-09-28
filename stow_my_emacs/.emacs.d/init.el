@@ -979,3 +979,27 @@ Saves to a temp file and puts the filename in the kill ring."
 
 
 (set-face-attribute 'default nil :height 200)
+
+
+(defun my-org (args)
+  "docstring"
+  (interactive "P")
+  (dired "~/iCloud/org")
+  )
+
+
+
+(defun open-specific-file ()
+  "Open a specific file when Emacs is idle."
+  (interactive)
+  (find-file "~/iCloud/org/routine.org"))
+
+(defun open-org-agenda-day-view ()
+  "Opens org agenda day view"
+  (interactive "P")
+  (require 'org)
+  (org-agenda-list 1 "d")
+  (delete-other-windows)
+  )
+(run-with-idle-timer 10 t 'open-org-agenda-day-view)
+
