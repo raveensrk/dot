@@ -829,6 +829,16 @@
 
       ;;; ORG MODE
   (global-set-key (kbd "C-c o a a") 'org-agenda)
+    (defun open-org-agenda-day-view ()
+    "Opens org agenda day view"
+    (interactive)
+    (require 'org)
+    (org-agenda-list 1 "d")
+    (delete-other-windows)
+    )
+
+  (global-set-key (kbd "C-c SPC") 'open-org-agenda-day-view)
+
   (global-set-key (kbd "C-c o a c") 'org-capture)
   (global-set-key (kbd "C-c o a t") 'org-todo-list)
   (global-set-key (kbd "C-c l") 'org-store-link)
@@ -1009,14 +1019,6 @@
     (interactive)
     (find-file "~/iCloud/org/routine.org"))
 
-  (defun open-org-agenda-day-view ()
-    "Opens org agenda day view"
-    (interactive "P")
-    (require 'org)
-    (org-agenda-list 1 "d")
-    (delete-other-windows)
-    )
-  ;; (run-with-idle-timer 10 t 'open-org-agenda-day-view)
 
   (defun read-file-as-string (file-path)
     (with-temp-buffer
@@ -1055,6 +1057,14 @@
   #+end_src
 
 
+* Org mode
+
+#+begin_src emacs-lisp
+  ;;     (use-package org-side-tree
+  ;;       :straight t
+  ;;       :load-path "https://github.com/localauthor/org-side-tree/blob/main/org-side-tree.el")
+#+end_src
+  
 
 * Archived Tasks
 
