@@ -23,28 +23,50 @@
 
 (straight-use-package 'use-package)
 
-;;; USE PACKAGE
+(setq display-line-numbers t)
+(setq display-line-numbers-type t)
+(global-display-line-numbers-mode +1)
+(global-visual-line-mode t)
+;; (setq-default visual-line-fringe-indicators t)
+(setq-default truncate-lines +1)
+(global-prettify-symbols-mode +1)
+
+
 (use-package diminish
   :straight t)
 
-;;; STARTUP, BEHAVIOUR, BASICS
-(setq tab-width 4)
+(setq-default abbrev-mode 1)
+(winner-mode 1)
+(recentf-mode 1)
+(setq recentf-max-menu-items 200)
+(setq recentf-max-saved-items 200)
+(save-place-mode +1)
+(defalias 'yes-or-no-p 'y-or-n-p)
+(global-auto-revert-mode t)
+(mouse-avoidance-mode 'cat-and-mouse)
+(put 'narrow-to-region 'disabled nil)
+(savehist-mode 1)
+(setq inhibit-startup-screen t)
+(setq mouse-drag-and-drop-region t)
+(setq mouse-drag-and-drop-region-cut-when-buffers-differ t)
 (setq mouse-wheel-flip-direction t)
 (setq mouse-wheel-tilt-scroll t)
+(setq ring-bell-function 'ignore)
 (setq save-place-mode t)
 (setq show-paren-mode t)
-(global-auto-revert-mode t)
-(defalias 'yes-or-no-p 'y-or-n-p)
-(setq inhibit-startup-screen t)
 (setq vc-follow-symlinks t)
-(setq ring-bell-function 'ignore)
 (setq visible-bell 1)
-(savehist-mode 1)
-(mouse-avoidance-mode 'cat-and-mouse)
-;; This will set first buffer shown as scratch
-;; (setq initial-buffer-choice t)
-;; (toggle-frame-maximized)
-(put 'narrow-to-region 'disabled nil)
+(setq-default tab-width 4)
+;; make indent commands use space only (never tab character)
+(setq-default indent-tabs-mode nil)
+;;; MOUSE SUPPORT IN TERMINAL
+;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
+;; For linux use (gpm-mouse-mode 1)
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1))
+;;; BACKUPS
+  (setq backup-directory-alist
+        '(("." . "~/.emacs.d/file-backups")))
 
 (use-package dashboard
   :straight t
@@ -63,14 +85,10 @@
                           (bookmarks . 10)
                           (projects . 5))))
 
-;;;; Editing
-
-(use-package multiple-cursors
+(use-package smartparens
   :straight t
-  :config
-  (multiple-cursors-mode 1)
-  :bind
-  ("C-M-<mouse-1>" . mc/add-cursor-on-click))
+  :diminish
+  :config (smartparens-global-mode +1))
 
 (use-package wrap-region
   :straight t
@@ -79,6 +97,13 @@
   (wrap-region-global-mode)
   (wrap-region-add-wrapper "*" "*")
   )
+
+(use-package multiple-cursors
+  :straight t
+  :config
+  (multiple-cursors-mode 1)
+  :bind
+  ("C-M-<mouse-1>" . mc/add-cursor-on-click))
 
 (add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c c") 'comment-line)))
 
@@ -98,32 +123,7 @@
           (replace-match (format (concat "%0" (int-to-string field-width) "d")
                                  answer)))))))
 (add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c +") 'my-increment-number-decimal)))
-(setq-default tab-width 4)
-(setq tab-width 4)
-;; make indent commands use space only (never tab character)
-;; emacs 23.1 to 26, default to t, if indent-tabs-mode is t, it means it may use tab, resulting mixed space and tab
-(setq-default indent-tabs-mode nil)
 
-(use-package smartparens
-  :straight t
-  :diminish
-  :config (smartparens-global-mode +1))
-
-(use-package drag-stuff
-  :disabled t
-  :straight t
-  :defer 5
-  :diminish
-  ;; https://github.com/rejeep/drag-stuff.el
-  :config
-  (drag-stuff-global-mode +1)
-  (drag-stuff-define-keys)
-  )
-
-(setq mouse-drag-and-drop-region t)
-(setq mouse-drag-and-drop-region-cut-when-buffers-differ t)
-
-    ;;;; Remove extra space from a region or current line
 (defun remove-extra-spaces (start end)
   "Remove extra spaces from region START to END, or current line if no region is given,
     and replace them with single spaces."
@@ -138,43 +138,15 @@
       (while (re-search-forward "\\s-+" nil t)
         (replace-match " ")))))
 
-(global-set-key (kbd "C-c <SPC>") 'remove-extra-spaces)
-    ;;; MOUSE SUPPORT IN TERMINAL
-;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
-;; For linux use (gpm-mouse-mode 1)
-(unless (display-graphic-p)
-  (xterm-mouse-mode 1))
-
-    ;;; BACKUPS
-(setq backup-directory-alist
-      '(("." . "~/.emacs.d/file-backups")))
-
-    ;;; MODES
 (add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
-(setq-default abbrev-mode 1)
-(winner-mode 1)
-(recentf-mode 1)
-(setq recentf-max-menu-items 200)
-(setq recentf-max-saved-items 200)
-(save-place-mode +1)
-    ;;; APPEARENCE
 
-;; (add-hook 'server-after-make-frame-hook 'toggle-frame-maximized) ;; Maximize frame after starting emacsclient
-
-(use-package volatile-highlights :straight t)
-(volatile-highlights-mode t)
-
-(diminish 'eldoc-mode)
-
-(use-package dimmer
+(use-package volatile-highlights
+  :diminish
   :straight t
   :config
-  (dimmer-configure-which-key)
-  (dimmer-configure-hydra)
-  (dimmer-configure-magit)
-  (dimmer-configure-posframe)
-  (dimmer-mode t)
-  )
+  (volatile-highlights-mode t))
+
+(diminish 'eldoc-mode)
 
 (use-package git-gutter
   :diminish
@@ -184,15 +156,6 @@
   (setq git-gutter:always-show-separator t)
   (diminish 'global-git-gutter-mode)
   )
-
-(setq display-line-numbers t)
-(setq display-line-numbers-type t)
-(global-display-line-numbers-mode +1)
-;; (global-visual-line-mode t)
-;; (setq-default visual-line-fringe-indicators t)
-(setq-default truncate-lines +1)
-
-(global-prettify-symbols-mode +1)
 
 
 (use-package nyan-mode
@@ -237,7 +200,7 @@
 
 (defun my-open-init-file ()
   (interactive)
-  (find-file-other-window user-init-file))
+  (find-file-other-window "~/.emacs.d/init.org"))
 
 (defun switch-to-dashboard-buffer ()
   (interactive)
@@ -782,7 +745,6 @@
       evil-cross-lines t
       evil-want-minibuffer t
       global-company-mode t
-      global-visual-line-mode t
       inhibit-startup-screen t
       org-archive-location "::* Archived Tasks"
       org-export-backends
@@ -807,8 +769,15 @@
 
 
     ;;; ORG MODE
-(global-set-key (kbd "C-c o a a") 'org-agenda)
-  (defun open-org-agenda-day-view ()
+(setq org-agenda-custom-commands
+    '(("c" . "My Custom Agendas")
+      ("cu" "Unscheduled TODO"
+       ((todo ""
+              ((org-agenda-overriding-header "\nUnscheduled TODO")
+               (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
+       nil
+       nil)))
+(defun open-org-agenda-day-view ()
   "Opens org agenda day view"
   (interactive)
   (require 'org)
@@ -817,10 +786,10 @@
   )
 
 (global-set-key (kbd "C-c SPC") 'open-org-agenda-day-view)
-
-(global-set-key (kbd "C-c o a c") 'org-capture)
-(global-set-key (kbd "C-c o a t") 'org-todo-list)
+(global-set-key (kbd "C-c o c") 'org-capture)
 (global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c o a") 'org-agenda)
+
 (setq org-archive-location "%s::* Archived Tasks")
 
 (defun insert-date ()
@@ -1039,3 +1008,16 @@
 ;;     (use-package org-side-tree
 ;;       :straight t
 ;;       :load-path "https://github.com/localauthor/org-side-tree/blob/main/org-side-tree.el")
+
+(setq org-insert-structure-template
+              '(("a" . "export ascii")
+                ("c" . "center")
+                ("C" . "comment")
+                ("e" . "example")
+                ("E" . "export")
+                ("h" . "export html")
+                ("l" . "export latex")
+                ("q" . "quote")
+                ("s" . "src")
+                ("v" . "verse")
+                ("," . "src emacs-lisp")))
