@@ -957,7 +957,9 @@
   (use-package pdf-tools :straight t)
   (use-package google-this
     :straight t
-    :bind ("C-c h" . google-this))
+    :bind ("C-c h g" . google-this))
+  (global-set-key (kbd "C-c h d") 'dictionary-search)
+
 
       ;;; End of init
 
