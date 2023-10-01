@@ -1,8 +1,7 @@
+;; The path to the church of emacs beings here.
 ;; Here lies my configs...
 ;; Kaizen
 ;; Emacs versions supported: 28.2+
-;; IDEAS
-;; https://github.com/abo-abo/auto-yasnippet
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -65,47 +64,8 @@
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
 ;;; BACKUPS
-  (setq backup-directory-alist
-        '(("." . "~/.emacs.d/file-backups")))
-
-(use-package dashboard
-  :straight t
-  :diminish
-  ;; https://github.com/emacs-dashboard/emacs-dashboard
-  :straight t
-  :config
-  (dashboard-setup-startup-hook)
-
-  ;; Content is not centered by default. To center, set
-  (setq dashboard-center-content t)
-
-  ;; To disable shortcut "jump" indicators for each section, set
-  (setq dashboard-show-shortcuts nil)
-  (setq dashboard-items '((recents  . 10)
-                          (bookmarks . 10)
-                          (projects . 5))))
-
-(use-package smartparens
-  :straight t
-  :diminish
-  :config (smartparens-global-mode +1))
-
-(use-package wrap-region
-  :straight t
-  :diminish
-  :config
-  (wrap-region-global-mode)
-  (wrap-region-add-wrapper "*" "*")
-  )
-
-(use-package multiple-cursors
-  :straight t
-  :config
-  (multiple-cursors-mode 1)
-  :bind
-  ("C-M-<mouse-1>" . mc/add-cursor-on-click))
-
-(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c c") 'comment-line)))
+(setq backup-directory-alist
+      '(("." . "~/.emacs.d/file-backups")))
 
 (defun my-increment-number-decimal (&optional arg)
   "Increment the number forward from point by 'arg'."
@@ -138,46 +98,6 @@
       (while (re-search-forward "\\s-+" nil t)
         (replace-match " ")))))
 
-(add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
-
-(use-package volatile-highlights
-  :diminish
-  :straight t
-  :config
-  (volatile-highlights-mode t))
-
-(diminish 'eldoc-mode)
-
-(use-package git-gutter
-  :diminish
-  :straight t
-  :config
-  (global-git-gutter-mode)
-  (setq git-gutter:always-show-separator t)
-  (diminish 'global-git-gutter-mode)
-  )
-
-
-(use-package nyan-mode
-  :straight t
-  ;; Nyan mode
-  ;; https://github.com/TeMPOraL/nyan-mode
-  :config
-  (nyan-mode +1)
-  )
-
-(use-package all-the-icons
-  :straight t
-  :if (display-graphic-p))
-;; TODO make sure you do this on windows https://www.reddit.com/r/emacs/comments/gznezn/alltheicons/
-
-(use-package beacon
-  :straight t
-  :config
-  (beacon-mode 1))
-
-    ;;; MY FUNCTIONS
-
 (defun my-list-packages ()
   "If already refresehed dont refresh. List only."
   (interactive)
@@ -186,16 +106,6 @@
     (package-refresh-contents t)
     (setq my-package-refreshed-once t)
     (list-packages)))
-
-(defun er-copy-file-name-to-clipboard ()
-  "Copy the current buffer file name to the clipboard."
-  (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-    (when filename
-      (kill-new filename)
-      (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 
 (defun my-open-init-file ()
@@ -248,14 +158,7 @@
   (save-buffer)  )
 (define-key global-map (kbd "C-c =") 'my-indent-whole-buffer)
 
-    ;;; DIRED
-;; Guess emacs dired destination
-;; Lets say that you want to copy files from one dired split to the other
-;; split, emacs can automatically guess the destination directory to make
-;; this simpler.
 (setq dired-dwim-target t)
-;; https://emacs.stackexchange.com/questions/5603/how-to-quickly-copy-move-file-in-emacs-dired>
-
 (setq dired-hide-details-hide-information-lines t)
 (setq dired-hide-details-hide-symlink-targets t)
 (setq dired-kill-when-opening-new-dired-buffer nil)
@@ -276,20 +179,73 @@
 
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 
+(defalias 'refactor-emacs-lisp-code-in-org-mode
+  (kmacro "C-w M-> * SPC N e w <return> <return> C-c C-, s e m a c s - l i s p <return> C-y C-r N e w <return> M-x e n d C-a C-k m a c r o <down> <down> <down> <down> <down> <down> <down> <down> <down>"))
+(global-set-key (kbd "C-c o r") 'refactor-emacs-lisp-code-in-org-mode)
 
-    ;;; PACKAGES
-    ;;;; BROWSE KILL RING
-(use-package browse-kill-ring
+(setq org-insert-structure-template
+      '(("a" . "export ascii")
+        ("c" . "center")
+        ("C" . "comment")
+        ("e" . "example")
+        ("E" . "export")
+        ("h" . "export html")
+        ("l" . "export latex")
+        ("q" . "quote")
+        ("s" . "src")
+        ("v" . "verse")
+        ("," . "src emacs-lisp")))
+
+(use-package imenu-list
   :straight t
   :config
-  (setq browse-kill-ring-highlight-inserted-item t
-        browse-kill-ring-highlight-current-entry nil
-        browse-kill-ring-show-preview t)
-  (define-key browse-kill-ring-mode-map (kbd "j") 'browse-kill-ring-forward)
-  (define-key browse-kill-ring-mode-map (kbd "k") 'browse-kill-ring-previous))
+  (imenu-list-start-timer)
+  :bind ("C-c o t" . imenu-list)
+  )
 
+(use-package dashboard
+  :straight t
+  :diminish
+  ;; https://github.com/emacs-dashboard/emacs-dashboard
+  :straight t
+  :config
+  (dashboard-setup-startup-hook)
 
-    ;;;; EXPAND REGION
+  ;; Content is not centered by default. To center, set
+  (setq dashboard-center-content t)
+
+  ;; To disable shortcut "jump" indicators for each section, set
+  (setq dashboard-show-shortcuts nil)
+  (setq dashboard-items '((recents  . 10)
+                          (bookmarks . 10)
+                          (projects . 5))))
+
+(use-package smartparens
+  :straight t
+  :diminish
+  :config (smartparens-global-mode +1))
+
+(use-package wrap-region
+  :straight t
+  :diminish
+  :config
+  (wrap-region-global-mode)
+  (wrap-region-add-wrapper "*" "*")
+  )
+
+(use-package multiple-cursors
+  :straight t
+  :config
+  (multiple-cursors-mode 1)
+  :bind
+  ("C-M-<mouse-1>" . mc/add-cursor-on-click))
+
+(use-package volatile-highlights
+  :diminish
+  :straight t
+  :config
+  (volatile-highlights-mode t))
+
 (use-package expand-region
   :straight t
   :straight t
@@ -298,17 +254,12 @@
   ("C--" . er/contract-region)
   )
 
-    ;;;; MAGIT / GIT related
-
-(use-package magit
+(use-package browse-kill-ring
   :straight t
-  :bind ("C-x g" . magit-status))
-
-
-    ;;;; COMPANY AND COMPLETIONS
-
-(global-set-key (kbd "C-c C-l") 'my-expand-lines)
-
+  :config
+  (setq browse-kill-ring-highlight-inserted-item t
+        browse-kill-ring-highlight-current-entry nil
+        browse-kill-ring-show-preview t))
 
 (use-package company
   :straight t
@@ -317,19 +268,55 @@
   (global-company-mode 1)
   (global-set-key (kbd "C-c f .") 'company-files)
   )
-
-    ;;;; Hippie expand
-;; https://www.masteringemacs.org/article/text-expansion-hippie-expand
-
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
+
+(use-package nyan-mode
+  :straight t
+  ;; Nyan mode
+  ;; https://github.com/TeMPOraL/nyan-mode
+  :config
+  (nyan-mode +1)
+  )
+
+(use-package all-the-icons
+  :straight t
+  :if (display-graphic-p))
+;; TODO make sure you do this on windows https://www.reddit.com/r/emacs/comments/gznezn/alltheicons/
+
+(use-package beacon
+  :straight t
+  :config
+  (beacon-mode 1))
+
+(use-package git-gutter
+  :diminish
+  :straight t
+  :config
+  (global-git-gutter-mode)
+  (setq git-gutter:always-show-separator t)
+  (diminish 'global-git-gutter-mode)
+  )
+
+(use-package magit
+  :straight t
+  :bind ("C-x g" . magit-status))
+
+(use-package which-key
+:straight t
+:config (which-key-mode 1))
+
+(add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
+(diminish 'eldoc-mode)
+
+(global-set-key (kbd "M-o") 'counsel-outline)
+
+(add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c c") 'comment-line)))
+
 
 
     ;;;; MULTIPLE CURSORS
 
 
-(use-package which-key
-  :straight t
-  :config (which-key-mode 1))
 
 (use-package avy
   :straight t
@@ -429,11 +416,6 @@
 
     ;;;; IMENU LIST
 
-(use-package imenu-list
-  :straight t
-  )
-
-;; TODO https://github.com/bmag/imenu-list
 
     ;;;; YASNIPPET
 
@@ -483,18 +465,6 @@
         ;; If nil, the fzf buffer will appear at the top of the window
         fzf/position-bottom t
         fzf/window-height 15))
-
-    ;;;; OUTLI AND OUTLINES
-(use-package outli
-  :straight (:host github :repo "jdtsmith/outli")
-  :after lispy ; only if you use lispy; it also sets speed keys on headers!
-  :bind (:map outli-mode-map ; convenience key to get back to containing heading
-              ("C-c C-p" . (lambda () (interactive) (outline-back-to-heading))))
-  :hook ((prog-mode text-mode) . outli-mode)
-  (emacs-lisp-mode)) ; or whichever modes you prefer
-
-(global-set-key (kbd "M-o") 'counsel-outline)
-
 
 
 
@@ -580,22 +550,6 @@
   :straight t)
 
 
-    ;;;; Fun
-
-(use-package zone-sl
-  :straight t)
-(use-package zone-select
-  :straight t)
-(use-package zone
-  :config
-  (zone-when-idle (* 420 69))
-  (zone-select-add-program 'zone-pgm-sl)
-  )
-(use-package zone-rainbow
-  :straight t
-  :after zone
-  :config
-  (setq zone-programs (vconcat [zone-rainbow] zone-programs)))
 
     ;;;; Python
 (use-package elpy
@@ -636,7 +590,7 @@
 (setq vc-follow-symlinks nil)
 
 
-(global-set-key (kbd "C-c '") 'counsel-mark-ring)
+(global-set-key (kbd "C-c m") 'counsel-mark-ring)
 (global-set-key (kbd "C-,") 'pop-global-mark)
 
 (setq tags-add-tables nil)
@@ -742,8 +696,6 @@
       cursor-in-non-selected-windows 'hollow
       cursor-type '(bar . 2)
       dired-listing-switches "-alh"
-      evil-cross-lines t
-      evil-want-minibuffer t
       global-company-mode t
       inhibit-startup-screen t
       org-archive-location "::* Archived Tasks"
@@ -770,13 +722,13 @@
 
     ;;; ORG MODE
 (setq org-agenda-custom-commands
-    '(("c" . "My Custom Agendas")
-      ("cu" "Unscheduled TODO"
-       ((todo ""
-              ((org-agenda-overriding-header "\nUnscheduled TODO")
-               (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
-       nil
-       nil)))
+      '(("c" . "My Custom Agendas")
+        ("cu" "Unscheduled TODO"
+         ((todo ""
+                ((org-agenda-overriding-header "\nUnscheduled TODO")
+                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
+         nil
+         nil)))
 (defun open-org-agenda-day-view ()
   "Opens org agenda day view"
   (interactive)
@@ -909,9 +861,6 @@
 (global-set-key (kbd "C-c h d") 'dictionary-search)
 
 
-    ;;; End of init
-
-(straight-remove-unused-repos t)
 
     ;;; Init
 
@@ -1005,19 +954,7 @@
 
 ;; testing3
 
-;;     (use-package org-side-tree
-;;       :straight t
-;;       :load-path "https://github.com/localauthor/org-side-tree/blob/main/org-side-tree.el")
-
-(setq org-insert-structure-template
-              '(("a" . "export ascii")
-                ("c" . "center")
-                ("C" . "comment")
-                ("e" . "example")
-                ("E" . "export")
-                ("h" . "export html")
-                ("l" . "export latex")
-                ("q" . "quote")
-                ("s" . "src")
-                ("v" . "verse")
-                ("," . "src emacs-lisp")))
+(straight-remove-unused-repos t)
+;         evil-cross-lines t
+;         evil-want-minibuffer t
+(load-file "~/.emacs.d/testing.el")
