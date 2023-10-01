@@ -204,6 +204,29 @@
 #+end_src
 * Org mode
 
+** Agenda
+  #+begin_src emacs-lisp
+  (setq org-agenda-files '("~/org"))
+  (setq org-directory "~/org")
+  (setq org-default-notes-file (concat org-directory "/capture.org"))
+  #+end_src
+
+** Tangle
+  #+begin_src emacs-lisp
+  (use-package org-auto-tangle
+    :defer t
+    :straight t
+    :hook (org-mode . org-auto-tangle-mode))
+  #+end_src
+
+** Appearence
+  #+begin_src emacs-lisp
+  (use-package org-modern                                  
+    :straight t                                            
+    :config                                                
+    (with-eval-after-load 'org (global-org-modern-mode)))  
+  #+end_src
+
 ** Macros
 #+begin_src emacs-lisp
   (defalias 'refactor-emacs-lisp-code-in-org-mode
@@ -213,7 +236,6 @@
 
 ** Org structure templates
 #+begin_src emacs-lisp
-
   (setq org-insert-structure-template
         '(("a" . "export ascii")
           ("c" . "center")
@@ -228,14 +250,15 @@
           ("," . "src emacs-lisp")))
 #+end_src
 
-** IMENU LIST
-
+#+begin_src 
+,** Imenu List
+#+end_src
 #+begin_src emacs-lisp
   (use-package imenu-list
     :straight t
     :config
     (imenu-list-start-timer)
-    :bind ("C-c o t" . imenu-list)
+    (setq org-imenu-depth 99)
     )
 
 #+end_src
@@ -261,6 +284,29 @@
 #+end_src
 
 ** Editing
+*** Evil mode
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :straight t
+    :config
+    (evil-mode))
+
+  (use-package evil-leader
+    :straight t
+    :config
+    (global-evil-leader-mode)
+    (evil-leader/set-leader "<SPC>")
+    (evil-leader/set-key
+      "e" 'find-file
+      "b" 'switch-to-buffer
+      "k" 'kill-buffer
+      "/" 'swiper
+      "i" 'imenu-list
+      )
+    ) 
+
+#+end_src
 *** Smartparens
 #+begin_src emacs-lisp
   (use-package smartparens
@@ -334,6 +380,14 @@
   (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 #+end_src
+*** Avy
+Jump to a character based on visual input
+  #+begin_src emacs-lisp
+  (use-package avy
+    :straight t
+    :config
+    (evil-leader/set-key "a" 'avy-goto-char))
+  #+end_src
 ** Appearence
 *** Nyan mode
 
@@ -405,6 +459,12 @@
 
 #+end_src
 
+* Keybinds
+#+begin_src emacs-lisp
+  (evil-leader/set-key "q" 'save-buffers-kill-emacs)
+  (evil-leader/set-key "r" 'restart-emacs)
+#+end_src
+
 * Archived Tasks
 
 ** Benchmark
@@ -424,17 +484,7 @@
 
 #+BEGIN_SRC elisp
   (add-hook 'prog-mode-hook (lambda () (define-key prog-mode-map (kbd "C-c c") 'comment-line)))
-
-
-
-      ;;;; MULTIPLE CURSORS
-
-
-
-  (use-package avy
-    :straight t
-    :bind ("C-c a" . avy-goto-char))
-      ;;;; MINIBUFFER COMPLETIONS
+;;;; MINIBUFFER COMPLETIONS
 
   (use-package marginalia
     :straight t
@@ -505,7 +555,7 @@
            ("C-r" . counsel-minibuffer-history)
            ))
 
-      ;;;; PROJECTILE
+        ;;;; PROJECTILE
 
   (use-package projectile
     :straight t
@@ -527,10 +577,10 @@
   (setq projectile-auto-discover nil)
 
 
-      ;;;; IMENU LIST
+        ;;;; IMENU LIST
 
 
-      ;;;; YASNIPPET
+        ;;;; YASNIPPET
 
   (use-package yasnippet
     :straight t
@@ -556,7 +606,7 @@
     :straight t
     :diminish)
 
-      ;;;; FZF
+        ;;;; FZF
 
   ;; Check if an executable in present in elisp
 
@@ -581,7 +631,7 @@
 
 
 
-      ;;;; File-info
+        ;;;; File-info
   (use-package hydra
     :straight t)
   (use-package browse-at-remote
@@ -599,13 +649,13 @@
                                                    :left-fringe 16
                                                    :right-fringe 16)))
 
-      ;;;; RESTART EMACS
+        ;;;; RESTART EMACS
 
   (use-package restart-emacs
     :straight t
     :bind ("C-c r" . restart-emacs))
 
-      ;;;; FORMAT ALL
+        ;;;; FORMAT ALL
 
   (use-package format-all
     :straight t
@@ -615,7 +665,7 @@
     (add-hook 'prog-mode-hook 'format-all-mode)
     )
 
-      ;;;; CRUX
+        ;;;; CRUX
   (use-package crux
     :straight t
     :config
@@ -632,15 +682,15 @@
     (delete-other-windows))
   (global-set-key (kbd "C-c K") 'nuke-all-buffers)
 
-      ;;;; PERSISTENT SCRATCH
+        ;;;; PERSISTENT SCRATCH
   (use-package persistent-scratch
     :straight t
     :config
     (persistent-scratch-setup-default))
-      ;;;; MARKDOWN
+        ;;;; MARKDOWN
   (use-package markdown-mode
     :straight t)
-      ;;;; Outline mode extend headings backline
+        ;;;; Outline mode extend headings backline
   (use-package outline-minor-faces
     :straight t
     :diminish
@@ -651,27 +701,27 @@
     :after outline
     :config (advice-add 'outline-flag-region :after 'backline-update)
     (outline-minor-faces-mode +1))
-      ;;;; DIRED NARROW
+        ;;;; DIRED NARROW
   (use-package dired-narrow
     :straight t
     :config
     (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy)
     )
 
-      ;;;; MISC
+        ;;;; MISC
   (use-package smex
     :straight t)
 
 
 
-      ;;;; Python
+        ;;;; Python
   (use-package elpy
     :straight t
     :init
     (elpy-enable))
 
 
-      ;;;; EROS
+        ;;;; EROS
   (use-package eros
     ;; Emacs Lisp evaluation results as inline overlays.
     :straight t
@@ -681,18 +731,18 @@
     ("C-x x" . 'eval-defun)
     )
 
-      ;;;; SPEEDRECT
+        ;;;; SPEEDRECT
   (use-package speedrect
     :straight (speedrect :type git :host github :repo "jdtsmith/speedrect")
     )
 
-      ;;;; OCTAVE
+        ;;;; OCTAVE
   (use-package octave
     :straight t
     :bind
     ("C-c x" . 'octave-eval-print-last-sexp))
 
-      ;;; CONVENIENCE 
+        ;;; CONVENIENCE 
   (setq speedbar-show-unknown-files t)
   (setq compilation-auto-jump-to-first-error nil)
   (setq compilation-scroll-output t)
@@ -723,7 +773,7 @@
 
   (global-set-key (kbd "C-c e x") 'my-extract-region-to-variable)
 
-      ;;;; AUTOSAVE
+        ;;;; AUTOSAVE
   ;; autosave files every 1 second if visited and changed
   (setq auto-save-visited-interval 1)
   (auto-save-visited-mode +1)
@@ -733,13 +783,13 @@
   ;;   (progn
   ;;     (message "Emacs version is 28.1 or newer")
   ;;     (context-menu-mode +1)))
-      ;;;; COMPILATION 
+        ;;;; COMPILATION 
   (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
   (setq comint-buffer-maximum-size 10000)
 
 
 
-      ;;; MISC
+        ;;; MISC
   ;; from https://github.com/munen/emacs.d/
 
   (setq gc-cons-threshold 20000000)
@@ -776,11 +826,11 @@
 
   (defadvice server-visit-files (before parse-numbers-in-lines (files proc &optional nowait) activate)
     "Open file with emacsclient with cursors positioned on requested line.
-      Most of console-based utilities prints filename in format
-      'filename:linenumber'.  So you may wish to open filename in that format.
-      Just call:
-        emacsclient filename:linenumber
-      and file 'filename' will be opened and cursor set on line 'linenumber'"
+        Most of console-based utilities prints filename in format
+        'filename:linenumber'.  So you may wish to open filename in that format.
+        Just call:
+          emacsclient filename:linenumber
+        and file 'filename' will be opened and cursor set on line 'linenumber'"
     (ad-set-arg 0
                 (mapcar (lambda (fn)
                           (let ((name (car fn)))
@@ -795,7 +845,7 @@
   ;; https://www.reddit.com/r/emacs/comments/idz35e/emacs_27_can_take_svg_screenshots_of_itself/
   (defun screenshot-svg ()
     "Save a screenshot of the current frame as an SVG image.
-      Saves to a temp file and puts the filename in the kill ring."
+        Saves to a temp file and puts the filename in the kill ring."
     (interactive)
     (let* ((filename (make-temp-file "Emacs" nil ".svg"))
            (data (x-export-frames nil 'svg)))
@@ -833,7 +883,7 @@
     (set-window-dedicated-p (selected-window) sticky-buffer-mode))
 
 
-      ;;; ORG MODE
+        ;;; ORG MODE
   (setq org-agenda-custom-commands
         '(("c" . "My Custom Agendas")
           ("cu" "Unscheduled TODO"
@@ -872,7 +922,7 @@
   (global-set-key (kbd "C-c 0") 'insert-date)
 
 
-      ;;; ESHELL
+        ;;; ESHELL
   (use-package eshell
     :config
     (defun eshell-new-buffer (args)
@@ -884,7 +934,7 @@
     (global-set-key (kbd "C-c e n") 'eshell-new-buffer))
 
 
-      ;;; IMENU
+        ;;; IMENU
 
   (use-package imenu
     :config
@@ -907,12 +957,12 @@
   (use-package imenu-anywhere
     :straight t)
 
-      ;;; VERILOG
+        ;;; VERILOG
   (add-hook 'verilog-mode-hook 'hs-minor-mode)
   (put 'upcase-region 'disabled nil)
   (add-hook 'verilog-mode-hook (lambda () (setq-local outline-regexp ".*/// *")))
 
-      ;;; PERL
+        ;;; PERL
   ;; cperl-mode is preferred to perl-mode                                        
   ;; "Brevity is the soul of wit" <foo at acm.org>                               
   (defalias 'perl-mode 'cperl-mode)
@@ -924,11 +974,11 @@
   (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
 
 
-      ;;; LISP
+        ;;; LISP
   (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
-      ;;; SH-MODE
+        ;;; SH-MODE
   (add-hook 'sh-mode-hook (lambda () (setq-local outline-regexp "# {{{*")))
-      ;;; OPENAI AND CHATGPT RELATED
+        ;;; OPENAI AND CHATGPT RELATED
 
   (setq my-openai-api-key-file "~/.emacs.d/openai-api-key.el")
 
@@ -942,21 +992,21 @@
     :requires shell-maker
     :straight (:host github :repo "xenodium/chatgpt-shell" :files ("chatgpt-shell.el")))
 
-      ;;; TESTING: BREADCRUMB
+        ;;; TESTING: BREADCRUMB
 
   (use-package breadcrumb :straight (:host github :repo "joaotavora/breadcrumb"))
 
-      ;;;; Load all files in my-pacakges directory if it exists
+        ;;;; Load all files in my-pacakges directory if it exists
   (if (file-directory-p "~/.emacs.d/my-packages")
       (mapc 'load-file (directory-files-recursively "~/.emacs.d/my-packages" ".*\.el")))
 
 
-      ;;; TESTING: BETTER EMACS NARROWING, NARROW RING 🛣️
+        ;;; TESTING: BETTER EMACS NARROWING, NARROW RING 🛣️
   ;; (use-package zones
   ;;   :straight t
   ;;   :disabled t
   ;;   )
-      ;;; TESTING: EDIT MULTIPLE FILES AT THE SAME TIME 🤹
+        ;;; TESTING: EDIT MULTIPLE FILES AT THE SAME TIME 🤹
 
   (straight-use-package
    '(multifile :type git :host github :repo "magnars/multifiles.el"))
@@ -965,7 +1015,7 @@
   (global-set-key (kbd "C-c 3") 'mf/mirror-region-in-multifile)
 
 
-      ;;; TESTING: PDF TOOLS
+        ;;; TESTING: PDF TOOLS
 
   (use-package pdf-tools :straight t)
   (use-package google-this
@@ -975,11 +1025,11 @@
 
 
 
-      ;;; Init
+        ;;; Init
 
   (switch-to-dashboard-buffer)
   (delete-other-windows)
-      ;;; CUSTOM SET VARIABLES
+        ;;; CUSTOM SET VARIABLES
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
@@ -1021,16 +1071,8 @@
   (defun my-org (args)
     "docstring"
     (interactive "P")
-    (dired "~/iCloud/org")
+    (dired "~/org")
     )
-
-
-
-  (defun open-specific-file ()
-    "Open a specific file when Emacs is idle."
-    (interactive)
-    (find-file "~/iCloud/org/routine.org"))
-
 
   (defun read-file-as-string (file-path)
     (with-temp-buffer
@@ -1039,26 +1081,9 @@
 
   (setq chatgpt-shell-openai-key (read-file-as-string "~/.config/openai.token"))
 
-  (global-set-key (kbd "C-c f s") 'toggle-frame-fullscreen)
-
-  (setq org-agenda-files '("~/iCloud/org"))
-  (setq org-directory "~/iCloud/org")
-
-  (setq org-default-notes-file (concat org-directory "/capture.org"))
-
-  (use-package org-auto-tangle
-    :defer t
-    :straight t
-    :hook (org-mode . org-auto-tangle-mode))
 
 
-  (use-package org-modern                                  
-    :straight t                                            
-    :config                                                
-    (with-eval-after-load 'org (global-org-modern-mode)))  
 
-
-  
 
 
 
@@ -1080,3 +1105,4 @@
   ;         evil-want-minibuffer t
   (load-file "~/.emacs.d/testing.el")
 #+end_src
+
