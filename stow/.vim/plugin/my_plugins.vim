@@ -1,5 +1,6 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
+Plug 'sbdchd/neoformat'
 " Plug 'bilalq/lite-dfm'
 Plug 'SidOfc/mkdx'
 Plug 'tpope/vim-dispatch'

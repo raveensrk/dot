@@ -166,5 +166,46 @@ command! -nargs=1 ViewNonCommentedLinesCommand call ViewNonCommentedLines(<q-arg
 
 augroup markdown
     autocmd BufWinEnter *.md set nocursorline nocursorcolumn nonu nornu linebreak wrap
+    autocmd BufWinEnter *.md syn match markdownError "\w\@<=\w\@="
+    " hi link markdownError NONE 
 augroup END
+"{{{ Delete Buffer and File
+" Check if the buffer is empty
+function! IsBufferEmpty() abort
+    return line('$') == 1 && getline(1) == ''
+endfunction
+
+" Check if the buffer is the last buffer
+function! IsLastBuffer() abort
+    return buflisted(bufnr('%')) == 1 && bufnr('$') == bufnr('%')
+endfunction
+
+" Combine both checks
+function! CheckEmptyAndLastBuffer() abort
+    if IsBufferEmpty()
+        echo "This buffer is empty."
+    endif
+
+    if IsLastBuffer()
+        echo "This is the last buffer."
+    endif
+    return 1
+endfunction
+
+function! DeleteBufferAndFile()
+    let save_confirm = &confirm
+    set confirm
+    let file_path = expand('%:p')
+    echo file_path
+    exe "bdel"
+    execute "!clear"
+    execute "!rm -iv '".file_path."'"
+    let &confirm = save_confirm
+    if CheckEmptyAndLastBuffer()
+        exe "q"
+    endif
+endfunction
+
+command! DeleteBufferAndFile call DeleteBufferAndFile()
+"}}}
 " }}}
