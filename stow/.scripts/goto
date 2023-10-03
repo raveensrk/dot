@@ -99,9 +99,9 @@ if [ "$include" != "" ]; then
 else
     # item=$(grep --exclude-dir=.git --exclude-dir=.hg -H -n -r . | fzf -e )
     if [ "$grep_filenames_also" = "true" ]; then
-        rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e  > "$selection" # This will grep both file contents and name
+        rg -L -n --no-heading -. "$string" --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e  > "$selection" # This will grep both file contents and name
     else
-        rg -L -n --no-heading -. $string --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e -d : -n 3 > "$selection" # This will only grep file contents
+        rg -L -n --no-heading -. "$string" --ignore-file "$HOME/.scripts/.ignore" | fzf -m -e -d : -n 3 > "$selection" # This will only grep file contents
     fi
 fi
 

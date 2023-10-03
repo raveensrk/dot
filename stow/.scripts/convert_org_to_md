@@ -1,7 +1,10 @@
 #!/bin/bash 
 
-for file in  "*.org"; do
-    echo $file
+set -e
+
+for file in $(ls *.org); do
+    echo "$file"
     new_name=$(basename -s .org $file)
-    pandoc --to=markdown $file --output=$new_name.md
+    pandoc --to=markdown "$file" --output="$new_name.md"
+    rm -fv "$file"
 done

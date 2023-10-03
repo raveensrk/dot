@@ -9,7 +9,7 @@ nmap <leader>gf :e <cfile><CR>
 nnoremap <leader>ref :grep  * -r<CR>
 nmap     <leader>= gg=G2<C-o>
 nnoremap Y yg_
-nnoremap <leader>n :set nu!<cr>
+" nnoremap <leader>n :set nu!<cr>
 nnoremap <leader>fp :let @* = expand("%:p")<cr>
 nnoremap <leader>fi :echo expand("%:p")<cr>
 nnoremap <leader>ref :grep  * -r<CR>
@@ -91,4 +91,3 @@ nmap <leader>d  :bd<cr>
 
 vnoremap <leader>ex mmxOvar="<esc>pa"<esc>`mi$var<esc>
 
-cabbrev .. cd .. \| pwd

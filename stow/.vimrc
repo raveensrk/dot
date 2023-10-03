@@ -93,8 +93,8 @@ set backupdir=~/.vim/backup
 " }}}
 " {{{ PATH
 set path+=**
-set autochdir
-" set noautochdir " This will change your pwd to current file
+" set autochdir
+set noautochdir " This will change your pwd to current file
 " }}}
 " {{{ NETRW
 " let g:netrw_altv = 1
@@ -132,8 +132,8 @@ nmap <silent> +p :read ~/.vim_clip<cr>
 set clipboard=unnamed
 "}}}
 " {{{ VIM SESSIONS AND VIEWS
-autocmd BufWinLeave *.* mkview!
-autocmd BufWinEnter *.* silent loadview
+" autocmd BufWinLeave *.* mkview!
+" autocmd BufWinEnter *.* silent loadview
 " augroup my_folding
 "   au BufReadPre * setlocal foldmethod=indent
 "   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
@@ -163,4 +163,8 @@ function! ViewNonCommentedLines(comment_char)
 endfunction
 
 command! -nargs=1 ViewNonCommentedLinesCommand call ViewNonCommentedLines(<q-args>)
+
+augroup markdown
+    autocmd BufWinEnter *.md set nocursorline nocursorcolumn nonu nornu linebreak wrap
+augroup END
 " }}}

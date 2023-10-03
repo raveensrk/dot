@@ -1,6 +1,7 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
-
+" Plug 'bilalq/lite-dfm'
+Plug 'SidOfc/mkdx'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 " Plug 'preservim/nerdtree'
@@ -39,7 +40,7 @@ endif
 Plug 'chrisbra/Colorizer'
 " Plug 'wren/jrnl.vim'
 Plug 'justinmk/vim-sneak'
-Plug 'junegunn/goyo.vim'
+" Plug 'junegunn/goyo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -51,7 +52,7 @@ endif
 Plug 'wellle/tmux-complete.vim'
 Plug 'chrisbra/NrrwRgn'
 Plug '907th/vim-auto-save'
-" Plug 'git@github.com:junegunn/limelight.vim'
+Plug 'git@github.com:junegunn/limelight.vim'
 Plug 'rstacruz/vim-xtract'
 " Plug 'preservim/nerdtree'
 Plug 'mhinz/vim-startify'
