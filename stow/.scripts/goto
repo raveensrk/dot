@@ -66,7 +66,7 @@ done
 string=${string:-.}
 print=${print:-0}
 
-for item  in ${file[@]}; do
+for item in "${file[@]}"; do
     include="$include --include=*$item"
 done
 
@@ -95,7 +95,7 @@ clean_up () {
 
 
 if [ "$include" != "" ]; then
-    grep $include --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.packages -H -n -R $string | fzf -m -e -d : -n 3 > "$selection"
+    grep $include --exclude-dir=.git --exclude-dir=.hg --exclude-dir=.packages -H -n -R "$string" | fzf -m -e -d : -n 3 > "$selection"
 else
     # item=$(grep --exclude-dir=.git --exclude-dir=.hg -H -n -r . | fzf -e )
     if [ "$grep_filenames_also" = "true" ]; then
