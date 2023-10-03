@@ -1,10 +1,18 @@
-#!/bin/bash 
+#!/usr/bin/env bash 
 
 set -e
 
-for file in $(ls *.org); do
-    echo "$file"
-    new_name=$(basename -s .org $file)
-    pandoc --to=markdown "$file" --output="$new_name.md"
+readarray -t files < <(gfind -iname "*.org")
+
+for file in  "${files[@]}"; do
+    echo "---"
+    echo "File: $file"
+    new_name=$(basename -s .org "$file")
+    echo "Name: $new_name"
+    dir=$(dirname "$file")
+    echo "Path: $dir"
+    pushd "$dir"
+    pandoc -s -t markdown "$new_name.org" --output="$new_name.md"
+    popd
     rm -fv "$file"
 done

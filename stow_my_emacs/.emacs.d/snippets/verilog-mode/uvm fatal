@@ -1,4 +1,0 @@
-# key: uvm_fatal
-# name: uvm fatal
-# --
-`uvm_fatal("$1", "$2");

@@ -87,7 +87,10 @@ command Date -1read !date +\%Y-\%m-\%d-\%H-\%M-\%S
 nmap <leader>bx :%bd\|e#<cr>
 nmap <leader>bb :Buffers<CR>
 nmap <leader>bh :History<CR>
-nmap <leader>d  :bd<cr>
+nmap <leader>d  :bd \| vsp \| bp<cr>
 
 vnoremap <leader>ex mmxOvar="<esc>pa"<esc>`mi$var<esc>
 
+" Editing {{{
+command! RemoveDoubleSpaces :%s/  / /g
+"}}}

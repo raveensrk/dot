@@ -10,8 +10,6 @@ set bell-style visible
 # set keymap vi
 # set vi-cmd-mode-string (:)
 # set vi-ins-mode-string (+)
-set editing-mode emacs
-# set keymap emacs
 set show-mode-in-prompt On
 set skip-completed-text On
 set show-all-if-ambiguous On
