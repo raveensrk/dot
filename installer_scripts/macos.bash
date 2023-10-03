@@ -6,7 +6,7 @@ if ! command -v brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-brew update
+# brew update
 
 packages=(
     fortune
@@ -36,12 +36,10 @@ packages=(
     tldr  
     urlview  
     vim  
-    yank  
     wget  
     lesspipe  
     rsync  
     grep  
-    bfg  
     jq  
     cscope  
     w3m  
@@ -49,11 +47,8 @@ packages=(
     findutils
     tmux
     ispell
-    wkhtmltopdf
-    languagetool
     basictex
     lazygit
-    espanso
     up
     poppler
     zoxide
@@ -81,4 +76,3 @@ bash ../add_sources.bash 'export PATH="/Library/TeX/texbin:$PATH"' "$HOME/.bashr
 
 python3 -m pip install --upgrade pip
 python3 -m pip install --user pynvim
-python3 -m pip install --user yewtube
