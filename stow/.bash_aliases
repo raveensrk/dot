@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # BASH ALIASES sourced at ~/.bashrc
-# set -o vi
-set -o emacs
+set -o vi
 export EDITOR="vim"
 # {{{ PROMPT AND COLORS
 source "$HOME/.bash_prompt"
