@@ -91,3 +91,6 @@ nmap <leader>d  :bd<cr>
 
 vnoremap <leader>ex mmxOvar="<esc>pa"<esc>`mi$var<esc>
 
+" Editing {{{
+command! RemoveDoubleSpaces :%s/  / /g
+"}}}
