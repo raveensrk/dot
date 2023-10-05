@@ -149,7 +149,7 @@ if has('python3')
   let g:deoplete#enable_at_startup = 1
 endif
 
-let g:auto_save = 1  " enable AutoSave on Vim startup
+" let g:auto_save = 1  " enable AutoSave on Vim startup
 
 " Linebox{{{
 
@@ -246,3 +246,6 @@ set background=dark
 let g:gruvbox_contrast_dark="hard"
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 " }}}
+" Neoformat{{{
+autocmd BufWritePre *.md Neoformat
+"}}}
