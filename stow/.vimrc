@@ -208,4 +208,11 @@ endfunction
 
 command! DeleteBufferAndFile call DeleteBufferAndFile()
 "}}}
+" let g:netrw_browsex_viewer="open"
+function! OpenUrl()
+  let l:url = expand('<cWORD>')
+  execute '!echo "' . l:url . '" | urlview'
+endfunction
+
+nnoremap <silent> <leader>gx :call OpenUrl()<CR>
 " }}}
