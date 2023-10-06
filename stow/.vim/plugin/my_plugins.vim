@@ -1,48 +1,6 @@
-" Plugins {{{
+" PLUG FUNCTION CALL {{{
 call plug#begin('~/.vim/plugged')
-Plug 'sbdchd/neoformat'
-" Plug 'bilalq/lite-dfm'
-Plug 'SidOfc/mkdx'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-vinegar'
-" Plug 'preservim/nerdtree'
-Plug 'junegunn/vim-peekaboo'
-Plug 'chamindra/marvim' " Named macros in vim
-Plug 'mtth/scratch.vim'
-" Plug 'vim-scripts/YankRing.vim'
-" Plug 'git@github.com:maxbrunsfeld/vim-yankstack'
-" Plug 'houtsnip/vim-emacscommandline'
-Plug 'lfv89/vim-interestingwords'
-Plug 'MattesGroeger/vim-bookmarks'
-" Track the engine.
-Plug 'SirVer/ultisnips'
 
-" Snippets are separated from the engine. Add this if you want them:
-Plug 'honza/vim-snippets'
-
-Plug 'madox2/vim-ai'
-
-if has('nvim')
-  function! UpdateRemotePlugins(...)
-    " Needed to refresh runtime files
-    let &rtp=&rtp
-    UpdateRemotePlugins
-  endfunction
-
-" Plug 'gelguy/wilder.nvim', { 'do': function('UpdateRemotePlugins') }
-else
-  " Plug 'gelguy/wilder.nvim'
-
-  " To use Python remote plugin features in Vim, can be skipped
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
-Plug 'chrisbra/Colorizer'
-" Plug 'wren/jrnl.vim'
-Plug 'justinmk/vim-sneak'
-" Plug 'junegunn/goyo.vim'
-Plug 'dhruvasagar/vim-table-mode'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -50,77 +8,63 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'wellle/tmux-complete.vim'
-Plug 'chrisbra/NrrwRgn'
+
+" Plug 'mattn/emmet-vim'
+" Plug 'vim/killersheep'
 Plug '907th/vim-auto-save'
-Plug 'git@github.com:junegunn/limelight.vim'
-Plug 'rstacruz/vim-xtract'
-" Plug 'preservim/nerdtree'
-Plug 'mhinz/vim-startify'
-Plug 'git@github.com:tpope/vim-sensible'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'SidOfc/mkdx'
+Plug 'SirVer/ultisnips'
+Plug 'chamindra/marvim' " Named macros in vim
+Plug 'chrisbra/Colorizer'
+Plug 'chrisbra/NrrwRgn'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'git@github.com:airblade/vim-gitgutter'
+Plug 'git@github.com:azabiong/vim-highlighter'
+Plug 'git@github.com:easymotion/vim-easymotion'
+Plug 'git@github.com:ervandew/supertab'
+Plug 'git@github.com:frazrepo/vim-rainbow'
 Plug 'git@github.com:junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'git@github.com:junegunn/fzf.vim'
+Plug 'git@github.com:junegunn/limelight.vim'
+Plug 'git@github.com:junegunn/vim-easy-align'
+Plug 'git@github.com:ledger/vim-ledger'
+Plug 'git@github.com:liuchengxu/vim-which-key'
+Plug 'git@github.com:mechatroner/rainbow_csv'
+Plug 'git@github.com:mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'git@github.com:mhinz/vim-signify'
 Plug 'git@github.com:morhetz/gruvbox'
-" Plug 'vim/killersheep'
-Plug 'git@github.com:frazrepo/vim-rainbow'
+Plug 'git@github.com:nathanaelkane/vim-indent-guides'
+Plug 'git@github.com:tomtom/tcomment_vim'
+Plug 'git@github.com:tpope/vim-fugitive'
+Plug 'git@github.com:tpope/vim-markdown'
+Plug 'git@github.com:tpope/vim-repeat'
+Plug 'git@github.com:tpope/vim-sensible'
+Plug 'git@github.com:tpope/vim-speeddating'
+Plug 'git@github.com:tpope/vim-surround'
+Plug 'git@github.com:tpope/vim-unimpaired'
+Plug 'git@github.com:yoshi1123/vim-linebox'
+Plug 'honza/vim-snippets'
+Plug 'junegunn/vim-peekaboo'
+Plug 'justinmk/vim-sneak'
+Plug 'lfv89/vim-interestingwords'
+Plug 'madox2/vim-ai'
+Plug 'mhinz/vim-startify'
+Plug 'mtth/scratch.vim'
+Plug 'rstacruz/vim-xtract'
+Plug 'sbdchd/neoformat'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-vinegar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'ctrlpvim/ctrlp.vim'
-Plug 'git@github.com:junegunn/vim-easy-align'
-Plug 'git@github.com:easymotion/vim-easymotion'
-Plug 'git@github.com:tomtom/tcomment_vim'
-Plug 'git@github.com:tpope/vim-unimpaired'
-Plug 'git@github.com:tpope/vim-surround'
-Plug 'git@github.com:tpope/vim-repeat'
-" Plug 'mattn/emmet-vim'
-Plug 'git@github.com:junegunn/vim-easy-align'
-Plug 'git@github.com:mg979/vim-visual-multi', {'branch': 'master'}
-" mg979/vim-visual-multi
-Plug 'git@github.com:airblade/vim-gitgutter'
-" Plug 'terryma/vim-expand-region'
-" Plug 'dense-analysis/ale'
-" Plug 'tommcdo/vim-exchange'
-" Plug 'svermeulen/vim-yoink'
-Plug 'git@github.com:tpope/vim-fugitive'
-" Plug 'xolox/vim-easytags'
-" Plug 'xolox/vim-misc'
-" Plug 'preservim/tagbar'
-Plug 'git@github.com:mhinz/vim-signify'
-Plug 'git@github.com:azabiong/vim-highlighter'
-" Plug 'git@github.com:vim-syntastic/syntastic'
-"Plug 'jceb/vim-orgmode'
-
-" Plug 'godlygeek/tabular'
-" Plug 'plasticboy/vim-markdown'
-"
-Plug 'git@github.com:tpope/vim-markdown'
-
-Plug 'git@github.com:liuchengxu/vim-which-key'
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-session'
-
-Plug 'git@github.com:tpope/vim-speeddating'
-Plug 'git@github.com:yoshi1123/vim-linebox'
-
-" On-demand lazy load
-" Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-"
-" " To register the descriptions when using the on-demand load feature,
-" " use the autocmd hook to call which_key#register(), e.g., register for the
-" Space key:
-" " autocmd! User vim-which-key call which_key#register('<Space>',
-" 'g:which_key_map')
-
-Plug 'git@github.com:mechatroner/rainbow_csv'
-" Plug 'yegappan/taglist'
-Plug 'git@github.com:ervandew/supertab'
-Plug 'git@github.com:ledger/vim-ledger'
-Plug 'git@github.com:nathanaelkane/vim-indent-guides'
+Plug 'wellle/tmux-complete.vim'
 
 call plug#end()
-"{{{1 Plugin configs
+" }}}
+" INDENT GUIDES{{{
 let g:indent_guides_enable_on_vim_startup = 1
-"{{{ UltiSnips
+"}}}
+"{{{ ULTISNIPS
 " Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
 " - https://github.com/Valloric/YouCompleteMe
 " - https://github.com/nvim-lua/completion-nvim
@@ -133,25 +77,25 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
 "}}}
-" Key bindings can be changed, see below
-" call wilder#setup({'modes': [':', '/', '?']})
-" {{{ Vim Sneak 
+" {{{ VIM SNEAK 
 map f <Plug>Sneak_f
 map F <Plug>Sneak_F
 map t <Plug>Sneak_t
 map T <Plug>Sneak_T
 let g:sneak#label = 1
 " }}}
-
+"{{{ TABLE MODE
 let g:table_mode_corner='|'
-
+"}}}
+" DEOPLETE{{{
 if has('python3')
   let g:deoplete#enable_at_startup = 1
 endif
-
+"}}}
+" AUTOSAVE {{{
 " let g:auto_save = 1  " enable AutoSave on Vim startup
-
-" Linebox{{{
+"}}}
+" LINEBOX{{{
 
 let g:linebox_default_maps = 0
 let g:linebox_marks = ["'a", "'b"]
@@ -163,82 +107,24 @@ vnoremap <leader><leader>b :call linebox#boxes#box()<cr>
 nnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
 vnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
 "}}}
-
+"{{{ GIT GUTTER
 set updatetime=100 " For gitgutter
-
-" nmap <F8> :TagbarToggle<CR>
-
+"}}}
+" RAINBOW{{{
 let g:rainbow_active = 1
+"}}}
+" AIRLINE{{{
 let g:airline#extensions#tabline#enabled = 1
-
-" Vim Easy Align{{{
+"}}}
+" VIM EASY ALIGN{{{
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 "}}}
-" Vim Expand Region
-" map K <Plug>(expand_region_expand)
-" map J <Plug>(expand_region_shrink)
-"{{{ DISABLED - Syntastic
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-"
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-"}}}
+" WHICHKEY{{{
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-nnoremap <leader>/ :BLines<CR>
-
 "}}}
-" {{{ DISABLED - NERDTree
-" nnoremap <leader>T :NERDTreeFocus<CR>
-" " Exit Vim if NERDTree is the only window remaining in the only tab.
-" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" "  Close the tab if NERDTree is the only window remaining in it.
-" autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-" autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |  let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-" "  Open the existing NERDTree on each new tab.
-" autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
-" " Start NERDTree and put the cursor back in the other window.
-" autocmd VimEnter * NERDTree | wincmd p
-" " Find current file in NERDTree window by default 
-" " https://superuser.com/questions/195022/vim-how-to-synchronize-nerdtree-with-current-opened-tab-file-path
-" autocmd BufEnter * if &modifiable | NERDTreeFind | wincmd p | endif
-
-"}}}
-" {{{ DISABLED - Limelight
-" nmap <Leader>l <Plug>(Limelight)
-" xmap <Leader>l <Plug>(Limelight)
-"
-" " Color name (:help cterm-colors) or ANSI code
-" let g:limelight_conceal_ctermfg = 'gray'
-" let g:limelight_conceal_ctermfg = 240
-"
-" " Color name (:help gui-colors) or RGB color
-" let g:limelight_conceal_guifg = 'DarkGray'
-" let g:limelight_conceal_guifg = '#777777'
-"
-" " Default: 0.5
-" let g:limelight_default_coefficient = 0.7
-"
-" " Number of preceding/following paragraphs to include (default: 0)
-" let g:limelight_paragraph_span = 1
-"
-" " Beginning/end of paragraph
-" "   When there's no empty line between the paragraphs
-" "   and each paragraph starts with indentation
-" let g:limelight_bop = '^\s'
-" let g:limelight_eop = '\ze\n^\s'
-"
-" " Highlighting priority (default: 10)
-" "   Set it to -1 not to overrule hlsearch
-" let g:limelight_priority = -1
-" }}}
 " {{{ COLOR / THEME
 colo gruvbox
 " colo default
@@ -246,6 +132,6 @@ set background=dark
 let g:gruvbox_contrast_dark="hard"
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 " }}}
-" Neoformat{{{
+" NEOFORMAT{{{
 autocmd BufWritePre *.md Neoformat
 "}}}

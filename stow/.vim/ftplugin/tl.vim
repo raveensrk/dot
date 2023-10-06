@@ -1,2 +1,2 @@
-nnoremap <leader>vrsp   :s/-p/\\\r-p/g<CR>
+command! SplitPlusargs :s/-p/\\\r-p/g
 set nowrap

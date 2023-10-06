@@ -2,9 +2,7 @@ source $VIMRUNTIME/vimrc_example.vim
 
 " HELP {{{
 " Press <F1> for help
-" Press <F3> for help for word under cursor
-" :map <F3> "zyiw:exe "h ".@z.""<CR>
-map <F3> "zyiw:exe "h ".@z<CR>
+" K for help for word under cursor
 " }}}
 " BASICS {{{
 set autoread
@@ -15,9 +13,9 @@ syntax on
 " set hidden
 set backspace=indent,eol,start
 set encoding=utf-8
-" set vb t_vb=[?5h$<100>[?5lsd
 set noerrorbells
 set novb t_vb=
+
 " Use a line cursor within insert mode and a block cursor everywhere else.
 "
 " Reference chart of values:
@@ -33,7 +31,7 @@ let &t_EI = "\e[2 q"
 " }}}
 " NAVIGATION {{{
 set title
-"set splitbelow splitright
+set splitbelow splitright
 " }}}
 " GRAMMAR AND SEARCHING {{{
 " set spell spelllang=en_us
@@ -50,7 +48,7 @@ set shiftwidth=4
 set expandtab
 set autoindent
 set smartindent
-" set listchars=nbsp:_,tab:>-,trail:~,extends:>,precedes:<
+" set listchars=nbsp:_,tab:>-,trail:~,extends:>,precedes:<,eol:$
 " set list
 " }}}
 " FOLDING AND WRAPPING {{{
@@ -60,19 +58,17 @@ set foldmethod=marker
 " set nonumber norelativenumber
 set number 
 " set relativenumber
-" set listchars=eol:$
-" set listchars=nbsp:_,tab:>-,trail:~,extends:>,precedes:<
-" set list
 " }}}
 " {{{ INTERFACE
-set nowrap
+set wrap
+set linebreak
 set cursorline
 set cursorcolumn
 set hlsearch
 set ruler
-"set columns=80
+" set columns=80
 " set colorcolumn=80
-"highlight ColorColumn ctermbg=0 guibg=lightgrey
+" highlight ColorColumn ctermbg=0 guibg=lightgrey
 " set wildmode=longest,list,full
 set wildmenu
 set wildoptions=pum
@@ -82,7 +78,7 @@ set scrolloff=999
 set sidescrolloff=999
 
 " set virtualedit=all
-set textwidth=0 wrapmargin=0
+" set textwidth=0 wrapmargin=0
 " }}}
 " {{{ BACKUPS AND UNDO
 set noswapfile
@@ -107,24 +103,9 @@ set noautochdir " This will change your pwd to current file
 "   autocmd VimEnter * :Vexplore
 " augroup END
 "}}}
-" {{{ DISBALED - TRIM WHITE SPACE AFTER EXIT
-fun! TrimWhitespace()
-    let l:save = winsaveview()
-    keeppatterns %s/\s\+$//e
-    call winrestview(l:save)
-endfun
-" autocmd BufWritePre * :call TrimWhitespace()
-" }}}
 " CTAGS {{{
 set tags=tags
 " }}}
-" FILE SPECIFIC {{{
-autocmd BufRead .vimrc :set foldmethod=marker
-" }}}
-"{{{ FOLDING
-let g:markdown_folding = 1
-noremap <2-LeftMouse> za
-"}}}
 "{{{ CLIPBOARD
 vmap <silent> +y :w! ~/.vim_clip<cr>
 nmap <silent> +p :read ~/.vim_clip<cr>
@@ -139,37 +120,24 @@ set clipboard=unnamed
 "   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 " augroup END
 " }}}
-" {{{1 RESOURCE PLUGIN DIRECTORY
-" This is done so the plugin directory is sourced again at the end of this
-" vimrc file. This will make plugins work properly
-
-" ~/.vim/plugin
-for f in split(glob('~/.vim/plugin/*.vim'), '\n')
-    exe 'source' f
-endfor
-
-" }}}
-"{{{ FINALLY SOURCE CUSTOM PER USER CONGIFS
-
-for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
-    exe 'source' f
-endfor
-
-"}}}
-" TESTING {{{
-"-----
-function! ViewNonCommentedLines(comment_char)
-    execute 'g/^[^' . a:comment_char . ']/p'
-endfunction
-
-command! -nargs=1 ViewNonCommentedLinesCommand call ViewNonCommentedLines(<q-args>)
-
+"{{{ MARKDOWN
+let g:markdown_folding = 1
+noremap <2-LeftMouse> za
 augroup markdown
     autocmd BufWinEnter *.md set nocursorline nocursorcolumn nonu nornu linebreak wrap
     autocmd BufWinEnter *.md syn match markdownError "\w\@<=\w\@="
     " hi link markdownError NONE 
 augroup END
-"{{{ Delete Buffer and File
+" let g:netrw_browsex_viewer="open"
+function! OpenUrl()
+  let l:url = expand('<cWORD>')
+  execute '!echo "' . l:url . '" | urlview'
+endfunction
+
+nnoremap <silent> <leader>gx :call OpenUrl()<CR>
+"}}}
+"{{{ DELETE BUFFER AND FILE
+"------------------------------
 " Check if the buffer is empty
 function! IsBufferEmpty() abort
     return line('$') == 1 && getline(1) == ''
@@ -208,4 +176,33 @@ endfunction
 
 command! DeleteBufferAndFile call DeleteBufferAndFile()
 "}}}
+" VIEW NON COMMENTED LINES ONLY{{{
+" ---------------------------------
+function! ViewNonCommentedLines(comment_char)
+    execute 'g/^[^' . a:comment_char . ']/p'
+endfunction
+
+command! -nargs=1 ViewNonCommentedLinesCommand call ViewNonCommentedLines(<q-args>)
+"}}}
+" END OF VIMRC TASKS {{{
+" {{{ RESOURCE PLUGIN DIRECTORY
+" This is done so the plugin directory is sourced again at the end of this
+" vimrc file. This will make plugins work properly
+
+" ~/.vim/plugin
+for f in split(glob('~/.vim/plugin/*.vim'), '\n')
+    exe 'source' f
+endfor
+
+" }}}
+"{{{ FINALLY SOURCE CUSTOM PER USER CONGIFS
+
+for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
+    exe 'source' f
+endfor
+
+"}}}
+" }}}
+" ↑ WORKING CONFIGS ABOVE ↑
+" ↓ TESTING ↓ {{{
 " }}}
