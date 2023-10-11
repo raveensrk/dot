@@ -205,4 +205,5 @@ endfor
 " }}}
 " ↑ WORKING CONFIGS ABOVE ↑
 " ↓ TESTING ↓ {{{
+autocmd BufNewFile *.bash 0r ~/.vim/skeleton/bash 
 " }}}
