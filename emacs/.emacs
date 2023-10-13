@@ -1,7 +1,8 @@
-;;; Structure
+;;; Introduction
 
-;; Emacs versions supported: 28.2+
-;; This init file will follow the following structure where the configs are organized under the respective headings.
+;; Emacs versions supported: 28.2+. This init file will follow the
+;; following structure where the configs are organized under the
+;; respective headings.
 
 ;;; Packages
 
@@ -338,6 +339,16 @@
   (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy))
 
 ;;; My functions
+
+(defun bash-macos ()
+  "This will open Bash terminal in macos"
+  (interactive)
+  (term "/opt/homebrew/bin/bash"))
+
+(defun bash-local ()
+  "This will open Bash terminal from ~/.local/bin/bash"
+  (interactive)
+  (term "~/.local/bin/bash"))
 
 (defun read-file-as-string (file-path)
   (with-temp-buffer
