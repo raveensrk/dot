@@ -63,7 +63,7 @@
 
 ;;; Defaults
 
-(add-to-list 'load-path "~/.emacs.d/packages/better-defaults") 
+(add-to-list 'load-path "~/.emacs.d/packages") 
 (require 'better-defaults)
 
 ;;; Backups
