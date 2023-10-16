@@ -11,6 +11,7 @@
 ;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
 ;; https://idiomdrottning.org/bad-emacs-defaults
 ;; https://news.ycombinator.com/item?id=37843908
+;; https://irreal.org/emacs-reminders.html
 
 ;;; Startup
 
@@ -188,10 +189,10 @@
 
 ;;; Evil Mode
 
-;; (evil-mode t)
-;; (global-evil-leader-mode t)
-;; (evil-leader/set-leader "<SPC>")
-;; (global-evil-surround-mode t)
+(evil-mode t)
+(global-evil-leader-mode t)
+(evil-leader/set-leader "<SPC>")
+(global-evil-surround-mode t)
 
 ;;; Navigation
 
@@ -708,6 +709,10 @@
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;;; Testing
+
+
+
+
 
 ;;; Ideas
 
