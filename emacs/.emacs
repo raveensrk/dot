@@ -446,7 +446,7 @@
 ;;; Org mode
 
 (setq  calendar-date-style 'iso)
-(setq  org-export-backends '(html md odt))
+(setq  org-export-backends '(html md odt ascii))
 (setq  org-export-use-babel nil)
 (setq  org-export-with-broken-links 'mark)
 (setq  org-html-allow-name-attribute-in-anchors t)
@@ -679,6 +679,11 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "M-o") 'counsel-outline)
 (global-set-key (kbd "M-x") 'my-counsel-M-x)
+(global-set-key (kbd "C-c e u") 'upcase-initials-region)
+(global-set-key (kbd "C-S-k") 'crux-kill-whole-line)
+
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;;; Testing
+
+
