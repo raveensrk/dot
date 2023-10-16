@@ -4,6 +4,21 @@
 ;; following structure where the configs are organized under the
 ;; respective headings.
 
+;;; Inspirations
+
+;; https://github.com/munen/emacs.d/
+;; https://emacsredux.com/blog/2016/01/31/use-tab-to-indent-or-complete/
+;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
+;; https://idiomdrottning.org/bad-emacs-defaults
+;; https://news.ycombinator.com/item?id=37843908
+
+;;; Startup
+
+(toggle-frame-fullscreen)
+(setq frame-inhibit-implied-resize t)
+(setq pixel-scroll-precision-mode t)
+
+
 ;;; Packages
 
 (require 'package)
@@ -23,6 +38,8 @@
  '(auto-fill-mode-hook '(yas--auto-fill-wrapper))
  '(comment-auto-fill-only-comments t)
  '(context-menu-mode t)
+ '(elfeed-feeds
+   '("https://news.ycombinator.com"))
  '(evil-symbol-word-search t)
  '(imenu-auto-rescan t)
  '(imenu-max-items 999)
@@ -34,7 +51,7 @@
  '(org-list-indent-offset 6)
  '(org-startup-with-inline-images t)
  '(package-selected-packages
-   '(yasnippet-classic-snippets evil-surround diminish outline-toc imenu-list org-modern dashboard evil evil-leader smartparens wrap-region multiple-cursors volatile-highlights expand-region browse-kill-ring company avy nyan-mode all-the-icons beacon git-gutter magit which-key marginalia ivy orderless swiper counsel projectile yasnippet ivy-yasnippet yasnippet-snippets fzf hydra browse-at-remote posframe file-info restart-emacs format-all crux web-mode persistent-scratch markdown-mode outline-minor-faces backline dired-narrow smex elpy eros speedrect octave eshell imenu imenu-anywhere shell-maker chatgpt-shell breadcrumb multifiles pdf-tools google-this)))
+   '(dtrt-indent elfeed yasnippet-classic-snippets evil-surround diminish outline-toc imenu-list org-modern dashboard evil evil-leader smartparens wrap-region multiple-cursors volatile-highlights expand-region browse-kill-ring company avy nyan-mode all-the-icons beacon git-gutter magit which-key marginalia ivy orderless swiper counsel projectile yasnippet ivy-yasnippet yasnippet-snippets fzf hydra browse-at-remote posframe file-info restart-emacs format-all crux web-mode persistent-scratch markdown-mode outline-minor-faces backline dired-narrow smex elpy eros speedrect octave eshell imenu imenu-anywhere shell-maker chatgpt-shell breadcrumb multifiles pdf-tools google-this)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -43,18 +60,23 @@
  ;; If there is more than one, they won't work right.
  )
 
+;;; Defaults
+
+(add-to-list 'load-path "~/.emacs.d/packages/better-defaults") 
+(require 'better-defaults)
+
 ;;; Backups
 
-(setq make-backup-files nil)
-(setq backup-directory-alist
-      '(("." . "~/.emacs.d/file-backups")))
-;;(setq backup-directory-alist
-;;            `((".*" ,temporary-file-directory t)))
-;;(setq auto-save-file-name-transforms
-;;      `((".*" . ,temporary-file-directory)))
+(make-directory "~/.emacs_backups/" t)
+(make-directory "~/.emacs_autosave/" t)
+(setq auto-save-file-name-transforms '((".*" "~/.emacs_autosave/" t)))
+(setq backup-directory-alist '(("." . "~/.emacs_backups/")))
+(setq backup-by-copying t)
 
 ;;; Appearence
 
+;; (setq-default show-trailing-whitespace t)
+;; (global-whitespace-newline-mode t)
 (setq-default cursor-type '(bar . 2))
 (setq-default cursor-in-non-selected-windows 'hollow)
 (set-face-attribute 'default nil :height 200)
@@ -98,11 +120,15 @@
 
 ;;; Editing
 
+(setq kill-whole-line t)
+(setq sentence-end-double-space nil)
 (setq-default abbrev-mode 1)
 (global-auto-revert-mode t)
 (put 'narrow-to-region 'disabled nil)
+
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+(setq dtrt-indent-global-mode t)
 
 (use-package format-all
   :diminish
@@ -162,10 +188,10 @@
 
 ;;; Evil Mode
 
-(evil-mode t)
-(global-evil-leader-mode t)
-(evil-leader/set-leader "<SPC>")
-(global-evil-surround-mode t)
+;; (evil-mode t)
+;; (global-evil-leader-mode t)
+;; (evil-leader/set-leader "<SPC>")
+;; (global-evil-surround-mode t)
 
 ;;; Navigation
 
@@ -304,13 +330,13 @@
 
 ;;;; Mouse Support In Terminal
 
-;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
 ;; For linux use (gpm-mouse-mode 1)
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
 
 ;;; Dired
 
+(setf dired-kill-when-opening-new-dired-buffer t)
 (setq-default dired-listing-switches "-alh")
 (setq dired-recursive-copies 'always)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -520,7 +546,6 @@
 (setq speedbar-show-unknown-files t)
 (setq compilation-auto-jump-to-first-error nil)
 (setq compilation-scroll-output t)
-;; https://emacsredux.com/blog/2016/01/31/use-tab-to-indent-or-complete/
 ;; (setq tab-always-indent 'complete)
 (setq vc-follow-symlinks nil)
 
@@ -545,6 +570,8 @@
 
 ;;; Programming
 
+(setq require-final-newline t)
+(setq-default indicate-empty-lines t)
 (eros-mode 1)
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
 (add-hook 'sh-mode-hook (lambda () (setq-local outline-regexp "# {{{*")))
@@ -578,8 +605,6 @@
 (setq chatgpt-shell-openai-key (read-file-as-string "~/.config/openai.token"))
 
 ;;; Misc
-
-;; from https://github.com/munen/emacs.d/
 
 (diminish 'eldoc-mode)
 (setq gc-cons-threshold 20000000)
@@ -669,7 +694,7 @@
 (global-set-key (kbd "C-c o t") 'org-toggle-item)
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-c v") 'ivy-push-view)
-(global-set-key (kbd "C-c w") 'counsel-wmctrl)
+(global-set-key (kbd "C-c w f") 'toggle-frame-fullscreen)
 (global-set-key (kbd "C-c x") 'counsel-compile)
 (global-set-key (kbd "C-c y i") 'ivy-yasnippet)
 (global-set-key (kbd "C-c y n") 'yas-new-snippet)
