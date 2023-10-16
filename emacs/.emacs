@@ -22,6 +22,7 @@
  ;; If there is more than one, they won't work right.
  '(auto-fill-mode-hook '(yas--auto-fill-wrapper))
  '(comment-auto-fill-only-comments t)
+ '(context-menu-mode t)
  '(evil-symbol-word-search t)
  '(imenu-auto-rescan t)
  '(imenu-max-items 999)
@@ -682,3 +683,6 @@
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;;; Testing
+
+;;; Ideas
+
