@@ -65,6 +65,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/packages") 
 (require 'better-defaults)
+(add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
 
 ;;; Backups
 
@@ -72,7 +73,7 @@
 (make-directory "~/.emacs_autosave/" t)
 (setq auto-save-file-name-transforms '((".*" "~/.emacs_autosave/" t)))
 (setq backup-directory-alist '(("." . "~/.emacs_backups/")))
-(setq backup-by-copying t)
+;; (setq backup-by-copying t)
 
 ;;; Appearence
 
@@ -667,6 +668,7 @@
 (evil-leader/set-key "r" 'restart-emacs)
 (evil-leader/set-key "w" 'save-buffers)
 (evil-leader/set-key "x" 'eval-buffer)
+(evil-leader/set-key "a" 'mark-whole-buffer)
 (global-set-key (kbd "C-M-<mouse-1>") 'mc/add-cursor-on-click)
 (global-set-key (kbd "C-c '") 'counsel-mark-ring)
 (global-set-key (kbd "C-c 0") 'insert-date)
