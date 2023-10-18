@@ -25,12 +25,27 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(setq straight-use-package-by-default t)
+
+;; (require 'package)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
+;; (package-initialize)
 
 ;;; Custom Variables
 
@@ -53,9 +68,7 @@
  '(org-indent-indentation-per-level 8)
  '(org-list-demote-modify-bullet '(("-" . "+") ("+" . "-")))
  '(org-list-indent-offset 6)
- '(org-startup-with-inline-images t)
- '(package-selected-packages
-   '(dtrt-indent elfeed yasnippet-classic-snippets evil-surround diminish outline-toc imenu-list org-modern dashboard evil evil-leader smartparens wrap-region multiple-cursors volatile-highlights expand-region browse-kill-ring company avy nyan-mode all-the-icons beacon git-gutter magit which-key marginalia ivy orderless swiper counsel projectile yasnippet ivy-yasnippet yasnippet-snippets fzf hydra browse-at-remote posframe file-info restart-emacs format-all crux web-mode persistent-scratch markdown-mode outline-minor-faces backline dired-narrow smex elpy eros speedrect octave eshell imenu imenu-anywhere shell-maker chatgpt-shell breadcrumb multifiles pdf-tools google-this)))
+ '(org-startup-with-inline-images t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -89,6 +102,8 @@
 (use-package beacon
   :config
   (beacon-mode 1))
+
+(use-package diminish)
 
 (use-package git-gutter
   :diminish
@@ -206,13 +221,18 @@
   :config
   (evil-collection-init))
 
-(global-evil-leader-mode t)
-(evil-leader/set-leader "<SPC>")
-(global-evil-surround-mode t)
+(use-package evil-leader
+  :config
+  (global-evil-leader-mode t)
+  (evil-leader/set-leader "<SPC>"))
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode t))
 
 ;;; Navigation
 
 (use-package ivy-posframe
+  :diminish
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
   (ivy-posframe-mode 1))
@@ -594,9 +614,13 @@
 
 ;;; Programming
 
+(use-package magit)
+
 (setq require-final-newline t)
 (setq-default indicate-empty-lines t)
-(eros-mode 1)
+(use-package eros
+  :config
+  (eros-mode 1))
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
 (add-hook 'sh-mode-hook (lambda () (setq-local outline-regexp "# {{{*")))
 (defalias 'perl-mode 'cperl-mode)
@@ -604,7 +628,9 @@
 (setq cperl-electric-keywords t) ;; expands for keywords such as foreach, while, etc...
 (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
 (add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
-(elpy-enable)
+(use-package elpy
+  :config
+  (elpy-enable))
 (add-hook 'verilog-mode-hook 'hs-minor-mode)
 (put 'upcase-region 'disabled nil)
 (add-hook 'verilog-mode-hook (lambda () (setq-local outline-regexp ".*/// *")))
