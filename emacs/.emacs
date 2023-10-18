@@ -22,6 +22,9 @@
 
 ;;; Packages
 
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
@@ -190,12 +193,29 @@
 
 ;;; Evil Mode
 
-(evil-mode t)
+
+(use-package evil
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
 (global-evil-leader-mode t)
 (evil-leader/set-leader "<SPC>")
 (global-evil-surround-mode t)
 
 ;;; Navigation
+
+(use-package ivy-posframe
+  :config
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+  (ivy-posframe-mode 1))
 
 (use-package breadcrumb)
 
@@ -233,11 +253,13 @@
                                                  :right-fringe 16)))
 
 (use-package fzf
+  ;; https://github.com/bling/fzf.el
+  ;; Don't forget to set keybinds!
   :defer t
   :diminish
-  ;; https://github.com/bling/fzf.el
-  :bind
-  ;; Don't forget to set keybinds!
+  :ensure-system-package
+  (fzf . fzf)
+  (rg . fzf)
   :config
   (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
         fzf/executable "fzf"
@@ -656,19 +678,29 @@
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (evil-leader/set-key "/" 'swiper)
+(evil-leader/set-key "1" 'delete-other-windows)
+(evil-leader/set-key ";" 'my-counsel-M-x)
+(evil-leader/set-key "<SPC>O" 'delete-other-windows)
+(evil-leader/set-key "<SPC>o" 'other-window)
 (evil-leader/set-key "<left>" 'previous-buffer)
 (evil-leader/set-key "<right>" 'next-buffer)
 (evil-leader/set-key "O" 'crux-kill-other-buffers)
+(evil-leader/set-key "a" 'beginning-of-line)
+(evil-leader/set-key "c" 'comment-line)
 (evil-leader/set-key "b" 'switch-to-buffer)
-(evil-leader/set-key "e" 'find-file)
+(evil-leader/set-key "d" 'dired)
+(evil-leader/set-key "e" 'end-of-line)
+(evil-leader/set-key "g" 'counsel-rg)
+(evil-leader/set-key "h" 'help)
 (evil-leader/set-key "i" 'crux-find-user-init-file)
 (evil-leader/set-key "k" 'kill-buffer)
 (evil-leader/set-key "o" 'counsel-outline)
 (evil-leader/set-key "q" 'save-buffers-kill-emacs)
 (evil-leader/set-key "r" 'restart-emacs)
+(evil-leader/set-key "s" 'avy-goto-char)
 (evil-leader/set-key "w" 'save-buffers)
-(evil-leader/set-key "x" 'eval-buffer)
-(evil-leader/set-key "a" 'mark-whole-buffer)
+(evil-leader/set-key "x" 'eval-last-sexp)
+(evil-leader/set-key "z" 'counsel-fzf)
 (global-set-key (kbd "C-M-<mouse-1>") 'mc/add-cursor-on-click)
 (global-set-key (kbd "C-c '") 'counsel-mark-ring)
 (global-set-key (kbd "C-c 0") 'insert-date)
@@ -688,8 +720,6 @@
 (global-set-key (kbd "C-c g") 'counsel-rg)
 (global-set-key (kbd "C-c h d") 'dictionary-search)
 (global-set-key (kbd "C-c h k") 'counsel-descbinds)
-(global-set-key (kbd "C-c i") 'crux-find-user-init-file)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c m") 'menu-bar-open)
 (global-set-key (kbd "C-c o a") 'org-agenda)
@@ -714,8 +744,6 @@
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;;; Testing
-
-
 
 
 
