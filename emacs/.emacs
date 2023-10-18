@@ -678,10 +678,11 @@
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (evil-leader/set-key "/" 'swiper)
-(evil-leader/set-key "1" 'delete-other-windows)
 (evil-leader/set-key ";" 'my-counsel-M-x)
 (evil-leader/set-key "<SPC>O" 'delete-other-windows)
 (evil-leader/set-key "<SPC>o" 'other-window)
+(evil-leader/set-key "<SPC>d" 'evil-scroll-down)
+(evil-leader/set-key "<SPC>u" 'evil-scroll-up)
 (evil-leader/set-key "<left>" 'previous-buffer)
 (evil-leader/set-key "<right>" 'next-buffer)
 (evil-leader/set-key "O" 'crux-kill-other-buffers)
@@ -745,7 +746,8 @@
 
 ;;; Testing
 
-
+(set-face-attribute 'line-number-current-line nil :background "#3B4252")
+(set-face-attribute 'line-number-current-line nil :foreground "#81A1C1")
 
 ;;; Ideas
 
