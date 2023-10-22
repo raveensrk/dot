@@ -28,7 +28,7 @@ Plug 'git@github.com:junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'git@github.com:junegunn/fzf.vim'
 Plug 'git@github.com:junegunn/limelight.vim'
 Plug 'git@github.com:junegunn/vim-easy-align'
-Plug 'git@github.com:ledger/vim-ledger'
+" Plug 'git@github.com:ledger/vim-ledger'
 Plug 'git@github.com:liuchengxu/vim-which-key'
 Plug 'git@github.com:mechatroner/rainbow_csv'
 Plug 'git@github.com:mg979/vim-visual-multi', {'branch': 'master'}
@@ -78,10 +78,6 @@ let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
 "}}}
 " {{{ VIM SNEAK 
-map f <Plug>Sneak_f
-map F <Plug>Sneak_F
-map t <Plug>Sneak_t
-map T <Plug>Sneak_T
 let g:sneak#label = 1
 " }}}
 "{{{ TABLE MODE
@@ -101,11 +97,6 @@ let g:linebox_default_maps = 0
 let g:linebox_marks = ["'a", "'b"]
 let g:linebox_animation = 1
 
-nnoremap <leader><leader>L :call linebox#lines#line(g:linebox_marks[0], g:linebox_marks[1])<cr>
-nnoremap <leader><leader>b :call linebox#boxes#box()<cr>
-vnoremap <leader><leader>b :call linebox#boxes#box()<cr>
-nnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
-vnoremap <leader><leader>B :call linebox#boxes#mbox()<cr>
 "}}}
 "{{{ GIT GUTTER
 set updatetime=100 " For gitgutter
@@ -115,15 +106,6 @@ let g:rainbow_active = 1
 "}}}
 " AIRLINE{{{
 let g:airline#extensions#tabline#enabled = 1
-"}}}
-" VIM EASY ALIGN{{{
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-"}}}
-" WHICHKEY{{{
-nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 "}}}
 " {{{ COLOR / THEME
 colo gruvbox
