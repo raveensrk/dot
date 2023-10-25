@@ -22,9 +22,6 @@
 
 ;;; Packages
 
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
-
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -38,7 +35,14 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+
 (setq straight-use-package-by-default t)
+
+(straight-use-package 'use-package)
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+
 
 ;; (require 'package)
 ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
