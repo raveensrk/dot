@@ -9,51 +9,52 @@ fi
 # brew update
 
 packages=(
-    fortune
-    graphicsmagick  
+    # mpv  
     autoconf  
     automake  
+    basictex
     bat  
+    cscope  
     curl  
+    dialog  
     ffmpeg  
     ffmpegthumbnailer  
+    findutils
+    fortune
     gnuplot  
+    graphicsmagick  
+    grep  
     htop  
+    iina  
     imagemagick  
-    dialog  
+    ispell
+    jq  
+    lazygit
+    lesspipe  
+    mactex  
     mediainfo  
-    mpv  
     neofetch  
     newsboat  
     pandoc  
     pkg-config  
+    poppler
     python  
     ranger  
     ripgrep  
+    rsync  
     ruby  
     shellcheck  
+    sqlite
     stow  
     tldr  
+    tmux
+    universal-ctags
+    up
     urlview  
     vim  
-    wget  
-    lesspipe  
-    rsync  
-    grep  
-    jq  
-    cscope  
     w3m  
-    mactex  
-    findutils
-    tmux
-    ispell
-    basictex
-    lazygit
-    up
-    poppler
+    wget  
     zoxide
-    sqlite
-    universal-ctags
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
@@ -70,9 +71,6 @@ for package in "${packages[@]}"; do
         fi
     fi
 done
-
-
-bash ../add_sources.bash 'export PATH="/Library/TeX/texbin:$PATH"' "$HOME/.bashrc"
 
 python3 -m pip install --upgrade pip
 python3 -m pip install --user pynvim
