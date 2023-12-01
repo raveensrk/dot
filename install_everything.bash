@@ -19,8 +19,6 @@ ln -sf ~/my_repos ~/1_my_repos # Creating this softlink so my_repos will always 
 [ -e "$HOME/.scripts/clean_up_DS_Store" ] && ~/.scripts/clean_up_DS_Store
 
 stow  -R  stow   -t  "$HOME"  --no-folding
-stow  -R  emacs  -t  "$HOME"  --no-folding
-
 
 # bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
 # bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
