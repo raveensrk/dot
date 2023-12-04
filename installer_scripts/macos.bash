@@ -14,6 +14,7 @@ packages=(
     automake  
     basictex
     bat  
+    cmatrix
     cscope  
     curl  
     dialog  
@@ -31,11 +32,13 @@ packages=(
     jq  
     lazygit
     lesspipe  
+    lolcat
     mactex  
     mediainfo  
     neofetch  
     newsboat  
     pandoc  
+    pipes-sh
     pkg-config  
     poppler
     python  
