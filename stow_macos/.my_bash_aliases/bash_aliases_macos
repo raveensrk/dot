@@ -1,6 +1,5 @@
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 alias find="/opt/homebrew/opt/findutils/bin/gfind"
-alias notes="cd ~/notes && ranger_cd" 
 alias xargs="/opt/homebrew/opt/findutils/bin/gxargs"
 export HOMEBREW_NO_AUTO_UPDATE=1
 export LESSOPEN="|/opt/homebrew/bin/lesspipe.sh %s"

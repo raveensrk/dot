@@ -20,9 +20,6 @@ ln -sf ~/my_repos ~/1_my_repos # Creating this softlink so my_repos will always 
 
 stow  -R  stow   -t  "$HOME"  --no-folding
 
-# bash add_sources.bash "[ -f ~/.bash_aliases ] && source ~/.bash_aliases" "$HOME/.bashrc"
-# bash add_sources.bash "[ -f ~/.bashrc ] && source ~/.bashrc" "$HOME/.bash_login"
-
 is_linux=$(uname -a | cut -d ' ' -f 1)
 
 if [ "$is_linux" = "Darwin" ]; then

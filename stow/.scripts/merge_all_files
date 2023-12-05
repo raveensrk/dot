@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-readarray -t files < <(gfind -iname "*.org")
-
-> merged
-
-for file in "${files[@]}"; do
-    cat "$file" >> merged
-done

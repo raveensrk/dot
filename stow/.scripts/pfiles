@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-files=()
-readarray -t files < <(cat ~/.projects | fzf | xargs -I{}  find -L {} -type f)
-
-file=$(echo ${files[@]} | tr " " "\n" | fzf)
-$EDITOR $file
-

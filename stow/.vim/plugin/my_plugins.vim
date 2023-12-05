@@ -52,7 +52,6 @@ Plug 'madox2/vim-ai'
 Plug 'mhinz/vim-startify'
 Plug 'mtth/scratch.vim'
 Plug 'rstacruz/vim-xtract'
-Plug 'sbdchd/neoformat'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-airline/vim-airline'
@@ -114,6 +113,3 @@ set background=dark
 let g:gruvbox_contrast_dark="hard"
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 " }}}
-" NEOFORMAT{{{
-autocmd BufWritePre *.md Neoformat
-"}}}
