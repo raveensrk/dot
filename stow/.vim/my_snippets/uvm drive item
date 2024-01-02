@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: uvm drive item
-# key: drive_item
-# --
-
-task drive_item(input simple_item item);
-     $1     
-endtask: drive_item

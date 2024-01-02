@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-readarray -t files < <(gfind -iname "*.pages")
-
-for file in "${files[@]}"; do
-    echo "$file"
-    open "$file"
-    rm -iv "$file"
-done

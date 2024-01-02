@@ -27,7 +27,7 @@ snippet uvm_info "uvm_info snippet"
 endsnippet
 
 snippet uvm_error "uvm_error snippet"
-`uvm_error(get_name(), $sformatf("receiving %4d", ${2:val}));
+	\`uvm_error(get_name(), $sformatf("receiving %4d", ${2:val}));
 endsnippet
 
 snippet connect_phase "Creates a connect phase function"
@@ -48,10 +48,6 @@ snippet always "Create always block"
     end
 endsnippet
 
-snippet uvm_other "random uvm snippets for future use"
-
-endsnippet
-
 snippet display "$display statement"
 $display("$1 = %0d", $1);
 endsnippet
@@ -59,3 +55,30 @@ endsnippet
 snippet uvm_config_db_get "UVM Config db"
 	uvm_config_db#($1)::get(this, "$2", $2)
 endsnippet
+
+snippet uvm_config_db "UVM config db template"
+uvm_config_db#(virtual dut_if)::get(this, "vif", vif)
+endsnippet
+
+snippet build_phase "UVM build phase template"
+function void build_phase(uvm_phase phase);
+	string inst_name;
+	super.build_phase(phase);
+endfunction
+endsnippet
+
+snippet drive_item "UVM drive item template"
+task drive_item(input simple_item item);
+     $1     
+endtask: drive_item
+endsnippet
+
+snippet uvm_fatal "UVM fatal template"
+\`uvm_fatal("$1", "$2");
+endsnippet
+
+snippet run_phase "UVM run phase template"
+task run_phase(uvm_phase phase);
+     forever begin
+     end
+endtask
