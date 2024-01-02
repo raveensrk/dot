@@ -23,7 +23,7 @@ endtask
 endsnippet
 
 snippet uvm_info "uvm_info snippet"
-`uvm_info(get_name(), $sformatf("${1:name} = 0x%08h, %0d", ${1:name}), UVM_NONE);
+	\`uvm_info(get_name(), $sformatf("$1 = 0x%08h, %0d", $1, $1), UVM_NONE);
 endsnippet
 
 snippet uvm_error "uvm_error snippet"
@@ -56,3 +56,6 @@ snippet display "$display statement"
 $display("$1 = %0d", $1);
 endsnippet
 
+snippet uvm_config_db_get "UVM Config db"
+	uvm_config_db#($1)::get(this, "$2", $2)
+endsnippet

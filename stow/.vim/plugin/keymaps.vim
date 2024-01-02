@@ -11,19 +11,21 @@ nmap <leader><Down> :tabnext<cr>
 nmap <leader><Left> :bp<CR>
 nmap <leader><Right> :bn<CR>
 nmap <leader><Up> :tabprevious<cr>
-nmap <leader><leader>B :call linebox#boxes#mbox()<cr>
-nmap <leader><leader>L :call linebox#lines#line(g:linebox_marks[0], g:linebox_marks[1])<cr>
-nmap <leader><leader>b :call linebox#boxes#box()<cr>
+" nmap <leader><leader>B :call linebox#boxes#mbox()<cr>
+" nmap <leader><leader>L :call linebox#lines#line(g:linebox_marks[0], g:linebox_marks[1])<cr>
+" nmap <leader><leader>b :call linebox#boxes#box()<cr>
 nmap <leader><leader>i :PlugClean<CR>:PlugInstall<CR>
 nmap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
-nmap <leader>E :Ex<CR>
+nmap <leader>E :e .<CR>
 nmap <leader>O <C-w>o
 nmap <leader>a 0
 nmap <leader>bb :Buffers<CR>
 nmap <leader>bh :History<CR>
+nmap <leader>bH :bro ol<CR>
 nmap <leader>bk :bd \| vsp \| bp<cr>
+nmap <leader>bd :bd<cr>
 nmap <leader>bx :%bd\|e#<cr>
 nmap <leader>e $
 nmap <leader>ff :Files<cr>
@@ -46,8 +48,8 @@ nmap <silent> <Leader>- :vertical resize -5<CR>
 nmap <silent> <leader> :WhichKey '<Space>'<CR>
 nmap Y yg_
 nmap ga <Plug>(EasyAlign)
-vmap <leader><leader>B :call linebox#boxes#mbox()<cr>
-vmap <leader><leader>b :call linebox#boxes#box()<cr>
+" vmap <leader><leader>B :call linebox#boxes#mbox()<cr>
+" vmap <leader><leader>b :call linebox#boxes#box()<cr>
 xmap ga <Plug>(EasyAlign)
 
 " Custom Commands
@@ -58,4 +60,5 @@ command! DiffFold :set diffopt=filler,context:0
 command! FindReferences :grep  * -r
 command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
 command! RemoveDoubleSpaces :%s/  / /g
-command! SplitArguments :s/ --/\r--/g
+command! SplitArguments :s/ --/ \\\r--/g
+command! SplitPlusargs :s/ -p/ \\\r-p/g

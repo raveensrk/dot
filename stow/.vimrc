@@ -89,8 +89,8 @@ set backupdir=~/.vim/backup
 " }}}
 " {{{ PATH
 set path+=**
-" set autochdir
-set noautochdir " This will change your pwd to current file
+set autochdir
+" set noautochdir " This will change your pwd to current file
 " }}}
 " {{{ NETRW
 " let g:netrw_altv = 1
