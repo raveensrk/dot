@@ -101,7 +101,7 @@ let g:linebox_animation = 1
 set updatetime=100 " For gitgutter
 "}}}
 " RAINBOW{{{
-let g:rainbow_active = 1
+" let g:rainbow_active = 1
 "}}}
 " AIRLINE{{{
 let g:airline#extensions#tabline#enabled = 1
