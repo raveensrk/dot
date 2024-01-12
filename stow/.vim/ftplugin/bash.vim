@@ -1,20 +1,4 @@
-iab if, if [ ];then<CR>fi
-iab !, #!/usr/bin/env bash
-iab ask,    echo "Do you want to ___?"
-            select opt in Yes No Quit
-            do
-                echo "You selected $opt"
-                case $opt in
-                    "Yes")
-                        break
-                        ;;
-                    "No")
-                        break
-                        ;;
-                    "Quit")
-                        break
-                        exit 2
-                        ;;
-                    *) echo "Invalid option $REPLY";;
-                esac
-            done
+iab arg_parse <ESC>:read ~/.vim/my_snippets/bash_arg_parse.txt<CR>i
+iab if if [ ];then<CR>fi
+iab #! #!/usr/bin/env bash<CR><CR>
+iab ask <ESC>:read ~/.vim/my_snippets/bash_ask.txt<CR>i

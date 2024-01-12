@@ -1,0 +1,18 @@
+echo "Do you want to ___?"
+select opt in Yes No Quit do
+    echo "You selected $opt"
+    case $opt in
+        "Yes")
+            break
+            ;;
+        "No")
+            break
+            ;;
+        "Quit")
+            break
+            exit 2
+            ;;
+        *) 
+            echo "Invalid option $REPLY";;
+    esac
+done

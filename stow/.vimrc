@@ -207,4 +207,5 @@ endfor
 " ↓ TESTING ↓ {{{
 " Vim skeleton for bash scripts
 autocmd BufNewFile  *.bash	0r ~/.vim/skeleton/bash
+" autocmd BufWinEnter *.bash r ~/.vim/my_snippets/
 " }}}

@@ -1,7 +1,6 @@
 " PLUG FUNCTION CALL {{{
 call plug#begin('~/.vim/plugged')
 
-Plug 'SirVer/ultisnips'
 Plug 'git@github.com:airblade/vim-gitgutter'
 Plug 'git@github.com:easymotion/vim-easymotion'
 Plug 'git@github.com:junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -32,19 +31,6 @@ call plug#end()
 " }}}
 " INDENT GUIDES{{{
 let g:indent_guides_enable_on_vim_startup = 1
-"}}}
-"{{{ ULTISNIPS
-" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
-" - https://github.com/Valloric/YouCompleteMe
-" - https://github.com/nvim-lua/completion-nvim
-let g:UltiSnipsExpandTrigger="<tab>"
-" let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
 "}}}
 " {{{ VIM SNEAK 
 let g:sneak#label = 1

@@ -1,0 +1,20 @@
+while [ "\$1" ]; do
+      case "\$1" in
+           --help|-h)
+                help
+                exit 0
+                ;;
+           --input|-i)
+                shift
+                input="\$1"
+                ;;
+           --output|-o)
+                shift
+                output="\$1"
+                ;;
+           --arg|-a)
+                arg="true"
+                ;;
+      esac
+      shift
+done
