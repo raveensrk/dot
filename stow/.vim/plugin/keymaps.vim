@@ -62,3 +62,23 @@ command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
 command! RemoveDoubleSpaces :%s/  / /g
 command! SplitArguments :s/ --/ \\\r--/g
 command! SplitPlusargs :s/ -p/ \\\r-p/g
+
+function! Grep(str, str2)
+    echo a:str a:str2
+    echo "vimgrep " .. a:str .. " " .. a:str2
+    " execute  "vimgrep " .. "vim" .. " " .. "**"
+    " execute  "vimgrep " .. a:str . " " .. a:str2
+    execute  "vimgrep " .. a:str .. " " .. a:str2
+    " copen
+    " setlocal nowrap
+    " execute 'vertical copen'
+    execute 'copen'
+    exe "norm \<cr>"
+    exe "normal \<c-w>="
+    setlocal nowrap
+endfunction
+
+command! Grep call Grep(<f-args>)
+
+map <leader>n :cnext<cr>
+map <leader>p :cprev<cr>
