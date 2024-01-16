@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-if [ "$is_linux" = "Linux" ]; then
-	sudo apt autoremove
-fi
+# if [ "$is_linux" = "Linux" ]; then
+# 	sudo apt autoremove
+# fi
