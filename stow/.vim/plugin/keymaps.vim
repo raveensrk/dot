@@ -11,6 +11,10 @@ nmap <leader><Down> :tabnext<cr>
 nmap <leader><Left> :bp<CR>
 nmap <leader><Right> :bn<CR>
 nmap <leader><Up> :tabprevious<cr>
+nmap <leader><leader><Down> <C-w><Down>
+nmap <leader><leader><Left> <C-w><Left>
+nmap <leader><leader><Right> <C-w><Right>
+nmap <leader><leader><Up> <C-w><Up>
 " nmap <leader><leader>B :call linebox#boxes#mbox()<cr>
 " nmap <leader><leader>L :call linebox#lines#line(g:linebox_marks[0], g:linebox_marks[1])<cr>
 " nmap <leader><leader>b :call linebox#boxes#box()<cr>
