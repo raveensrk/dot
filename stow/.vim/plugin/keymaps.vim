@@ -15,9 +15,6 @@ nmap <leader><leader><Down> <C-w><Down>
 nmap <leader><leader><Left> <C-w><Left>
 nmap <leader><leader><Right> <C-w><Right>
 nmap <leader><leader><Up> <C-w><Up>
-" nmap <leader><leader>B :call linebox#boxes#mbox()<cr>
-" nmap <leader><leader>L :call linebox#lines#line(g:linebox_marks[0], g:linebox_marks[1])<cr>
-" nmap <leader><leader>b :call linebox#boxes#box()<cr>
 nmap <leader><leader>i :PlugClean<CR>:PlugInstall<CR>
 nmap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
 nmap <leader>= gg=G2<C-o>
@@ -25,11 +22,11 @@ nmap <leader>A ggVG
 nmap <leader>E :20Lexplore<CR>
 nmap <leader>O <C-w>o
 nmap <leader>a 0
-nmap <leader>bb :Buffers<CR>
-nmap <leader>bh :History<CR>
 nmap <leader>bH :bro ol<CR>
-nmap <leader>bk :bd \| vsp \| bp<cr>
+nmap <leader>bb :Buffers<CR>
 nmap <leader>bd :bd<cr>
+nmap <leader>bh :History<CR>
+nmap <leader>bk :bd \| vsp \| bp<cr>
 nmap <leader>bx :%bd\|e#<cr>
 nmap <leader>e $
 nmap <leader>ff :Files<cr>
@@ -37,6 +34,7 @@ nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @* = expand("%:p")<cr>
 nmap <leader>gf :e <cfile><CR>
 nmap <leader>i :e ~/.vimrc<CR>
+nmap <leader>m :norm <C-z><cr>
 nmap <leader>n :set nu!<cr>
 nmap <leader>o <C-w><C-w>
 nmap <leader>q :q<CR>
@@ -52,8 +50,6 @@ nmap <silent> <Leader>- :vertical resize -5<CR>
 nmap <silent> <leader> :WhichKey '<Space>'<CR>
 nmap Y yg_
 nmap ga <Plug>(EasyAlign)
-" vmap <leader><leader>B :call linebox#boxes#mbox()<cr>
-" vmap <leader><leader>b :call linebox#boxes#box()<cr>
 xmap ga <Plug>(EasyAlign)
 
 " Custom Commands

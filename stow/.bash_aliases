@@ -251,9 +251,6 @@ fi
 # I tried rebase before and it totally sucked. Its good if the changes are are different parts of a file, if its in the same path the changes are missed
 git config --global pull.merge true
 # }}}
-# {{{ My Projectile
-alias pdirs="source $HOME/.scripts/pdirs"
-# }}}
 # {{{ GREP
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 
@@ -277,4 +274,5 @@ done
 # }}}
 # {{{ TESTING
 export is_linux=$(uname -a | cut -d ' ' -f 1)
+alias ff="source $HOME/.scripts/bg_fg_fzf"
 # }}}
