@@ -275,4 +275,5 @@ done
 # {{{ TESTING
 export is_linux=$(uname -a | cut -d ' ' -f 1)
 alias ff="source $HOME/.scripts/bg_fg_fzf"
+alias hexdump="hexdump -Cv"
 # }}}
