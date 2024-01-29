@@ -22,7 +22,7 @@ nmap <leader>A ggVG
 nmap <leader>E :20Lexplore<CR>
 nmap <leader>O <C-w>o
 nmap <leader>a 0
-nmap <leader>bH :bro ol<CR>
+nmap <leader>bH :lex eval('v:oldfiles') \| lopen<CR>
 nmap <leader>bb :Buffers<CR>
 nmap <leader>bd :bd<cr>
 nmap <leader>bh :History<CR>
