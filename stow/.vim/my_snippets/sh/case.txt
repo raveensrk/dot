@@ -1,0 +1,9 @@
+case "$var" in
+  val)
+    echo var = $var
+    ;;
+  *)
+    echo Error!
+    exit 2
+    ;;
+esac
