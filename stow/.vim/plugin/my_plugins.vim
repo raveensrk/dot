@@ -32,7 +32,7 @@ let g:sneak#label = 1
 set updatetime=100 " For gitgutter
 let g:airline#extensions#tabline#enabled = 1
 colo gruvbox
-" set background=dark
-" let g:gruvbox_contrast_dark="hard"
+set background=dark
+let g:gruvbox_contrast_dark="hard"
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 "}}}
