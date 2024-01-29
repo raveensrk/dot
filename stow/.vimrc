@@ -205,4 +205,5 @@ endfor
 " }}}
 " ↑ WORKING CONFIGS ABOVE ↑
 " ↓ TESTING ↓ {{{
+let g:netrw_dirhistmax=1000
 " }}}
