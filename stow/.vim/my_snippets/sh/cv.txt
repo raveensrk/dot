@@ -1,0 +1,1 @@
+[[ ! -v var ]] && echo Error! && help && exit 2
