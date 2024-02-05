@@ -24,6 +24,7 @@ nmap <leader>O <C-w>o
 nmap <leader>a 0
 nmap <leader>bH :lex eval('v:oldfiles') \| lopen<CR>
 nmap <leader>bb :Buffers<CR>
+nmap <leader>bw :Windows<CR>
 nmap <leader>bd :bd<cr>
 nmap <leader>bh :History<CR>
 nmap <leader>bk :bd \| vsp \| bp<cr>
