@@ -130,8 +130,8 @@ augroup markdown
 augroup END
 " let g:netrw_browsex_viewer="open"
 function! OpenUrl()
-  let l:url = expand('<cWORD>')
-  execute '!echo "' . l:url . '" | urlview'
+    let l:url = expand('<cWORD>')
+    execute '!echo "' . l:url . '" | urlview'
 endfunction
 
 nnoremap <silent> <leader>gx :call OpenUrl()<CR>
@@ -206,4 +206,26 @@ endfor
 " ↑ WORKING CONFIGS ABOVE ↑
 " ↓ TESTING ↓ {{{
 let g:netrw_dirhistmax=1000
+
+" Emacs style commandline editing
+" start of line
+cnoremap <C-A>		<Home>
+" back one character
+cnoremap <C-B>		<Left>
+" delete character under cursor
+cnoremap <C-D>		<Del>
+" end of line
+cnoremap <C-E>		<End>
+" forward one character
+cnoremap <C-F>		<Right>
+" recall newer command-line
+cnoremap <C-N>		<Down>
+" recall previous (older) command-line
+cnoremap <C-P>		<Up>
+" back one word
+cnoremap <Esc><C-B>	<S-Left>
+" forward one word
+cnoremap <Esc><C-F>	<S-Right>
+map ;b   GoZ<Esc>:g/^$/.,/./-j<CR>Gdd
+map ;n   GoZ<Esc>:g/^[ <Tab>]*$/.,/[^ <Tab>]/-j<CR>Gdd
 " }}}
