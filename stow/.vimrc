@@ -60,7 +60,7 @@ set number
 " set relativenumber
 " }}}
 " {{{ INTERFACE
-set wrap
+set nowrap
 set linebreak
 set cursorline
 set cursorcolumn

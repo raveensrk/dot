@@ -18,6 +18,6 @@ iab uvm_error `uvm_error(get_name(), $sformatf("receiving %4d", var));
 iab uvm_fatal `uvm_fatal(get_name(), $psprintf(""));
 iab vp $value$plusargs("NAME=%d", name)
 set isfname-==
-set syntax=verilog
+" set syntax=verilog
 iab class class name extends uvm_component;<CR>endclass // name
 iab Constructor function new(string name, uvm_component p = null);<CR>    super.new(name,p);<CR>    obj_name = new("obj_name",this);<CR>endfunction

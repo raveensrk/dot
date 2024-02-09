@@ -26,6 +26,7 @@ nmap <leader>bH :lex eval('v:oldfiles') \| lopen<CR>
 nmap <leader>bb :Buffers<CR>
 nmap <leader>bw :Windows<CR>
 nmap <leader>bd :bd<cr>
+nmap <leader>d :bd<cr>
 nmap <leader>bh :History<CR>
 nmap <leader>bk :bd \| vsp \| bp<cr>
 nmap <leader>bx :%bd\|e#<cr>
@@ -63,6 +64,7 @@ command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
 command! RemoveDoubleSpaces :%s/  / /g
 command! SplitArguments :s/ --/ \\\r--/g
 command! SplitPlusargs :s/ -p/ \\\r-p/g
+command! BuildTags :!ctags -R .
 
 function! Grep(str, str2)
     echo a:str a:str2
