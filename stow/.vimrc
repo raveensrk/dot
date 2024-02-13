@@ -102,6 +102,7 @@ set autochdir
 "   autocmd!
 "   autocmd VimEnter * :Vexplore
 " augroup END
+let g:netrw_keepdir=0
 "}}}
 " CTAGS {{{
 set tags=tags
@@ -206,4 +207,7 @@ endfor
 " ↑ WORKING CONFIGS ABOVE ↑
 " ↓ TESTING ↓ {{{
 let g:netrw_dirhistmax=1000
+
+set grepprg=grep\ -RnH\ $*\ --exclude=\"tags\"\ --exclude=\"TAGS\"\ /dev/null
+
 " }}}
