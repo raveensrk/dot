@@ -22,3 +22,4 @@ set isfname-==
 iab class class name extends uvm_component;<CR>endclass // name
 iab Constructor function new(string name, uvm_component p = null);<CR>    super.new(name,p);<CR>    obj_name = new("obj_name",this);<CR>endfunction
 set makeprg=xrun\ %
+set errorformat+=%.%#xmvlog:\ %.%#\\,%.%#(%f\\,%l\|%c%.%#
