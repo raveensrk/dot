@@ -218,4 +218,11 @@ set title
 set titlestring=%f
 set titleold="Terminal"
 set helpheight=10
+function! Bookmarks()
+  setlocal errorformat+=%f%.%#
+  lexp  eval('g:netrw_bookmarklist')
+  lopen 5
+endfunction
+
+command! Bookmarks :call Bookmarks()
 " }}}

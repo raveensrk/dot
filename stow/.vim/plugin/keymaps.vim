@@ -85,3 +85,4 @@ command! Grep call Grep(<f-args>)
 
 map <leader>n :cnext<cr>
 map <leader>p :cprev<cr>
+map <leader><C-t> :FZF<CR>
