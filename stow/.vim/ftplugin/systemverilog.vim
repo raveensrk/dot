@@ -16,6 +16,7 @@ iab uvm_config_db_get uvm_config_db#(int)::get(null, "db_name", "var_name", get_
 iab uvm_config_db_set uvm_config_db#(int)::set(null, "db_name", "var_name", 1/*set value*/);
 iab uvm_error `uvm_error(get_name(), $sformatf("receiving %4d", var));
 iab uvm_fatal `uvm_fatal(get_name(), $psprintf(""));
+iab umv_info `umv_info(get_name(), $psprintf(""), UVM_NONE);
 iab vp $value$plusargs("NAME=%d", name)
 set isfname-==
 " set syntax=verilog
