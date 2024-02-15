@@ -19,7 +19,7 @@ nmap <leader><leader>i :PlugClean<CR>:PlugInstall<CR>
 nmap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
-nmap <leader>E :20Lexplore<CR>
+nmap <leader>E :e .<CR>
 nmap <leader>O <C-w>o
 nmap <leader>a 0
 nmap <leader>bH :lex eval('v:oldfiles') \| lopen<CR>

@@ -21,8 +21,8 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'justinmk/vim-sneak'
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-vinegar'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 " }}}
@@ -30,9 +30,8 @@ call plug#end()
 let g:indent_guides_enable_on_vim_startup = 1
 let g:sneak#label = 1
 set updatetime=100 " For gitgutter
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
 colo gruvbox
 set background=dark
 let g:gruvbox_contrast_dark="hard"
-set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 "}}}

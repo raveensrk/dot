@@ -30,8 +30,7 @@ let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
 " }}}
 " NAVIGATION {{{
-set title
-set splitbelow splitright
+" set splitbelow splitright
 " }}}
 " GRAMMAR AND SEARCHING {{{
 " set spell spelllang=en_us
@@ -103,6 +102,7 @@ set autochdir
 "   autocmd VimEnter * :Vexplore
 " augroup END
 let g:netrw_keepdir=0
+autocmd FileType netrw silent! cd %:p:h
 "}}}
 " CTAGS {{{
 set tags=tags
@@ -210,25 +210,12 @@ let g:netrw_dirhistmax=1000
 
 set grepprg=grep\ -RnH\ $*\ --exclude=\"tags\"\ --exclude=\"TAGS\"\ /dev/null
 
-" Emacs style commandline editing
-" start of line
-cnoremap <C-A>		<Home>
-" back one character
-cnoremap <C-B>		<Left>
-" delete character under cursor
-cnoremap <C-D>		<Del>
-" end of line
-cnoremap <C-E>		<End>
-" forward one character
-cnoremap <C-F>		<Right>
-" recall newer command-line
-cnoremap <C-N>		<Down>
-" recall previous (older) command-line
-cnoremap <C-P>		<Up>
-" back one word
-cnoremap <Esc><C-B>	<S-Left>
-" forward one word
-cnoremap <Esc><C-F>	<S-Right>
-map ;b   GoZ<Esc>:g/^$/.,/./-j<CR>Gdd
-map ;n   GoZ<Esc>:g/^[ <Tab>]*$/.,/[^ <Tab>]/-j<CR>Gdd
+set showcmdloc="statusline"
+set statusline=[%n]%f%=%m%r%h%w%y%q%k[%p%%][%04l,%04v][%L]%S
+set previewpopup=height:10,width:60
+set browsedir="buffer"
+set title
+set titlestring=%f
+set titleold="Terminal"
+set helpheight=10
 " }}}
