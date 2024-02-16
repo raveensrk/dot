@@ -14,7 +14,8 @@ syntax on
 set backspace=indent,eol,start
 set encoding=utf-8
 set noerrorbells
-set novb t_vb=
+" set novb t_vb=
+set vb t_vb=[?5h$<100>[?5l
 
 " Use a line cursor within insert mode and a block cursor everywhere else.
 "
@@ -47,6 +48,7 @@ set shiftwidth=4
 set expandtab
 set autoindent
 set smartindent
+set smarttab
 " set listchars=nbsp:_,tab:>-,trail:~,extends:>,precedes:<,eol:$
 " set list
 " }}}
@@ -59,24 +61,25 @@ set number
 " set relativenumber
 " }}}
 " {{{ INTERFACE
-set nowrap
+set wrap
 set linebreak
-set cursorline
-set cursorcolumn
+set nocursorline
+set nocursorcolumn
 set hlsearch
 set ruler
 " set columns=80
 " set colorcolumn=80
 " highlight ColorColumn ctermbg=0 guibg=lightgrey
-" set wildmode=longest,list,full
+set wildmode=longest,list,full
 set wildmenu
-set wildoptions=pum
+set wildignorecase
+" set wildoptions=pum
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
 set scrolloff=999
 set sidescrolloff=999
 
-" set virtualedit=all
+set virtualedit=onemore
 " set textwidth=0 wrapmargin=0
 " }}}
 " {{{ BACKUPS AND UNDO
@@ -88,6 +91,7 @@ set backupdir=~/.vim/backup
 " }}}
 " {{{ PATH
 set path+=**
+set path+=$HOME/my_repos/**
 set autochdir
 " set noautochdir " This will change your pwd to current file
 " }}}
@@ -225,4 +229,25 @@ function! Bookmarks()
 endfunction
 
 command! Bookmarks :call Bookmarks()
+set cmdheight=2
+set smoothscroll
+set cdpath+=$HOME/my_repos/**
+set clipboard^=unnamed
+set complete+=t
+set completeopt+=popup,preview
+set makeef=/tmp/errorfile
+set exrc secure
+set foldclose="all"
+set showfulltag
+set showbreak=>\
+set showmatch
+set switchbuf=usetab,uselast
+set verbosefile=/tmp/verbosefile
+set visualbell
+set whichwrap+=<,>,[,]
+set equalalways
+set winfixheight
+set winfixwidth
 " }}}
+
+
