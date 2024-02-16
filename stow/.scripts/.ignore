@@ -1,3 +1,6 @@
 .git/*
 .hg/*
 *.org_archive
+tags
+TAGS
+*~

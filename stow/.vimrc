@@ -208,10 +208,11 @@ endfor
 " ↓ TESTING ↓ {{{
 let g:netrw_dirhistmax=1000
 
-set grepprg=grep\ -RnH\ $*\ --exclude=\"tags\"\ --exclude=\"TAGS\"\ /dev/null
+" set grepprg=grep\ -RnH\ $*\ --exclude=\"tags\"\ --exclude=\"TAGS\"\ /dev/null
+set grepprg=rg\ --no-heading\ --with-filename\ --column\ --ignore-file\ $HOME/.scripts/.ignore\ $*
 
 set showcmdloc="statusline"
-set statusline=[%n]%f%=%m%r%h%w%y%q%k[%p%%][%04l,%04v][%L]%S
+set statusline=[%n]%m%r%f%=%h%w%y%q%k[%p%%][%04l,%04v][%L]%S
 set previewpopup=height:10,width:60
 set browsedir="buffer"
 set title
