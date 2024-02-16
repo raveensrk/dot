@@ -79,7 +79,7 @@ set wildignorecase
 set scrolloff=999
 set sidescrolloff=999
 
-set virtualedit=onemore
+" set virtualedit=onemore
 " set textwidth=0 wrapmargin=0
 " }}}
 " {{{ BACKUPS AND UNDO
@@ -90,8 +90,8 @@ set undodir=~/.vim/undo
 set backupdir=~/.vim/backup
 " }}}
 " {{{ PATH
-set path+=**
-set path+=$HOME/my_repos/**
+set path+=*
+set path+=$HOME/my_repos/*
 set autochdir
 " set noautochdir " This will change your pwd to current file
 " }}}
@@ -114,8 +114,6 @@ set tags=tags
 "{{{ CLIPBOARD
 vmap <silent> +y :w! ~/.vim_clip<cr>
 nmap <silent> +p :read ~/.vim_clip<cr>
-
-set clipboard=unnamed
 "}}}
 " {{{ VIM SESSIONS AND VIEWS
 " autocmd BufWinLeave *.* mkview!
@@ -209,7 +207,7 @@ endfor
 "}}}
 " }}}
 " ↑ WORKING CONFIGS ABOVE ↑
-" ↓ TESTING ↓ {{{
+" ↓ TESTING ↓
 let g:netrw_dirhistmax=1000
 
 " set grepprg=grep\ -RnH\ $*\ --exclude=\"tags\"\ --exclude=\"TAGS\"\ /dev/null
@@ -231,8 +229,7 @@ endfunction
 
 command! Bookmarks :call Bookmarks()
 set cmdheight=2
-set smoothscroll
-set cdpath+=$HOME/my_repos/**
+" set smoothscroll
 set clipboard^=unnamed
 set complete+=t
 set completeopt+=popup,preview
@@ -240,15 +237,36 @@ set makeef=/tmp/errorfile
 set exrc secure
 set foldclose="all"
 set showfulltag
-set showbreak=>\
+set showbreak=>>>\ 
 set showmatch
 set switchbuf=usetab,uselast
 set verbosefile=/tmp/verbosefile
-set visualbell
 set whichwrap+=<,>,[,]
 set equalalways
 set winfixheight
 set winfixwidth
-" }}}
+set isfname-==
+autocmd FileType netrw cd %:p:h
+
+    func! QfOldFiles(info)
+	" get information about a range of quickfix entries
+	let items = getqflist({'id' : a:info.id, 'items' : 1}).items
+	let l = []
+	for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+	    " use the simplified file name
+	  call add(l, fnamemodify(bufname(items[idx].bufnr), ':p:.'))
+	endfor
+	return l
+    endfunc
+
+    " create a quickfix list from v:oldfiles
+ 	nmap <leader>bH   :call setqflist([], ' ', {'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})<cr>:copen<cr>
 
 
+" Hide unnamed buffers
+autocmd BufLeave,BufEnter * if bufname('%') == '' && !&modified | setlocal bufhidden=hide | endif
+
+command! Scratch tabedit /tmp/SCRATCH | setlocal bufhidden=hide
+nmap <leader>` :Scratch<cr>
+
+nmap <leader>D :bd!<cr>
