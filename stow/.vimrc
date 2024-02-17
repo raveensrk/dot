@@ -270,3 +270,4 @@ command! Scratch tabedit /tmp/SCRATCH | setlocal bufhidden=hide
 nmap <leader>` :Scratch<cr>
 
 nmap <leader>D :bd!<cr>
+set tags+=~/tags/tags
