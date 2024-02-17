@@ -32,6 +32,7 @@ nmap <leader>bk :bd \| vsp \| bp<cr>
 nmap <leader>bx :%bd\|e#<cr>
 nmap <leader>e $
 nmap <leader>ff :Files<cr>
+nmap <leader>fr :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @* = expand("%:p")<cr>
 nmap <leader>gf :e <cfile><CR>
@@ -85,4 +86,3 @@ command! Grep call Grep(<f-args>)
 
 map <leader>n :cnext<cr>
 map <leader>p :cprev<cr>
-map <leader><C-t> :FZF<CR>
