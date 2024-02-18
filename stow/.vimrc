@@ -39,7 +39,6 @@ set textwidth=80
 set isk+=-
 set ignorecase
 set smartcase
-set incsearch
 set dictionary="/usr/share/dict/words"
 " }}}
 " TABBING AND INDENT {{{
@@ -65,7 +64,8 @@ set wrap
 set linebreak
 set nocursorline
 set nocursorcolumn
-set hlsearch
+" set hlsearch
+set incsearch
 set ruler
 " set columns=80
 " set colorcolumn=80
@@ -248,19 +248,19 @@ set winfixwidth
 set isfname-==
 autocmd FileType netrw cd %:p:h
 
-    func! QfOldFiles(info)
-	" get information about a range of quickfix entries
-	let items = getqflist({'id' : a:info.id, 'items' : 1}).items
-	let l = []
-	for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
-	    " use the simplified file name
-	  call add(l, fnamemodify(bufname(items[idx].bufnr), ':p:.'))
-	endfor
-	return l
-    endfunc
+func! QfOldFiles(info)
+    " get information about a range of quickfix entries
+    let items = getqflist({'id' : a:info.id, 'items' : 1}).items
+    let l = []
+    for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+        " use the simplified file name
+        call add(l, fnamemodify(bufname(items[idx].bufnr), ':p:.'))
+    endfor
+    return l
+endfunc
 
-    " create a quickfix list from v:oldfiles
- 	nmap <leader>bH   :call setqflist([], ' ', {'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})<cr>:copen<cr>
+" create a quickfix list from v:oldfiles
+nmap <leader>bH   :call setqflist([], ' ', {'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})<cr>:copen<cr>
 
 
 " Hide unnamed buffers
@@ -270,3 +270,4 @@ command! Scratch tabedit /tmp/SCRATCH | setlocal bufhidden=hide
 nmap <leader>` :Scratch<cr>
 
 nmap <leader>D :bd!<cr>
+set tags+=~/tags/tags
