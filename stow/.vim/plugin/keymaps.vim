@@ -86,3 +86,26 @@ command! Grep call Grep(<f-args>)
 
 map <leader>n :cnext<cr>
 map <leader>p :cprev<cr>
+
+
+function! AlignSVf ()
+		execute "'<,'>s/ //g"
+    execute "normal gv"
+    execute "'<,'>EasyAlign */[#]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
+    execute "normal gv"
+    execute "'<,'>EasyAlign */,\\+/ { 'left_margin': 0, 'right_margin': 0 }"
+    execute "normal gv"
+    execute "'<,'>EasyAlign */[::]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
+    execute "normal gv"
+    execute "'<,'>EasyAlign */[(]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
+    execute "normal gv"
+    execute "'<,'>EasyAlign */[)]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
+    execute "normal gv"
+    execute "'<,'>EasyAlign */[=]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
+    execute "normal gv"
+    execute "'<,'>EasyAlign */[;]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
+    execute "normal gv"
+endfunction
+
+command! -range AlignSV <line1>,<line2>call AlignSVf()
+
