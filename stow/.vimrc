@@ -10,7 +10,7 @@ set mouse=a
 set nocompatible
 filetype plugin on
 syntax on
-" set hidden
+set hidden
 set backspace=indent,eol,start
 set encoding=utf-8
 set noerrorbells
@@ -65,6 +65,7 @@ set linebreak
 set nocursorline
 set nocursorcolumn
 " set hlsearch
+set nohls
 set incsearch
 set ruler
 " set columns=80
@@ -91,8 +92,8 @@ set backupdir=~/.vim/backup
 " }}}
 " {{{ PATH
 set path+=*
-set path+=$HOME/my_repos/*
-set autochdir
+" set path+=$HOME/my_repos/*
+" set autochdir
 " set noautochdir " This will change your pwd to current file
 " }}}
 " {{{ NETRW
@@ -234,7 +235,6 @@ set clipboard^=unnamed
 set complete+=t
 set completeopt+=popup,preview
 set makeef=/tmp/errorfile
-set exrc secure
 set foldclose="all"
 set showfulltag
 set showbreak=>>>\ 
@@ -246,6 +246,7 @@ set equalalways
 set winfixheight
 set winfixwidth
 set isfname-==
+set isfname-=,
 autocmd FileType netrw cd %:p:h
 
 func! QfOldFiles(info)
@@ -271,3 +272,4 @@ nmap <leader>` :Scratch<cr>
 
 nmap <leader>D :bd!<cr>
 set tags+=~/tags/tags
+set exrc secure
