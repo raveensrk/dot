@@ -753,3 +753,4 @@
 
 ;;; Ideas
 
+(setq tags-table-files '("$HOME/tags/tags"))

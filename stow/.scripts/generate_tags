@@ -2,6 +2,7 @@
 
 
 pushd ~/tags || exit 2
-ctags -R $(envsubst < tagpaths | xargs)
+ctags -R $(envsubst < tagpaths | xargs) 
+ctags -e -f TAGS -R $(envsubst < tagpaths | xargs) 
 popd || exit 2
 
