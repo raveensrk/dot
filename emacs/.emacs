@@ -101,7 +101,7 @@
 ;; (global-whitespace-newline-mode t)
 (setq-default cursor-type '(bar . 2))
 (setq-default cursor-in-non-selected-windows 'hollow)
-(set-face-attribute 'default nil :height 200)
+(set-face-attribute 'default nil :height 120)
 
 (use-package beacon
   :config
@@ -121,7 +121,7 @@
 (setq display-line-numbers t)
 (setq display-line-numbers-type t)
 (global-display-line-numbers-mode +1)
-(global-visual-line-mode t)
+;; (global-visual-line-mode t)
 ;; (setq-default visual-line-fringe-indicators t)
 (setq-default truncate-lines +1)
 (global-prettify-symbols-mode +1)
@@ -213,33 +213,33 @@
 ;;; Evil Mode
 
 
-(use-package evil
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1))
+;; (use-package evil
+;;   :init
+;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+;;   (setq evil-want-keybinding nil)
+;;   :config
+;;   (evil-mode 1))
 
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
+;; (use-package evil-collection
+;;   :after evil
+;;   :config
+;;   (evil-collection-init))
 
-(use-package evil-leader
-  :config
-  (global-evil-leader-mode t)
-  (evil-leader/set-leader "<SPC>"))
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode t))
+;; (use-package evil-leader
+;;   :config
+;;   (global-evil-leader-mode t)
+;;   (evil-leader/set-leader "<SPC>"))
+;; (use-package evil-surround
+;;   :config
+;;   (global-evil-surround-mode t))
 
 ;;; Navigation
 
-(use-package ivy-posframe
-  :diminish
-  :config
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-  (ivy-posframe-mode 1))
+;; (use-package ivy-posframe
+;;   :diminish
+;;   :config
+;;   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
+;;   (ivy-posframe-mode 1))
 
 (use-package breadcrumb)
 
@@ -279,11 +279,8 @@
 (use-package fzf
   ;; https://github.com/bling/fzf.el
   ;; Don't forget to set keybinds!
-  :defer t
+  :ensure t
   :diminish
-  :ensure-system-package
-  (fzf . fzf)
-  (rg . fzf)
   :config
   (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
         fzf/executable "fzf"
@@ -315,20 +312,21 @@
   :diminish
   :config
   (ivy-mode 1)
-  (setq ivy-height 20)
+  (setq ivy-height 10)
   (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
+  (setq enable-recursive-minibuffers nil)
   (setq ivy-count-format "(%d/%d) ")
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
-  (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
-  (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight)))
+  ;; (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
+;;  (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
+  )
 
-(use-package orderless
-  :after ivy
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+;; (use-package orderless
+;;   :after ivy
+;;   :custom
+;;   (completion-styles '(orderless basic))
+;;   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package swiper
   :config
@@ -701,50 +699,59 @@
   nil " sticky" nil
   (set-window-dedicated-p (selected-window) sticky-buffer-mode))
 
+(use-package restart-emacs)
+
 ;;; Keybindings
 
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(evil-leader/set-key "'" 'counsel-mark-ring)
-(evil-leader/set-key "/" 'swiper)
-(evil-leader/set-key ";" 'my-counsel-M-x)
-(evil-leader/set-key "<SPC>=" 'my-indent-whole-buffer)
-(evil-leader/set-key "<SPC>O" 'delete-other-windows)
-(evil-leader/set-key "<SPC>a" 'org-agenda)
-(evil-leader/set-key "<SPC>b" 'counsel-bookmark)
-(evil-leader/set-key "<SPC>c" 'org-capture)
-(evil-leader/set-key "<SPC>d" 'evil-scroll-down)
-(evil-leader/set-key "<SPC>l" 'org-store-link)
-(evil-leader/set-key "<SPC>o" 'other-window)
-(evil-leader/set-key "<SPC>t" 'org-toggle-item)
-(evil-leader/set-key "<SPC>u" 'evil-scroll-up)
-(evil-leader/set-key "<left>" 'previous-buffer)
-(evil-leader/set-key "<right>" 'next-buffer)
-(evil-leader/set-key "K" 'nuke-all-buffers)
-(evil-leader/set-key "O" 'crux-kill-other-buffers)
-(evil-leader/set-key "a" 'beginning-of-line)
-(evil-leader/set-key "b" 'switch-to-buffer)
-(evil-leader/set-key "c" 'comment-line)
-(evil-leader/set-key "d" 'dired)
-(evil-leader/set-key "e" 'end-of-line)
-(evil-leader/set-key "fi" 'file-info-show)
-(evil-leader/set-key "fr" 'counsel-recentf)
-(evil-leader/set-key "g" 'counsel-rg)
-(evil-leader/set-key "h" 'help)
-(evil-leader/set-key "i" 'crux-find-user-init-file)
-(evil-leader/set-key "k" 'kill-buffer)
-(evil-leader/set-key "o" 'counsel-outline)
-(evil-leader/set-key "q" 'save-buffers-kill-emacs)
-(evil-leader/set-key "r" 'restart-emacs)
-(evil-leader/set-key "s" 'avy-goto-char)
-(evil-leader/set-key "t" 'toggle-truncate-lines)
-(evil-leader/set-key "v" 'evil-window-vsplit)
-(evil-leader/set-key "w" 'save-buffers)
-(evil-leader/set-key "x" 'eval-last-sexp)
-(evil-leader/set-key "z" 'counsel-fzf)
+(global-set-key (kbd "C-c s") 'swiper)
+(global-set-key (kbd "C-c *") 'swiper-thing-at-point)
+;; (evil-leader/set-key "'" 'counsel-mark-ring)
+;; (evil-leader/set-key "/" 'swiper)
+;; (evil-leader/set-key ";" 'my-counsel-M-x)
+(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
+(pixel-scroll-mode t)
+(global-set-key (kbd "C-c w") 'tab-list)
+;; (evil-leader/set-key "<SPC>=" 'my-indent-whole-buffer)
+;; (evil-leader/set-key "<SPC>O" 'delete-other-windows)
+;; (evil-leader/set-key "<SPC>a" 'org-agenda)
+;; (evil-leader/set-key "<SPC>b" 'counsel-bookmark)
+;; (evil-leader/set-key "<SPC>c" 'org-capture)
+;; (evil-leader/set-key "<SPC>d" 'evil-scroll-down)
+;; (evil-leader/set-key "<SPC>l" 'org-store-link)
+;; (evil-leader/set-key "<SPC>o" 'other-window)
+;; (evil-leader/set-key "<SPC>t" 'org-toggle-item)
+;; (evil-leader/set-key "<SPC>u" 'evil-scroll-up)
+;; (evil-leader/set-key "<left>" 'previous-buffer)
+;; (evil-leader/set-key "<right>" 'next-buffer)
+;; (evil-leader/set-key "K" 'nuke-all-buffers)
+;; (evil-leader/set-key "O" 'crux-kill-other-buffers)
+;; (evil-leader/set-key "a" 'beginning-of-line)
+;; (evil-leader/set-key "b" 'switch-to-buffer)
+;; (evil-leader/set-key "c" 'comment-line)
+;; (evil-leader/set-key "d" 'dired)
+;; (evil-leader/set-key "e" 'end-of-line)
+;; (evil-leader/set-key "fi" 'file-info-show)
+;; (evil-leader/set-key "fr" 'counsel-recentf)
+;; (evil-leader/set-key "g" 'counsel-rg)
+;; (evil-leader/set-key "h" 'help)
+;; (evil-leader/set-key "i" 'crux-find-user-init-file)
+;; (evil-leader/set-key "k" 'kill-buffer)
+;; (evil-leader/set-key "o" 'counsel-outline)
+;; (evil-leader/set-key "q" 'save-buffers-kill-emacs)
+(global-set-key (kbd "C-c r") 'restart-emacs)
+(global-set-key (kbd "C-c t") 'toggle-truncate-lines)
+;; (evil-leader/set-key "s" 'avy-goto-char)
+;; (evil-leader/set-key "t" 'toggle-truncate-lines)
+;; (evil-leader/set-key "v" 'evil-window-vsplit)
+;; (evil-leader/set-key "w" 'save-buffers)
+;; (evil-leader/set-key "x" 'eval-last-sexp)
+;; (evil-leader/set-key "z" 'counsel-fzf)
+;;
 (global-set-key (kbd "M-x") 'my-counsel-M-x)
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
-;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
 
 ;;; Testing
 
