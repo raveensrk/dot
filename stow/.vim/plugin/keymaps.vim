@@ -22,6 +22,8 @@ nmap <leader>fc :e ~/.vimrc<CR>
 nmap <leader>ff :Files<cr>
 nmap <leader>fg :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
+nmap  <leader>fB :redir >> ~/bookmarks \| echo expand("%:p") . ':' . getpos(".")[1]  \| echo expand("%:h") \| redir END \| tabnew ~/bookmarks \| sort \| w \| execute '%!uniq' \| w<cr>
+nmap <leader>gB :tabnew ~/bookmarks<cr>
 nmap <leader>fp :let @* = expand("%:p")<cr>
 nmap <leader>fr :History<CR>
 nmap <leader>fw :Windows<CR>
@@ -29,8 +31,8 @@ nmap <leader>gf :e <cfile><CR>
 nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>
 nmap <leader>s :%so<cr>
-nmap <leader>tn :cnext<cr>
-nmap <leader>tp :cprev<cr>
+nmap <leader>tn :tabnext<cr>
+nmap <leader>tN :tabprev<cr>
 nmap <leader>tt :tabnew<cr>
 nmap <leader>tw :set nowrap!<cr>
 nmap <leader>w <C-w>

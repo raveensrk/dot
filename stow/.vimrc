@@ -35,7 +35,7 @@ let &t_EI = "\e[2 q"
 " }}}
 " GRAMMAR AND SEARCHING {{{
 " set spell spelllang=en_us
-set textwidth=80
+" set textwidth=80
 set isk+=-
 set ignorecase
 set smartcase
@@ -61,7 +61,7 @@ set number
 " }}}
 " {{{ INTERFACE
 set wrap
-set linebreak
+set nolinebreak
 set nocursorline
 set nocursorcolumn
 " set hlsearch
@@ -273,3 +273,4 @@ nmap <leader>` :Scratch<cr>
 nmap <leader>D :bd!<cr>
 set tags+=~/tags/tags
 set exrc secure
+set paste
