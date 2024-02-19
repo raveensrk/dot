@@ -1,51 +1,42 @@
 let mapleader = " "
 
-" Keymaps
-" -----------
 map F <Plug>Sneak_F
 map T <Plug>Sneak_T
 map f <Plug>Sneak_f
 map t <Plug>Sneak_t
 nmap <leader>/ :BLines<CR>
-nmap <leader><Down> :tabnext<cr>
-nmap <leader><Left> :bp<CR>
-nmap <leader><Right> :bn<CR>
-nmap <leader><Up> :tabprevious<cr>
-nmap <leader><leader><Down> <C-w><Down>
-nmap <leader><leader><Left> <C-w><Left>
-nmap <leader><leader><Right> <C-w><Right>
-nmap <leader><leader><Up> <C-w><Up>
 nmap <leader><leader>i :PlugClean<CR>:PlugInstall<CR>
 nmap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
 nmap <leader>E :e .<CR>
-nmap <leader>O <C-w>o
+nmap <leader>W :wa<CR>
+nmap <leader>X :%bd\|e#<cr>
 nmap <leader>a 0
-nmap <leader>bH :lex eval('v:oldfiles') \| lopen<CR>
-nmap <leader>bb :Buffers<CR>
-nmap <leader>bw :Windows<CR>
-nmap <leader>bd :bd<cr>
+nmap <leader>c :tabnew \| wa \| make \| copen<cr>
 nmap <leader>d :bd<cr>
-nmap <leader>bh :History<CR>
-nmap <leader>bk :bd \| vsp \| bp<cr>
-nmap <leader>bx :%bd\|e#<cr>
 nmap <leader>e $
+nmap <leader>fR :lex eval('v:oldfiles') \| lopen<CR>
+nmap <leader>fb :Buffers<CR>
+nmap <leader>fc :e ~/.vimrc<CR>
 nmap <leader>ff :Files<cr>
-nmap <leader>fr :Rg<cr>
+nmap <leader>fg :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @* = expand("%:p")<cr>
+nmap <leader>fr :History<CR>
+nmap <leader>fw :Windows<CR>
 nmap <leader>gf :e <cfile><CR>
-nmap <leader>i :e ~/.vimrc<CR>
-nmap <leader>m :norm <C-z><cr>
-nmap <leader>n :set nu!<cr>
-nmap <leader>o <C-w><C-w>
 nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>
 nmap <leader>s :%so<cr>
-nmap <leader>t :set nowrap!<cr>
-nmap <leader>v :vsp<cr>
-nmap <leader>w :w<CR>
+nmap <leader>tn :cnext<cr>
+nmap <leader>tp :cprev<cr>
+nmap <leader>tt :tabnew<cr>
+nmap <leader>tw :set nowrap!<cr>
+nmap <leader>w <C-w>
+nmap <leader>o :copen<cr>
+nmap <leader>n :cn<cr>
+nmap <leader>N :cp<cr>
 nmap <leader>x yyq:p<CR>
 nmap <leader>y ggVGy2<C-o>
 nmap <silent> <Leader>+ :vertical resize +5<CR>
@@ -55,57 +46,10 @@ nmap Y yg_
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
-" Custom Commands
-" ------------------
-
 command! Date -1read !date -I
 command! DiffFold :set diffopt=filler,context:0
-command! FindReferences :grep  * -r
+command! FindReferences :vimgrep // **
 command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
-command! RemoveDoubleSpaces :%s/  / /g
+command! RemoveDoubleSpaces :999%s/  / /g
 command! SplitArguments :s/ --/ \\\r--/g
 command! SplitPlusargs :s/ -p/ \\\r-p/g
-command! BuildTags :!ctags -R .
-
-function! Grep(str, str2)
-    echo a:str a:str2
-    echo "vimgrep " .. a:str .. " " .. a:str2
-    " execute  "vimgrep " .. "vim" .. " " .. "**"
-    " execute  "vimgrep " .. a:str . " " .. a:str2
-    execute  "vimgrep " .. a:str .. " " .. a:str2
-    " copen
-    " setlocal nowrap
-    " execute 'vertical copen'
-    execute 'copen'
-    exe "norm \<cr>"
-    exe "normal \<c-w>="
-    setlocal nowrap
-endfunction
-
-command! Grep call Grep(<f-args>)
-
-map <leader>n :cnext<cr>
-map <leader>p :cprev<cr>
-
-
-function! AlignSVf ()
-		execute "'<,'>s/ //g"
-    execute "normal gv"
-    execute "'<,'>EasyAlign */[#]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
-    execute "normal gv"
-    execute "'<,'>EasyAlign */,\\+/ { 'left_margin': 0, 'right_margin': 0 }"
-    execute "normal gv"
-    execute "'<,'>EasyAlign */[::]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
-    execute "normal gv"
-    execute "'<,'>EasyAlign */[(]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
-    execute "normal gv"
-    execute "'<,'>EasyAlign */[)]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
-    execute "normal gv"
-    execute "'<,'>EasyAlign */[=]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
-    execute "normal gv"
-    execute "'<,'>EasyAlign */[;]\\+/ { 'left_margin': 0, 'right_margin': 0 }"
-    execute "normal gv"
-endfunction
-
-command! -range AlignSV <line1>,<line2>call AlignSVf()
-

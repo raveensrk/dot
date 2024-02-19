@@ -38,11 +38,11 @@ command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'optio
 " Word completion with custom spec with popup layout option
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
 " Global line completion (not just open buffers. ripgrep required.)
-inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
-      \ 'prefix': '^.*$',
-      \ 'source': 'rg -n ^ --color always',
-      \ 'options': '--ansi --delimiter : --nth 3..',
-      \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
+" inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
+"       \ 'prefix': '^.*$',
+"       \ 'source': 'rg -n ^ --color always',
+"       \ 'options': '--ansi --delimiter : --nth 3..',
+"       \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
 
     function! s:make_sentence(lines)
       return substitute(join(a:lines), '^.', '\=toupper(submatch(0))', '').'.'
