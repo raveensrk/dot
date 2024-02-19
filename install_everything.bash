@@ -31,6 +31,8 @@ if [ "$is_linux" = "Linux" ]; then
     stow -R stow_linux -t "$HOME" --no-folding
 fi
 
+stow -R emacs -t "$HOME" --no-folding
+
 # vim -c "PlugInstall | PlugClean | qa"
 # tldr -u
 
