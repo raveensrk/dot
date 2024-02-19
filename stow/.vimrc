@@ -274,3 +274,4 @@ nmap <leader>D :bd!<cr>
 set tags+=~/tags/tags
 set exrc secure
 set paste
+packadd cfilter
