@@ -15,7 +15,7 @@
 
 ;;; Startup
 
-(toggle-frame-fullscreen)
+; (toggle-frame-fullscreen)
 (setq frame-inhibit-implied-resize t)
 (setq pixel-scroll-precision-mode t)
 
@@ -42,15 +42,6 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-
-
-;; (require 'package)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-;; and `package-pinned-packages`. Most users will not need or want to do this.
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-;; (package-initialize)
-
 ;;; Custom Variables
 
 (custom-set-variables
@@ -61,8 +52,6 @@
  '(auto-fill-mode-hook '(yas--auto-fill-wrapper))
  '(comment-auto-fill-only-comments t)
  '(context-menu-mode t)
- '(elfeed-feeds
-   '("https://news.ycombinator.com"))
  '(evil-symbol-word-search t)
  '(imenu-auto-rescan t)
  '(imenu-max-items 999)
@@ -85,7 +74,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/packages") 
 (require 'better-defaults)
-(add-to-list 'auto-mode-alist '("\\.txt\\'" . org-mode))
 
 ;;; Backups
 
@@ -107,14 +95,10 @@
   :config
   (beacon-mode 1))
 
-(use-package diminish)
-
 (use-package git-gutter
-  :diminish
   :config
   (global-git-gutter-mode)
   (setq git-gutter:always-show-separator t)
-  (diminish 'global-git-gutter-mode)
   )
 
 (setq visible-bell t)
@@ -129,19 +113,6 @@
 (setq show-paren-mode t)
 (tab-bar-mode t)
 
-;;;; Outline mode extend headings backline
-
-;; (use-package outline-minor-faces
-;;   :diminish
-;;   :hook outline-minor-mode
-;;   )
-
-;; (use-package backline
-;;   :diminish
-;;   :after outline
-;;   :config (advice-add 'outline-flag-region :after 'backline-update)
-;;   (outline-minor-faces-mode +1))
-
 ;;; Editing
 
 (setq kill-whole-line t)
@@ -154,19 +125,10 @@
 (setq-default tab-width 4)
 (setq dtrt-indent-global-mode t)
 
-(use-package format-all
-  :diminish
-  ;; https://github.com/lassik/emacs-format-all-the-code/tree/c156ffe5f3c979ab89fd941658e840801078d091
-  :hook
-  (add-hook 'prog-mode-hook 'format-all-mode)
-  )
-
 (use-package smartparens
-  :diminish
   :config (smartparens-global-mode +1))
 
 (use-package wrap-region
-  :diminish
   :config
   (wrap-region-global-mode)
   (wrap-region-add-wrapper "*" "*"))
@@ -176,7 +138,6 @@
   (multiple-cursors-mode 1))
 
 (use-package volatile-highlights
-  :diminish
   :config
   (volatile-highlights-mode t))
 
@@ -192,15 +153,13 @@
         browse-kill-ring-show-preview t))
 
 (use-package company
-  :diminish
   :config
   (global-company-mode 1)
   )
 
 (use-package yasnippet
-  :diminish
   :config
-  (yas-global-mode 1) ;; or M-x yas-reload-all if you've started YASnippet already.
+  (yas-global-mode 1)
   (setq yas-snippet-dirs '("~/.emacs.d/snippets/")))
 
 (use-package ivy-yasnippet
@@ -208,59 +167,7 @@
 
 (use-package yasnippet-snippets
   :after yasnippet
-  :diminish)
-
-;;; Evil Mode
-
-
-;; (use-package evil
-;;   :init
-;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-;;   (setq evil-want-keybinding nil)
-;;   :config
-;;   (evil-mode 1))
-
-;; (use-package evil-collection
-;;   :after evil
-;;   :config
-;;   (evil-collection-init))
-
-;; (use-package evil-leader
-;;   :config
-;;   (global-evil-leader-mode t)
-;;   (evil-leader/set-leader "<SPC>"))
-;; (use-package evil-surround
-;;   :config
-;;   (global-evil-surround-mode t))
-
-;;; Navigation
-
-;; (use-package ivy-posframe
-;;   :diminish
-;;   :config
-;;   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-;;   (ivy-posframe-mode 1))
-
-(use-package breadcrumb)
-
-(use-package imenu
-  :config
-  (defun try-to-add-imenu ()
-    "Function to enable imenu in any mode, if that mode has imenu available."
-    (condition-case nil (imenu-add-to-menubar "imenu-index") (error nil)))
-  (add-hook 'font-lock-mode-hook 'try-to-add-imenu)
-
-  ;; Add use-package to imenu list
-  (add-to-list 'imenu-generic-expression
-               '("Used Packages"
-                 "\\(^\\s-*(use-package +\\)\\(\\_<.+\\_>\\)" 2))
-
-  ;; Sort Imenu by name
-  (setq imenu-sort-function 'imenu--sort-by-name)
-  (setq imenu-auto-rescan t))
-
-(use-package imenu-anywhere)
-
+)
 (use-package hydra)
 
 (use-package browse-at-remote)
@@ -280,7 +187,6 @@
   ;; https://github.com/bling/fzf.el
   ;; Don't forget to set keybinds!
   :ensure t
-  :diminish
   :config
   (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
         fzf/executable "fzf"
@@ -294,7 +200,6 @@
         fzf/window-height 15))
 
 (use-package projectile
-  :diminish
   :config
   (projectile-mode +1)
   (defun my-projectile-add-to-known-projects (args)
@@ -309,7 +214,6 @@
   :config (marginalia-mode 1))
 
 (use-package ivy
-  :diminish
   :config
   (ivy-mode 1)
   (setq ivy-height 10)
@@ -321,12 +225,6 @@
   ;; (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
 ;;  (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
   )
-
-;; (use-package orderless
-;;   :after ivy
-;;   :custom
-;;   (completion-styles '(orderless basic))
-;;   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package swiper
   :config
@@ -345,8 +243,6 @@
   :config (which-key-mode 1))
 
 (use-package dashboard
-  ;; https://github.com/emacs-dashboard/emacs-dashboard
-  :diminish
   :config
   (dashboard-setup-startup-hook)
 
@@ -534,24 +430,6 @@
 (setq org-directory "~/org")
 (setq org-default-notes-file (concat org-directory "/capture.org"))
 
-(use-package org-modern                                  
-  :config                                                
-  (with-eval-after-load 'org (global-org-modern-mode)))
-
-(use-package imenu-list
-  :config
-  (imenu-list-start-timer)
-  (setq org-imenu-depth 99))
-
-(setq org-agenda-custom-commands
-      '(("c" . "My Custom Agendas")
-        ("cu" "Unscheduled TODO"
-         ((todo ""
-                ((org-agenda-overriding-header "\nUnscheduled TODO")
-                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
-         nil
-         nil)))
-
 (defun open-org-agenda-day-view ()
   "Opens org agenda day view"
   (interactive)
@@ -617,7 +495,6 @@
 ;;; Programming
 
 (use-package magit)
-
 (setq require-final-newline t)
 (setq-default indicate-empty-lines t)
 (use-package eros
@@ -658,7 +535,6 @@
 
 ;;; Misc
 
-(diminish 'eldoc-mode)
 (setq gc-cons-threshold 20000000)
 (setq large-file-warning-threshold 200000000)
 (fset 'yes-or-no-p 'y-or-n-p)
