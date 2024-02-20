@@ -30,7 +30,7 @@ nmap <leader>fw :Windows<CR>
 nmap <leader>gB :tabnew ~/bookmarks<cr>
 nmap <leader>gf :e <cfile><CR>
 nmap <leader>n :cn<cr>
-nmap <leader>o :tabnew +:copen 999 \| wincmd o<cr>
+nmap <leader>o :tabnew +:copen \| wincmd o<cr>
 nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>
 nmap <leader>s :%so<cr>
@@ -50,7 +50,8 @@ xmap ga <Plug>(EasyAlign)
 
 command! Date -1read !date -I
 command! DiffFold :set diffopt=filler,context:0
-command! FindReferences :vimgrep // **
+command! FindReferences :cd "%:h" \| echo hello
+command! FindReferences :cd %:h | lvimgrep // ** | lopen
 command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
 command! RemoveDoubleSpaces :%s/  / /gc
 command! SplitArguments :s/ --/ \\\r--/g
