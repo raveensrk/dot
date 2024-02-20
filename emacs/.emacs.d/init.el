@@ -1,18 +1,5 @@
 ;;; Introduction
 
-;; Emacs versions supported: 28.2+. This init file will follow the
-;; following structure where the configs are organized under the
-;; respective headings.
-
-;;; Inspirations
-
-;; https://github.com/munen/emacs.d/
-;; https://emacsredux.com/blog/2016/01/31/use-tab-to-indent-or-complete/
-;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
-;; https://idiomdrottning.org/bad-emacs-defaults
-;; https://news.ycombinator.com/item?id=37843908
-;; https://irreal.org/emacs-reminders.html
-
 ;;; Startup
 
 ; (toggle-frame-fullscreen)
@@ -215,7 +202,7 @@
 
 (use-package ivy
   :config
-  (ivy-mode 1)
+  (ivy-mode nil)
   (setq ivy-height 10)
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers nil)
@@ -238,6 +225,8 @@
     "Counsel M-x with ^ removed"
     (interactive)
     (counsel-M-x "")))
+
+(setq shift-select-mode t)
 
 (use-package which-key
   :config (which-key-mode 1))
@@ -579,7 +568,7 @@
 
 ;;; Keybindings
 
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+;; (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (global-set-key (kbd "C-c s") 'swiper)
 (global-set-key (kbd "C-c *") 'swiper-thing-at-point)
@@ -606,7 +595,6 @@
 ;; (evil-leader/set-key "a" 'beginning-of-line)
 ;; (evil-leader/set-key "b" 'switch-to-buffer)
 ;; (evil-leader/set-key "c" 'comment-line)
-;; (evil-leader/set-key "d" 'dired)
 ;; (evil-leader/set-key "e" 'end-of-line)
 ;; (evil-leader/set-key "fi" 'file-info-show)
 ;; (evil-leader/set-key "fr" 'counsel-recentf)
@@ -625,9 +613,9 @@
 ;; (evil-leader/set-key "x" 'eval-last-sexp)
 ;; (evil-leader/set-key "z" 'counsel-fzf)
 ;;
-(global-set-key (kbd "M-x") 'my-counsel-M-x)
+;; (global-set-key (kbd "M-x") 'my-counsel-M-x)
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 
 ;;; Testing
 
@@ -637,3 +625,7 @@
 ;;; Ideas
 
 (setq tags-table-files '("$HOME/tags/tags"))
+
+(ido-mode)
+(load-theme 'tango-dark)
+

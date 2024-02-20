@@ -55,3 +55,9 @@ command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
 command! RemoveDoubleSpaces :%s/  / /gc
 command! SplitArguments :s/ --/ \\\r--/g
 command! SplitPlusargs :s/ -p/ \\\r-p/g
+command! -nargs=* Help tab help <args>
+command! -nargs=+ Helpgrep tab helpgrep <args>
+nnoremap K :tab split<cr>K:wincmd o<cr>
+nnoremap <C-]> :tab split<cr><C-]>
+command! Pin :set modified!
+nmap mp :Pin<Cr>
