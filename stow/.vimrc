@@ -239,7 +239,6 @@ set foldclose="all"
 set showfulltag
 set showbreak=>>>\ 
 set showmatch
-set switchbuf=usetab,uselast
 set verbosefile=/tmp/verbosefile
 set whichwrap+=<,>,[,]
 set equalalways
@@ -275,3 +274,4 @@ set tags+=~/tags/tags
 set exrc secure
 set paste
 packadd cfilter
+set switchbuf=useopen
