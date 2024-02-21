@@ -4,6 +4,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(cursor-in-non-selected-windows 'box)
+ '(dashboard-navigator-buttons nil)
+ '(dashboard-page-separator "\12\12")
+ '(dashboard-projects-backend 'project-el)
+ '(dashboard-vertically-center-content t)
+ '(default-input-method "rfc1345")
+ '(ffap-file-name-with-spaces t)
  '(grep-find-command
    '("find -L . -type f -exec grep --color=auto -nH --null -e  \\{\\} +" . 54))
  '(grep-find-ignored-files
@@ -11,13 +17,17 @@
  '(grep-find-template
    "find -H -L <D> <X> -type f <F> -exec grep <C> -nH --null -e <R> \\{\\} +")
  '(grep-find-use-xargs 'exec-plus)
- '(project-vc-extra-root-markers '("Makefile"))
- '(project-vc-ignores '("TAGS" "tags")))
+ '(ido-show-dot-for-dired t)
+ '(ido-use-filename-at-point 'guess)
+ '(project-vc-extra-root-markers
+   '("Makefile" "index.org" ".dir-locals.el" "README" "readme.org" "README.org" "readme"))
+ '(project-vc-ignores '("TAGS" "tags"))
+ '(straight-use-package-by-default t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#2e3436" :foreground "#eeeeec" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 175 :width normal :foundry "nil" :family "Menlo")))))
 
 

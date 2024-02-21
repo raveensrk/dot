@@ -461,9 +461,9 @@
 ;;;; Autosave
 
 ;; autosave files every 1 second if visited and changed
-(setq auto-save-visited-interval 1)
-(auto-save-visited-mode +1)
-(setq auto-revert-interval 1)
+;; (setq auto-save-visited-interval 1)
+;; (auto-save-visited-mode +1)
+;; (setq auto-revert-interval 1)
 
 ;;; Programming
 
@@ -538,6 +538,7 @@
 
 ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
+(global-set-key (kbd "C-c g") 'magit)
 (global-set-key (kbd "C-c f g") 'find-grep)
 (pixel-scroll-mode t)
 (global-set-key (kbd "C-c w") 'tab-list)
@@ -592,3 +593,39 @@
 
 (visit-tags-table "~/tags/TAGS")
 
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (setq treemacs-is-never-other-window           t
+          treemacs-show-cursor                     t
+          treemacs-show-hidden-files               t
+          treemacs-space-between-root-nodes        t
+          treemacs-width                           30
+          treemacs-width-increment                 1
+          treemacs-width-is-initially-locked       t)
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode 'always))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t d"   . treemacs-select-directory)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+
+(use-package rainbow-delimiters
+  :config
+  (rainbow-delimiters-mode t))
+
+(use-package occur-x
+  :config
+(add-hook 'occur-mode-hook 'turn-on-occur-x-mode))
