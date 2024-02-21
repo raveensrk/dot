@@ -42,33 +42,6 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;;; Custom Variables
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(auto-fill-mode-hook '(yas--auto-fill-wrapper))
- '(comment-auto-fill-only-comments t)
- '(context-menu-mode t)
- '(evil-symbol-word-search t)
- '(imenu-auto-rescan t)
- '(imenu-max-items 999)
- '(imenu-sort-function 'imenu--sort-by-name)
- '(org-edit-src-content-indentation 8)
- '(org-image-actual-width 500)
- '(org-indent-indentation-per-level 8)
- '(org-list-demote-modify-bullet '(("-" . "+") ("+" . "-")))
- '(org-list-indent-offset 6)
- '(org-startup-with-inline-images t))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 ;;; Defaults
 
@@ -87,7 +60,7 @@
 
 ;; (setq-default show-trailing-whitespace t)
 ;; (global-whitespace-newline-mode t)
-(setq-default cursor-type '(bar . 2))
+(setq-default cursor-type '(box . 1))
 (setq-default cursor-in-non-selected-windows 'hollow)
 (set-face-attribute 'default nil :height 120)
 
@@ -162,8 +135,8 @@
   (yas-global-mode 1)
   (setq yas-snippet-dirs '("~/.emacs.d/snippets/")))
 
-(use-package ivy-yasnippet
-  :after yasnippet)
+;; (use-package ivy-yasnippet
+;;   :after yasnippet)
 
 (use-package yasnippet-snippets
   :after yasnippet
@@ -199,45 +172,45 @@
         fzf/position-bottom t
         fzf/window-height 15))
 
-(use-package projectile
-  :config
-  (projectile-mode +1)
-  (defun my-projectile-add-to-known-projects (args)
-    "Add a project to projectile interactively"
-    (interactive "D")
-    (projectile-add-known-project args))
-  (setq projectile-generic-command "fd -L . -0 --type f --color=never --strip-cwd-prefix")
-  (setq projectile-project-search-path nil)
-  (setq projectile-auto-discover nil))
+;; (use-package projectile
+;;   :config
+;;   (projectile-mode +1)
+;;   (defun my-projectile-add-to-known-projects (args)
+;;     "Add a project to projectile interactively"
+;;     (interactive "D")
+;;     (projectile-add-known-project args))
+;;   (setq projectile-generic-command "fd -L . -0 --type f --color=never --strip-cwd-prefix")
+;;   (setq projectile-project-search-path nil)
+;;   (setq projectile-auto-discover nil))
 
-(use-package marginalia
-  :config (marginalia-mode 1))
+;; (use-package marginalia
+;;   :config (marginalia-mode 1))
 
-(use-package ivy
-  :config
-  (ivy-mode 1)
-  (setq ivy-height 10)
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers nil)
-  (setq ivy-count-format "(%d/%d) ")
-  ;; enable this if you want `swiper' to use it
-  ;; (setq search-default-mode #'char-fold-to-regexp)
-  ;; (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
-;;  (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
-  )
+;; (use-package ivy
+;;   :config
+;;   (ivy-mode nil)
+;;   (setq ivy-height 10)
+;;   (setq ivy-use-virtual-buffers t)
+;;   (setq enable-recursive-minibuffers nil)
+;;   (setq ivy-count-format "(%d/%d) ")
+;;   ;; enable this if you want `swiper' to use it
+;;   ;; (setq search-default-mode #'char-fold-to-regexp)
+;;   ;; (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
+;; ;;  (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
+;;   )
 
-(use-package swiper
-  :config
-  (defun my-word-at-point ()
-    (interactive)
-    (swiper (word-at-point))))
+;; (use-package swiper
+;;   :config
+;;   (defun my-word-at-point ()
+;;     (interactive)
+;;     (swiper (word-at-point))))
 
-(use-package counsel
-  :config
-  (defun my-counsel-M-x ()
-    "Counsel M-x with ^ removed"
-    (interactive)
-    (counsel-M-x "")))
+;; (use-package counsel
+;;   :config
+;;   (defun my-counsel-M-x ()
+;;     "Counsel M-x with ^ removed"
+;;     (interactive)
+;;     (counsel-M-x "")))
 
 (use-package which-key
   :config (which-key-mode 1))
@@ -251,8 +224,8 @@
 
   ;; To disable shortcut "jump" indicators for each section, set
   (setq dashboard-show-shortcuts nil)
-  (setq dashboard-items '((recents  . 10)
-                          (bookmarks . 10)
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 20)
                           (projects . 5))))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -553,22 +526,6 @@
      ,@body
      (message "%.06f" (float-time (time-since time)))))
 
-(defadvice server-visit-files (before parse-numbers-in-lines (files proc &optional nowait) activate)
-  "Open file with emacsclient with cursors positioned on requested line.
-        Most of console-based utilities prints filename in format
-        'filename:linenumber'.  So you may wish to open filename in that format.
-        Just call:
-          emacsclient filename:linenumber
-        and file 'filename' will be opened and cursor set on line 'linenumber'"
-  (ad-set-arg 0
-              (mapcar (lambda (fn)
-                        (let ((name (car fn)))
-                          (if (string-match "^\\(.*?\\):\\([0-9]+\\)\\(?::\\([0-9]+\\)\\)?$" name)
-                              (cons
-                               (match-string 1 name)
-                               (cons (string-to-number (match-string 2 name))
-                                     (string-to-number (or (match-string 3 name) ""))))
-                            fn))) files)))
 
 (define-minor-mode sticky-buffer-mode
   "Make the current window always display this buffer."
@@ -579,55 +536,24 @@
 
 ;;; Keybindings
 
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(global-set-key (kbd "C-c s") 'swiper)
-(global-set-key (kbd "C-c *") 'swiper-thing-at-point)
-;; (evil-leader/set-key "'" 'counsel-mark-ring)
-;; (evil-leader/set-key "/" 'swiper)
-;; (evil-leader/set-key ";" 'my-counsel-M-x)
+;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
+(global-set-key (kbd "C-c f g") 'find-grep)
 (pixel-scroll-mode t)
 (global-set-key (kbd "C-c w") 'tab-list)
-;; (evil-leader/set-key "<SPC>=" 'my-indent-whole-buffer)
-;; (evil-leader/set-key "<SPC>O" 'delete-other-windows)
-;; (evil-leader/set-key "<SPC>a" 'org-agenda)
-;; (evil-leader/set-key "<SPC>b" 'counsel-bookmark)
-;; (evil-leader/set-key "<SPC>c" 'org-capture)
-;; (evil-leader/set-key "<SPC>d" 'evil-scroll-down)
-;; (evil-leader/set-key "<SPC>l" 'org-store-link)
-;; (evil-leader/set-key "<SPC>o" 'other-window)
-;; (evil-leader/set-key "<SPC>t" 'org-toggle-item)
-;; (evil-leader/set-key "<SPC>u" 'evil-scroll-up)
-;; (evil-leader/set-key "<left>" 'previous-buffer)
-;; (evil-leader/set-key "<right>" 'next-buffer)
-;; (evil-leader/set-key "K" 'nuke-all-buffers)
-;; (evil-leader/set-key "O" 'crux-kill-other-buffers)
-;; (evil-leader/set-key "a" 'beginning-of-line)
-;; (evil-leader/set-key "b" 'switch-to-buffer)
-;; (evil-leader/set-key "c" 'comment-line)
-;; (evil-leader/set-key "d" 'dired)
-;; (evil-leader/set-key "e" 'end-of-line)
-;; (evil-leader/set-key "fi" 'file-info-show)
-;; (evil-leader/set-key "fr" 'counsel-recentf)
-;; (evil-leader/set-key "g" 'counsel-rg)
-;; (evil-leader/set-key "h" 'help)
-;; (evil-leader/set-key "i" 'crux-find-user-init-file)
-;; (evil-leader/set-key "k" 'kill-buffer)
-;; (evil-leader/set-key "o" 'counsel-outline)
-;; (evil-leader/set-key "q" 'save-buffers-kill-emacs)
+(global-set-key (kbd "C-c o a") 'org-agenda)
+(global-set-key (kbd "C-c y") 'crux-duplicate-current-line-or-region)
+(global-set-key (kbd "C-c o c") 'org-capture)
+(global-set-key (kbd "C-c c") 'comment-line)
+(global-set-key (kbd "C-c K") 'nuke-all-buffers)
+(global-set-key (kbd "C-c X") 'crux-kill-other-buffers)
+(global-set-key (kbd "C-c f f") 'ffap)
+(global-set-key (kbd "C-c f i") 'file-info-show)
+(global-set-key (kbd "C-c i") 'crux-find-user-init-file)
 (global-set-key (kbd "C-c r") 'restart-emacs)
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
-;; (evil-leader/set-key "s" 'avy-goto-char)
-;; (evil-leader/set-key "t" 'toggle-truncate-lines)
-;; (evil-leader/set-key "v" 'evil-window-vsplit)
-;; (evil-leader/set-key "w" 'save-buffers)
-;; (evil-leader/set-key "x" 'eval-last-sexp)
-;; (evil-leader/set-key "z" 'counsel-fzf)
-;;
-(global-set-key (kbd "M-x") 'my-counsel-M-x)
+(global-set-key (kbd "C-c d") 'ranger)
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
 
 ;;; Testing
 
@@ -637,3 +563,32 @@
 ;;; Ideas
 
 (setq tags-table-files '("$HOME/tags/tags"))
+
+(tool-bar-mode t)
+(menu-bar-mode t)
+(ido-mode t)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(use-package smex
+  :config
+  (smex-initialize))
+
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+(use-package ranger
+  :config
+  (setq ranger-show-hidden t)
+  )
+
+(load-theme 'tango-dark)
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+(global-set-key (kbd "C-c m") 'imenu)
+
+(visit-tags-table "~/tags/TAGS")
+
