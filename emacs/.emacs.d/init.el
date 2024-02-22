@@ -15,7 +15,7 @@
 
 ;;; Startup
 
-; (toggle-frame-fullscreen)
+                                        ; (toggle-frame-fullscreen)
 (setq frame-inhibit-implied-resize t)
 (setq pixel-scroll-precision-mode t)
 
@@ -140,7 +140,7 @@
 
 (use-package yasnippet-snippets
   :after yasnippet
-)
+  )
 (use-package hydra)
 
 (use-package browse-at-remote)
@@ -576,10 +576,10 @@
   :config
   (smex-initialize))
 
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is your old M-x.
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 (use-package ranger
   :config
@@ -630,11 +630,11 @@
 
 (use-package occur-x
   :config
-(add-hook 'occur-mode-hook 'turn-on-occur-x-mode))
+  (add-hook 'occur-mode-hook 'turn-on-occur-x-mode))
 
 
 (defhydra hydra-buffer-menu (:color pink
-                             :hint nil)
+                                    :hint nil)
   "
 ^Mark^             ^Unmark^           ^Actions^          ^Search
 ^^^^^^^^-----------------------------------------------------------------
@@ -669,8 +669,8 @@ _~_: modified
 ;;** Example 11: rectangle-mark-mode
 (require 'rect)
 (defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
-                           :color pink
-                           :post (deactivate-mark))
+                                     :color pink
+                                     :post (deactivate-mark))
   "
   ^_k_^     _d_elete    _s_tring
 _h_   _l_   _o_k        _y_ank
@@ -697,4 +697,41 @@ _h_   _l_   _o_k        _y_ank
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 
 (require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
+
+(progn
+  (defhydra hydra-edit 
+    (:color amaranth)
+  "Edit hydra"
+  ("a" avy-goto-char "avy")
+  ("<" beginning-of-buffer "beginning of buffer")
+  (">" end-of-buffer "end of buffer")
+  ("m" imenu "imenu")
+  ("+" text-scale-increase "in")
+  ("-" text-scale-decrease "out")
+  ("s" split-window-below "split below")
+  ("v" split-window-right "split right")
+  ("e" next-line "next line")
+  ("n" backward-char "backward character")
+  ("o" forward-char "forward character")
+  ("i" previous-line "previous line")
+  ("d" delete-window "delete window")
+  ("." xref-find-definitions "xref find def")
+  ("," xref-go-back "xref go back")
+  ("x" smex "smex")
+  ("k" kill-buffer "kill buffer")
+  ("q" nil "quit" :exit t :color blue))
+
+ (global-set-key (kbd "C-c ,") 'hydra-edit/body)
+ )
+
+(progn
+  (defhydra hydra-tools 
+    (:color amaranth)
+  "Edit hydra"
+  ("g" magit "magit")
+  ("!" shell-command "shell command")
+  ("q" nil "quit" :exit t :color blue))
+
+ (global-set-key (kbd "C-c /") 'hydra-tools/body)
+ )
 
