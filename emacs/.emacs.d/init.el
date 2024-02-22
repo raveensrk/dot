@@ -707,7 +707,7 @@ _h_   _l_   _o_k        _y_ank
 
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 
-(require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
+;; (require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
 
 (progn
     (defhydra hydra-search (:color amaranth)
@@ -745,26 +745,22 @@ _h_   _l_   _o_k        _y_ank
   ("x" smex "smex")
   ("s" hydra-search/body "search" :color teal)
   )
-  
-  (global-set-key (kbd "C-c ,") 'hydra-edit/body)
-
-  
- )
-
+  (global-set-key (kbd "C-c ,") 'hydra-tools/body))
 (progn
   (defhydra hydra-tools 
     (:color amaranth)
-  "Edit hydra"
-  ("g" magit "magit")
-  ("!" shell-command "shell command")
-  ("q" nil "quit" :exit t :color blue))
+    "Edit hydra"
+    ("g" magit "magit")
+    ("!" shell-command "shell command")
+    ("q" nil "quit" :exit t :color blue))
 
- (global-set-key (kbd "C-c /") 'hydra-tools/body)
- )
+  (global-set-key (kbd "C-c /") 'hydra-tools/body)
+  )
 
-(use-package projectile
-:config
-
-(projectile-mode +1)
-;; Recommended keymap prefix on Windows/Linux
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+(progn
+  (require 'org)
+  (defhydra hydra-org (:color amaranth)
+    "Org hydra"
+    ("a" org-agenda "Agenda")
+    ("q" nil "quit" :exit t :color blue))
+    (global-set-key (kbd "C-c a") 'hydra-org/body))

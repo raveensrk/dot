@@ -20,6 +20,7 @@
  '(ido-ignore-directories '("\\`CVS/" "\\`\\.\\./" "\\`\\./"))
  '(ido-show-dot-for-dired t)
  '(ido-use-filename-at-point 'guess)
+ '(org-agenda-files '("~/iCloud/My projects" "~/my_repos" "~/org"))
  '(project-vc-extra-root-markers
    '("Makefile" "index.org" ".dir-locals.el" "README" "readme.org" "README.org" "readme"))
  '(project-vc-ignores '("TAGS" "tags"))
