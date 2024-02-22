@@ -29,6 +29,7 @@
  '(ido-ignore-directories '("\\`CVS/" "\\`\\.\\./" "\\`\\./"))
  '(ido-show-dot-for-dired t)
  '(ido-use-filename-at-point 'guess)
+ '(isearch-lazy-count t)
  '(org-agenda-files
    '("~/iCloud/My projects/emacs.org" "~/iCloud/My projects/index.org"))
  '(project-vc-extra-root-markers

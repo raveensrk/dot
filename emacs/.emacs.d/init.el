@@ -1,6 +1,6 @@
 ;;; Introduction
 
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -13,8 +13,6 @@
 
 
 ;;; Packages
-
-(require 'bind-key)
 
 
 (defvar bootstrap-version)
@@ -439,14 +437,6 @@
 (require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 
-(progn
-  (defhydra hydra-search (:color amaranth)
-    "Search hydra"
-    ("o" isearch-occur "isearch occur")
-    ("r" isearch-backward-regexp "isearch backward")
-    ("s" isearch-repeat-forward "isearch forward")
-    ("." isearch-forward-symbol-at-point "isearch symbol")
-    ("q" hydra-edit/body "quit" :exit t)))
 
 (defun archive-code ()
   "Move selected code to end of the file and comment it..."
@@ -460,9 +450,16 @@
     (comment-region (region-beginning) (region-end))
     ))
 
-(rainbow-delimiters-mode t)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode-enable)
 
 (progn
+  (defhydra hydra-search ()
+    "Search hydra"
+    ("o" isearch-occur "isearch occur" :color pink)
+    ("r" isearch-repeat-backward "isearch backward")
+    ("s" isearch-repeat-forward "isearch forward")
+    ("." isearch-forward-symbol-at-point "isearch symbol" :color pink)
+    ("q" hydra-edit/body "quit" :exit t))
   (defhydra hydra-edit 
     (:color amaranth)
     "Edit hydra"
@@ -470,6 +467,7 @@
     (")" end-of-defun "end of defun")
     ("+" text-scale-increase "in")
     ("," xref-go-back "xref go back")
+    ("'" pop-global-mark "pop mark")
     ("-" text-scale-decrease "out")
     ("." xref-find-definitions "xref find def")
     ("<" beginning-of-buffer "beginning of buffer")
@@ -479,6 +477,7 @@
     ("a" avy-goto-char "avy")
     ("b" ido-switch-buffer "switch buffer")
     ("e" next-line "next line")
+    ("h" gptel "gptel" :exit t :color blue)
     ("i" previous-line "previous line")
     ("k" kill-buffer "kill buffer")
     ("m" imenu "imenu")
@@ -504,105 +503,6 @@
     ("g" magit "magit")
     ("!" shell-command "shell command")
     ("q" nil "quit" :exit t :color blue)))
-
-
-;; (defun my-list-packages ()
-;;   "If already refresehed dont refresh. List only."
-;;   (interactive)
-;;   (if (bound-and-true-p my-package-refreshed-once)
-;;       (list-packages)
-;;     (package-refresh-contents t)
-;;     (setq my-package-refreshed-once t)
-;;     (list-packages)))
-
-
-;; (defun bash-macos ()
-;;   "This will open Bash terminal in macos"
-;;   (interactive)
-;;   (term "/opt/homebrew/bin/bash"))
-
-;; (defun bash-local ()
-;;   "This will open Bash terminal from ~/.local/bin/bash"
-;;   (interactive)
-;;   (term "~/.local/bin/bash"))
-
-
-
-;; (defun read-file-as-string (file-path)
-;;   (with-temp-buffer
-;;     (insert-file-contents file-path)
-;;     (buffer-string)))
-
-;; (defun eshell-new-buffer (args)
-;;   "Create a new eshell buffer."
-;;   (interactive "P")
-;;   (eshell "new"))
-
-;; (defun my-increment-number-decimal (&optional arg)
-;;   "Increment the number forward from point by 'arg'."
-;;   (interactive "p*")
-;;   (save-excursion
-;;     (save-match-data
-;;       (let (inc-by field-width answer)
-;;         (setq inc-by (if arg arg 1))
-;;         (skip-chars-backward "0123456789")
-;;         (when (re-search-forward "[0-9]+" nil t)
-;;           (setq field-width (- (match-end 0) (match-beginning 0)))
-;;           (setq answer (+ (string-to-number (match-string 0) 10) inc-by))
-;;           (when (< answer 0)
-;;             (setq answer (+ (expt 10 field-width) answer)))
-;;           (replace-match (format (concat "%0" (int-to-string field-width) "d")
-;;                                  answer)))))))
-
-
-;; (defun copy-file-path-to-clipboard ()
-;;   "Copy the current file path to the kill ring and clipboard."
-;;   (interactive)
-;;   (let ((file-path (buffer-file-name)))
-;;     (when file-path
-;;       (kill-new file-path)
-;;       (message "Copied file path: %s" file-path)
-;;       (when (region-active-p)
-;;         (deactivate-mark))
-;;       (x-select-text file-path))))
-
-
-;; (setq org-agenda-files '("~/org"))
-;; (setq org-directory "~/org")
-;; (setq org-default-notes-file (concat org-directory "/capture.org"))
-
-
-;; (defun open-org-agenda-day-view ()
-;;   "Opens org agenda day view"
-;;   (interactive)
-;;   (require 'org)
-;;   (org-agenda-list 1 "d")
-;;   (delete-other-windows))
-
-
-;; ;;;; Autosave
-
-;; ;; autosave files every 1 second if visited and changed
-;; ;; (setq auto-save-visited-interval 1)
-;; ;; (auto-save-visited-mode +1)
-;; ;; (setq auto-revert-interval 1)
-
-
-;; (setq my-openai-api-key-file "~/.emacs.d/openai-api-key.el")
-;; (if (file-exists-p my-openai-api-key-file)
-;;     (load-file my-openai-api-key-file))
-;; (use-package shell-maker)
-;; (use-package chatgpt-shell
-;;   :requires shell-maker)
-;; (setq chatgpt-shell-openai-key (read-file-as-string "~/.config/openai.token"))
-
-
-
-;; (defmacro measure-time (&rest body)
-;;   "Measure the time it takes to evaluate BODY."
-;;   `(let ((time (current-time)))
-;;      ,@body
-;;      (message "%.06f" (float-time (time-since time)))))
 
 
 (use-package expand-region
