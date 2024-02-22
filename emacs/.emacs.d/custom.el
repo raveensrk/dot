@@ -9,6 +9,15 @@
  '(dashboard-projects-backend 'project-el)
  '(dashboard-vertically-center-content t)
  '(default-input-method "rfc1345")
+ '(electric-pair-mode t)
+ '(electric-pair-pairs
+   '((34 . 34)
+     (8216 . 8217)
+     (8220 . 8221)
+     (40 . 41)
+     (123 . 125)
+     (93 . 93)))
+ '(electric-pair-skip-whitespace-chars '(32 9 10))
  '(ffap-file-name-with-spaces t)
  '(grep-find-command
    '("find -L . -type f -exec grep --color=auto -nH --null -e  \\{\\} +" . 54))
@@ -20,13 +29,15 @@
  '(ido-ignore-directories '("\\`CVS/" "\\`\\.\\./" "\\`\\./"))
  '(ido-show-dot-for-dired t)
  '(ido-use-filename-at-point 'guess)
- '(org-agenda-files '("~/iCloud/My projects" "~/my_repos" "~/org"))
+ '(org-agenda-files
+   '("~/iCloud/My projects/emacs.org" "~/iCloud/My projects/index.org"))
  '(project-vc-extra-root-markers
    '("Makefile" "index.org" ".dir-locals.el" "README" "readme.org" "README.org" "readme"))
  '(project-vc-ignores '("TAGS" "tags"))
  '(projectile-auto-discover nil)
  '(projectile-generic-command "find -L . -type f | cut -c3- | tr '\\n' '\\0'")
  '(straight-use-package-by-default t)
+ '(tags-add-tables 'ask-user)
  '(treemacs-indent-guide-mode t)
  '(treemacs-indentation 0)
  '(treemacs-indentation-string " ┃ "))

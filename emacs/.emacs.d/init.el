@@ -1,26 +1,21 @@
 ;;; Introduction
 
-;; Emacs versions supported: 28.2+. This init file will follow the
-;; following structure where the configs are organized under the
-;; respective headings.
+(setq debug-on-error t)
 
-;;; Inspirations
-
-;; https://github.com/munen/emacs.d/
-;; https://emacsredux.com/blog/2016/01/31/use-tab-to-indent-or-complete/
-;; https://emacsredux.com/blog/2022/06/03/enable-mouse-support-in-terminal-emacs/
-;; https://idiomdrottning.org/bad-emacs-defaults
-;; https://news.ycombinator.com/item?id=37843908
-;; https://irreal.org/emacs-reminders.html
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 ;;; Startup
 
-                                        ; (toggle-frame-fullscreen)
+;; (toggle-frame-fullscreen)
 (setq frame-inhibit-implied-resize t)
 (setq pixel-scroll-precision-mode t)
 
 
 ;;; Packages
+
+(require 'bind-key)
+
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -95,7 +90,6 @@
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(setq dtrt-indent-global-mode t)
 
 (use-package smartparens
   :config (smartparens-global-mode +1))
@@ -104,20 +98,6 @@
   :config
   (wrap-region-global-mode)
   (wrap-region-add-wrapper "*" "*"))
-
-(use-package multiple-cursors
-  :config
-  (multiple-cursors-mode 1))
-
-(use-package volatile-highlights
-  :config
-  (volatile-highlights-mode t))
-
-(use-package expand-region
-  :bind
-  ("C-=" . er/expand-region)
-  ("C--" . er/contract-region))
-
 (use-package browse-kill-ring
   :config
   (setq browse-kill-ring-highlight-inserted-item t
@@ -134,9 +114,6 @@
   (yas-global-mode 1)
   (setq yas-snippet-dirs '("~/.emacs.d/snippets/")))
 
-;; (use-package ivy-yasnippet
-;;   :after yasnippet)
-
 (use-package yasnippet-snippets
   :after yasnippet
   )
@@ -146,72 +123,18 @@
 
 (use-package posframe)
 
-(use-package file-info
-  :config
-  ;; (setq hydra-hint-display-type 'posframe)
-  ;; (setq hydra-posframe-show-params `(:poshandler posframe-poshandler-frame-center
-  ;;                                                :internal-border-width 2
-  ;;                                                :internal-border-color "#61AFEF"
-  ;;                                                :left-fringe 16
-  ;;                                                :right-fringe 16))
-  ;;
-  )
+(use-package file-info)
 
 (use-package fzf
-  ;; https://github.com/bling/fzf.el
-  ;; Don't forget to set keybinds!
   :ensure t
   :config
   (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
         fzf/executable "fzf"
         fzf/git-grep-args "-i --line-number %s"
-        ;; command used for `fzf-grep-*` functions
-        ;; example usage for ripgrep:
         ;; fzf/grep-command "rg --no-heading -nH"
         fzf/grep-command "grep -nrH"
-        ;; If nil, the fzf buffer will appear at the top of the window
         fzf/position-bottom t
         fzf/window-height 15))
-
-;; (use-package projectile
-;;   :config
-;;   (projectile-mode +1)
-;;   (defun my-projectile-add-to-known-projects (args)
-;;     "Add a project to projectile interactively"
-;;     (interactive "D")
-;;     (projectile-add-known-project args))
-;;   (setq projectile-generic-command "fd -L . -0 --type f --color=never --strip-cwd-prefix")
-;;   (setq projectile-project-search-path nil)
-;;   (setq projectile-auto-discover nil))
-
-;; (use-package marginalia
-;;   :config (marginalia-mode 1))
-
-;; (use-package ivy
-;;   :config
-;;   (ivy-mode nil)
-;;   (setq ivy-height 10)
-;;   (setq ivy-use-virtual-buffers t)
-;;   (setq enable-recursive-minibuffers nil)
-;;   (setq ivy-count-format "(%d/%d) ")
-;;   ;; enable this if you want `swiper' to use it
-;;   ;; (setq search-default-mode #'char-fold-to-regexp)
-;;   ;; (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
-;; ;;  (add-to-list 'ivy-highlight-functions-alist '(orderless-ivy-re-builder . orderless-ivy-highlight))
-;;   )
-
-;; (use-package swiper
-;;   :config
-;;   (defun my-word-at-point ()
-;;     (interactive)
-;;     (swiper (word-at-point))))
-
-;; (use-package counsel
-;;   :config
-;;   (defun my-counsel-M-x ()
-;;     "Counsel M-x with ^ removed"
-;;     (interactive)
-;;     (counsel-M-x "")))
 
 (use-package which-key
   :config (which-key-mode 1))
@@ -219,11 +142,7 @@
 (use-package dashboard
   :config
   (dashboard-setup-startup-hook)
-
-  ;; Content is not centered by default. To center, set
   (setq dashboard-center-content t)
-
-  ;; To disable shortcut "jump" indicators for each section, set
   (setq dashboard-show-shortcuts nil)
   (setq dashboard-items '((recents  . 5)
                           (bookmarks . 20)
@@ -241,7 +160,6 @@
 (setq mouse-wheel-tilt-scroll t)
 (setq recentf-max-menu-items 200)
 (setq recentf-max-saved-items 200)
-(setq vc-follow-symlinks t)
 (winner-mode 1)
 
 ;;;; Mouse Support In Terminal
@@ -259,7 +177,6 @@
 (setq dired-dwim-target t)
 (setq dired-hide-details-hide-information-lines t)
 (setq dired-hide-details-hide-symlink-targets t)
-(setq dired-kill-when-opening-new-dired-buffer nil)
 (add-hook 'dired-mode-hook (lambda () (define-key dired-mode-map (kbd "C-c +") 'dired-create-empty-file)))
 
 (defun dired-dotfiles-toggle ()
@@ -283,41 +200,6 @@
 
 ;;; My functions
 
-(defun bash-macos ()
-  "This will open Bash terminal in macos"
-  (interactive)
-  (term "/opt/homebrew/bin/bash"))
-
-(defun bash-local ()
-  "This will open Bash terminal from ~/.local/bin/bash"
-  (interactive)
-  (term "~/.local/bin/bash"))
-
-(defun read-file-as-string (file-path)
-  (with-temp-buffer
-    (insert-file-contents file-path)
-    (buffer-string)))
-
-(defun eshell-new-buffer (args)
-  "Create a new eshell buffer."
-  (interactive "P")
-  (eshell "new"))
-
-(defun my-increment-number-decimal (&optional arg)
-  "Increment the number forward from point by 'arg'."
-  (interactive "p*")
-  (save-excursion
-    (save-match-data
-      (let (inc-by field-width answer)
-        (setq inc-by (if arg arg 1))
-        (skip-chars-backward "0123456789")
-        (when (re-search-forward "[0-9]+" nil t)
-          (setq field-width (- (match-end 0) (match-beginning 0)))
-          (setq answer (+ (string-to-number (match-string 0) 10) inc-by))
-          (when (< answer 0)
-            (setq answer (+ (expt 10 field-width) answer)))
-          (replace-match (format (concat "%0" (int-to-string field-width) "d")
-                                 answer)))))))
 
 (defun remove-extra-spaces (start end)
   "Remove extra spaces from region START to END, or current line if no region is given,
@@ -333,15 +215,6 @@
       (while (re-search-forward "\\s-+" nil t)
         (replace-match " ")))))
 
-(defun my-list-packages ()
-  "If already refresehed dont refresh. List only."
-  (interactive)
-  (if (bound-and-true-p my-package-refreshed-once)
-      (list-packages)
-    (package-refresh-contents t)
-    (setq my-package-refreshed-once t)
-    (list-packages)))
-
 (defun switch-to-dashboard-buffer ()
   (interactive)
   (switch-to-buffer "*dashboard*"))
@@ -351,17 +224,6 @@
   (with-temp-buffer
     (insert-file-contents file-path)
     (mapcar (lambda (line) (format "%s" line)) (split-string (buffer-string) "\n" t))))
-
-(defun copy-file-path-to-clipboard ()
-  "Copy the current file path to the kill ring and clipboard."
-  (interactive)
-  (let ((file-path (buffer-file-name)))
-    (when file-path
-      (kill-new file-path)
-      (message "Copied file path: %s" file-path)
-      (when (region-active-p)
-        (deactivate-mark))
-      (x-select-text file-path))))
 
 (defun copy-whole-buffer ()
   "This function will copy the whole buffer..."
@@ -400,16 +262,6 @@
 
 (add-hook 'org-mode-hook 'org-indent-mode)
 
-(setq org-agenda-files '("~/org"))
-(setq org-directory "~/org")
-(setq org-default-notes-file (concat org-directory "/capture.org"))
-
-(defun open-org-agenda-day-view ()
-  "Opens org agenda day view"
-  (interactive)
-  (require 'org)
-  (org-agenda-list 1 "d")
-  (delete-other-windows))
 
 (setq org-archive-location "%s::* Archived Tasks")
 
@@ -427,9 +279,7 @@
 
 ;;; Convenience
 
-(use-package pdf-tools )
 (use-package google-this)
-(use-package web-mode)
 (use-package persistent-scratch
   :config
   (persistent-scratch-setup-default))
@@ -442,7 +292,7 @@
   (delete-other-windows))
 
 (setq speedbar-show-unknown-files t)
-(setq compilation-auto-jump-to-first-error nil)
+(setq compilation-auto-jump-to-first-error t)
 (setq compilation-scroll-output t)
 ;; (setq tab-always-indent 'complete)
 (setq vc-follow-symlinks nil)
@@ -459,23 +309,17 @@
       (insert (format "%s=\"%s\"" variable selection))
       (move-beginning-of-line nil))))
 
-;;;; Autosave
-
-;; autosave files every 1 second if visited and changed
-;; (setq auto-save-visited-interval 1)
-;; (auto-save-visited-mode +1)
-;; (setq auto-revert-interval 1)
 
 ;;; Programming
 
 (use-package magit)
 (setq require-final-newline t)
 (setq-default indicate-empty-lines t)
+
 (use-package eros
   :config
   (eros-mode 1))
 (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
-(add-hook 'sh-mode-hook (lambda () (setq-local outline-regexp "# {{{*")))
 (defalias 'perl-mode 'cperl-mode)
 (setq cperl-invalid-face nil) 
 (setq cperl-electric-keywords t) ;; expands for keywords such as foreach, while, etc...
@@ -484,28 +328,19 @@
 (use-package elpy
   :config
   (elpy-enable))
-(add-hook 'verilog-mode-hook 'hs-minor-mode)
 (put 'upcase-region 'disabled nil)
-(add-hook 'verilog-mode-hook (lambda () (setq-local outline-regexp ".*/// *")))
 
-;;;; Tags
-
-(setq tags-add-tables nil)
 
 ;;;; Compilation 
 
 (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
-(setq comint-buffer-maximum-size 10000)
+(setq comint-buffer-maximum-size 500)
 
 ;;; Openai And Chatgpt Related
 
-(setq my-openai-api-key-file "~/.emacs.d/openai-api-key.el")
-(if (file-exists-p my-openai-api-key-file)
-    (load-file my-openai-api-key-file))
-(use-package shell-maker)
-(use-package chatgpt-shell
-  :requires shell-maker)
-(setq chatgpt-shell-openai-key (read-file-as-string "~/.config/openai.token"))
+(use-package gptel
+  :config
+  (load-file "~/.config/openai-api-key.el"))
 
 ;;; Misc
 
@@ -521,12 +356,6 @@
   (save-some-buffers)
   (kill-emacs))
 
-(defmacro measure-time (&rest body)
-  "Measure the time it takes to evaluate BODY."
-  `(let ((time (current-time)))
-     ,@body
-     (message "%.06f" (float-time (time-since time)))))
-
 
 (define-minor-mode sticky-buffer-mode
   "Make the current window always display this buffer."
@@ -539,7 +368,7 @@
 
 ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
-(global-set-key (kbd "C-c g") 'magit)
+;; (global-set-key (kbd "C-c g") 'magit)
 (global-set-key (kbd "C-c f g") 'find-grep)
 (pixel-scroll-mode t)
 (global-set-key (kbd "C-c w") 'tab-list)
@@ -562,8 +391,6 @@
 (set-face-attribute 'line-number-current-line nil :background "#3B4252")
 (set-face-attribute 'line-number-current-line nil :foreground "#81A1C1")
 
-;;; Ideas
-
 (setq tags-table-files '("$HOME/tags/tags"))
 
 (tool-bar-mode t)
@@ -574,37 +401,215 @@
 (setq ido-use-filename-at-point 'guess)
 (setq ido-use-url-at-point nil)
 
-(setq ido-file-extensions-order '(".sv" ".v" ".bash" ".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
+(setq ido-file-extensions-order '(".bash" ".org" ".txt" ".sv" ".v" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
 (setq ido-ignore-extensions t)
 
 
 (add-hook 'occur-mode-hook (lambda () (next-error-follow-minor-mode)))
 
 
-
-
 (use-package smex
   :config
-  (smex-initialize))
+  (smex-initialize)
 
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
 
 (use-package ranger
   :config
   (setq ranger-show-hidden t)
-  )
+  (setq ranger-width-parents 15)
+  (setq ranger-preview-file t))
 
 (load-theme 'tango-dark)
 
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-
-(global-set-key (kbd "C-c m") 'imenu)
-
 (visit-tags-table "~/tags/TAGS")
+
+
+(use-package rainbow-delimiters
+  :config
+  (rainbow-delimiters-mode t))
+
+(use-package occur-x
+  :config
+  (add-hook 'occur-mode-hook 'turn-on-occur-x-mode))
+
+(require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
+(global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
+
+(progn
+  (defhydra hydra-search (:color amaranth)
+    "Search hydra"
+    ("o" isearch-occur "isearch occur")
+    ("r" isearch-backward-regexp "isearch backward")
+    ("s" isearch-repeat-forward "isearch forward")
+    ("." isearch-forward-symbol-at-point "isearch symbol")
+    ("q" hydra-edit/body "quit" :exit t)))
+
+(defun archive-code ()
+  "Move selected code to end of the file and comment it..."
+  (interactive)
+  (save-excursion
+    (kill-region (region-beginning) (region-end))
+    (end-of-buffer)
+    (open-line 2)
+    (end-of-buffer)
+    (yank)
+    (comment-region (region-beginning) (region-end))
+    ))
+
+(rainbow-delimiters-mode t)
+
+(progn
+  (defhydra hydra-edit 
+    (:color amaranth)
+    "Edit hydra"
+    ("(" beginning-of-defun "beginning of defun")
+    (")" end-of-defun "end of defun")
+    ("+" text-scale-increase "in")
+    ("," xref-go-back "xref go back")
+    ("-" text-scale-decrease "out")
+    ("." xref-find-definitions "xref find def")
+    ("<" beginning-of-buffer "beginning of buffer")
+    (">" end-of-buffer "end of buffer")
+    ("D" dired "dired")
+    ("c" comment-line "comment line")
+    ("a" avy-goto-char "avy")
+    ("b" ido-switch-buffer "switch buffer")
+    ("e" next-line "next line")
+    ("i" previous-line "previous line")
+    ("k" kill-buffer "kill buffer")
+    ("m" imenu "imenu")
+    ("n" backward-char "backward character")
+    ("o" forward-char "forward character")
+    ("q" nil "quit" :exit t :color blue)
+    ("s" hydra-search/body "search" :color teal)
+    ("/" hydra-tools/body "tools" :color teal)
+    ("t" treemacs "treemacs")
+    ("w d" delete-window "delete window")
+    ("w o" delete-other-windows "delete other window")
+    ("w s" split-window-below "split below")
+    ("w v" split-window-right "split right")
+    ("x" smex "smex"))
+  (global-set-key (kbd "C-c ,") 'hydra-edit/body))
+
+(progn
+  (require 'org)
+  (defhydra hydra-tools 
+    (:color amaranth)
+    "Edit hydra"
+    ("a" org-agenda "Agenda")
+    ("g" magit "magit")
+    ("!" shell-command "shell command")
+    ("q" nil "quit" :exit t :color blue)))
+
+
+;; (defun my-list-packages ()
+;;   "If already refresehed dont refresh. List only."
+;;   (interactive)
+;;   (if (bound-and-true-p my-package-refreshed-once)
+;;       (list-packages)
+;;     (package-refresh-contents t)
+;;     (setq my-package-refreshed-once t)
+;;     (list-packages)))
+
+
+;; (defun bash-macos ()
+;;   "This will open Bash terminal in macos"
+;;   (interactive)
+;;   (term "/opt/homebrew/bin/bash"))
+
+;; (defun bash-local ()
+;;   "This will open Bash terminal from ~/.local/bin/bash"
+;;   (interactive)
+;;   (term "~/.local/bin/bash"))
+
+
+
+;; (defun read-file-as-string (file-path)
+;;   (with-temp-buffer
+;;     (insert-file-contents file-path)
+;;     (buffer-string)))
+
+;; (defun eshell-new-buffer (args)
+;;   "Create a new eshell buffer."
+;;   (interactive "P")
+;;   (eshell "new"))
+
+;; (defun my-increment-number-decimal (&optional arg)
+;;   "Increment the number forward from point by 'arg'."
+;;   (interactive "p*")
+;;   (save-excursion
+;;     (save-match-data
+;;       (let (inc-by field-width answer)
+;;         (setq inc-by (if arg arg 1))
+;;         (skip-chars-backward "0123456789")
+;;         (when (re-search-forward "[0-9]+" nil t)
+;;           (setq field-width (- (match-end 0) (match-beginning 0)))
+;;           (setq answer (+ (string-to-number (match-string 0) 10) inc-by))
+;;           (when (< answer 0)
+;;             (setq answer (+ (expt 10 field-width) answer)))
+;;           (replace-match (format (concat "%0" (int-to-string field-width) "d")
+;;                                  answer)))))))
+
+
+;; (defun copy-file-path-to-clipboard ()
+;;   "Copy the current file path to the kill ring and clipboard."
+;;   (interactive)
+;;   (let ((file-path (buffer-file-name)))
+;;     (when file-path
+;;       (kill-new file-path)
+;;       (message "Copied file path: %s" file-path)
+;;       (when (region-active-p)
+;;         (deactivate-mark))
+;;       (x-select-text file-path))))
+
+
+;; (setq org-agenda-files '("~/org"))
+;; (setq org-directory "~/org")
+;; (setq org-default-notes-file (concat org-directory "/capture.org"))
+
+
+;; (defun open-org-agenda-day-view ()
+;;   "Opens org agenda day view"
+;;   (interactive)
+;;   (require 'org)
+;;   (org-agenda-list 1 "d")
+;;   (delete-other-windows))
+
+
+;; ;;;; Autosave
+
+;; ;; autosave files every 1 second if visited and changed
+;; ;; (setq auto-save-visited-interval 1)
+;; ;; (auto-save-visited-mode +1)
+;; ;; (setq auto-revert-interval 1)
+
+
+;; (setq my-openai-api-key-file "~/.emacs.d/openai-api-key.el")
+;; (if (file-exists-p my-openai-api-key-file)
+;;     (load-file my-openai-api-key-file))
+;; (use-package shell-maker)
+;; (use-package chatgpt-shell
+;;   :requires shell-maker)
+;; (setq chatgpt-shell-openai-key (read-file-as-string "~/.config/openai.token"))
+
+
+
+;; (defmacro measure-time (&rest body)
+;;   "Measure the time it takes to evaluate BODY."
+;;   `(let ((time (current-time)))
+;;      ,@body
+;;      (message "%.06f" (float-time (time-since time)))))
+
+
+(use-package expand-region
+  :bind
+  ("C-=" . er/expand-region)
+  ("C--" . er/contract-region))
+
 
 (use-package treemacs
   :ensure t
@@ -633,134 +638,3 @@
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
-
-
-(use-package rainbow-delimiters
-  :config
-  (rainbow-delimiters-mode t))
-
-(use-package occur-x
-  :config
-  (add-hook 'occur-mode-hook 'turn-on-occur-x-mode))
-
-
-(defhydra hydra-buffer-menu (:color pink
-                                    :hint nil)
-  "
-^Mark^             ^Unmark^           ^Actions^          ^Search
-^^^^^^^^-----------------------------------------------------------------
-_m_: mark          _u_: unmark        _x_: execute       _R_: re-isearch
-_s_: save          _U_: unmark up     _b_: bury          _I_: isearch
-_d_: delete        ^ ^                _g_: refresh       _O_: multi-occur
-_D_: delete up     ^ ^                _T_: files only: % -28`Buffer-menu-files-only
-_~_: modified
-"
-  ("m" Buffer-menu-mark)
-  ("u" Buffer-menu-unmark)
-  ("U" Buffer-menu-backup-unmark)
-  ("d" Buffer-menu-delete)
-  ("D" Buffer-menu-delete-backwards)
-  ("s" Buffer-menu-save)
-  ("~" Buffer-menu-not-modified)
-  ("x" Buffer-menu-execute)
-  ("b" Buffer-menu-bury)
-  ("g" revert-buffer)
-  ("T" Buffer-menu-toggle-files-only)
-  ("O" Buffer-menu-multi-occur :color blue)
-  ("I" Buffer-menu-isearch-buffers :color blue)
-  ("R" Buffer-menu-isearch-buffers-regexp :color blue)
-  ("c" nil "cancel")
-  ("v" Buffer-menu-select "select" :color blue)
-  ("o" Buffer-menu-other-window "other-window" :color blue)
-  ("q" quit-window "quit" :color blue))
-
-(define-key Buffer-menu-mode-map "." 'hydra-buffer-menu/body)
-
-
-;;** Example 11: rectangle-mark-mode
-(require 'rect)
-(defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
-                                     :color pink
-                                     :post (deactivate-mark))
-  "
-  ^_k_^     _d_elete    _s_tring
-_h_   _l_   _o_k        _y_ank
-  ^_j_^     _n_ew-copy  _r_eset
-^^^^        _e_xchange  _u_ndo
-^^^^        ^ ^         _x_kill
-"
-  ("h" rectangle-backward-char nil)
-  ("l" rectangle-forward-char nil)
-  ("k" rectangle-previous-line nil)
-  ("j" rectangle-next-line nil)
-  ("e" hydra-ex-point-mark nil)
-  ("n" copy-rectangle-as-kill nil)
-  ("d" delete-rectangle nil)
-  ("r" (if (region-active-p)
-           (deactivate-mark)
-         (rectangle-mark-mode 1)) nil)
-  ("y" yank-rectangle nil)
-  ("u" undo nil)
-  ("s" string-rectangle nil)
-  ("x" kill-rectangle nil)
-  ("o" nil nil))
-
-(global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
-
-;; (require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
-
-(progn
-    (defhydra hydra-search (:color amaranth)
-            "Search hydra"
-            ("o" isearch-occur "isearch occur")
-            ("r" isearch-backward-regexp "isearch backward")
-            ("s" isearch-repeat-forward "isearch forward")
-            ("." isearch-forward-symbol-at-point "isearch symbol")
-            ("q" hydra-edit/body "quit" :exit t))
-
-  (defhydra hydra-edit 
-    (:color amaranth)
-  "Edit hydra"
-  ("b" ido-switch-buffer "switch buffer")
-  ("+" text-scale-increase "in")
-  ("," xref-go-back "xref go back")
-  ("-" text-scale-decrease "out")
-  ("." xref-find-definitions "xref find def")
-  ("<" beginning-of-buffer "beginning of buffer")
-  (">" end-of-buffer "end of buffer")
-  ("a" avy-goto-char "avy")
-  ("e" next-line "next line")
-  ("D" dired "dired")
-  ("i" previous-line "previous line")
-  ("k" kill-buffer "kill buffer")
-  ("m" imenu "imenu")
-  ("n" backward-char "backward character")
-  ("o" forward-char "forward character")
-  ("q" nil "quit" :exit t :color blue)
-  ("t" treemacs "treemacs")
-  ("w o" delete-other-windows "delete other window")
-  ("w d" delete-window "delete window")
-  ("w s" split-window-below "split below")
-  ("w v" split-window-right "split right")
-  ("x" smex "smex")
-  ("s" hydra-search/body "search" :color teal)
-  )
-  (global-set-key (kbd "C-c ,") 'hydra-tools/body))
-(progn
-  (defhydra hydra-tools 
-    (:color amaranth)
-    "Edit hydra"
-    ("g" magit "magit")
-    ("!" shell-command "shell command")
-    ("q" nil "quit" :exit t :color blue))
-
-  (global-set-key (kbd "C-c /") 'hydra-tools/body)
-  )
-
-(progn
-  (require 'org)
-  (defhydra hydra-org (:color amaranth)
-    "Org hydra"
-    ("a" org-agenda "Agenda")
-    ("q" nil "quit" :exit t :color blue))
-    (global-set-key (kbd "C-c a") 'hydra-org/body))
