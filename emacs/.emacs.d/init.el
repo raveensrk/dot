@@ -91,7 +91,6 @@
 (setq kill-whole-line t)
 (setq sentence-end-double-space nil)
 (setq-default abbrev-mode 1)
-(global-auto-revert-mode t)
 (put 'narrow-to-region 'disabled nil)
 
 (setq-default indent-tabs-mode nil)
@@ -572,6 +571,18 @@
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
+(setq ido-use-filename-at-point 'guess)
+(setq ido-use-url-at-point nil)
+
+(setq ido-file-extensions-order '(".sv" ".v" ".bash" ".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
+(setq ido-ignore-extensions t)
+
+
+(add-hook 'occur-mode-hook (lambda () (next-error-follow-minor-mode)))
+
+
+
+
 (use-package smex
   :config
   (smex-initialize))
@@ -606,7 +617,7 @@
     (setq treemacs-is-never-other-window           t
           treemacs-show-cursor                     t
           treemacs-show-hidden-files               t
-          treemacs-space-between-root-nodes        t
+          treemacs-space-between-root-nodes        nil
           treemacs-width                           30
           treemacs-width-increment                 1
           treemacs-width-is-initially-locked       t)
@@ -699,29 +710,45 @@ _h_   _l_   _o_k        _y_ank
 (require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
 
 (progn
+    (defhydra hydra-search (:color amaranth)
+            "Search hydra"
+            ("o" isearch-occur "isearch occur")
+            ("r" isearch-backward-regexp "isearch backward")
+            ("s" isearch-repeat-forward "isearch forward")
+            ("." isearch-forward-symbol-at-point "isearch symbol")
+            ("q" hydra-edit/body "quit" :exit t))
+
   (defhydra hydra-edit 
     (:color amaranth)
   "Edit hydra"
-  ("a" avy-goto-char "avy")
+  ("b" ido-switch-buffer "switch buffer")
+  ("+" text-scale-increase "in")
+  ("," xref-go-back "xref go back")
+  ("-" text-scale-decrease "out")
+  ("." xref-find-definitions "xref find def")
   ("<" beginning-of-buffer "beginning of buffer")
   (">" end-of-buffer "end of buffer")
-  ("m" imenu "imenu")
-  ("+" text-scale-increase "in")
-  ("-" text-scale-decrease "out")
-  ("s" split-window-below "split below")
-  ("v" split-window-right "split right")
+  ("a" avy-goto-char "avy")
   ("e" next-line "next line")
+  ("D" dired "dired")
+  ("i" previous-line "previous line")
+  ("k" kill-buffer "kill buffer")
+  ("m" imenu "imenu")
   ("n" backward-char "backward character")
   ("o" forward-char "forward character")
-  ("i" previous-line "previous line")
-  ("d" delete-window "delete window")
-  ("." xref-find-definitions "xref find def")
-  ("," xref-go-back "xref go back")
+  ("q" nil "quit" :exit t :color blue)
+  ("t" treemacs "treemacs")
+  ("w o" delete-other-windows "delete other window")
+  ("w d" delete-window "delete window")
+  ("w s" split-window-below "split below")
+  ("w v" split-window-right "split right")
   ("x" smex "smex")
-  ("k" kill-buffer "kill buffer")
-  ("q" nil "quit" :exit t :color blue))
+  ("s" hydra-search/body "search" :color teal)
+  )
+  
+  (global-set-key (kbd "C-c ,") 'hydra-edit/body)
 
- (global-set-key (kbd "C-c ,") 'hydra-edit/body)
+  
  )
 
 (progn
@@ -735,3 +762,9 @@ _h_   _l_   _o_k        _y_ank
  (global-set-key (kbd "C-c /") 'hydra-tools/body)
  )
 
+(use-package projectile
+:config
+
+(projectile-mode +1)
+;; Recommended keymap prefix on Windows/Linux
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))

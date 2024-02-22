@@ -17,12 +17,18 @@
  '(grep-find-template
    "find -H -L <D> <X> -type f <F> -exec grep <C> -nH --null -e <R> \\{\\} +")
  '(grep-find-use-xargs 'exec-plus)
+ '(ido-ignore-directories '("\\`CVS/" "\\`\\.\\./" "\\`\\./"))
  '(ido-show-dot-for-dired t)
  '(ido-use-filename-at-point 'guess)
  '(project-vc-extra-root-markers
    '("Makefile" "index.org" ".dir-locals.el" "README" "readme.org" "README.org" "readme"))
  '(project-vc-ignores '("TAGS" "tags"))
- '(straight-use-package-by-default t))
+ '(projectile-auto-discover nil)
+ '(projectile-generic-command "find -L . -type f | cut -c3- | tr '\\n' '\\0'")
+ '(straight-use-package-by-default t)
+ '(treemacs-indent-guide-mode t)
+ '(treemacs-indentation 0)
+ '(treemacs-indentation-string " ┃ "))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
