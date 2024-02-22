@@ -38,6 +38,7 @@ shopt -s checkwinsize # check the window size after each command and, if necessa
 # }}}
 # {{{ INTERFACE
 if [ -v xset ]; then
+    # Insead of this use macos settings -> keyboard -> repeat fast -> delay short
     xset r rate 300 50
     xset m 10 1
 fi

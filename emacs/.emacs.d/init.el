@@ -371,7 +371,7 @@
 (pixel-scroll-mode t)
 (global-set-key (kbd "C-c w") 'tab-list)
 (global-set-key (kbd "C-c o a") 'org-agenda)
-(global-set-key (kbd "C-c y") 'crux-duplicate-current-line-or-region)
+(global-set-key (kbd "C-c y") 'duplicate-dwim)
 (global-set-key (kbd "C-c o c") 'org-capture)
 (global-set-key (kbd "C-c c") 'comment-line)
 (global-set-key (kbd "C-c K") 'nuke-all-buffers)
@@ -452,6 +452,8 @@
 
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode-enable)
 
+(use-package iedit)
+
 (progn
   (defhydra hydra-search ()
     "Search hydra"
@@ -460,14 +462,23 @@
     ("s" isearch-repeat-forward "isearch forward")
     ("." isearch-forward-symbol-at-point "isearch symbol" :color pink)
     ("q" hydra-edit/body "quit" :exit t))
-  (defhydra hydra-edit 
-    (:color amaranth)
-    "Edit hydra"
+
+(defhydra hydra-windows (:columns 1 :color red)
+    "Search hydra"
+    ("n" windmove-left "Move window left")
+    ("r" isearch-repeat-backward "isearch backward")
+    ("s" isearch-repeat-forward "isearch forward")
+    ("." isearch-forward-symbol-at-point "isearch symbol" :color pink)
+    ("q" hydra-edit/body "quit" :exit t))
+  
+  
+  (defhydra hydra-of-hydras (:columns 4)
+    "Hydra of hydras"
     ("(" beginning-of-defun "beginning of defun")
     (")" end-of-defun "end of defun")
     ("+" text-scale-increase "in")
     ("," xref-go-back "xref go back")
-    ("'" pop-global-mark "pop mark")
+    ("\s" pop-global-mark "pop global mark")
     ("-" text-scale-decrease "out")
     ("." xref-find-definitions "xref find def")
     ("<" beginning-of-buffer "beginning of buffer")
@@ -487,12 +498,15 @@
     ("s" hydra-search/body "search" :color teal)
     ("/" hydra-tools/body "tools" :color teal)
     ("t" treemacs "treemacs")
-    ("w d" delete-window "delete window")
-    ("w o" delete-other-windows "delete other window")
-    ("w s" split-window-below "split below")
-    ("w v" split-window-right "split right")
-    ("x" smex "smex"))
-  (global-set-key (kbd "C-c ,") 'hydra-edit/body))
+    ("w" ace-window "ace window")
+    ;; ("w d" delete-window "delete window")
+    ;; ("w o" delete-other-windows "delete other window")
+    ;; ("w s" split-window-below "split below")
+    ;; ("w v" split-window-right "split right")
+    ("x" eval-last-sexp "evaluate last sexp")
+    ("X" eval-buffer "evaluate whole buffer")
+    )
+  (global-set-key (kbd "s-a") 'hydra-of-hydras/body))
 
 (progn
   (require 'org)
@@ -538,3 +552,7 @@
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
+
+
+;; split-window-horizontally
+(put 'set-goal-column 'disabled nil)
