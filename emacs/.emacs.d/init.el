@@ -696,42 +696,53 @@ _h_   _l_   _o_k        _y_ank
 
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 
-(require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
+;; (require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
 
 (progn
   (defhydra hydra-edit 
     (:color amaranth)
-  "Edit hydra"
-  ("a" avy-goto-char "avy")
-  ("<" beginning-of-buffer "beginning of buffer")
-  (">" end-of-buffer "end of buffer")
-  ("m" imenu "imenu")
-  ("+" text-scale-increase "in")
-  ("-" text-scale-decrease "out")
-  ("s" split-window-below "split below")
-  ("v" split-window-right "split right")
-  ("e" next-line "next line")
-  ("n" backward-char "backward character")
-  ("o" forward-char "forward character")
-  ("i" previous-line "previous line")
-  ("d" delete-window "delete window")
-  ("." xref-find-definitions "xref find def")
-  ("," xref-go-back "xref go back")
-  ("x" smex "smex")
-  ("k" kill-buffer "kill buffer")
-  ("q" nil "quit" :exit t :color blue))
+    "
+    ^test^
+    ^^^^^^------------------
+    _a_: avy-goto-char
+"
+    ("a" avy-goto-char "avy")
+    ("<" beginning-of-buffer "beginning of buffer")
+    (">" end-of-buffer "end of buffer")
+    ("m" imenu "imenu")
+    ("+" text-scale-increase "in")
+    ("-" text-scale-decrease "out")
+    ("s" split-window-below "split below")
+    ("v" split-window-right "split right")
+    ("e" next-line "next line")
+    ("n" backward-char "backward character")
+    ("o" forward-char "forward character")
+    ("i" previous-line "previous line")
+    ("d" delete-window "delete window")
+    ("." xref-find-definitions "xref find def")
+    ("," xref-go-back "xref go back")
+    ("x" smex "smex")
+    ("k" kill-buffer "kill buffer")
+    ("q" nil "quit" :exit t :color blue))
 
- (global-set-key (kbd "C-c ,") 'hydra-edit/body)
- )
+  (global-set-key (kbd "C-c ,") 'hydra-edit/body)
+  )
 
 (progn
   (defhydra hydra-tools 
     (:color amaranth)
-  "Edit hydra"
-  ("g" magit "magit")
-  ("!" shell-command "shell command")
-  ("q" nil "quit" :exit t :color blue))
+    "Edit hydra"
+    ("g" magit "magit")
+    ("!" shell-command "shell command")
+    ("q" nil "quit" :exit t :color blue))
 
- (global-set-key (kbd "C-c /") 'hydra-tools/body)
- )
+  (global-set-key (kbd "C-c /") 'hydra-tools/body)
+  )
 
+(progn
+  (require 'org)
+  (defhydra hydra-org (:color amaranth)
+    "Org hydra"
+    ("a" org-agenda "Agenda")
+    ("q" nil "quit" :exit t :color blue))
+    (global-set-key (kbd "C-c a") 'hydra-org/body))
