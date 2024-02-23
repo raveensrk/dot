@@ -454,6 +454,43 @@
 
 (use-package iedit)
 
+(use-package embark
+  :ensure t
+
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)))
+
+(defun my-elisp-mode-faces ()
+  "Buffer-local face remapping for `emacs-lisp-mode-hook'."
+  (face-remap-add-relative 'default
+                           :background "dark slate gray"
+                           :foreground "white"))
+
+(add-hook 'emacs-lisp-mode-hook #'my-elisp-mode-faces)
+
+(defun my-org-mode-faces ()
+  "Buffer-local face remapping for `org-mode-hook'."
+  (face-remap-add-relative 'default
+                           :background "DarkOrange4"
+                           :foreground "white"))
+
+(add-hook 'org-mode-hook #'my-org-mode-faces)
+
+
+(defun my-verilog-mode-faces ()
+  "Buffer-local face remapping for `verilog-mode-hook'."
+  (face-remap-add-relative 'default
+                           :background "#5f2f2f"
+                           :foreground "white"))
+
+(add-hook 'verilog-mode-hook #'my-verilog-mode-faces)
+
+
+
+
+
 (progn
   (defhydra hydra-search ()
     "Search hydra"
@@ -479,7 +516,7 @@
     ("+" text-scale-increase "in")
     ("," xref-go-back "xref go back")
     ("\s" pop-global-mark "pop global mark")
-    ("-" text-scale-decrease "out")
+    ("-" text-scale-decrease "out"'')
     ("." xref-find-definitions "xref find def")
     ("<" beginning-of-buffer "beginning of buffer")
     (">" end-of-buffer "end of buffer")
@@ -554,5 +591,16 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 
-;; split-window-horizontally
-(put 'set-goal-column 'disabled nil)
+
+
+;; (cond
+;;  ((string= (message "%s" major-mode) (message "emacs-lisp-mode"))
+;;   t)
+;;  (t "default")
+
+ 
+;;   )
+;;  )
+;; (print major-mode)
+
+;; (add-hook 'emacs-lisp-mode-hook (lambda () (set-background-color "dark green")))

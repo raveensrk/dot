@@ -34,20 +34,10 @@
  '(delete-selection-mode t)
  '(duplicate-line-final-position 1)
  '(dynamic-completion-mode t)
- '(electric-pair-mode t)
- '(electric-pair-pairs
-   '((34 . 34)
-     (8216 . 8217)
-     (8220 . 8221)
-     (40 . 41)
-     (123 . 125)
-     (93 . 93)))
- '(electric-pair-skip-whitespace-chars '(32 9 10))
+
  '(ffap-file-name-with-spaces t)
- '(follow-auto t)
  '(global-so-long-mode t)
  '(global-tab-line-mode nil)
- '(goal-column 80)
  '(grep-find-command
    '("find -L . -type f -exec grep --color=auto -nH --null -e  \\{\\} +" . 54))
  '(grep-find-ignored-files
@@ -75,7 +65,6 @@
  '(projectile-generic-command "find -L . -type f | cut -c3- | tr '\\n' '\\0'")
  '(repeat-mode t)
  '(set-mark-command-repeat-pop t)
- '(show-smartparens-global-mode t)
  '(show-trailing-whitespace t)
  '(straight-use-package-by-default t)
  '(tab-bar-close-button-show 'selected)
@@ -85,13 +74,14 @@
  '(tab-bar-select-tab-modifiers nil)
  '(tab-bar-tab-hints t)
  '(tags-add-tables 'ask-user)
- '(track-eol t)
+;; '(track-eol t)
  '(treemacs-indent-guide-mode t)
  '(treemacs-indentation 0)
  '(treemacs-indentation-string " ┃ ")
  '(windmove-create-window nil)
  '(windmove-default-keybindings '([ignore] shift))
- '(x-stretch-cursor t))
+;; '(x-stretch-cursor t)
+ )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -106,3 +96,22 @@
  '(tab-bar-tab-inactive ((t (:background "gray13" :foreground "gray100")))))
 
 
+
+
+ ;; ;; '(electric-pair-mode t)
+ ;; ;; '(electric-pair-pairs
+ ;; ;;   '((34 . 34)
+ ;; ;;     (8216 . 8217)
+ ;; ;;     (8220 . 8221)
+ ;; ;;     (40 . 41)
+ ;; ;;     (123 . 125)
+ ;; ;;     (93 . 93)))
+ ;; ;; '(electric-pair-skip-whitespace-chars '(32 9 10))
+
+;; ;; '(follow-auto t)
+
+
+;; ;; '(goal-column 80)
+
+
+ ;; '(show-smartparens-global-mode t)
