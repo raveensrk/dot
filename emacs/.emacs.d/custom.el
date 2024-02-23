@@ -34,8 +34,9 @@
  '(delete-selection-mode t)
  '(duplicate-line-final-position 1)
  '(dynamic-completion-mode t)
-
+ '(etags-xref-prefer-current-file t)
  '(ffap-file-name-with-spaces t)
+ '(focus-follows-mouse t)
  '(global-so-long-mode t)
  '(global-tab-line-mode nil)
  '(grep-find-command
@@ -74,20 +75,19 @@
  '(tab-bar-select-tab-modifiers nil)
  '(tab-bar-tab-hints t)
  '(tags-add-tables 'ask-user)
-;; '(track-eol t)
+ '(tags-revert-without-query t)
  '(treemacs-indent-guide-mode t)
  '(treemacs-indentation 0)
  '(treemacs-indentation-string " ┃ ")
+ '(vc-follow-symlinks nil)
  '(windmove-create-window nil)
- '(windmove-default-keybindings '([ignore] shift))
-;; '(x-stretch-cursor t)
- )
+ '(windmove-default-keybindings '([ignore] shift)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#2e3436" :foreground "#eeeeec" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 175 :width normal :foundry "nil" :family "Menlo"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#2e3436" :foreground "#eeeeec" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 120 :width normal :foundry "CTDB" :family "Fira Code"))))
  '(aw-leading-char-face ((t (:foreground "red" :height 1.0 :width extra-expanded))))
  '(cursor ((t (:background "light green"))))
  '(region ((t (:extend t :background "SeaGreen1" :foreground "black"))))
