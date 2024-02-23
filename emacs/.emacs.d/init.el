@@ -604,3 +604,6 @@
 ;; (print major-mode)
 
 ;; (add-hook 'emacs-lisp-mode-hook (lambda () (set-background-color "dark green")))
+
+
+(global-set-key (kbd "C-c a") 'org-capture)

@@ -34,7 +34,6 @@
  '(delete-selection-mode t)
  '(duplicate-line-final-position 1)
  '(dynamic-completion-mode t)
-
  '(ffap-file-name-with-spaces t)
  '(global-so-long-mode t)
  '(global-tab-line-mode nil)
@@ -58,6 +57,10 @@
  '(next-line-add-newlines t)
  '(org-agenda-files
    '("~/iCloud/My projects/emacs.org" "~/iCloud/My projects/index.org"))
+ '(org-capture-templates
+   '(("p" "Plain text capture" entry
+      (file "~/org/notes.org")
+      "" :prepend t :empty-lines-after 1)))
  '(project-vc-extra-root-markers
    '("Makefile" "index.org" ".dir-locals.el" "README" "readme.org" "README.org" "readme"))
  '(project-vc-ignores '("TAGS" "tags"))
@@ -74,14 +77,11 @@
  '(tab-bar-select-tab-modifiers nil)
  '(tab-bar-tab-hints t)
  '(tags-add-tables 'ask-user)
-;; '(track-eol t)
  '(treemacs-indent-guide-mode t)
  '(treemacs-indentation 0)
  '(treemacs-indentation-string " ┃ ")
  '(windmove-create-window nil)
- '(windmove-default-keybindings '([ignore] shift))
-;; '(x-stretch-cursor t)
- )
+ '(windmove-default-keybindings '([ignore] shift)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
