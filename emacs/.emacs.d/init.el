@@ -403,7 +403,8 @@
 (setq ido-ignore-extensions t)
 
 
-(add-hook 'occur-mode-hook (lambda () (next-error-follow-minor-mode)))
+;; (add-hook 'occur-mode-hook (lambda () (next-error-follow-minor-mode)))
+
 
 
 (use-package smex
@@ -418,12 +419,13 @@
 (use-package ranger
   :config
   (setq ranger-show-hidden t)
-  (setq ranger-width-parents 15)
+  (setq ranger-width-parents 10)
   (setq ranger-preview-file t))
 
 (load-theme 'tango-dark)
 
 (visit-tags-table "~/tags/TAGS")
+
 
 
 (use-package rainbow-delimiters
@@ -499,15 +501,6 @@
     ("s" isearch-repeat-forward "isearch forward")
     ("." isearch-forward-symbol-at-point "isearch symbol" :color pink)
     ("q" hydra-edit/body "quit" :exit t))
-
-  (defhydra hydra-windows (:columns 1 :color red)
-    "Search hydra"
-    ("n" windmove-left "Move window left")
-    ("r" isearch-repeat-backward "isearch backward")
-    ("s" isearch-repeat-forward "isearch forward")
-    ("." isearch-forward-symbol-at-point "isearch symbol" :color pink)
-    ("q" hydra-edit/body "quit" :exit t))
-  
   
   (defhydra hydra-of-hydras (:columns 4)
     "Hydra of hydras"
@@ -515,7 +508,7 @@
     (")" end-of-defun "end of defun")
     ("+" text-scale-increase "in")
     ("," xref-go-back "xref go back")
-    ("\s" pop-global-mark "pop global mark")
+    ("'" pop-global-mark "pop global mark")
     ("-" text-scale-decrease "out")
     ("." xref-find-definitions "xref find def")
     ("<" beginning-of-buffer "beginning of buffer")
@@ -523,7 +516,7 @@
     ("D" dired "dired")
     ("c" comment-line "comment line")
     ("a" avy-goto-char "avy")
-    ("b" ido-switch-buffer "switch buffer")
+    ("b" bmkp-cycle "Cycle bookmarks")
     ("e" next-line "next line")
     ("h" gptel "gptel" :exit t :color blue)
     ("i" previous-line "previous line")
@@ -533,6 +526,7 @@
     ("o" forward-char "forward character")
     ("q" nil "quit" :exit t :color blue)
     ("s" hydra-search/body "search" :color teal)
+    ("r" recentf-open "Recent files")
     ("/" hydra-tools/body "tools" :color teal)
     ("t" treemacs "treemacs")
     ("w" ace-window "ace window")
@@ -605,5 +599,22 @@
 
 ;; (add-hook 'emacs-lisp-mode-hook (lambda () (set-background-color "dark green")))
 
-
 (global-set-key (kbd "C-c a") 'org-capture)
+(use-package quelpa)
+(use-package quelpa-use-package)
+
+(use-package bookmark+
+  :quelpa (bookmark+ :fetcher wiki
+                     :files
+                     ("bookmark+.el"
+                      "bookmark+-mac.el"
+                      "bookmark+-bmu.el"
+                      "bookmark+-1.el"
+                      "bookmark+-key.el"
+                      "bookmark+-lit.el"
+                      "bookmark+-doc.el"
+                      "bookmark+-chg.el"))
+  :defer 2)
+
+(load-library "~/.emacs.d/quelpa/build/bookmark+/bookmark+.el")
+
