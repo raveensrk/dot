@@ -500,7 +500,7 @@
     ("." isearch-forward-symbol-at-point "isearch symbol" :color pink)
     ("q" hydra-edit/body "quit" :exit t))
 
-(defhydra hydra-windows (:columns 1 :color red)
+  (defhydra hydra-windows (:columns 1 :color red)
     "Search hydra"
     ("n" windmove-left "Move window left")
     ("r" isearch-repeat-backward "isearch backward")
@@ -516,7 +516,7 @@
     ("+" text-scale-increase "in")
     ("," xref-go-back "xref go back")
     ("\s" pop-global-mark "pop global mark")
-    ("-" text-scale-decrease "out"'')
+    ("-" text-scale-decrease "out")
     ("." xref-find-definitions "xref find def")
     ("<" beginning-of-buffer "beginning of buffer")
     (">" end-of-buffer "end of buffer")
@@ -598,7 +598,7 @@
 ;;   t)
 ;;  (t "default")
 
- 
+
 ;;   )
 ;;  )
 ;; (print major-mode)
