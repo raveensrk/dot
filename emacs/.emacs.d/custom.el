@@ -16,6 +16,7 @@
  '(blink-cursor-delay 0.2)
  '(blink-cursor-interval 0.2)
  '(blink-cursor-mode nil)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
  '(bookmark-use-annotations t)
  '(company-async-redisplay-delay 1)
  '(company-idle-delay 2)
@@ -55,8 +56,9 @@
  '(ido-use-filename-at-point 'guess)
  '(imenu-auto-rescan t)
  '(isearch-lazy-count t)
+ '(ivy-add-newline-after-prompt nil)
+ '(ivy-display-style 'fancy)
  '(line-spacing 0.1)
- '(next-line-add-newlines t)
  '(org-agenda-files
    '("~/iCloud/My projects/emacs.org" "~/iCloud/My projects/index.org"))
  '(org-capture-templates
@@ -69,8 +71,9 @@
  '(projectile-auto-discover nil)
  '(projectile-generic-command "find -L . -type f | cut -c3- | tr '\\n' '\\0'")
  '(repeat-mode t)
+ '(require-final-newline t)
  '(set-mark-command-repeat-pop t)
- '(show-trailing-whitespace t)
+ '(split-height-threshold nil)
  '(straight-use-package-by-default t)
  '(tab-bar-close-button-show 'selected)
  '(tab-bar-history-mode t)
@@ -78,22 +81,26 @@
  '(tab-bar-position nil)
  '(tab-bar-select-tab-modifiers nil)
  '(tab-bar-tab-hints t)
+ '(tab-line-new-tab-choice t)
  '(tags-add-tables 'ask-user)
  '(tags-revert-without-query t)
  '(treemacs-indent-guide-mode t)
  '(treemacs-indentation 0)
  '(treemacs-indentation-string " ┃ ")
  '(vc-follow-symlinks nil)
+ '(verilog-auto-newline nil)
  '(windmove-create-window nil)
- '(windmove-default-keybindings '([ignore] shift)))
+ '(windmove-default-keybindings '([ignore]))
+ '(windmove-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#2e3436" :foreground "#eeeeec" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 120 :width normal :foundry "CTDB" :family "Fira Code"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#2e3436" :foreground "#eeeeec" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 180 :width normal :foundry "nil" :family "Menlo"))))
  '(aw-leading-char-face ((t (:foreground "red" :height 1.0 :width extra-expanded))))
  '(cursor ((t (:background "light green"))))
+ '(org-default ((t (:inherit default :height 250 :family "Chalkboard"))))
  '(region ((t (:extend t :background "SeaGreen1" :foreground "black"))))
  '(tab-bar ((t (:inherit variable-pitch :background "LightSalmon2" :foreground "black"))))
  '(tab-bar-tab-group-current ((t (:inherit tab-bar-tab :weight bold))))
@@ -119,3 +126,9 @@
 
 
  ;; '(show-smartparens-global-mode t)
+
+
+ ;; '(next-line-add-newlines t)
+
+
+ ;; '(show-trailing-whitespace t)

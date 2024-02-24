@@ -1,8 +1,13 @@
 #!/bin/bash
 
+if command -v universal-ctags ; then
+    ctags="universal-ctags"
+else
+    ctags="ctags"
+fi
 
 pushd ~/tags || exit 2
 # ctags -R $(envsubst < tagpaths | xargs) 
-universal-ctags -e -R $(envsubst < tagpaths | xargs) 
+$ctags -e -R $(envsubst < tagpaths | xargs) 
 popd || exit 2
 
