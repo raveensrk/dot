@@ -106,9 +106,6 @@
  '(tab-bar-tab-group-current ((t (:inherit tab-bar-tab :weight bold))))
  '(tab-bar-tab-inactive ((t (:background "gray13" :foreground "gray100")))))
 
-
-
-
  ;; ;; '(electric-pair-mode t)
  ;; ;; '(electric-pair-pairs
  ;; ;;   '((34 . 34)
@@ -121,14 +118,10 @@
 
 ;; ;; '(follow-auto t)
 
-
 ;; ;; '(goal-column 80)
-
 
  ;; '(show-smartparens-global-mode t)
 
-
  ;; '(next-line-add-newlines t)
-
 
  ;; '(show-trailing-whitespace t)
