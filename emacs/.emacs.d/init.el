@@ -5,6 +5,13 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; and `package-pinned-packages`. Most users will not need or want to do this.
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+
 ;;; Startup
 
 ;; (toggle-frame-fullscreen)
@@ -134,15 +141,6 @@
 
 (use-package which-key
   :config (which-key-mode 1))
-
-(use-package dashboard
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-center-content t)
-  (setq dashboard-show-shortcuts nil)
-  (setq dashboard-items '((recents  . 5)
-                          (bookmarks . 20)
-                          (projects . 5))))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (mouse-avoidance-mode 'cat-and-mouse)
@@ -409,7 +407,7 @@
   (setq ranger-width-parents 10)
   (setq ranger-preview-file t))
 
-(load-theme 'tango-dark)
+;; (load-theme 'tango-dark)
 
 (if (file-exists-p "~/tags/TAGS")
     (visit-tags-table "~/tags/TAGS"))
@@ -449,30 +447,6 @@
    ("C-;" . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)))
 
-(defun my-elisp-mode-faces ()
-  "Buffer-local face remapping for `emacs-lisp-mode-hook'."
-  (face-remap-add-relative 'default
-                           :background "dark slate gray"
-                           :foreground "white"))
-
-(add-hook 'emacs-lisp-mode-hook #'my-elisp-mode-faces)
-
-(defun my-org-mode-faces ()
-  "Buffer-local face remapping for `org-mode-hook'."
-  (face-remap-add-relative 'default
-                           :background "DarkOrange4"
-                           :foreground "white"))
-
-(add-hook 'org-mode-hook #'my-org-mode-faces)
-
-(defun my-verilog-mode-faces ()
-  "Buffer-local face remapping for `verilog-mode-hook'."
-  (face-remap-add-relative 'default
-                           :background "#5f2f2f"
-                           :foreground "white"))
-
-(add-hook 'verilog-mode-hook #'my-verilog-mode-faces)
-
 (use-package verilog-ext
   :hook ((verilog-mode . verilog-ext-mode))
   :init
@@ -502,15 +476,7 @@
   (verilog-ext-mode-setup))
 
 (progn
-  (defhydra hydra-search ()
-    "Search hydra"
-    ("o" isearch-occur "isearch occur" :color pink)
-    ("r" isearch-repeat-backward "isearch backward")
-    ("s" isearch-repeat-forward "isearch forward")
-    ("." isearch-forward-symbol-at-point "isearch symbol" :color pink)
-    ("q" hydra-edit/body "quit" :exit t))
-
-  (defhydra hydra-of-hydras (:columns 4)
+  (defhydra hydra-of-hydras (:columns 4 :color amaranth)
     "Hydra of hydras"
     ("(" beginning-of-defun "beginning of defun")
     (")" end-of-defun "end of defun")
@@ -522,6 +488,7 @@
     ("<" beginning-of-buffer "beginning of buffer")
     (">" end-of-buffer "end of buffer")
     ("D" dired "dired")
+    ("d" kill-whole-line "kill whole line")
     ("c" comment-line "comment line")
     ("a" avy-goto-char "avy")
     ("b" bmkp-cycle "Cycle bookmarks")
@@ -533,29 +500,15 @@
     ("n" backward-char "backward character")
     ("o" forward-char "forward character")
     ("q" nil "quit" :exit t :color blue)
-    ("s" hydra-search/body "search" :color teal)
+    ("C-." emabark-act)
     ("r" recentf-open "Recent files")
     ("/" hydra-tools/body "tools" :color teal)
     ("t" treemacs "treemacs")
     ("w" ace-window "ace window")
-    ;; ("w d" delete-window "delete window")
-    ;; ("w o" delete-other-windows "delete other window")
-    ;; ("w s" split-window-below "split below")
-    ;; ("w v" split-window-right "split right")
     ("x" eval-last-sexp "evaluate last sexp")
     ("X" eval-buffer "evaluate whole buffer")
     )
   (global-set-key (kbd "s-a") 'hydra-of-hydras/body))
-
-(progn
-  (require 'org)
-  (defhydra hydra-tools
-    (:color amaranth)
-    "Edit hydra"
-    ("a" org-agenda "Agenda")
-    ("g" magit "magit")
-    ("!" shell-command "shell command")
-    ("q" nil "quit" :exit t :color blue)))
 
 (use-package expand-region
   :bind
@@ -682,76 +635,12 @@
 (use-package telephone-line
   :config
   (telephone-line-mode 1)
-  ;; (setq telephone-line-primary-left-separator 'telephone-line-gradient
-  ;;       telephone-line-primary-right-separator 'telephone-line-gradient
-  ;;       telephone-line-secondary-left-separator 'telephone-line-nil
-  ;;       telephone-line-secondary-right-separator 'telephone-line-nil)
-  ;; (defface my-red '((t (:foreground "white" :background "red"))) "")
-  ;; (defface my-orangered '((t (:foreground "white" :background "orange red"))) "")
-  ;; (defface my-orange '((t (:foreground "dim grey" :background "orange"))) "")
-  ;; (defface my-gold '((t (:foreground "dim grey" :background "gold"))) "")
-  ;; (defface my-yellow '((t (:foreground "dim grey" :background "yellow"))) "")
-  ;; (defface my-chartreuse '((t (:foreground "dim grey" :background "chartreuse"))) "")
-  ;; (defface my-green '((t (:foreground "dim grey" :background "green"))) "")
-  ;; (defface my-sgreen '((t (:foreground "dim grey" :background "spring green"))) "")
-  ;; (defface my-cyan '((t (:foreground "dim grey" :background "cyan"))) "")
-  ;; (defface my-blue '((t (:foreground "white" :background "blue"))) "")
-  ;; (defface my-dmagenta '((t (:foreground "white" :background "dark magenta"))) "")
-
-  ;; (setq telephone-line-faces
-  ;;       '((red . (my-red . my-red))
-  ;;         (ored . (my-orangered . my-orangered))
-  ;;         (orange . (my-orange . my-orange))
-  ;;         (gold . (my-gold . my-gold))
-  ;;         (yellow . (my-yellow . my-yellow))
-  ;;         (chartreuse . (my-chartreuse . my-chartreuse))
-  ;;         (green . (my-green . my-green))
-  ;;         (sgreen . (my-sgreen . my-sgreen))
-  ;;         (cyan . (my-cyan . my-cyan))
-  ;;         (blue . (my-blue . my-blue))
-  ;;         (dmagenta . (my-dmagenta . my-dmagenta))
-  ;;         (evil . telephone-line-evil-face)
-  ;;         (accent . (telephone-line-accent-active . telephone-line-accent-inactive))
-  ;;         (nil . (mode-line . mode-line-inactive))))
-
-  ;; (telephone-line-defsegment s1 () "Oh,")
-  ;; (telephone-line-defsegment s2 () "telephone")
-  ;; (telephone-line-defsegment s3 () "line,")
-  ;; (telephone-line-defsegment s4 () "Give")
-  ;; (telephone-line-defsegment s5 () "me")
-  ;; (telephone-line-defsegment s6 () "some")
-  ;; (telephone-line-defsegment s7 () "time,")
-  ;; (telephone-line-defsegment s8 () "I'm")
-  ;; (telephone-line-defsegment s9 () "living")
-  ;; (telephone-line-defsegment s10 () "in")
-  ;; (telephone-line-defsegment s11 () "twilight")
-
-  ;; (setq telephone-line-lhs
-  ;;       '((red . (s1))
-  ;;         (ored . (s2))
-  ;;         (orange . (s3))
-  ;;         (gold . (s4))
-  ;;         (yellow . (s5))
-  ;;         (chartreuse . (s6))
-  ;;         (green . (s7))
-  ;;         (sgreen . (s8))
-  ;;         (cyan . (s9))
-  ;;         (blue . (s10))
-  ;;         (dmagenta . (s11))
-  ;;         (nil    . (telephone-line-minor-mode-segment
-  ;;                    telephone-line-buffer-segment))))
-  ;; (setq telephone-line-rhs
-  ;;       '((nil    . (telephone-line-misc-info-segment))
-  ;;         (accent . (telephone-line-major-mode-segment))
-  ;;         (evil   . (telephone-line-airline-position-segment))))
-
   (setq telephone-line-primary-left-separator 'telephone-line-gradient
         telephone-line-secondary-left-separator 'telephone-line-nil
         telephone-line-primary-right-separator 'telephone-line-gradient
         telephone-line-secondary-right-separator 'telephone-line-nil)
   (setq telephone-line-height 24
         telephone-line-evil-use-short-tag t)
-
   )
 
 (use-package dimmer
@@ -769,73 +658,11 @@
   :config
   (set-face-background 'highlight-indentation-face "#e3e3d3")
   (set-face-background 'highlight-indentation-current-column-face "#c3b3b3")
+  ;; (highlight-indentation-mode t)
   )
 (use-package telephone-line
   :config
   (telephone-line-mode 1)
-  ;; (setq telephone-line-primary-left-separator 'telephone-line-gradient
-  ;;       telephone-line-primary-right-separator 'telephone-line-gradient
-  ;;       telephone-line-secondary-left-separator 'telephone-line-nil
-  ;;       telephone-line-secondary-right-separator 'telephone-line-nil)
-  ;; (defface my-red '((t (:foreground "white" :background "red"))) "")
-  ;; (defface my-orangered '((t (:foreground "white" :background "orange red"))) "")
-  ;; (defface my-orange '((t (:foreground "dim grey" :background "orange"))) "")
-  ;; (defface my-gold '((t (:foreground "dim grey" :background "gold"))) "")
-  ;; (defface my-yellow '((t (:foreground "dim grey" :background "yellow"))) "")
-  ;; (defface my-chartreuse '((t (:foreground "dim grey" :background "chartreuse"))) "")
-  ;; (defface my-green '((t (:foreground "dim grey" :background "green"))) "")
-  ;; (defface my-sgreen '((t (:foreground "dim grey" :background "spring green"))) "")
-  ;; (defface my-cyan '((t (:foreground "dim grey" :background "cyan"))) "")
-  ;; (defface my-blue '((t (:foreground "white" :background "blue"))) "")
-  ;; (defface my-dmagenta '((t (:foreground "white" :background "dark magenta"))) "")
-
-  ;; (setq telephone-line-faces
-  ;;       '((red . (my-red . my-red))
-  ;;         (ored . (my-orangered . my-orangered))
-  ;;         (orange . (my-orange . my-orange))
-  ;;         (gold . (my-gold . my-gold))
-  ;;         (yellow . (my-yellow . my-yellow))
-  ;;         (chartreuse . (my-chartreuse . my-chartreuse))
-  ;;         (green . (my-green . my-green))
-  ;;         (sgreen . (my-sgreen . my-sgreen))
-  ;;         (cyan . (my-cyan . my-cyan))
-  ;;         (blue . (my-blue . my-blue))
-  ;;         (dmagenta . (my-dmagenta . my-dmagenta))
-  ;;         (evil . telephone-line-evil-face)
-  ;;         (accent . (telephone-line-accent-active . telephone-line-accent-inactive))
-  ;;         (nil . (mode-line . mode-line-inactive))))
-
-  ;; (telephone-line-defsegment s1 () "Oh,")
-  ;; (telephone-line-defsegment s2 () "telephone")
-  ;; (telephone-line-defsegment s3 () "line,")
-  ;; (telephone-line-defsegment s4 () "Give")
-  ;; (telephone-line-defsegment s5 () "me")
-  ;; (telephone-line-defsegment s6 () "some")
-  ;; (telephone-line-defsegment s7 () "time,")
-  ;; (telephone-line-defsegment s8 () "I'm")
-  ;; (telephone-line-defsegment s9 () "living")
-  ;; (telephone-line-defsegment s10 () "in")
-  ;; (telephone-line-defsegment s11 () "twilight")
-
-  ;; (setq telephone-line-lhs
-  ;;       '((red . (s1))
-  ;;         (ored . (s2))
-  ;;         (orange . (s3))
-  ;;         (gold . (s4))
-  ;;         (yellow . (s5))
-  ;;         (chartreuse . (s6))
-  ;;         (green . (s7))
-  ;;         (sgreen . (s8))
-  ;;         (cyan . (s9))
-  ;;         (blue . (s10))
-  ;;         (dmagenta . (s11))
-  ;;         (nil    . (telephone-line-minor-mode-segment
-  ;;                    telephone-line-buffer-segment))))
-  ;; (setq telephone-line-rhs
-  ;;       '((nil    . (telephone-line-misc-info-segment))
-  ;;         (accent . (telephone-line-major-mode-segment))
-  ;;         (evil   . (telephone-line-airline-position-segment))))
-
   (setq telephone-line-primary-left-separator 'telephone-line-gradient
         telephone-line-secondary-left-separator 'telephone-line-nil
         telephone-line-primary-right-separator 'telephone-line-gradient
@@ -888,4 +715,129 @@
 
 (add-hook 'before-save-hook 'remove-double-newlines)
 
+(desktop-save-mode t)
+
+(use-package back-button
+  :config
+  (back-button-mode t))
+
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package aggressive-indent
+  :config
+  (global-aggressive-indent-mode 1))
+
+(use-package org-modern
+  :config
+  (with-eval-after-load 'org (global-org-modern-mode t)))
+
+(use-package tiny)
+
+(use-package popper
+  :ensure t ; or :straight t
+  :bind (("C-`"   . popper-toggle)
+         ("M-`"   . popper-cycle)
+         ("C-M-`" . popper-toggle-type))
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          help-mode
+          compilation-mode))
+  (popper-mode +1)
+  (popper-echo-mode +1))
+
+;; (use-package boxy-headings)
+
+(use-package dumb-jump)
+
+(use-package buffer-expose)
+
+(use-package wgrep)
+
+(use-package on-screen
+  :config
+  (on-screen-global-mode +1)
+  )
+
+(use-package num3-mode
+  :config
+  (global-num3-mode t))
+
+(use-package cyberpunk-theme
+  :config
+  (load-theme 'cyberpunk))
+
+(global-set-key (kbd "C-c b") 'bookmark-bmenu-list)
+
+(use-package breadcrumb
+  :config
+  (breadcrumb-mode t))
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+
+(global-set-key (kbd "s-x") 'counsel-M-x)
+(global-set-key (kbd "s-b") 'counsel-bookmark)
+
+(with-eval-after-load 'package
+  (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+
+;; (use-package org-journal)
+
+(use-package fit-text-scale
+  :config
+  (fit-text-scale-max-font-size-fit-lines))
+
+(scroll-bar-mode 1)
+
+(add-hook 'kill-emacs-query-functions
+          'custom-prompt-customize-unsaved-options)
+
+(if (file-exists-p "~/.emacs.d/.emacs.desktop")
+    (desktop-read "~/.emacs.d/.emacs.desktop"))
+
 (straight-remove-unused-repos t)
+
+;; (defun my-elisp-mode-faces ()
+;;   "Buffer-local face remapping for `emacs-lisp-mode-hook'."
+;;   (face-remap-add-relative 'default
+;;                            :background "dark slate gray"
+;;                            :foreground "white"))
+
+;; (add-hook 'emacs-lisp-mode-hook #'my-elisp-mode-faces)
+
+;; (defun my-org-mode-faces ()
+;;   "Buffer-local face remapping for `org-mode-hook'."
+;;   (face-remap-add-relative 'default
+;;                            :background "Black"
+;;                            :foreground "white"))
+
+;; (add-hook 'org-mode-hook #'my-org-mode-faces)
+
+;; (defun my-verilog-mode-faces ()
+;;   "Buffer-local face remapping for `verilog-mode-hook'."
+;;   (face-remap-add-relative 'default
+;;                            :background "#5f2f2f"
+;;                            :foreground "white"))
+
+;; (add-hook 'verilog-mode-hook #'my-verilog-mode-faces)
+
+;; (use-package key-chord
+;;   :config
+;;   (key-chord-define-global "xx" 'counsel-M-x))
+
+;; (use-package golden-ratio
+;;   :config
+;;   (golden-ratio-mode nil))
+
+;; (use-package dashboard
+;;   :config
+;;   (dashboard-setup-startup-hook)
+;;   (setq dashboard-center-content t)
+;;   (setq dashboard-show-shortcuts nil)
+;;   (setq dashboard-items '((recents  . 5)
+;;                           (bookmarks . 20)
+;;                           (projects . 5))))
