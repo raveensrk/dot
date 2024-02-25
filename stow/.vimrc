@@ -229,7 +229,7 @@ function! Bookmarks()
 endfunction
 
 command! Bookmarks :call Bookmarks()
-set cmdheight=2
+" set cmdheight=2
 " set smoothscroll
 set clipboard^=unnamed
 set complete+=t

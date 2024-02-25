@@ -43,6 +43,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/packages")
 (require 'better-defaults)
+;; (require 'cus-edit+)
 
 ;;; Backups
 
@@ -54,32 +55,17 @@
 
 ;;; Appearence
 
-;; (setq-default show-trailing-whitespace t)
-;; (global-whitespace-newline-mode t)
-(setq-default cursor-type '(box . 1))
-(setq-default cursor-in-non-selected-windows 'hollow)
-(set-face-attribute 'default nil :height 120)
-
 (use-package beacon
   :config
   (beacon-mode 1))
-
-(use-package git-gutter
-  :config
-  (global-git-gutter-mode t)
-  (setq git-gutter:always-show-separator t)
-  )
-
-;; (use-package diff-hl)
 
 (setq visible-bell t)
 (setq display-line-numbers t)
 (setq display-line-numbers-type t)
 (global-display-line-numbers-mode +1)
+
 ;; (global-visual-line-mode t)
 ;; (setq-default visual-line-fringe-indicators t)
-(setq-default truncate-lines +1)
-(global-prettify-symbols-mode +1)
 (setq ring-bell-function 'ignore)
 (setq show-paren-mode t)
 ;; (tab-bar-mode t)
@@ -361,7 +347,6 @@
 (global-set-key (kbd "C-c f g") 'find-grep)
 (pixel-scroll-mode t)
 (global-set-key (kbd "C-c w") 'tab-list)
-(global-set-key (kbd "C-c o a") 'org-agenda)
 (global-set-key (kbd "C-c y") 'duplicate-dwim)
 (global-set-key (kbd "C-c o c") 'org-capture)
 (global-set-key (kbd "C-c c") 'comment-line)
@@ -561,33 +546,33 @@
 ;;   :config (selected-window-accent-mode 1))
 
 (use-package swiper)
-(use-package counsel
-  (use-package ivy
-    :config
-    (ivy-mode t)
-    (setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t)
-    ;; enable this if you want `swiper' to use it
-    ;; (setq search-default-mode #'char-fold-to-regexp)
-    (define-key ivy-mode-map (kbd "C-,") 'ivy-immediate-done)
-    (global-set-key "\C-s" 'swiper)
-    (global-set-key (kbd "C-c C-r") 'ivy-resume)
-    (global-set-key (kbd "<f6>") 'ivy-resume)
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-    (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-    (global-set-key (kbd "<f1> l") 'counsel-find-library)
-    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-    (global-set-key (kbd "C-c g") 'counsel-git)
-    (global-set-key (kbd "C-c j") 'counsel-git-grep)
-    (global-set-key (kbd "C-c k") 'counsel-ag)
-    (global-set-key (kbd "C-x l") 'counsel-locate)
-    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-    )
+(use-package counsel)
+(use-package ivy
+  :config
+  (ivy-mode t)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  ;; enable this if you want `swiper' to use it
+  ;; (setq search-default-mode #'char-fold-to-regexp)
+  (define-key ivy-mode-map (kbd "C-,") 'ivy-immediate-done)
+  (global-set-key "\C-s" 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+  )
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
@@ -673,6 +658,7 @@
         telephone-line-evil-use-short-tag t)
   )
 (use-package highlight-thing
+  :disabled t
   :config
   (global-highlight-thing-mode t))
 
@@ -701,27 +687,23 @@
 (use-package osx-trash
   :config
   (when (eq system-type 'darwin)
-    (osx-trash-setup
-     (setq delete-by-moving-to-trash t))
+    (osx-trash-setup))
+  (setq delete-by-moving-to-trash t))
 
-    (use-package bufler)
-    (use-package ws-butler
-      :config
-      (ws-butler-global-mode t))
+(use-package bufler)
+(use-package ws-butler
+  :config
+  (ws-butler-global-mode t))
 
-    (defun remove-double-newlines ()
-      "An function to remove double new lines everywhere after point."
-      (interactive)
-      (dotimes (i 10)
-        (replace-regexp-in-region "\n\s*\n\s*\n" "\n\n" (point-min) (point-max))))
+(defun remove-double-newlines ()
+  "An function to remove double new lines everywhere after point."
+  (interactive)
+  (dotimes (i 10)
+    (replace-regexp-in-region "\n\s*\n\s*\n" "\n\n" (point-min) (point-max))))
 
 (add-hook 'before-save-hook 'remove-double-newlines)
 
 ;; (desktop-save-mode t)
-
-(use-package back-button
-  :config
-  (back-button-mode t))
 
 (use-package exec-path-from-shell
   :config
@@ -735,24 +717,14 @@
   :config
   (with-eval-after-load 'org (global-org-modern-mode t)))
 
+;; (org-habit-toggle-display-in-agenda t)
+(add-to-list 'org-modules 'org-habit t)
+
+(unless (package-installed-p 'org-contrib) (package-install 'org-contrib))
+
 (use-package tiny)
 
-(use-package popper
-  :ensure t ; or :straight t
-  :bind (("C-`"   . popper-toggle)
-         ("M-`"   . popper-cycle)
-         ("C-M-`" . popper-toggle-type))
-  :init
-  (setq popper-reference-buffers
-        '("\\*Messages\\*"
-          "Output\\*$"
-          "\\*Async Shell Command\\*"
-          help-mode
-          compilation-mode))
-  (popper-mode +1)
-  (popper-echo-mode +1))
-
-;; (use-package boxy-headings)
+(unless (package-installed-p 'boxy-headings) (package-install 'boxy-headings))
 
 (use-package dumb-jump)
 
@@ -777,11 +749,11 @@
 
 (use-package breadcrumb
   :config
-  (breadcrumb-mode t
+  (breadcrumb-mode t))
 
-                   (global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c a") 'org-agenda-list)
 
-                   (global-set-key (kbd "s-x") 'counsel-M-x)
+(global-set-key (kbd "s-x") 'counsel-M-x)
 (global-set-key (kbd "s-b") 'counsel-bookmark)
 
 (with-eval-after-load 'package
@@ -791,10 +763,8 @@
 
 (use-package fit-text-scale)
 
-(scroll-bar-mode 1)
-
-(add-hook 'kill-emacs-query-functions
-          'custom-prompt-customize-unsaved-options)
+;; (add-hook 'kill-emacs-query-functions
+;;           'custom-prompt-customize-unsaved-options)
 
 ;; (if (file-exists-p "~/.emacs.d/.emacs.desktop")
 ;;     (desktop-read "~/.emacs.d/.emacs.desktop"))
@@ -837,12 +807,41 @@
 ;;   :config
 ;;   (golden-ratio-mode nil))
 
-;; (use-package dashboard
-;;   :config
-;;   (dashboard-setup-startup-hook)
-;;   (setq dashboard-center-content t)
-;;   (setq dashboard-show-shortcuts nil)
-;;   (setq dashboard-items '((recents  . 5)
-;;                           (bookmarks . 20)
-;;                           (projects . 5))))
+(use-package dashboard
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-center-content t)
+  (setq dashboard-show-shortcuts t)
+  (setq dashboard-week-agenda nil)
+  (setq dashboard-icon-type 'all-the-icons)  ; use `all-the-icons' package
+  (setq dashboard-set-navigator t)
+  (add-to-list 'dashboard-items '(agenda) t)
+  ;; Format: "(icon title help action face prefix suffix)"
+  (setq dashboard-navigator-buttons
+        `(;; line1
+          ((,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
+            "Homepage"
+            "Browse homepage"
+            (lambda (&rest _) (browse-url "homepage")))
+           ("★" "Star" "Show stars" (lambda (&rest _) (show-stars)) warning)
+           ("?" "" "?/h" #'show-help nil "<" ">"))
+          ;; line 2
+          ((,(all-the-icons-faicon "linkedin" :height 1.1 :v-adjust 0.0)
+            "Linkedin"
+            ""
+            (lambda (&rest _) (browse-url "homepage")))
+           ("⚑" nil "Show flags" (lambda (&rest _) (message "flag")) error))))
+  (setq dashboard-set-init-info t)
+  (setq dashboard-footer-messages '("Dashboard is pretty cool!"))
+  (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
+                                                     :height 1.1
+                                                     :v-adjust -0.05
+                                                     :face 'font-lock-keyword-face))
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5)
+                          (agenda . 5))))
 
+(setq dashboard-agenda-release-buffers t)
+
+;; (setq debug-on-error nil)
