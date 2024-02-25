@@ -84,12 +84,15 @@
  '(magit-repository-directories '(("~/my_repos" . 1)))
  '(midnight-mode t)
  '(num3-group-size 4)
+ '(org-capture-templates
+   '(("c" "capture" entry
+      (file "~/org/capture")
+      "" :prepend t)))
  '(package-name-column-width 20)
  '(package-selected-packages '(quelpa-use-package))
  '(package-status-column-width 10)
  '(package-version-column-width 10)
- '(project-vc-extra-root-markers
-   '(".dir-locals.el"))
+ '(project-vc-extra-root-markers '(".dir-locals.el"))
  '(project-vc-ignores '("TAGS" "tags"))
  '(quit-window-hook nil)
  '(repeat-mode t)
