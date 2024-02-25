@@ -15,7 +15,7 @@
 ;;; Startup
 
 ;; (toggle-frame-fullscreen)
-(setq frame-inhibit-implied-resize t)
+;; (setq frame-inhibit-implied-resize t)
 (setq pixel-scroll-precision-mode t)
 
 ;;; Packages
@@ -82,7 +82,7 @@
 (global-prettify-symbols-mode +1)
 (setq ring-bell-function 'ignore)
 (setq show-paren-mode t)
-(tab-bar-mode t)
+;; (tab-bar-mode t)
 
 ;;; Editing
 
@@ -550,7 +550,7 @@
 
 ;;   )
 ;;  )
-;; (print major-mode)
+;; (print major-mode
 
 ;; (add-hook 'emacs-lisp-mode-hook (lambda () (set-background-color "dark green")))
 
@@ -561,32 +561,33 @@
 ;;   :config (selected-window-accent-mode 1))
 
 (use-package swiper)
-(use-package counsel)
-(use-package ivy
-  :config
-  (ivy-mode t)
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  ;; enable this if you want `swiper' to use it
-  ;; (setq search-default-mode #'char-fold-to-regexp)
-  (global-set-key "\C-s" 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-  (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c k") 'counsel-ag)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-  )
+(use-package counsel
+  (use-package ivy
+    :config
+    (ivy-mode t)
+    (setq ivy-use-virtual-buffers t)
+    (setq enable-recursive-minibuffers t)
+    ;; enable this if you want `swiper' to use it
+    ;; (setq search-default-mode #'char-fold-to-regexp)
+    (define-key ivy-mode-map (kbd "C-,") 'ivy-immediate-done)
+    (global-set-key "\C-s" 'swiper)
+    (global-set-key (kbd "C-c C-r") 'ivy-resume)
+    (global-set-key (kbd "<f6>") 'ivy-resume)
+    (global-set-key (kbd "M-x") 'counsel-M-x)
+    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+    (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+    (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+    (global-set-key (kbd "<f1> l") 'counsel-find-library)
+    (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+    (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+    (global-set-key (kbd "C-c g") 'counsel-git)
+    (global-set-key (kbd "C-c j") 'counsel-git-grep)
+    (global-set-key (kbd "C-c k") 'counsel-ag)
+    (global-set-key (kbd "C-x l") 'counsel-locate)
+    (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+    (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+    )
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
@@ -605,6 +606,7 @@
 
 (defun use-chalkboard ()
   "Switch the current buffer to a monospace font."
+  (interactive)
   (face-remap-add-relative 'default '(:family "Chalkboard")))
 
 (add-hook 'dired-mode-hook 'use-chalkboard)
@@ -699,23 +701,23 @@
 (use-package osx-trash
   :config
   (when (eq system-type 'darwin)
-    (osx-trash-setup))
-  (setq delete-by-moving-to-trash t))
+    (osx-trash-setup
+     (setq delete-by-moving-to-trash t))
 
-(use-package bufler)
-(use-package ws-butler
-  :config
-  (ws-butler-global-mode t))
+    (use-package bufler)
+    (use-package ws-butler
+      :config
+      (ws-butler-global-mode t))
 
-(defun remove-double-newlines ()
-  "An function to remove double new lines everywhere after point."
-  (interactive)
-  (dotimes (i 10)
-    (replace-regexp-in-region "\n\s*\n\s*\n" "\n\n" (point-min) (point-max))))
+    (defun remove-double-newlines ()
+      "An function to remove double new lines everywhere after point."
+      (interactive)
+      (dotimes (i 10)
+        (replace-regexp-in-region "\n\s*\n\s*\n" "\n\n" (point-min) (point-max))))
 
 (add-hook 'before-save-hook 'remove-double-newlines)
 
-(desktop-save-mode t)
+;; (desktop-save-mode t)
 
 (use-package back-button
   :config
@@ -775,11 +777,11 @@
 
 (use-package breadcrumb
   :config
-  (breadcrumb-mode t))
+  (breadcrumb-mode t
 
-(global-set-key (kbd "C-c a") 'org-agenda)
+                   (global-set-key (kbd "C-c a") 'org-agenda)
 
-(global-set-key (kbd "s-x") 'counsel-M-x)
+                   (global-set-key (kbd "s-x") 'counsel-M-x)
 (global-set-key (kbd "s-b") 'counsel-bookmark)
 
 (with-eval-after-load 'package
@@ -787,17 +789,19 @@
 
 ;; (use-package org-journal)
 
-(use-package fit-text-scale
-  :config
-  (fit-text-scale-max-font-size-fit-lines))
+(use-package fit-text-scale)
 
 (scroll-bar-mode 1)
 
 (add-hook 'kill-emacs-query-functions
           'custom-prompt-customize-unsaved-options)
 
-(if (file-exists-p "~/.emacs.d/.emacs.desktop")
-    (desktop-read "~/.emacs.d/.emacs.desktop"))
+;; (if (file-exists-p "~/.emacs.d/.emacs.desktop")
+;;     (desktop-read "~/.emacs.d/.emacs.desktop"))
+
+(use-package ivy-hydra
+  :config
+  (global-set-key (kbd "C-c .") 'hydra-ivy/body))
 
 (straight-remove-unused-repos t)
 
@@ -841,3 +845,4 @@
 ;;   (setq dashboard-items '((recents  . 5)
 ;;                           (bookmarks . 20)
 ;;                           (projects . 5))))
+

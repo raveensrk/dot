@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(abbrev-suggest t)
  '(ace-window-display-mode t)
  '(after-save-hook '(executable-make-buffer-file-executable-if-script-p))
  '(apropos-compact-layout t)
@@ -26,6 +27,10 @@
  '(company-keywords-ignore-case t)
  '(company-tooltip-idle-delay 1.5)
  '(confirm-kill-emacs 'y-or-n-p)
+ '(counsel-describe-function-function 'helpful-callable)
+ '(counsel-describe-variable-function 'helpful-variable)
+ '(counsel-mode t)
+ '(counsel-mode-override-describe-bindings t)
  '(cursor-in-non-selected-windows 'box)
  '(cursor-type 'box)
  '(custom-browse-only-groups nil)
@@ -54,8 +59,8 @@
  '(etags-xref-prefer-current-file t)
  '(ffap-file-name-with-spaces t)
  '(focus-follows-mouse t)
+ '(global-prettify-symbols-mode t)
  '(global-so-long-mode t)
- '(global-tab-line-mode nil)
  '(global-text-scale-adjust-resizes-frames t)
  '(golden-ratio-auto-scale t)
  '(grep-find-command
@@ -86,10 +91,10 @@
  '(large-file-warning-threshold 20000000000)
  '(line-spacing 0.1)
  '(magit-repository-directories '(("~/my_repos" . 1)))
- '(mouse-wheel-progressive-speed t)
+ '(mouse-wheel-progressive-speed nil)
  '(num3-group-size 4)
  '(org-agenda-files '("/Users/raveenkumar/iCloud/org"))
- '(org-blank-before-new-entry '((heading . t) (plain-list-item . t)))
+ '(org-blank-before-new-entry '((heading . t) (plain-list-item)))
  '(org-capture-templates
    '(("p" "Plain text capture" entry
       (file "~/org/notes.org")
@@ -118,20 +123,13 @@
  '(scroll-conservatively 100)
  '(set-mark-command-repeat-pop t)
  '(straight-use-package-by-default t)
- '(tab-bar-close-button-show 'selected)
- '(tab-bar-history-mode t)
- '(tab-bar-mode nil)
- '(tab-bar-new-button-show t)
- '(tab-bar-position nil)
- '(tab-bar-select-tab-modifiers nil)
- '(tab-bar-tab-hints t)
- '(tab-line-new-tab-choice t)
  '(tags-add-tables 'ask-user)
  '(tags-revert-without-query t)
  '(three-step-help nil)
  '(treemacs-indent-guide-mode t)
  '(treemacs-indentation 0)
  '(treemacs-indentation-string " ┃ ")
+ '(truncate-lines 1)
  '(uniquify-min-dir-content 1)
  '(vc-follow-symlinks nil)
  '(verilog-auto-newline nil)
@@ -146,7 +144,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#2e3436" :foreground "#eeeeec" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 180 :width normal :foundry "nil" :family "Menlo"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#2e3436" :foreground "#eeeeec" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight semi-bold :height 180 :width normal :foundry "nil" :family "Fira Code"))))
  '(aw-leading-char-face ((t (:foreground "red" :height 1.0 :width extra-expanded))))
  '(cursor ((t (:background "dark cyan"))))
  '(hi-green ((t (:background "black" :foreground "light green" :slant italic :weight bold))))
@@ -154,10 +152,7 @@
  '(num3-face-even ((t (:foreground "orange" :background "black" :underline "yellow" :weight bold))))
  '(num3-face-odd ((t nil)))
  '(org-default ((t (:inherit default :height 250 :family "Chalkboard"))))
- '(region ((t (:extend t :background "SeaGreen1" :foreground "black"))))
- '(tab-bar ((t (:inherit variable-pitch :background "LightSalmon2" :foreground "black"))))
- '(tab-bar-tab-group-current ((t (:inherit tab-bar-tab :weight bold))))
- '(tab-bar-tab-inactive ((t (:background "gray13" :foreground "gray100")))))
+ '(region ((t (:extend t :background "SeaGreen1" :foreground "black")))))
 
 ;; ;; '(electric-pair-mode t)
 ;; ;; '(electric-pair-pairs
@@ -180,3 +175,18 @@
 ;; '(show-trailing-whitespace t)
 
 ;; '(golden-ratio-auto-scale t)
+
+;; '(tab-bar ((nil (:inherit variable-pitch :background "LightSalmon2" :foreground "black"))))
+;;  '(tab-bar-tab-group-current ((t (:inherit tab-bar-tab :weight bold))))
+;;  '(tab-bar-tab-inactive ((t (:background "gray13" :foreground "gray100"))))
+
+;; '(tab-bar-close-button-show 'selected)
+;; '(tab-bar-history-mode t)
+;; '(tab-bar-mode nil)
+;; '(tab-bar-new-button-show t)
+;; '(tab-bar-position nil)
+;; '(tab-bar-select-tab-modifiers nil)
+;; '(tab-bar-tab-hints t)
+;; '(tab-line-new-tab-choice t)
+
+;; '(global-tab-line-mode nil)
