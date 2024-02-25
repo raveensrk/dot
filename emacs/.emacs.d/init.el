@@ -4,6 +4,7 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+(set-face-attribute 'default nil :weight 'semi-bold :height '200 :family "Fira Code")
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -12,13 +13,7 @@
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
-;;; Startup
-
-;; (toggle-frame-fullscreen)
-;; (setq frame-inhibit-implied-resize t)
 (setq pixel-scroll-precision-mode t)
-
-;;; Packages
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -43,17 +38,11 @@
 
 (add-to-list 'load-path "~/.emacs.d/packages")
 (require 'better-defaults)
-;; (require 'cus-edit+)
-
-;;; Backups
 
 (make-directory "~/.emacs_backups/" t)
 (make-directory "~/.emacs_autosave/" t)
 (setq auto-save-file-name-transforms '((".*" "~/.emacs_autosave/" t)))
 (setq backup-directory-alist '(("." . "~/.emacs_backups/")))
-;; (setq backup-by-copying t)
-
-;;; Appearence
 
 (use-package beacon
   :config
@@ -64,13 +53,8 @@
 (setq display-line-numbers-type t)
 (global-display-line-numbers-mode +1)
 
-;; (global-visual-line-mode t)
-;; (setq-default visual-line-fringe-indicators t)
 (setq ring-bell-function 'ignore)
 (setq show-paren-mode t)
-;; (tab-bar-mode t)
-
-;;; Editing
 
 (setq kill-whole-line t)
 (setq sentence-end-double-space nil)
@@ -87,6 +71,7 @@
   :config
   (wrap-region-global-mode)
   (wrap-region-add-wrapper "*" "*"))
+
 (use-package browse-kill-ring
   :config
   (setq browse-kill-ring-highlight-inserted-item t
@@ -95,8 +80,7 @@
 
 (use-package company
   :config
-  (global-company-mode 1)
-  )
+  (global-company-mode 1))
 
 (use-package yasnippet
   :config
@@ -104,8 +88,8 @@
   (setq yas-snippet-dirs '("~/.emacs.d/snippets/")))
 
 (use-package yasnippet-snippets
-  :after yasnippet
-  )
+  :after yasnippet)
+
 (use-package hydra)
 
 (use-package browse-at-remote)
@@ -142,13 +126,9 @@
 (setq recentf-max-saved-items 200)
 (winner-mode 1)
 
-;;;; Mouse Support In Terminal
-
 ;; For linux use (gpm-mouse-mode 1)
 (unless (display-graphic-p)
   (xterm-mouse-mode 1))
-
-;;; Dired
 
 (setf dired-kill-when-opening-new-dired-buffer t)
 (setq-default dired-listing-switches "-alh")
@@ -177,8 +157,6 @@
 (use-package dired-narrow
   :config
   (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy))
-
-;;; My functions
 
 (defun remove-extra-spaces (start end)
   "Remove extra spaces from region START to END, or current line if no region is given,
@@ -227,22 +205,6 @@
   (indent-region (point-min) (point-max))
   (save-buffer)  )
 
-;;; Org mode
-
-(setq  calendar-date-style 'iso)
-(setq  org-export-backends '(html md odt ascii))
-(setq  org-export-use-babel nil)
-(setq  org-export-with-broken-links 'mark)
-(setq  org-html-allow-name-attribute-in-anchors t)
-(setq  org-html-checkbox-type 'unicode)
-(setq  org-html-html5-fancy t)
-(setq  org-html-self-link-headlines t)
-(setq  org-support-shift-select t)
-
-(add-hook 'org-mode-hook 'org-indent-mode)
-
-(setq org-archive-location "%s::* Archived Tasks")
-
 (defun insert-date ()
   "This will insert todays date in YYYY-MM-DD format"
   (interactive)
@@ -255,9 +217,8 @@
 
 (defalias 'today 'return-date)
 
-;;; Convenience
-
 (use-package google-this)
+
 (use-package persistent-scratch
   :config
   (persistent-scratch-setup-default))
@@ -272,7 +233,6 @@
 (setq speedbar-show-unknown-files t)
 (setq compilation-auto-jump-to-first-error t)
 (setq compilation-scroll-output t)
-;; (setq tab-always-indent 'complete)
 (setq vc-follow-symlinks nil)
 
 (defun my-extract-region-to-variable (variable)
@@ -286,8 +246,6 @@
       (open-line 1)
       (insert (format "%s=\"%s\"" variable selection))
       (move-beginning-of-line nil))))
-
-;;; Programming
 
 (use-package magit)
 (setq require-final-newline t)
@@ -307,18 +265,13 @@
   (elpy-enable))
 (put 'upcase-region 'disabled nil)
 
-;;;; Compilation
-
 (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
 (setq comint-buffer-maximum-size 500)
 
-;;; Openai And Chatgpt Related
 (use-package gptel)
 
 (if (file-exists-p "~/.config/openai-api-key.el")
     (load-file "~/.config/openai-api-key.el"))
-
-;;; Misc
 
 (setq gc-cons-threshold 20000000)
 (setq large-file-warning-threshold 200000000)
@@ -339,16 +292,10 @@
 
 (use-package restart-emacs)
 
-;;; Keybindings
-
-;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 (global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
-;; (global-set-key (kbd "C-c g") 'magit)
-(global-set-key (kbd "C-c f g") 'find-grep)
 (pixel-scroll-mode t)
 (global-set-key (kbd "C-c w") 'tab-list)
 (global-set-key (kbd "C-c y") 'duplicate-dwim)
-(global-set-key (kbd "C-c o c") 'org-capture)
 (global-set-key (kbd "C-c c") 'comment-line)
 (global-set-key (kbd "C-c K") 'nuke-all-buffers)
 (global-set-key (kbd "C-c X") 'crux-kill-other-buffers)
@@ -357,13 +304,10 @@
 (global-set-key (kbd "C-c i") 'crux-find-user-init-file)
 (global-set-key (kbd "C-c r") 'restart-emacs)
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
-(global-set-key (kbd "C-c d") 'ranger)
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 
-;;; Testing
-
-(set-face-attribute 'line-number-current-line nil :background "#3B4252")
-(set-face-attribute 'line-number-current-line nil :foreground "#81A1C1")
+(set-face-attribute 'line-number-current-line nil :background "dark gray")
+(set-face-attribute 'line-number-current-line nil :foreground "black")
 (tool-bar-mode t)
 (menu-bar-mode t)
 (ido-mode t)
@@ -371,29 +315,14 @@
 (setq ido-everywhere t)
 (setq ido-use-filename-at-point 'guess)
 (setq ido-use-url-at-point nil)
-
-(setq ido-file-extensions-order '(".bash" ".org" ".txt" ".sv" ".v" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
 (setq ido-ignore-extensions t)
-
-;; (add-hook 'occur-mode-hook (lambda () (next-error-follow-minor-mode)))
-
 (use-package smex
   :config
   (smex-initialize)
-
   (global-set-key (kbd "M-x") 'smex)
   (global-set-key (kbd "M-X") 'smex-major-mode-commands)
   ;; This is your old M-x.
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
-
-(use-package ranger
-  :config
-  (setq ranger-show-hidden t)
-  (setq ranger-width-parents 10)
-  (setq ranger-preview-file t))
-
-;; (load-theme 'tango-dark)
-
 (if (file-exists-p "~/tags/TAGS")
     (visit-tags-table "~/tags/TAGS"))
 
@@ -426,7 +355,6 @@
 
 (use-package embark
   :ensure t
-
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim)        ;; good alternative: M-.
@@ -463,6 +391,7 @@
 (progn
   (defhydra hydra-of-hydras (:columns 4 :color amaranth)
     "Hydra of hydras"
+    ("u" undo "undo")
     ("(" beginning-of-defun "beginning of defun")
     (")" end-of-defun "end of defun")
     ("+" text-scale-increase "in")
@@ -484,6 +413,7 @@
     ("m" imenu "imenu")
     ("n" backward-char "backward character")
     ("o" forward-char "forward character")
+    ("p" yank "forward character")
     ("q" nil "quit" :exit t :color blue)
     ("C-." emabark-act)
     ("r" recentf-open "Recent files")
@@ -500,51 +430,6 @@
   ("C-=" . er/expand-region)
   ("C--" . er/contract-region))
 
-(use-package treemacs
-  :ensure t
-  :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    (setq treemacs-is-never-other-window           t
-          treemacs-show-cursor                     t
-          treemacs-show-hidden-files               t
-          treemacs-space-between-root-nodes        nil
-          treemacs-width                           30
-          treemacs-width-increment                 1
-          treemacs-width-is-initially-locked       t)
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode 'always))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t d"   . treemacs-select-directory)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
-
-;; (cond
-;;  ((string= (message "%s" major-mode) (message "emacs-lisp-mode"))
-;;   t)
-;;  (t "default")
-
-;;   )
-;;  )
-;; (print major-mode
-
-;; (add-hook 'emacs-lisp-mode-hook (lambda () (set-background-color "dark green")))
-
-(global-set-key (kbd "C-c o c") 'org-capture)
-(global-set-key (kbd "C-c o a") 'org-agenda)
-
-;; (use-package selected-window-accent-mode
-;;   :config (selected-window-accent-mode 1))
-
 (use-package swiper)
 (use-package counsel)
 (use-package ivy
@@ -557,15 +442,8 @@
   (define-key ivy-mode-map (kbd "C-,") 'ivy-immediate-done)
   (global-set-key "\C-s" 'swiper)
   (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
   (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
-  (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
   (global-set-key (kbd "C-c g") 'counsel-git)
   (global-set-key (kbd "C-c j") 'counsel-git-grep)
   (global-set-key (kbd "C-c k") 'counsel-ag)
@@ -573,6 +451,7 @@
   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
   )
+
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
   ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
@@ -589,20 +468,12 @@
   ;; package.
   (marginalia-mode))
 
-(defun use-chalkboard ()
-  "Switch the current buffer to a monospace font."
-  (interactive)
-  (face-remap-add-relative 'default '(:family "Chalkboard")))
-
-(add-hook 'dired-mode-hook 'use-chalkboard)
-
 (use-package helpful
   :config
   ;; Note that the built-in `describe-function' includes both functions
   ;; and macros. `helpful-function' is functions only, so we provide
   ;; `helpful-callable' as a drop-in replacement.
   (global-set-key (kbd "C-h f") #'helpful-callable)
-
   (global-set-key (kbd "C-h v") #'helpful-variable)
   (global-set-key (kbd "C-h k") #'helpful-key)
   (global-set-key (kbd "C-h x") #'helpful-command)
@@ -641,12 +512,6 @@
   :config
   (rainbow-mode t))
 
-(use-package highlight-indentation
-  :config
-  (set-face-background 'highlight-indentation-face "#e3e3d3")
-  (set-face-background 'highlight-indentation-current-column-face "#c3b3b3")
-  ;; (highlight-indentation-mode t)
-  )
 (use-package telephone-line
   :config
   (telephone-line-mode 1)
@@ -657,11 +522,6 @@
   (setq telephone-line-height 24
         telephone-line-evil-use-short-tag t)
   )
-(use-package highlight-thing
-  :disabled t
-  :config
-  (global-highlight-thing-mode t))
-
 (use-package all-the-icons
   :if (display-graphic-p))
 
@@ -690,7 +550,6 @@
     (osx-trash-setup))
   (setq delete-by-moving-to-trash t))
 
-(use-package bufler)
 (use-package ws-butler
   :config
   (ws-butler-global-mode t))
@@ -703,8 +562,6 @@
 
 (add-hook 'before-save-hook 'remove-double-newlines)
 
-;; (desktop-save-mode t)
-
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
@@ -713,18 +570,7 @@
   :config
   (global-aggressive-indent-mode 1))
 
-(use-package org-modern
-  :config
-  (with-eval-after-load 'org (global-org-modern-mode t)))
-
-;; (org-habit-toggle-display-in-agenda t)
-(add-to-list 'org-modules 'org-habit t)
-
-(unless (package-installed-p 'org-contrib) (package-install 'org-contrib))
-
 (use-package tiny)
-
-(unless (package-installed-p 'boxy-headings) (package-install 'boxy-headings))
 
 (use-package dumb-jump)
 
@@ -751,97 +597,26 @@
   :config
   (breadcrumb-mode t))
 
-(global-set-key (kbd "C-c a") 'org-agenda-list)
-
 (global-set-key (kbd "s-x") 'counsel-M-x)
 (global-set-key (kbd "s-b") 'counsel-bookmark)
 
 (with-eval-after-load 'package
   (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
-;; (use-package org-journal)
-
-(use-package fit-text-scale)
-
-;; (add-hook 'kill-emacs-query-functions
-;;           'custom-prompt-customize-unsaved-options)
-
-;; (if (file-exists-p "~/.emacs.d/.emacs.desktop")
-;;     (desktop-read "~/.emacs.d/.emacs.desktop"))
-
 (use-package ivy-hydra
   :config
   (global-set-key (kbd "C-c .") 'hydra-ivy/body))
-
-(straight-remove-unused-repos t)
-
-;; (defun my-elisp-mode-faces ()
-;;   "Buffer-local face remapping for `emacs-lisp-mode-hook'."
-;;   (face-remap-add-relative 'default
-;;                            :background "dark slate gray"
-;;                            :foreground "white"))
-
-;; (add-hook 'emacs-lisp-mode-hook #'my-elisp-mode-faces)
-
-;; (defun my-org-mode-faces ()
-;;   "Buffer-local face remapping for `org-mode-hook'."
-;;   (face-remap-add-relative 'default
-;;                            :background "Black"
-;;                            :foreground "white"))
-
-;; (add-hook 'org-mode-hook #'my-org-mode-faces)
-
-;; (defun my-verilog-mode-faces ()
-;;   "Buffer-local face remapping for `verilog-mode-hook'."
-;;   (face-remap-add-relative 'default
-;;                            :background "#5f2f2f"
-;;                            :foreground "white"))
-
-;; (add-hook 'verilog-mode-hook #'my-verilog-mode-faces)
-
-;; (use-package key-chord
-;;   :config
-;;   (key-chord-define-global "xx" 'counsel-M-x))
-
-;; (use-package golden-ratio
-;;   :config
-;;   (golden-ratio-mode nil))
 
 (use-package dashboard
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-center-content t)
   (setq dashboard-show-shortcuts t)
-  (setq dashboard-week-agenda nil)
   (setq dashboard-icon-type 'all-the-icons)  ; use `all-the-icons' package
   (setq dashboard-set-navigator t)
-  (add-to-list 'dashboard-items '(agenda) t)
-  ;; Format: "(icon title help action face prefix suffix)"
-  (setq dashboard-navigator-buttons
-        `(;; line1
-          ((,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
-            "Homepage"
-            "Browse homepage"
-            (lambda (&rest _) (browse-url "homepage")))
-           ("★" "Star" "Show stars" (lambda (&rest _) (show-stars)) warning)
-           ("?" "" "?/h" #'show-help nil "<" ">"))
-          ;; line 2
-          ((,(all-the-icons-faicon "linkedin" :height 1.1 :v-adjust 0.0)
-            "Linkedin"
-            ""
-            (lambda (&rest _) (browse-url "homepage")))
-           ("⚑" nil "Show flags" (lambda (&rest _) (message "flag")) error))))
   (setq dashboard-set-init-info t)
-  (setq dashboard-footer-messages '("Dashboard is pretty cool!"))
-  (setq dashboard-footer-icon (all-the-icons-octicon "dashboard"
-                                                     :height 1.1
-                                                     :v-adjust -0.05
-                                                     :face 'font-lock-keyword-face))
-  (setq dashboard-items '((recents  . 5)
-                          (bookmarks . 5)
-                          (projects . 5)
-                          (agenda . 5))))
-
-(setq dashboard-agenda-release-buffers t)
-
+  )
 ;; (setq debug-on-error nil)
+
+(straight-remove-unused-repos t)
+
