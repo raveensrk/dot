@@ -64,8 +64,7 @@ set nowrap
 set nolinebreak
 set nocursorline
 set nocursorcolumn
-" set hlsearch
-set nohls
+set hlsearch
 set incsearch
 set ruler
 " set columns=80
