@@ -77,8 +77,8 @@ set wildignorecase
 " set wildoptions=pum
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
-set scrolloff=999
-set sidescrolloff=999
+set scrolloff=2
+set sidescrolloff=2
 
 " set virtualedit=onemore
 " set textwidth=0 wrapmargin=0
@@ -112,10 +112,6 @@ autocmd FileType netrw silent! cd %:p:h
 " CTAGS {{{
 set tags=tags
 " }}}
-"{{{ CLIPBOARD
-vmap <silent> +y :w! ~/.vim_clip<cr>
-nmap <silent> +p :read ~/.vim_clip<cr>
-"}}}
 " {{{ VIM SESSIONS AND VIEWS
 " autocmd BufWinLeave *.* mkview!
 " autocmd BufWinEnter *.* silent loadview
@@ -275,3 +271,4 @@ set exrc secure
 set paste
 packadd cfilter
 set switchbuf=useopen
+autocmd BufEnter *.log setlocal readonly

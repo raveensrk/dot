@@ -20,7 +20,7 @@ iab connect_phasee function void connect_phase(uvm_phase phase);<CR>endfunction
 iab drive_itemm task drive_item(input simple_item item);<CR>endtask: drive_item
 iab initiall initial begin<CR>end
 iab run_phasee task run_phase(uvm_phase phase);<CR><C-i>forever begin<CR>end<CR>endtask
-iab uvm_infoo `umv_info(get_name(), $psprintf(""), UVM_NONE);
+iab uvm_infoo `uvm_info(get_name(), $psprintf(""), UVM_NONE);
 iab ucdg uvm_config_db#(int)::get(null, "db_name", "var_name", get_value);
 iab ucds uvm_config_db#(int)::set(null, "db_name", "var_name", 1/*set value*/);
 iab uvm_errorr `uvm_error(get_name(), $sformatf("receiving %4d", var));

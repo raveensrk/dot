@@ -628,62 +628,67 @@
 (global-set-key (kbd "C-c C") 'customize-group)
 (global-set-key (kbd "C-c A") 'customize-apropos)
 
-                (error "DONE")
+(setq-default menu-bar-mode nil)
+(setq-default tool-bar-mode nil)
+(menu-bar-mode nil)
+(tool-bar-mode nil)
 
-                (setq-default use-package-always-pin nil)
-                (setq straight-use-package-by-default nil)
-                (use-package org
-                  :config
-                  (setq
-                   org-M-RET-may-split-line nil
-                   org-agenda-files '("~/org")
-                   org-agenda-inhibit-startup nil
-                   org-agenda-restore-windows-after-quit t
-                   org-agenda-sticky t
-                   org-capture-templates
-                   '(("c" "capture" entry
-                      (file "~/org/capture.org")
-                      "" :prepend t))
-                   org-cycle-hide-block-startup t
-                   org-default-notes-file "~/iCloud/org/capture.org"
-                   org-directory "~/iCloud/org"
-                   + '(org-extend-today-until 4)
-                   + '(org-fontify-todo-headline t)
-                   + '(org-fontify-whole-heading-line t)
-                   + '(org-hide-emphasis-markers t)
-                   '(org-hide-leading-stars t)
-                   - '(org-indent-indentation-per-level 4)
-                   + '(org-id-link-to-org-use-id t)
-                   + '(org-id-locations-file "~/iCloud/org/.org-id-locations")
-                   + '(org-id-locations-file-relative t)
-                   + '(org-indent-indentation-per-level 8)
-                   + '(org-insert-heading-respect-content t)
-                   + '(org-insert-mode-line-in-empty-file t)
-                   '(org-journal-dir "~/iCloud/notes")
-                   '(org-journal-enable-agenda-integration t)
-                   '(org-journal-file-type 'weekly)
-                   + '(org-modules
-                       +   '(ol-bbdb ol-bibtex org-ctags ol-docview ol-doi ol-eww ol-gnus org-habit org-id ol-info ol-irc ol-mhe org-mouse org-protocol ol-rmail org-tempo ol-w3m ol-eshell org-annotate-file ol-bookmark org-checklist org-choose org-collector ol-elisp-symbol org-eval-light org-eval org-expiry org-learn org-notify org-panel org-screen org-screenshot org-toc org-velocity))
-                   + '(org-pretty-entities t)
-                   + '(org-startup-align-all-tables nil)
-                   + '(org-startup-folded t)
-                   + '(org-startup-indented t)
-                   + '(org-startup-numerated nil)
-                   + '(org-use-effective-time t)
-                   + '(org-use-last-clock-out-time-as-effective-time nil)
-                   '("Makefile" "index.org" ".dir-locals.el" "README" "readme.org" "README.org" "readme"))
-                  + '(todo-directory "~/iCloud/org/todo")
-                  '(org-default ((t (:inherit default :height 250 :family "Chalkboard"))))
-                  -(global-set-key (kbd "C-c o a") 'org-agenda)
-                  (global-set-key (kbd "C-c o c") 'org-capture)
-                  (with-eval-after-load 'org (global-org-modern-mode t)))
-                +;; (org-habit-toggle-display-in-agenda t)
-                +(add-to-list 'org-modules 'org-habit t)
-                +(unless (package-installed-p 'org-contrib) (package-install 'org-contrib))
-                -                   (global-set-key (kbd "C-c a") 'org-agenda)
-                +(global-set-key (kbd "C-c a") 'org-agenda-list)
+(error "DONE")
 
-                )
+(setq-default use-package-always-pin nil)
+(setq straight-use-package-by-default nil)
+(use-package org
+  :config
+  (setq
+   org-M-RET-may-split-line nil
+   org-agenda-files '("~/org")
+   org-agenda-inhibit-startup nil
+   org-agenda-restore-windows-after-quit t
+   org-agenda-sticky t
+   org-capture-templates
+   '(("c" "capture" entry
+      (file "~/org/capture.org")
+      "" :prepend t))
+   org-cycle-hide-block-startup t
+   org-default-notes-file "~/iCloud/org/capture.org"
+   org-directory "~/iCloud/org"
+   + '(org-extend-today-until 4)
+   + '(org-fontify-todo-headline t)
+   + '(org-fontify-whole-heading-line t)
+   + '(org-hide-emphasis-markers t)
+   '(org-hide-leading-stars t)
+   - '(org-indent-indentation-per-level 4)
+   + '(org-id-link-to-org-use-id t)
+   + '(org-id-locations-file "~/iCloud/org/.org-id-locations")
+   + '(org-id-locations-file-relative t)
+   + '(org-indent-indentation-per-level 8)
+   + '(org-insert-heading-respect-content t)
+   + '(org-insert-mode-line-in-empty-file t)
+   '(org-journal-dir "~/iCloud/notes")
+   '(org-journal-enable-agenda-integration t)
+   '(org-journal-file-type 'weekly)
+   + '(org-modules
+       +   '(ol-bbdb ol-bibtex org-ctags ol-docview ol-doi ol-eww ol-gnus org-habit org-id ol-info ol-irc ol-mhe org-mouse org-protocol ol-rmail org-tempo ol-w3m ol-eshell org-annotate-file ol-bookmark org-checklist org-choose org-collector ol-elisp-symbol org-eval-light org-eval org-expiry org-learn org-notify org-panel org-screen org-screenshot org-toc org-velocity))
+   + '(org-pretty-entities t)
+   + '(org-startup-align-all-tables nil)
+   + '(org-startup-folded t)
+   + '(org-startup-indented t)
+   + '(org-startup-numerated nil)
+   + '(org-use-effective-time t)
+   + '(org-use-last-clock-out-time-as-effective-time nil)
+   '("Makefile" "index.org" ".dir-locals.el" "README" "readme.org" "README.org" "readme"))
+  + '(todo-directory "~/iCloud/org/todo")
+  '(org-default ((t (:inherit default :height 250 :family "Chalkboard"))))
+  -(global-set-key (kbd "C-c o a") 'org-agenda)
+  (global-set-key (kbd "C-c o c") 'org-capture)
+  (with-eval-after-load 'org (global-org-modern-mode t)))
++;; (org-habit-toggle-display-in-agenda t)
++(add-to-list 'org-modules 'org-habit t)
++(unless (package-installed-p 'org-contrib) (package-install 'org-contrib))
+-                   (global-set-key (kbd "C-c a") 'org-agenda)
++(global-set-key (kbd "C-c a") 'org-agenda-list)
+
+)
 
 (straight-remove-unused-repos t)
 
