@@ -60,7 +60,7 @@ set number
 " set relativenumber
 " }}}
 " {{{ INTERFACE
-set wrap
+set nowrap
 set nolinebreak
 set nocursorline
 set nocursorcolumn
@@ -275,3 +275,5 @@ set exrc secure
 set paste
 packadd cfilter
 set switchbuf=useopen
+set viminfo-='100
+set viminfo+='20
