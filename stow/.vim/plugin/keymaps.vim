@@ -5,19 +5,18 @@ map F <Plug>Sneak_F
 map T <Plug>Sneak_T
 map f <Plug>Sneak_f
 map t <Plug>Sneak_t
-nmap <leader>/ :BLines<CR>
+nmap <leader>/ :Lines<CR>
 nmap <leader><leader>i :PlugClean<CR>:PlugInstall<CR>
 nmap <leader><leader>x yyo<cr># {{{<Esc>q:pIread ! <Esc><CR>o# }}}<Esc>
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
-nmap <leader>C :tabnew \| wa \| make! \| copen<cr>
 nmap <leader>E :e .<CR>
 nmap <leader>N :cp<cr>
 nmap <leader>W :wa<CR>
 nmap <leader>X :%bd\|e#<cr>
 nmap <leader>Y :.w! ~/.vim_clip<cr>!xclip ~/.vim_clip<cr>
 nmap <leader>a 0
-nmap <leader>c :wa \| silent make! \| redraw! \| copen \| wincmd p<cr>
+nmap <leader>c :wa \| silent lmake! \| redraw! \| lopen \| wincmd p<cr>
 nmap <leader>d :bd<cr>
 nmap <leader>e $
 nmap <leader>fB :redir >> ~/bookmarks \| echo expand("%:p") . ':' . getpos(".")[1] \| echo expand("%:h") \| redir END \| tabnew ~/bookmarks \| sort \| w \| execute '%!uniq' \| w<cr>
@@ -40,8 +39,10 @@ nmap <leader>r :RangerChooser<cr>
 nmap <leader>s :%so<cr>
 nmap <leader>Ms :.w >> ~/.vim/quick_snippet.txt<cr>
 nmap <leader>Mo :tabnew ~/.vim/quick_snippet.txt<cr>
-nmap <leader>tN :tabprev<cr>
-nmap <leader>tn :tabnext<cr>
+nmap <leader><up> :tabprev<cr>
+nmap <leader><down> :tabnext<cr>
+nmap <leader><left> :bp<cr>
+nmap <leader><right> :bn<cr>
 nmap <leader>tt :tabnew<cr>
 nmap <leader>tw :set nowrap!<cr>
 nmap <leader>w <C-w>
