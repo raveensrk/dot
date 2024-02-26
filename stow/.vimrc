@@ -271,6 +271,8 @@ set exrc secure
 set paste
 packadd cfilter
 set switchbuf=useopen
-autocmd BufEnter *.log setlocal readonly
+autocmd! BufEnter *.log setlocal readonly 
+autocmd! BufEnter *.log setlocal wrap
+autocmd QuickFixCmdPost make set wrap
 " set viminfo-='100
 " set viminfo+='20

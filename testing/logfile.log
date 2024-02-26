@@ -1,0 +1,16 @@
+# vim: set noreadonly: #
+line1
+line2 logfile.log: error:2
+line3 xmvlog: (logfile.log,3|2)
+line4 xmvlog: *E,4
+xmvlog: *E,EXPENP (logfile.log,5|29): Expecting the keyword 'endpackage' [SystemVerilog].
+xmvlog: *W,EXPENP (logfile.log,6|29): This is a sample warning message...
+xmvlog: *I,EXPENP (logfile.log,7|29): This is a sample warning message...
+-allowredefinition
+xmsim: *E,TRNULLID: NULL pointer dereference.
+          File: /fsxn_data/vcad_unpack/projects/sabine/asimov/work/rkumar/fcu_tb/asimov/verif/projects_links/sim/asimov/fcu2/sv/env/fcu2_rsu2_monitor.sv, line = 141, pos = 22
+UVM_FATAL @ 300000000: reporter [PH_TIMEOUT] Explicit timeout of 300000000 hit, indicating a probable testbench issue
+UVM_ERROR logfile.log(25) @ 0: uvm_test_top.fcu2_env.reset_agent_inst.reset_driver [NOVIF] virtual interface must be set for: uvm_test_top.fcu2_env.reset_agent_inst.reset_driver.vif
+line5
+UVM_ERROR logfile.log(25) @ 0: uvm_test_top.fcu2_env.reset_agent_i.reset_driver [NOVIF] virtual interface must be set for: uvm_test_top.fcu2_env.reset_agent_i.reset_driver.vif
+
