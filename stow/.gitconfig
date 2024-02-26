@@ -1,0 +1,14 @@
+[pull]
+	merge = true
+	rebase = false
+[merge]
+	tool = vimdiff
+[user]
+	name = Raveen Kumar
+	email = raveen.srk.kumar@gmail.com
+[maintenance]
+	repo = ~/my_repos/dotfiles-main
+[alias]
+	staash = stash --all
+[rerere]
+	enabled = true
