@@ -14,8 +14,8 @@ set hidden
 set backspace=indent,eol,start
 set encoding=utf-8
 set noerrorbells
-" set novb t_vb=
-set vb t_vb=[?5h$<100>[?5l
+set novb t_vb=
+" set vb t_vb=[?5h$<100>[?5l
 
 " Use a line cursor within insert mode and a block cursor everywhere else.
 "
@@ -56,7 +56,7 @@ set foldmethod=marker
 " }}}
 " {{{ NUMBERING
 " set nonumber norelativenumber
-set number 
+set nonumber 
 " set relativenumber
 " }}}
 " {{{ INTERFACE
@@ -233,7 +233,7 @@ set completeopt+=popup,preview
 set makeef=/tmp/errorfile
 set foldclose="all"
 set showfulltag
-set showbreak=>>>\ 
+" set showbreak=>>>\ 
 set showmatch
 set verbosefile=/tmp/verbosefile
 set whichwrap+=<,>,[,]
@@ -274,3 +274,5 @@ set switchbuf=useopen
 autocmd! BufEnter *.log setlocal readonly 
 autocmd! BufEnter *.log setlocal wrap
 autocmd QuickFixCmdPost make set wrap
+set viminfo+=r/opt/homebrew/
+set viminfo+=r~/.vim/plugged

@@ -1,3 +1,4 @@
+cd %:h
 set makeprg=cat\ logfile.log
 set errorformat=%.%#error:\ %f:%l,
 set errorformat+=%.%#xmvlog:\ (%f\\,%l\|%c),
