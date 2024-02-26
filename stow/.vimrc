@@ -272,5 +272,4 @@ set paste
 packadd cfilter
 set switchbuf=useopen
 autocmd BufEnter *.log setlocal readonly
-set viminfo-='100
-set viminfo+='20
+" set viminfo+='20
