@@ -502,12 +502,12 @@
         telephone-line-evil-use-short-tag t)
   )
 
-(use-package dimmer
-  :config
-  (require 'dimmer)
-  (dimmer-configure-which-key)
-  (dimmer-configure-helm)
-  (dimmer-mode t))
+;; (use-package dimmer
+;;   :config
+;;   (require 'dimmer)
+;;   (dimmer-configure-which-key)
+;;   (dimmer-configure-helm)
+;;   (dimmer-mode t))
 
 (use-package rainbow-mode
   :config

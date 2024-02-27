@@ -18,6 +18,7 @@
  '(blink-cursor-delay 0.2)
  '(blink-cursor-interval 0.2)
  '(blink-cursor-mode nil)
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
  '(company-async-redisplay-delay 1)
  '(company-idle-delay 1.2)
  '(company-keywords-ignore-case t)
