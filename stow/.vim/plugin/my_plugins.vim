@@ -1,14 +1,11 @@
-" PLUG FUNCTION CALL {{{
 call plug#begin('~/.vim/plugged')
 
 Plug 'git@github.com:madox2/vim-ai.git'
-Plug 'git@github.com:airblade/vim-gitgutter'
 Plug 'git@github.com:easymotion/vim-easymotion'
 Plug 'git@github.com:junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'git@github.com:junegunn/fzf.vim'
 Plug 'git@github.com:junegunn/vim-easy-align'
 Plug 'git@github.com:liuchengxu/vim-which-key'
-Plug 'git@github.com:mhinz/vim-signify'
 Plug 'git@github.com:morhetz/gruvbox'
 Plug 'git@github.com:nathanaelkane/vim-indent-guides'
 Plug 'git@github.com:tomtom/tcomment_vim'
@@ -22,13 +19,9 @@ Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-vinegar'
 
 call plug#end()
-" }}}
-" Plugin Settings {{{
-let g:indent_guides_enable_on_vim_startup = 1
+
+let g:indent_guides_enable_on_vim_startup = 0
 let g:sneak#label = 1
-set updatetime=100 " For gitgutter
-" let g:airline#extensions#tabline#enabled = 1
 colo gruvbox
 set background=dark
 let g:gruvbox_contrast_dark="hard"
-"}}}
