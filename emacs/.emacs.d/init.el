@@ -4,7 +4,7 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
-(set-face-attribute 'default nil :weight 'semi-bold :height '200 :family "Fira Code")
+(set-face-attribute 'default nil :weight 'semi-bold :height '120 :family "Fira Code")
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
