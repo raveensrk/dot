@@ -1,9 +1,9 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'git@github.com:madox2/vim-ai.git'
-Plug 'git@github.com:easymotion/vim-easymotion'
 Plug 'git@github.com:junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'git@github.com:junegunn/fzf.vim'
+Plug 'git@github.com:madox2/vim-ai.git'
+Plug 'git@github.com:easymotion/vim-easymotion'
 Plug 'git@github.com:junegunn/vim-easy-align'
 Plug 'git@github.com:liuchengxu/vim-which-key'
 Plug 'git@github.com:morhetz/gruvbox'

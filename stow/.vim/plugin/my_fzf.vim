@@ -27,7 +27,6 @@ imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
-
 command! -bang DOT call fzf#vim#files('$MY_REPOS', <bang>0)
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': ['--exact', '--layout=reverse', '--info=inline']}, <bang>0)
 " Path completion with custom source command
@@ -37,11 +36,11 @@ command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'optio
 " Word completion with custom spec with popup layout option
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
 " Global line completion (not just open buffers. ripgrep required.)
-inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
-      \ 'prefix': '^.*$',
-      \ 'source': 'rg -n ^ --color always',
-      \ 'options': '--ansi --delimiter : --nth 3..',
-      \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
+" inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
+"       \ 'prefix': '^.*$',
+"       \ 'source': 'rg -n ^ --color always',
+"       \ 'options': '--ansi --delimiter : --nth 3..',
+"       \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
 
 function! s:make_sentence(lines)
   return substitute(join(a:lines), '^.', '\=toupper(submatch(0))', '').'.'
@@ -52,6 +51,7 @@ inoremap <expr> <c-x><c-s> fzf#vim#complete({
       \ 'reducer': function('<sid>make_sentence'),
       \ 'options': '--multi --reverse --margin 15%,0',
       \ 'left':    20})
+
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -120,3 +120,16 @@ command! -nargs=* Rg
       \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
       \   1,
       \   {'options': '--delimiter : --nth 2..'})
+
+" A customized version of fzf#vim#listproc#quickfix.
+" The last two lines are commented out not to move to the first entry.
+" function! g:fzf_vim.listproc(list)
+"   call setqflist(a:list)
+"   copen
+"   wincmd p
+"   " cfirst
+"   " normal! zvzz
+" endfunction
+"
+" let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
+

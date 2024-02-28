@@ -273,8 +273,12 @@ for f in ~/.my_bash_aliases/*; do
     source "$f"
 done
 # }}}
-# {{{ TESTING
+
+# TESTING
+
 export is_linux=$(uname -a | cut -d ' ' -f 1)
 alias ff="source $HOME/.scripts/bg_fg_fzf"
 alias hexdump="hexdump -Cv"
-# }}}
+if [ "$TERM" = "screen-256color" ]; then
+	tmux rename-window "HOME"
+fi

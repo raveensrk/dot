@@ -62,7 +62,8 @@ set nonumber
 " {{{ INTERFACE
 set nowrap
 set nolinebreak
-set nocursorline
+set cursorline
+set cursorlineopt=both
 set nocursorcolumn
 set hlsearch
 set incsearch
@@ -76,8 +77,8 @@ set wildignorecase
 " set wildoptions=pum
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
-set scrolloff=2
-set sidescrolloff=2
+set scrolloff=999
+set sidescrolloff=999
 
 " set virtualedit=onemore
 " set textwidth=0 wrapmargin=0
@@ -263,7 +264,7 @@ autocmd BufLeave,BufEnter * if bufname('%') == '' && !&modified | setlocal bufhi
 
 set paste
 packadd cfilter
-set switchbuf=useopen
+set switchbuf=uselast
 autocmd! BufEnter *.log setlocal readonly 
 autocmd! BufEnter *.log setlocal wrap
 autocmd QuickFixCmdPost make set wrap
@@ -274,12 +275,12 @@ set exrc secure
 let mapleader = " "
 
 
-function! CD ()
-    let buffer_path = expand('%:h')
-    if buffer_path != ''
-        exec "cd " . buffer_path
-    endif
-endfunction
-
-command! CD call CD()
-autocmd BufEnter * CD
+" function! CD ()
+"     let buffer_path = expand('%:h')
+"     if buffer_path != ''
+"         exec "cd " . buffer_path
+"     endif
+" endfunction
+"
+" command! CD call CD()
+" autocmd BufEnter * CD
