@@ -223,7 +223,6 @@ function! Bookmarks()
   lopen 5
 endfunction
 
-command! Bookmarks :call Bookmarks()
 " set cmdheight=2
 " set smoothscroll
 set clipboard^=unnamed
@@ -257,16 +256,10 @@ endfunc
 " create a quickfix list from v:oldfiles
 nmap <leader>bH   :call setqflist([], ' ', {'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})<cr>:copen<cr>
 
-
 " Hide unnamed buffers
 autocmd BufLeave,BufEnter * if bufname('%') == '' && !&modified | setlocal bufhidden=hide | endif
+autocmd BufEnter * cd %:h
 
-command! Scratch tabedit /tmp/SCRATCH | setlocal bufhidden=hide
-nmap <leader>` :Scratch<cr>
-
-nmap <leader>D :bd!<cr>
-set tags+=~/tags/tags
-set exrc secure
 set paste
 packadd cfilter
 set switchbuf=useopen
@@ -275,3 +268,8 @@ autocmd! BufEnter *.log setlocal wrap
 autocmd QuickFixCmdPost make set wrap
 set viminfo+=r/opt/homebrew/
 set viminfo+=r~/.vim/plugged
+set exrc secure
+" hi clear | hi CursorLine gui=underline cterm=underline
+let mapleader = " "
+
+
