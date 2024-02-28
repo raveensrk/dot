@@ -258,7 +258,8 @@ nmap <leader>bH   :call setqflist([], ' ', {'lines' : v:oldfiles, 'efm' : '%f', 
 
 " Hide unnamed buffers
 autocmd BufLeave,BufEnter * if bufname('%') == '' && !&modified | setlocal bufhidden=hide | endif
-autocmd BufEnter * cd %:h
+" autocmd BufEnter * if bufname("%") | cd "%:h" | endif
+" set autochdir
 
 set paste
 packadd cfilter
@@ -273,3 +274,12 @@ set exrc secure
 let mapleader = " "
 
 
+function! CD ()
+    let buffer_path = expand('%:h')
+    if buffer_path != ''
+        exec "cd " . buffer_path
+    endif
+endfunction
+
+command! CD call CD()
+autocmd BufEnter * CD
