@@ -324,8 +324,8 @@
   (global-set-key (kbd "M-X") 'smex-major-mode-commands)
   ;; This is your old M-x.
   (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
-(if (file-exists-p "~/tags/TAGS")
-    (visit-tags-table "~/tags/TAGS"))
+
+(add-to-list 'tags-table-list "~/tags/TAGS")
 
 (use-package rainbow-delimiters
   :config
@@ -676,9 +676,10 @@
 ;; org-default ((t (:inherit default :height 180 :family "Chalkboard")))
 ;; org-modules '(ol-bbdb ol-bibtex org-ctags ol-docview ol-doi ol-eww ol-gnus org-habit org-id ol-info ol-irc ol-mhe org-mouse org-protocol ol-rmail org-tempo ol-w3m ol-eshell org-annotate-file ol-bookmark org-checklist org-choose org-collector ol-elisp-symbol org-eval-light org-eval org-expiry org-learn org-notify org-panel org-screen org-screenshot org-toc org-velocity)
 
-(straight-remove-unused-repos t)
+;; (straight-remove-unused-repos t)
 
 ;; (error "DONE")
 
 ;; (setq-default use-package-always-pin nil)
 ;; (setq straight-use-package-by-default nil)
+(put 'downcase-region 'disabled nil)

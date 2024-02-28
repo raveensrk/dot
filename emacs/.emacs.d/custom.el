@@ -85,10 +85,11 @@
  '(magit-repository-directories '(("~/my_repos" . 1)))
  '(midnight-mode t)
  '(num3-group-size 4)
+ '(org-agenda-files nil)
  '(org-capture-templates
    '(("c" "capture" entry
       (file "~/org/capture")
-      "" :prepend t)))
+      "" :prepend t)) t)
  '(package-name-column-width 20)
  '(package-selected-packages '(quelpa-use-package))
  '(package-status-column-width 10)
