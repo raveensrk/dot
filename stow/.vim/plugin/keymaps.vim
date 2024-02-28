@@ -53,3 +53,4 @@ nmap _ :vertical resize -5<CR>
 nmap ga <Plug>(EasyAlign)
 vmap <leader>Y :w! ~/.vim_clip<cr>!xclip ~/.vim_clip<cr>
 xmap ga <Plug>(EasyAlign)
+vmap <leader>dd "_d

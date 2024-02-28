@@ -15,7 +15,7 @@ set -e
 [ -d "$HOME/.doom.d/my_elisp" ] || mkdir -p "$HOME/.doom.d/my_elisp"
 [ -e "$HOME/.scripts/clean_up_DS_Store" ] && ~/.scripts/clean_up_DS_Store
 
-stow  -R  stow   -t  "$HOME"  --no-folding
+stow  -R  stow  -t "$HOME" --no-folding
 
 is_linux=$(uname -a | cut -d ' ' -f 1)
 

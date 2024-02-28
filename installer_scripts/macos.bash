@@ -9,6 +9,7 @@ fi
 # brew update
 
 packages=(
+	exa
     # mpv  
     autoconf  
     automake  
