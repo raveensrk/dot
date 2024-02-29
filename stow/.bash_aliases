@@ -260,3 +260,4 @@ fi
 ,google () { 
 	open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+') ;
 }
+alias ,compress="tar -cva -f "
