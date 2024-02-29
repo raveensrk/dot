@@ -1,3 +1,5 @@
+let g:fzf_vim = {}
+
 " https://github.com/junegunn/fzf.vim
 " Preview window is hidden by default. You can toggle it with ctrl-/.
 " It will show on the right with 50% width, but if the width is smaller
@@ -25,7 +27,7 @@ omap <leader><tab> <plug>(fzf-maps-o)
 " Insert mode completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-l> <plug>(fzf-complete-line)
+imap <c-x>l <plug>(fzf-complete-line)
 
 command! -bang DOT call fzf#vim#files('$MY_REPOS', <bang>0)
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': ['--exact', '--layout=reverse', '--info=inline']}, <bang>0)

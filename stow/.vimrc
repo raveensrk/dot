@@ -263,7 +263,6 @@ autocmd BufLeave,BufEnter * if bufname('%') == '' && !&modified | setlocal bufhi
 " autocmd BufEnter * if bufname("%") | cd "%:h" | endif
 " set autochdir
 
-set paste
 packadd cfilter
 set switchbuf=uselast
 autocmd! BufEnter *.log setlocal readonly 
@@ -285,3 +284,4 @@ let mapleader = " "
 "
 " command! CD call CD()
 " autocmd BufEnter * CD
+
