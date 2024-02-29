@@ -36,10 +36,10 @@
  '(custom-buffer-done-kill t)
  '(custom-buffer-order-groups 'first)
  '(custom-buffer-sort-alphabetically t)
- '(custom-enabled-themes '(cyberpunk))
+ '(custom-enabled-themes '(gruvbox-dark-hard))
  '(custom-magic-show-button nil)
  '(custom-safe-themes
-   '("a1c18db2838b593fba371cb2623abd8f7644a7811ac53c6530eebdf8b9a25a8d" default))
+   '("d445c7b530713eac282ecdeea07a8fa59692c83045bf84dd112dd738c7bcad1d" "a1c18db2838b593fba371cb2623abd8f7644a7811ac53c6530eebdf8b9a25a8d" default))
  '(custom-unlispify-remove-prefixes t)
  '(cycle-spacing-actions
    '(just-one-space delete-all-space restore delete-space-after delete-space-before))

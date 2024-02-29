@@ -683,3 +683,5 @@
 ;; (setq-default use-package-always-pin nil)
 ;; (setq straight-use-package-by-default nil)
 (put 'downcase-region 'disabled nil)
+
+(use-package gruvbox-theme)
