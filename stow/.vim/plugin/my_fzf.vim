@@ -36,9 +36,23 @@ command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'optio
 " Word completion with custom spec with popup layout option
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
 " Global line completion (not just open buffers. ripgrep required.)
+"
+if exists("g:rg_path_list")
+    " echomsg "rg paths is present..."
+else
+    " echomsg "rg paths is not present..."
+    let g:rg_path_list = [" . "]
+endif
+" echomsg g:rg_path_list
+let g:rg_path = join(uniq(sort(g:rg_path_list)), " ")
+" echomsg g:rg_path
+let g:rgsource = "rg --follow -n ^ --color always --hidden " . g:rg_path
+" echomsg g:rgsource
+
+
 inoremap <expr> <c-x>L fzf#vim#complete(fzf#wrap({
       \ 'prefix': '^.*$',
-      \ 'source': 'rg -n ^ --color always --hidden',
+      \ 'source': g:rgsource,
       \ 'options': '--ansi --delimiter : --nth 3..',
       \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
 
@@ -95,6 +109,8 @@ command! -nargs=* Rg
       \   'rg --hidden --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
       \   1,
       \   {'options': '--delimiter : --nth 2..'})
+
+
 
 let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
