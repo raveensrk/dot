@@ -92,6 +92,7 @@ set backupdir=~/.vim/backup
 " }}}
 " {{{ PATH
 set path+=*
+set path+=**
 " set path+=$HOME/my_repos/*
 " set autochdir
 " set noautochdir " This will change your pwd to current file
