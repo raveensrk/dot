@@ -26,23 +26,21 @@ omap <leader><tab> <plug>(fzf-maps-o)
 
 " Insert mode completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
+" imap <c-x><c-f> <plug>(fzf-complete-path)
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --hidden --files')
 imap <c-x>l <plug>(fzf-complete-line)
 
 command! -bang DOT call fzf#vim#files('$MY_REPOS', <bang>0)
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': ['--exact', '--layout=reverse', '--info=inline']}, <bang>0)
-" Path completion with custom source command
-" inoremap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
-" inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')
 
 " Word completion with custom spec with popup layout option
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
 " Global line completion (not just open buffers. ripgrep required.)
-" inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
-"       \ 'prefix': '^.*$',
-"       \ 'source': 'rg -n ^ --color always',
-"       \ 'options': '--ansi --delimiter : --nth 3..',
-"       \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
+inoremap <expr> <c-x>L fzf#vim#complete(fzf#wrap({
+      \ 'prefix': '^.*$',
+      \ 'source': 'rg -n ^ --color always --hidden',
+      \ 'options': '--ansi --delimiter : --nth 3..',
+      \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
 
 function! s:make_sentence(lines)
   return substitute(join(a:lines), '^.', '\=toupper(submatch(0))', '').'.'
@@ -53,7 +51,6 @@ inoremap <expr> <c-x><c-s> fzf#vim#complete({
       \ 'reducer': function('<sid>make_sentence'),
       \ 'options': '--multi --reverse --margin 15%,0',
       \ 'left':    20})
-
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -74,28 +71,8 @@ let g:fzf_action = {
       \ 'ctrl-x': 'split',
       \ 'ctrl-v': 'vsplit' }
 
-" " Default fzf layout
-" " - Popup window (center of the screen)
-" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-"
-" " - Popup window (center of the current window)
-" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true } }
-
-" " - Popup window (anchored to the bottom of the current window)
-" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true, 'yoffset': 1.0 } }
-"
-" " - down / up / left / right
-" let g:fzf_layout = { 'down': '40%' }
-
-" - Window using a Vim command
-" let g:fzf_layout = { 'window': 'enew' }
-" let g:fzf_layout = { 'window': '-tabnew' }
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'relative': v:true } }
 
-" let g:fzf_layout = { 'window': '10new' }
-
-" Customize fzf colors to match your color scheme
-" - fzf#wrap translates this to a set of `--color` options
 let g:fzf_colors =
       \ { 'fg':      ['fg', 'Normal'],
       \ 'bg':      ['bg', 'Normal'],
@@ -111,27 +88,13 @@ let g:fzf_colors =
       \ 'spinner': ['fg', 'Label'],
       \ 'header':  ['fg', 'Comment'] }
 
-" Enable per-command history
-" - History files will be stored in the specified directory
-" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
-"   'previous-history' instead of 'down' and 'up'.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 command! -nargs=* Rg
       \ call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
+      \   'rg --hidden --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
       \   1,
       \   {'options': '--delimiter : --nth 2..'})
 
-" A customized version of fzf#vim#listproc#quickfix.
-" The last two lines are commented out not to move to the first entry.
-" function! g:fzf_vim.listproc(list)
-"   call setqflist(a:list)
-"   copen
-"   wincmd p
-"   " cfirst
-"   " normal! zvzz
-" endfunction
-"
-" let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
+let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
