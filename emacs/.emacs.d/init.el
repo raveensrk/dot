@@ -137,7 +137,6 @@
 (setq dired-dwim-target t)
 (setq dired-hide-details-hide-information-lines t)
 (setq dired-hide-details-hide-symlink-targets t)
-(add-hook 'dired-mode-hook (lambda () (define-key dired-mode-map (kbd "C-c +") 'dired-create-empty-file)))
 
 (defun dired-dotfiles-toggle ()
   "Show/hide dot-files"
@@ -154,9 +153,7 @@
 
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 
-(use-package dired-narrow
-  :config
-  (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy))
+(use-package dired-narrow)
 
 (defun remove-extra-spaces (start end)
   "Remove extra spaces from region START to END, or current line if no region is given,
@@ -293,19 +290,7 @@
 
 (use-package restart-emacs)
 
-(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
 (pixel-scroll-mode t)
-(global-set-key (kbd "C-c w") 'tab-list)
-(global-set-key (kbd "C-c y") 'duplicate-dwim)
-(global-set-key (kbd "C-c c") 'comment-line)
-(global-set-key (kbd "C-c K") 'nuke-all-buffers)
-(global-set-key (kbd "C-c X") 'crux-kill-other-buffers)
-(global-set-key (kbd "C-c f f") 'ffap)
-(global-set-key (kbd "C-c f i") 'file-info-show)
-(global-set-key (kbd "C-c i") 'crux-find-user-init-file)
-(global-set-key (kbd "C-c r") 'restart-emacs)
-(global-set-key (kbd "C-c t") 'toggle-truncate-lines)
-(global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 (set-face-attribute 'line-number-current-line nil :background "dark gray")
 (set-face-attribute 'line-number-current-line nil :foreground "black")
@@ -319,11 +304,8 @@
 (setq ido-ignore-extensions t)
 (use-package smex
   :config
-  (smex-initialize)
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  ;; This is your old M-x.
-  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+  (smex-initialize))
+;; This is your old M-x.
 
 (add-to-list 'tags-table-list "~/tags/TAGS")
 
@@ -336,7 +318,6 @@
   (add-hook 'occur-mode-hook 'turn-on-occur-x-mode))
 
 (require 'hydra-examples "~/.emacs.d/straight/repos/hydra/hydra-examples.el")
-(global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 
 (defun archive-code ()
   "Move selected code to end of the file and comment it..."
@@ -424,7 +405,7 @@
     ("x" eval-last-sexp "evaluate last sexp")
     ("X" eval-buffer "evaluate whole buffer")
     )
-  (global-set-key (kbd "s-a") 'hydra-of-hydras/body))
+  )
 
 (use-package expand-region
   :bind
@@ -440,17 +421,6 @@
   (setq enable-recursive-minibuffers t)
   ;; enable this if you want `swiper' to use it
   ;; (setq search-default-mode #'char-fold-to-regexp)
-  (define-key ivy-mode-map (kbd "C-,") 'ivy-immediate-done)
-  (global-set-key "\C-s" 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c k") 'counsel-ag)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
   )
 
 ;; Enable rich annotations using the Marginalia package
@@ -474,19 +444,13 @@
   ;; Note that the built-in `describe-function' includes both functions
   ;; and macros. `helpful-function' is functions only, so we provide
   ;; `helpful-callable' as a drop-in replacement.
-  (global-set-key (kbd "C-h f") #'helpful-callable)
-  (global-set-key (kbd "C-h v") #'helpful-variable)
-  (global-set-key (kbd "C-h k") #'helpful-key)
-  (global-set-key (kbd "C-h x") #'helpful-command)
   ;; Lookup the current symbol at point. C-c C-d is a common keybinding
   ;; for this in lisp modes.
-  (global-set-key (kbd "C-c C-d") #'helpful-at-point)
 
   ;; Look up *F*unctions (excludes macros).
   ;;
   ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
   ;; already links to the manual, if a function is referenced there.
-  (global-set-key (kbd "C-h F") #'helpful-function)
   (setq counsel-describe-function-function #'helpful-callable)
   (setq counsel-describe-variable-function #'helpful-variable)
   )
@@ -592,21 +556,14 @@
   :config
   (load-theme 'cyberpunk))
 
-(global-set-key (kbd "C-c b") 'bookmark-bmenu-list)
-
 (use-package breadcrumb
   :config
   (breadcrumb-mode t))
 
-(global-set-key (kbd "s-x") 'counsel-M-x)
-(global-set-key (kbd "s-b") 'counsel-bookmark)
-
 (with-eval-after-load 'package
   (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 
-(use-package ivy-hydra
-  :config
-  (global-set-key (kbd "C-c .") 'hydra-ivy/body))
+(use-package ivy-hydra  )
 
 (use-package dashboard
   :config
@@ -624,9 +581,6 @@
 (use-package syntax-subword
   :config
   (global-syntax-subword-mode nil))
-
-(global-set-key (kbd "C-c C") 'customize-group)
-(global-set-key (kbd "C-c A") 'customize-apropos)
 
 (setq-default menu-bar-mode nil)
 (setq-default tool-bar-mode nil)
@@ -667,9 +621,6 @@
    org-use-effective-time t
    org-use-last-clock-out-time-as-effective-time nil)
 
-  (global-set-key (kbd "C-c o A") 'org-agenda)
-  (global-set-key (kbd "C-c o c") 'org-capture)
-  (global-set-key (kbd "C-c o a") 'org-agenda-list)
   (setq org-habit-toggle-display-in-agenda t)
   (add-to-list 'org-modules 'org-habit t)
   )
@@ -684,7 +635,49 @@
 ;; (setq straight-use-package-by-default nil)
 (put 'downcase-region 'disabled nil)
 
-(use-package gruvbox-theme :config (load-theme 'gruvbox-dark-hard))
+(use-package gruvbox-theme :config (load-theme 'gruvbox-dark-hard t))
 
 ;; (setq-default shift-select-mode t)
 ;; Doesnot work in terminals properly
+
+(add-hook 'dired-mode-hook (lambda () (define-key dired-mode-map (kbd "C-c +") 'dired-create-empty-file)))
+(define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy)
+(define-key ivy-mode-map (kbd "C-c RET") 'ivy-immediate-done)
+(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+(global-set-key (kbd "C-c .") 'hydra-ivy/body)
+(global-set-key (kbd "C-c =") 'my-indent-whole-buffer)
+(global-set-key (kbd "C-c A") 'customize-apropos)
+(global-set-key (kbd "C-c B") 'bookmark-bmenu-list)
+(global-set-key (kbd "C-c C") 'customize-group)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "C-c K") 'nuke-all-buffers)
+(global-set-key (kbd "C-c X") 'crux-kill-other-buffers)
+(global-set-key (kbd "C-c a") 'hydra-of-hydras/body)
+(global-set-key (kbd "C-c b") 'counsel-bookmark)
+(global-set-key (kbd "C-c c") 'comment-line)
+(global-set-key (kbd "C-c f f") 'ffap)
+(global-set-key (kbd "C-c f i") 'file-info-show)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c i") 'crux-find-user-init-file)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c o A") 'org-agenda)
+(global-set-key (kbd "C-c o a") 'org-agenda-list)
+(global-set-key (kbd "C-c o c") 'org-capture)
+(global-set-key (kbd "C-c r") 'restart-emacs)
+(global-set-key (kbd "C-c t") 'toggle-truncate-lines)
+(global-set-key (kbd "C-c w") 'tab-list)
+(global-set-key (kbd "C-c y") 'duplicate-dwim)
+(global-set-key (kbd "C-h F") #'helpful-function)
+(global-set-key (kbd "C-h f") #'helpful-callable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h x") #'helpful-command)
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key [remap dabbrev-expand] 'hippie-expand)

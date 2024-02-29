@@ -13,12 +13,12 @@
  '(beacon-blink-duration 1)
  '(beacon-blink-when-point-moves-horizontally 1)
  '(beacon-blink-when-point-moves-vertically 1)
- '(beacon-color "sienna1")
+ '(beacon-color "brightblack")
  '(beacon-dont-blink-commands nil)
+ '(beacon-size 100)
  '(blink-cursor-delay 0.2)
  '(blink-cursor-interval 0.2)
  '(blink-cursor-mode nil)
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/bookmarks")
  '(company-async-redisplay-delay 1)
  '(company-idle-delay 1.2)
  '(company-keywords-ignore-case t)
@@ -36,7 +36,7 @@
  '(custom-buffer-done-kill t)
  '(custom-buffer-order-groups 'first)
  '(custom-buffer-sort-alphabetically t)
- '(custom-enabled-themes '(gruvbox-dark-hard))
+ '(custom-enabled-themes '(cyberpunk))
  '(custom-magic-show-button nil)
  '(custom-safe-themes
    '("d445c7b530713eac282ecdeea07a8fa59692c83045bf84dd112dd738c7bcad1d" "a1c18db2838b593fba371cb2623abd8f7644a7811ac53c6530eebdf8b9a25a8d" default))
@@ -85,7 +85,6 @@
  '(magit-repository-directories '(("~/my_repos" . 1)))
  '(midnight-mode t)
  '(num3-group-size 4)
- '(org-agenda-files nil)
  '(org-capture-templates
    '(("c" "capture" entry
       (file "~/org/capture")
