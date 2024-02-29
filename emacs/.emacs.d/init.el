@@ -357,8 +357,8 @@
 (use-package embark
   :ensure t
   :bind
-  (("C-." . embark-act)         ;; pick some comfortable binding
-   ("C-;" . embark-dwim)        ;; good alternative: M-.
+  (("C-c e" . embark-act)         ;; pick some comfortable binding
+   ("C-c ;" . embark-dwim)        ;; good alternative: M-.
    ("C-h B" . embark-bindings)))
 
 (use-package verilog-ext
@@ -623,7 +623,7 @@
 
 (use-package syntax-subword
   :config
-  (global-syntax-subword-mode t))
+  (global-syntax-subword-mode nil))
 
 (global-set-key (kbd "C-c C") 'customize-group)
 (global-set-key (kbd "C-c A") 'customize-apropos)
@@ -645,8 +645,8 @@
       (file "~/org/capture.org")
       "" :prepend t))
    org-cycle-hide-block-startup t
-   org-default-notes-file "~/iCloud/org/capture.org"
-   org-directory "~/iCloud/org"
+   org-default-notes-file "~/org/capture.org"
+   org-directory "~/org"
    org-extend-today-until 4
    org-fontify-todo-headline t
    org-fontify-whole-heading-line t
@@ -684,4 +684,7 @@
 ;; (setq straight-use-package-by-default nil)
 (put 'downcase-region 'disabled nil)
 
-(use-package gruvbox-theme)
+(use-package gruvbox-theme :config (load-theme 'gruvbox-dark-hard))
+
+;; (setq-default shift-select-mode t)
+;; Doesnot work in terminals properly
