@@ -1,3 +1,5 @@
+let g:fzf_vim = {}
+
 " https://github.com/junegunn/fzf.vim
 " Preview window is hidden by default. You can toggle it with ctrl-/.
 " It will show on the right with 50% width, but if the width is smaller

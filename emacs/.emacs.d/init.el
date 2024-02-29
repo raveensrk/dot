@@ -649,7 +649,7 @@
 (global-set-key (kbd "C-c A") 'customize-apropos)
 (global-set-key (kbd "C-c B") 'bookmark-bmenu-list)
 (global-set-key (kbd "C-c C") 'customize-group)
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 (global-set-key (kbd "C-c C-d") #'helpful-at-point)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "C-c K") 'nuke-all-buffers)
