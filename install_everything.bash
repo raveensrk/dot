@@ -3,17 +3,12 @@
 set -e
 # set -x
 
-# Basic files and directories setup
-[ ! -d "$HOME/.tmp"        ] && mkdir "$HOME/.tmp"
-[ ! -d "$HOME/.vim"        ] && mkdir "$HOME/.vim"
-[ ! -d "$HOME/.vim/undo"   ] && mkdir "$HOME/.vim/undo"
-[ ! -d "$HOME/.vim/backup" ] && mkdir "$HOME/.vim/backup"
-[ ! -d "$HOME/.vim/swap"   ] && mkdir "$HOME/.vim/swap"
-[ -d "$HOME/tmp"           ] || mkdir "$HOME/tmp"
-[ -d "$HOME/.local/bin"    ] || mkdir -p "$HOME/.local/bin"
-[ -d "$HOME/.status"       ] || mkdir -p "$HOME/.status"
-[ -d "$HOME/.doom.d/my_elisp" ] || mkdir -p "$HOME/.doom.d/my_elisp"
-[ -e "$HOME/.scripts/clean_up_DS_Store" ] && ~/.scripts/clean_up_DS_Store
+[ ! -d "$HOME/.vim"        ] && mkdir -p "$HOME/.vim"
+[ ! -d "$HOME/.vim/undo"   ] && mkdir -p "$HOME/.vim/undo"
+[ ! -d "$HOME/.vim/backup" ] && mkdir -p "$HOME/.vim/backup"
+[ ! -d "$HOME/.vim/swap"   ] && mkdir -p "$HOME/.vim/swap"
+[ ! -d "$HOME/tmp"         ] && mkdir -p "$HOME/tmp"
+[ ! -d "$HOME/.local/bin"  ] && mkdir -p "$HOME/.local/bin"
 
 stow  -R  stow  -t "$HOME" --no-folding
 
@@ -27,9 +22,3 @@ fi
 if [ "$is_linux" = "Linux" ]; then
     stow -R stow_linux -t "$HOME" --no-folding
 fi
-
-stow -R emacs -t "$HOME" --no-folding
-
-# vim -c "PlugInstall | PlugClean | qa"
-# tldr -u
-

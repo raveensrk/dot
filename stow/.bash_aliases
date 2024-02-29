@@ -245,3 +245,7 @@ alias ,hexdump="hexdump -Cv"
     open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+') ;
 }
 alias ,compress="tar -cva -f "
+alias ,journal="~/iCloud/Journal"
+alias ,today="vim ~/iCloud/Journal/daily_journal/$(date -I).txt"
+alias ,diet="vim ~/iCloud/Journal/diet_journal/$(date -I).txt"
+alias ,inbox="vim ~/iCloud/inbox.txt"

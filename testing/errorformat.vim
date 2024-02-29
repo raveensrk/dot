@@ -10,4 +10,4 @@ set errorformat+=%E%.%#xmsim:\ %\\%#E\\,%o:\ %m,%C%.%#File:\ %f\\,\ line\ =\ %l\
 set errorformat+=%EUVM_FATAL\ @\ %.%#:\ %o
 set errorformat+=%E%o\ %f(%l)\ @\ %c:\ %m%.%#
 w
-tabnew +make | copen
+tabnew +lmake | lopen
