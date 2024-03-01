@@ -11,6 +11,7 @@ nmap ,<up> :cp<cr>
 nmap ,cd :cd %:h<CR>
 nmap <leader>. :e .<CR>
 nmap <leader>/ :Lines<CR>
+nmap <leader>? :BLines<CR>
 nmap <leader><down> :tabnext<cr>
 nmap <leader><leader><down> :ln<cr>
 nmap <leader><leader><up> :lp<cr>

@@ -108,7 +108,7 @@ command! -nargs=* Rg
       \ call fzf#vim#grep(
       \   'rg --hidden --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
       \   1,
-      \   {'options': '--delimiter : --nth 2..'})
+      \   {'options': '--delimiter : --nth 1..'})
 
 
 

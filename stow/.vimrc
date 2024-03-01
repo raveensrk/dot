@@ -90,13 +90,6 @@ set undofile
 set undodir=~/.vim/undo
 set backupdir=~/.vim/backup
 " }}}
-" {{{ PATH
-set path+=*
-set path+=**
-" set path+=$HOME/my_repos/*
-" set autochdir
-" set noautochdir " This will change your pwd to current file
-" }}}
 " {{{ NETRW
 " let g:netrw_altv = 1
 " let g:netrw_banner = 0
@@ -110,9 +103,6 @@ set path+=**
 let g:netrw_keepdir=0
 autocmd FileType netrw silent! cd %:p:h
 "}}}
-" CTAGS {{{
-set tags=tags
-" }}}
 " {{{ VIM SESSIONS AND VIEWS
 " autocmd BufWinLeave *.* mkview!
 " autocmd BufWinEnter *.* silent loadview
@@ -268,6 +258,7 @@ set switchbuf=uselast
 autocmd! BufEnter *.log setlocal readonly 
 autocmd! BufEnter *.log setlocal wrap
 autocmd QuickFixCmdPost make set wrap
+autocmd QuickFixCmdPost make set nowinfixheight nowinfixwidth
 set viminfo+=r/opt/homebrew/
 set viminfo+=r~/.vim/plugged
 set exrc secure
@@ -284,3 +275,7 @@ let mapleader = " "
 " command! CD call CD()
 " autocmd BufEnter * CD
 
+set tags=./tags,../tags
+set path+=*
+" set path+=**;~/ " This is awesome but find search takes too long
+set path+=./;~/

@@ -31,3 +31,5 @@ set isfname-==
 set shiftwidth=2
 set smartindent
 set tabstop=2 softtabstop=2
+set formatprg=verible-verilog-format\ --column_limit\ 999\ -
+nmap <leader>= mmggVGgq`m
