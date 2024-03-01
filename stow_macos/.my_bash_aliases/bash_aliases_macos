@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 alias find="/opt/homebrew/opt/findutils/bin/gfind"
 alias xargs="/opt/homebrew/opt/findutils/bin/gxargs"
@@ -10,4 +12,28 @@ export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/Library/TeX/texbin:$PATH"
 export SHELL="/opt/homebrew/bin/bash"
+alias ,,journal="~/iCloud/Journal"
+alias ,,daily="vim ~/iCloud/Journal/daily_journal/$(date -I).txt"
+alias ,,diet="vim ~/iCloud/Journal/diet_journal/$(date -I).txt"
+alias ,,medication="vim ~/iCloud/Journal/medication_journal/$(date -I).txt"
+alias ,,inbox="vim ~/iCloud/inbox.txt"
+
 fortune
+,2x2 () {
+    [[ "${#@}" -ne 4 ]] && echo ERROR: Need 4 file names... && return 2
+    vim "$4" -c "split $2 | vsplit $1 |  wincmd j | vsplit $3"
+}
+
+,2x2_1 () {
+    [[ "${#@}" -ne 5 ]] && echo ERROR: Need 5 file names... && return 2
+    vim "$4" -c "split $2 | vsplit $1 |  wincmd j | vsplit $3 | wincmd k | vsplit $5"
+}
+
+,today () {
+    ,2x2_1 \
+        ~/iCloud/Journal/daily_journal/$(date -I).txt \
+        ~/iCloud/Journal/diet_journal/$(date -I).txt \
+        ~/iCloud/Journal/medication_journal/$(date -I).txt \
+        ~/iCloud/inbox.txt \
+        ~/iCloud/Journal/routine.txt
+    }

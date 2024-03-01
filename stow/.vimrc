@@ -273,7 +273,6 @@ set viminfo+=r~/.vim/plugged
 set exrc secure
 " hi clear | hi CursorLine gui=underline cterm=underline
 let mapleader = " "
-set iskeyword+=,
 
 " function! CD ()
 "     let buffer_path = expand('%:h')

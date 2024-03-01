@@ -17,6 +17,7 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'justinmk/vim-sneak'
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-eunuch'
 
 call plug#end()
 
