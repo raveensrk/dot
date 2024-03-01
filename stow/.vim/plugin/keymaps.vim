@@ -54,3 +54,8 @@ nmap ga <Plug>(EasyAlign)
 vmap <leader>Y :w! ~/.vim_clip<cr>!xclip ~/.vim_clip<cr>
 xmap ga <Plug>(EasyAlign)
 vmap <leader>dd "_d
+nmap <leader><Right> <C-w>l<leader>
+nmap <leader><Up> <C-w>k<leader>
+nmap <leader><Down> <C-w>j<leader>
+nmap <leader><Left> <C-w>h<leader>
+set ttimeoutlen=3000 ttimeout timeout timeoutlen=1000
