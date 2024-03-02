@@ -282,3 +282,5 @@ set path+=./;~/
 " autocmd WinResized * wincmd =
 
 autocmd WinNew * wincmd =
+autocmd FileType sh set formatprg=shfmt\ % 
+

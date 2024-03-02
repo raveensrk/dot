@@ -15,7 +15,7 @@ export PATH="$HOME/.scripts:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
-    export PATH="/var/lib/flatpak/exports/bin:$PATH"
+	export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
 for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 # }}}
@@ -25,62 +25,63 @@ export IGNOREEOF=0
 shopt -s direxpand
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 shopt -s histappend # append to the history file, don't overwrite it
-HISTCONTROL= # Use ignoreboth to ingore both duplicated and commands that start with space
+HISTCONTROL=        # Use ignoreboth to ingore both duplicated and commands that start with space
 HISTSIZE=
 HISTFILESIZE=
 export HISTTIMEFORMAT="[%F %T] "
-export HISTFILE=~/.bash_history # Change the file location because certain bash sessions truncate .bash_history file upon close. # http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
+export HISTFILE=~/.bash_history                     # Change the file location because certain bash sessions truncate .bash_history file upon close. # http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND" # Force prompt to write history after every command. http://superuser.com/questions/20900/bash-history-loss
-shopt -s checkwinsize # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+shopt -s checkwinsize                               # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 # }}}
 # {{{ INTERFACE
 if [ -v xset ]; then
-    # Insead of this use macos settings -> keyboard -> repeat fast -> delay short
-    xset r rate 300 50
-    xset m 10 1
+	# Insead of this use macos settings -> keyboard -> repeat fast -> delay short
+	xset r rate 300 50
+	xset m 10 1
 fi
 # Colors
 export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    if  test -r ~/.dircolors; then
-        eval "$(dircolors -b ~/.dircolors)"
-    else
-        eval "$(dircolors -b)"
-    fi
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
+	if test -r ~/.dircolors; then
+		eval "$(dircolors -b ~/.dircolors)"
+	else
+		eval "$(dircolors -b)"
+	fi
+	alias dir='dir --color=auto'
+	alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
 fi
 # }}}
 # {{{ ALIASES
-if command -v bat > /dev/null; then
-    alias cat=bat
+if command -v bat >/dev/null; then
+	alias cat=bat
 fi
-alias ,chop="tr -d '\n'" # Remove newline
+alias ,chop="tr -d '\n'"         # Remove newline
 alias ,transposevh="tr '\n' ' '" # Transpose vertical to horizontal
 alias ,transposehv="tr ' ' '\n'" # Transpose horizontal to vertical
 alias ,untar="tar xf"
 alias ,hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 # LS aliases
 
-if command -v exa > /dev/null; then
-    alias ls='exa'
-    alias l="exa -lah"
+if command -v exa >/dev/null; then
+	alias ls='exa'
+	alias l="exa -lah"
 else
-    alias ls='ls --color=auto'
-    alias l="ls -Alh"
+	alias ls='ls --color=auto'
+	alias l="ls -Alh"
 fi
 alias ltr="ls -tr"
 alias ..="cd .."
 alias ,top_faster_refresh='top -d 0.125'
 alias ,date='date -I'
+alias ,date_yesterday='/bin/date -I -v-1d'
 alias ,date1="date +%Y%m%d%H%M%S"
 alias ,date2='date -Iseconds | sed "s/:/-/g"'
 alias mkdir="mkdir -v"
@@ -91,7 +92,7 @@ alias tmux="tmux -2"
 alias t="tmux attach || tmux"
 alias ,tree="tree -C"
 alias ,tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
-alias ,rsync="rsync -CazhPvu" # -C
+alias ,rsync="rsync -CazhPvu"                                         # -C
 alias ,rp="realpath"
 
 # }}}
@@ -115,7 +116,7 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 # Man colors
 #------------------
 man() {
-    LESS_TERMCAP_md=$'\e[01;31m'          LESS_TERMCAP_me=$'\e[0m'          LESS_TERMCAP_se=$'\e[0m'          LESS_TERMCAP_so=$'\e[01;44;33m'          LESS_TERMCAP_ue=$'\e[0m'          LESS_TERMCAP_us=$'\e[01;32m'          command man "$@"
+	LESS_TERMCAP_md=$'\e[01;31m' LESS_TERMCAP_me=$'\e[0m' LESS_TERMCAP_se=$'\e[0m' LESS_TERMCAP_so=$'\e[01;44;33m' LESS_TERMCAP_ue=$'\e[0m' LESS_TERMCAP_us=$'\e[01;32m' command man "$@"
 }
 # }}}
 # {{{ VIM
@@ -139,16 +140,16 @@ alias vl='vim -c "normal '\''0"'
 # original directory.
 
 ranger_cd() {
-    temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"
-    local dir_or_file
+	temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"
+	local dir_or_file
 
-    [[ -f "$@" ]] && dir_or_file=$(dirname "$@") || dir_or_file="$@"
+	[[ -f "$@" ]] && dir_or_file=$(dirname "$@") || dir_or_file="$@"
 
-    ranger --choosedir="$temp_file" -- "${dir_or_file:-$PWD}"
-    if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
-        cd "$chosen_dir"
-    fi
-    rm -f -- "$temp_file"
+	ranger --choosedir="$temp_file" -- "${dir_or_file:-$PWD}"
+	if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
+		cd "$chosen_dir"
+	fi
+	rm -f -- "$temp_file"
 }
 
 alias r="ranger_cd"
@@ -169,45 +170,45 @@ bind '"\C-o":"ranger-cd\C-m"'
 # }}}
 # {{{ Completion system
 if [ -f /etc/bash_completion ]; then
-    # shellcheck disable=SC1091
-    . /etc/bash_completion
+	# shellcheck disable=SC1091
+	. /etc/bash_completion
 fi
 # shellcheck disable=SC1090
 [ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
 
 # Use bash-completion, if available
 # shellcheck disable=SC1090
-[[ $PS1 && -f ~/.local/share/bash-completion/bash_completion  ]] && \
-    . ~/.local/share/bash-completion/bash_completion
+[[ $PS1 && -f ~/.local/share/bash-completion/bash_completion ]] &&
+	. ~/.local/share/bash-completion/bash_completion
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-        # shellcheck disable=SC1091
-        . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-        # shellcheck disable=SC1091
-        . /etc/bash_completion
-    fi
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		# shellcheck disable=SC1091
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		# shellcheck disable=SC1091
+		. /etc/bash_completion
+	fi
 fi
 
-# }}} 
+# }}}
 # {{{ BUG FIXES
 # MACOS Specific {{{
 if [ "$(uname -a | awk '{print $1}')" = "Darwin" ]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-    # https://github.com/platformio/platformio-atom-ide-terminal/issues/196
-    update_terminal_cwd() {
-        # Identify the directory using a "file:" scheme URL,
-        # including the host name to disambiguate local vs.
-        # remote connections. Percent-escape spaces.
-        local SEARCH=' '
-        local REPLACE='%20'
-        local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
-        printf '\e]7;%s\a' "$PWD_URL"
-    }
+	eval "$(/opt/homebrew/bin/brew shellenv)"
+	# https://github.com/platformio/platformio-atom-ide-terminal/issues/196
+	update_terminal_cwd() {
+		# Identify the directory using a "file:" scheme URL,
+		# including the host name to disambiguate local vs.
+		# remote connections. Percent-escape spaces.
+		local SEARCH=' '
+		local REPLACE='%20'
+		local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
+		printf '\e]7;%s\a' "$PWD_URL"
+	}
 fi
 
 # }}}
@@ -215,8 +216,8 @@ fi
 # {{{ GREP
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 
-,find-grep () {
-    echo '''
+,find-grep() {
+	echo '''
     find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
     '''
 }
@@ -227,7 +228,7 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 [ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
 # touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
-    source "$f"
+	source "$f"
 done
 # }}}
 
@@ -241,8 +242,8 @@ alias ,hexdump="hexdump -Cv"
 # 	tmux rename-window "HOME"
 # fi
 
-,google () { 
-    open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+') ;
+,google() {
+	open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+')
 }
 alias ,compress="tar -cva -f "
 

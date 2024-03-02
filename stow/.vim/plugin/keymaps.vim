@@ -60,3 +60,4 @@ vmap <leader>dd "_d
 " nmap <leader><Down> <C-w>j<leader>
 " nmap <leader><Left> <C-w>h<leader>
 " set ttimeoutlen=3000 ttimeout timeout timeoutlen=1000
+nmap <leader><leader>= mmggVGgq`m
