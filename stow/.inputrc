@@ -30,5 +30,4 @@ $if Bash
 "\C-xh": "\C-e --help | less\n"
 "\C-xf": "\C-af \C-e\n"
 "\C-xb": "\C-z bg\n"
-",h": "--help | less"
 $endif

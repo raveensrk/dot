@@ -120,7 +120,7 @@ man() {
 # }}}
 # {{{ VIM
 # export EDITOR="vim"
-alias ,bashrc="\$EDITOR ~/.bash_aliases ~/.bashrc && source ~/.bash_aliases"
+alias ,bashrc="vim ~/.bashrc"
 alias ,vimrc="vim ~/.vimrc"
 alias v=vim
 alias vl='vim -c "normal '\''0"'
@@ -245,3 +245,9 @@ alias ,hexdump="hexdump -Cv"
     open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+') ;
 }
 alias ,compress="tar -cva -f "
+
+export TERM=xterm-256color
+alias ,tmux_conf="vim ~/.tmux.conf"
+alias ,chatgpt="chatgpt -i"
+alias ,muttrc="vim ~/.muttrc"
+alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"

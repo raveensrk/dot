@@ -1,0 +1,140 @@
+#{{{ Basics
+set certificate_file      = ~/.mutt/certificates
+set editor                = vim
+set greeting              = "Hello,"
+set header_cache          = ~/.mutt/cache/headers
+set imap_check_subscribed = yes
+set imap_keepalive        = 900
+set mail_check            = 60
+set message_cachedir      = ~/.mutt/cache/bodies
+set move                  = no
+set signature             = "~/.signature"
+set sort                  = "reverse-date"
+set status_on_top         = yes
+set tilde                 = yes
+set timeout               = 15
+set ts_enabled            = yes
+set use_domain            = no
+set use_threads           = "threads"
+# }}}
+# Color {{{
+color attachment white default
+color body brightblack default "^gpg: Good signature .*"
+color body brightblue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL
+color body brightblue default "^# \.*" # Headings as bold blue
+color body brightcyan default "[ ]?[*][^*]*[*][ ]" # more emoticon?
+color body brightcyan default "[ ][*][^*]*[*][ ]?" # more emoticon?
+color body brightcyan default "[;:][)(|]" # emoticons
+color body brightcyan default "[;:][-o][)/(|]" # emoticons
+color body brightcyan default "^## \.*" # Subheadings as bold cyan
+color body brightgreen default "^### \.*" # Subsubheadings as bold green
+color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
+color body brightyellow default "^gpg: "
+color body brightyellow red "^gpg: BAD signature from.*"
+color body cyan default "(Good signature)"
+color body green default "\`[^\`]*\`" # Green text between ` and `
+color body red default "(BAD signature)"
+color body red default "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+color body yellow default "^(\t| )*(-|\\*) \.*" # List items as yellow
+color bold black default
+color error red default
+color hdrdefault brightgreen default
+color header blue default ".*"
+color header brightcyan default "^(Subject)"
+color header brightmagenta default "^(From)"
+color header brightwhite default "^(CC|BCC)"
+color index brightyellow black "~N"
+color index yellow default '.*'
+color index_author brightred black "~N"
+color index_author red default '.*'
+color index_number blue default
+color index_subject brightcyan black "~N"
+color index_subject cyan default '.*'
+color indicator brightblack white
+color markers red white
+color message cyan default
+color normal brightyellow default
+color normal default default
+color normal default default
+color quoted green default
+color quoted1 blue default
+color quoted2 cyan default
+color quoted3 yellow default
+color quoted4 red default
+color quoted5 brightred default
+color search brightmagenta default
+color sidebar_background default color240
+color sidebar_divider cyan cyan
+color sidebar_flagged    red     default
+color sidebar_highlight  white   color238
+color sidebar_indicator  default color17
+color sidebar_new        green   default
+color sidebar_ordinary   default default
+color sidebar_spool_file yellow  default
+color sidebar_unread     cyan    default
+color signature brightgreen default
+color status brightyellow black
+color tilde black default
+color underline black default
+mono body bold "^gpg: BAD signature from.*"
+mono body bold "^gpg: Good signature"
+mono bold bold
+mono error bold
+mono indicator reverse
+mono underline underline
+# }}}
+# Key Bindings{{{
+
+bind  generic,pager        t         noop
+bind  index,pager          d         noop
+bind  index,pager          s         noop
+bind  index,pager,attach   g         noop
+bind  pager                i         noop
+
+bind  index               z         sidebar-toggle-visible
+bind index,pager \CN sidebar-next
+bind index,pager \CP sidebar-prev
+bind  editor               \Cn       history-down
+bind  editor               \Cp       history-up
+bind  generic              gg        first-entry
+bind  generic              q         exit
+bind  generic              t         tag-entry
+bind  generic,index        G         last-entry
+bind  generic,index,pager  /         search
+bind  generic,index,pager  \Cb       previous-page
+bind  generic,index,pager  \Cd       half-down
+bind  generic,index,pager  \Ce       next-line
+bind  generic,index,pager  \Cf       next-page
+bind  generic,index,pager  \Cu       half-up
+bind  index                <Backtab> previous-new-then-unread
+bind  index                <Down>    next-undeleted
+bind  index                <Up>      previous-undeleted
+bind  index                s         save-message
+bind  index                y         imap-fetch-mail
+bind  index,pager          A         create-alias
+bind  index,pager          C         decode-copy
+bind  index,pager          D         decode-save
+bind  index,pager          N         search-opposite
+bind  index,pager          \Co       sidebar-open
+bind  index,pager          a         group-reply
+bind  pager                <Down>    next-line
+bind  pager                <Up>      previous-line
+bind  pager                G         bottom
+bind  pager                gg        top
+bind  pager                q         exit
+# bind  pager                q         quit
+bind  pager                t         tag-message
+
+macro index                c         "<change-folder>?"
+macro index,pager          dd        "<delete-message><sync-mailbox>" "Move message to trash"
+macro index,pager          gx        "<pipe-message>urlview<Enter>"   "call urlview to extract URLs out of a message"
+macro index,pager          m         "<decode-save>?"
+macro pager,attach,compose gx        "<pipe-entry>urlview<Enter>"     "call urlview to extract URLs out of a message"
+# }}}
+# {{{ SIDEBAR
+set mail_check_stats
+set sidebar_folder_indent = yes
+set sidebar_format = "%B%<F? [%F]>%* %<N?%N/>%S"
+set sidebar_visible = yes
+set sidebar_width=30
+# }}}

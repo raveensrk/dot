@@ -78,9 +78,9 @@ set wildignorecase
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
 set scrolloff=999
-set sidescrolloff=999
+set sidescrolloff=1
 
-" set virtualedit=onemore
+set virtualedit=all
 " set textwidth=0 wrapmargin=0
 " }}}
 " {{{ BACKUPS AND UNDO
@@ -279,3 +279,6 @@ set tags=./tags,../tags
 set path+=*
 " set path+=**;~/ " This is awesome but find search takes too long
 set path+=./;~/
+" autocmd WinResized * wincmd =
+
+autocmd WinNew * wincmd =
