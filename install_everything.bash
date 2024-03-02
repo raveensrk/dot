@@ -9,6 +9,9 @@ set -e
 [ ! -d "$HOME/.vim/swap"   ] && mkdir -p "$HOME/.vim/swap"
 [ ! -d "$HOME/tmp"         ] && mkdir -p "$HOME/tmp"
 [ ! -d "$HOME/.local/bin"  ] && mkdir -p "$HOME/.local/bin"
+[ ! -d "$HOME/.mutt/cache/headers"  ] && mkdir -p "$HOME/.mutt/cache/headers"
+[ ! -d "$HOME/.mutt/cache/bodies"  ] && mkdir -p "$HOME/.mutt/cache/bodies"
+
 
 stow  -R  stow  -t "$HOME" --no-folding
 

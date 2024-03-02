@@ -1,12 +1,15 @@
 #{{{ Basics
+ignore *
+unignore from: date subject to cc
+hdr_order From Date: From: To: Cc: Subject:
 set certificate_file      = ~/.mutt/certificates
+set header_cache           = ~/.mutt/cache/headers
+set message_cache_dir      = ~/.mutt/cache/bodies
 set editor                = vim
 set greeting              = "Hello,"
-set header_cache          = ~/.mutt/cache/headers
 set imap_check_subscribed = yes
 set imap_keepalive        = 900
 set mail_check            = 60
-set message_cachedir      = ~/.mutt/cache/bodies
 set move                  = no
 set signature             = "~/.signature"
 set sort                  = "reverse-date"
@@ -124,11 +127,12 @@ bind  pager                gg        top
 bind  pager                q         exit
 # bind  pager                q         quit
 bind  pager                t         tag-message
+bind index          m         mail
 
 macro index                c         "<change-folder>?"
 macro index,pager          dd        "<delete-message><sync-mailbox>" "Move message to trash"
 macro index,pager          gx        "<pipe-message>urlview<Enter>"   "call urlview to extract URLs out of a message"
-macro index,pager          m         "<decode-save>?"
+macro index,pager          M         "<decode-save>?"
 macro pager,attach,compose gx        "<pipe-entry>urlview<Enter>"     "call urlview to extract URLs out of a message"
 # }}}
 # {{{ SIDEBAR
@@ -138,3 +142,9 @@ set sidebar_format = "%B%<F? [%F]>%* %<N?%N/>%S"
 set sidebar_visible = yes
 set sidebar_width=30
 # }}}
+# Testing
+
+
+set ssl_force_tls = yes
+set ssl_starttls = yes
+set smtp_authenticators = "login"

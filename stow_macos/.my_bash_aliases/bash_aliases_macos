@@ -17,6 +17,8 @@ alias ,,daily="vim ~/iCloud/Journal/daily_journal/$(date -I).txt"
 alias ,,diet="vim ~/iCloud/Journal/diet_journal/$(date -I).txt"
 alias ,,medication="vim ~/iCloud/Journal/medication_journal/$(date -I).txt"
 alias ,,inbox="vim ~/iCloud/inbox.txt"
+export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH
+
 
 fortune
 ,2x2 () {
