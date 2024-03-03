@@ -1,5 +1,8 @@
 # vim: set filetype=neomuttrc
+# reset all
+# unmailboxes *
 #{{{ Basics
+set beep_new = yes
 ignore *
 unignore from: date subject to cc
 hdr_order From Date: From: To: Cc: Subject:
@@ -25,8 +28,12 @@ set use_domain            = no
 set use_threads           = "threads"
 set index_format = "%Z %04H %N %[%F] %s %f %X"
 unset imap_passive
+set real_name = "Raveen Kumar"
 # }}}
 # Color {{{
+
+color progress white red
+
 color attachment white default
 color body brightblack default "^gpg: Good signature .*"
 color body brightblue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL
@@ -94,15 +101,17 @@ mono underline underline
 # }}}
 # Key Bindings{{{
 
-bind  generic,pager        t         noop
-bind  index,pager          d         noop
-bind  index,pager          s         noop
-bind  index,pager,attach   g         noop
-bind  pager                i         noop
+bind  generic,pager        t  noop
+bind  index,pager          s  noop
+macro index,pager          d "<delete-message><sync-mailbox>" "Move message to trash"
+
+macro index,pager          x "<pipe-message>urlview<Enter>" "call urlview to extract URLs out of a message"
+macro pager,attach,compose x "<pipe-entry>urlview<Enter>"   "call urlview to extract URLs out of a message"
+bind  index                g first-entry
+bind  pager                g top
 
 bind editor              \Cn       history-down
 bind editor              \Cp       history-up
-bind generic             gg        first-entry
 bind generic             q         exit
 bind generic             t         tag-entry
 bind generic,index       G         last-entry
@@ -128,14 +137,10 @@ bind index,pager         a         group-reply
 bind pager               <Down>    next-line
 bind pager               <Up>      previous-line
 bind pager               G         bottom
-bind pager               gg        top
 bind pager               q         exit
 bind pager               t         tag-message
 
 macro index                c  "<change-folder>?"
-macro index,pager          dd "<delete-message><sync-mailbox>" "Move message to trash"
-macro index,pager          gx "<pipe-message>urlview<Enter>"   "call urlview to extract URLs out of a message"
-macro pager,attach,compose gx "<pipe-entry>urlview<Enter>"     "call urlview to extract URLs out of a message"
 # }}}
 # {{{ SIDEBAR
 set mail_check_stats
@@ -143,7 +148,7 @@ set sidebar_folder_indent = yes
 set sidebar_format = "%B%<F? [%F]>%* %<N?%N/>%S"
 set sidebar_visible = yes
 set sidebar_width=30
+set sidebar_component_depth = 2
 # }}}
 # Testing
 source ~/.spamrc
-

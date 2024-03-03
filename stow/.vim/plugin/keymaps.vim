@@ -46,7 +46,7 @@ nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>
 nmap <leader>s :so<cr>
 nmap <leader>t :set nowrap!<cr>
-nmap <leader>w :wa<CR>
+nmap <leader>w :w<CR>
 nmap <leader>x yyq:p<CR>
 nmap <leader>y ggVGy2<C-o>
 nmap Y yg_

@@ -1,5 +1,9 @@
 source $VIMRUNTIME/vimrc_example.vim
 
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+
 " HELP {{{
 " Press <F1> for help
 " K for help for word under cursor
@@ -8,8 +12,6 @@ source $VIMRUNTIME/vimrc_example.vim
 set autoread
 set mouse=a
 set nocompatible
-filetype plugin on
-syntax on
 set hidden
 set backspace=indent,eol,start
 set encoding=utf-8
@@ -111,81 +113,6 @@ autocmd FileType netrw silent! cd %:p:h
 "   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
 " augroup END
 " }}}
-"{{{ MARKDOWN
-let g:markdown_folding = 1
-noremap <2-LeftMouse> za
-augroup markdown
-    autocmd BufWinEnter *.md set nocursorline nocursorcolumn nonu nornu linebreak wrap
-    autocmd BufWinEnter *.md syn match markdownError "\w\@<=\w\@="
-    " hi link markdownError NONE 
-augroup END
-" let g:netrw_browsex_viewer="open"
-function! OpenUrl()
-    let l:url = expand('<cWORD>')
-    execute '!echo "' . l:url . '" | urlview'
-endfunction
-
-nnoremap <silent> <leader>gx :call OpenUrl()<CR>
-"}}}
-"{{{ DELETE BUFFER AND FILE
-"------------------------------
-" Check if the buffer is empty
-function! IsBufferEmpty() abort
-    return line('$') == 1 && getline(1) == ''
-endfunction
-
-" Check if the buffer is the last buffer
-function! IsLastBuffer() abort
-    return buflisted(bufnr('%')) == 1 && bufnr('$') == bufnr('%')
-endfunction
-
-" Combine both checks
-function! CheckEmptyAndLastBuffer() abort
-    if IsBufferEmpty()
-        echo "This buffer is empty."
-    endif
-
-    if IsLastBuffer()
-        echo "This is the last buffer."
-    endif
-    return 1
-endfunction
-
-function! DeleteBufferAndFile()
-    let save_confirm = &confirm
-    set confirm
-    let file_path = expand('%:p')
-    echo file_path
-    exe "bdel"
-    execute "!clear"
-    execute "!rm -iv '".file_path."'"
-    let &confirm = save_confirm
-    if CheckEmptyAndLastBuffer()
-        exe "q"
-    endif
-endfunction
-
-command! DeleteBufferAndFile call DeleteBufferAndFile()
-"}}}
-" VIEW NON COMMENTED LINES ONLY{{{
-" ---------------------------------
-function! ViewNonCommentedLines(comment_char)
-    execute 'g/^[^' . a:comment_char . ']/p'
-endfunction
-
-command! -nargs=1 ViewNonCommentedLinesCommand call ViewNonCommentedLines(<q-args>)
-"}}}
-" END OF VIMRC TASKS {{{
-" {{{ RESOURCE PLUGIN DIRECTORY
-" This is done so the plugin directory is sourced again at the end of this
-" vimrc file. This will make plugins work properly
-
-" ~/.vim/plugin
-for f in split(glob('~/.vim/plugin/*.vim'), '\n')
-    exe 'source' f
-endfor
-
-" }}}
 "{{{ FINALLY SOURCE CUSTOM PER USER CONGIFS
 
 for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
@@ -193,7 +120,6 @@ for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
 endfor
 
 "}}}
-" }}}
 " ↑ WORKING CONFIGS ABOVE ↑
 " ↓ TESTING ↓
 let g:netrw_dirhistmax=1000
@@ -217,7 +143,7 @@ endfunction
 
 " set cmdheight=2
 " set smoothscroll
-set clipboard^=unnamed
+" set clipboard^=autoselectplus
 set complete+=t
 set completeopt+=popup,preview
 set makeef=/tmp/errorfile
@@ -233,25 +159,6 @@ set winfixwidth
 set isfname-==
 set isfname-=,
 autocmd FileType netrw cd %:p:h
-
-func! QfOldFiles(info)
-    " get information about a range of quickfix entries
-    let items = getqflist({'id' : a:info.id, 'items' : 1}).items
-    let l = []
-    for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
-        " use the simplified file name
-        call add(l, fnamemodify(bufname(items[idx].bufnr), ':p:.'))
-    endfor
-    return l
-endfunc
-
-" create a quickfix list from v:oldfiles
-nmap <leader>bH   :call setqflist([], ' ', {'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})<cr>:copen<cr>
-
-" Hide unnamed buffers
-autocmd BufLeave,BufEnter * if bufname('%') == '' && !&modified | setlocal bufhidden=hide | endif
-" autocmd BufEnter * if bufname("%") | cd "%:h" | endif
-" set autochdir
 
 packadd cfilter
 set switchbuf=uselast
@@ -283,4 +190,5 @@ set path+=./;~/
 
 autocmd WinNew * wincmd =
 autocmd FileType sh set formatprg=shfmt\ % 
-
+autocmd! BufWritePre
+autocmd BufWritePre *.txt s/ \+$//e
