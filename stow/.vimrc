@@ -141,15 +141,11 @@ function! Bookmarks()
   lopen 5
 endfunction
 
-" set cmdheight=2
-" set smoothscroll
-" set clipboard^=autoselectplus
 set complete+=t
 set completeopt+=popup,preview
 set makeef=/tmp/errorfile
 set foldclose="all"
 set showfulltag
-" set showbreak=>>>\ 
 set showmatch
 set verbosefile=/tmp/verbosefile
 set whichwrap+=<,>,[,]
@@ -169,24 +165,12 @@ autocmd QuickFixCmdPost make set nowinfixheight nowinfixwidth
 set viminfo+=r/opt/homebrew/
 set viminfo+=r~/.vim/plugged
 set exrc secure
-" hi clear | hi CursorLine gui=underline cterm=underline
 let mapleader = " "
-
-" function! CD ()
-"     let buffer_path = expand('%:h')
-"     if buffer_path != ''
-"         exec "cd " . buffer_path
-"     endif
-" endfunction
-"
-" command! CD call CD()
-" autocmd BufEnter * CD
 
 set tags=./tags,../tags
 set path+=*
 " set path+=**;~/ " This is awesome but find search takes too long
 set path+=./;~/
-" autocmd WinResized * wincmd =
 
 autocmd WinNew * wincmd =
 autocmd FileType sh set formatprg=shfmt\ % 
