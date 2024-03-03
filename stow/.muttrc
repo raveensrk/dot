@@ -1,7 +1,11 @@
+# vim: set filetype=neomuttrc
 #{{{ Basics
 ignore *
 unignore from: date subject to cc
 hdr_order From Date: From: To: Cc: Subject:
+set ssl_force_tls = yes
+set ssl_starttls = yes
+set smtp_authenticators = "login"
 set certificate_file      = ~/.mutt/certificates
 set header_cache           = ~/.mutt/cache/headers
 set message_cache_dir      = ~/.mutt/cache/bodies
@@ -19,6 +23,8 @@ set timeout               = 15
 set ts_enabled            = yes
 set use_domain            = no
 set use_threads           = "threads"
+set index_format = "%Z %04H %N %[%F] %s %f %X"
+unset imap_passive
 # }}}
 # Color {{{
 color attachment white default
@@ -94,46 +100,42 @@ bind  index,pager          s         noop
 bind  index,pager,attach   g         noop
 bind  pager                i         noop
 
-bind  index               z         sidebar-toggle-visible
-bind index,pager \CN sidebar-next
-bind index,pager \CP sidebar-prev
-bind  editor               \Cn       history-down
-bind  editor               \Cp       history-up
-bind  generic              gg        first-entry
-bind  generic              q         exit
-bind  generic              t         tag-entry
-bind  generic,index        G         last-entry
-bind  generic,index,pager  /         search
-bind  generic,index,pager  \Cb       previous-page
-bind  generic,index,pager  \Cd       half-down
-bind  generic,index,pager  \Ce       next-line
-bind  generic,index,pager  \Cf       next-page
-bind  generic,index,pager  \Cu       half-up
-bind  index                <Backtab> previous-new-then-unread
-bind  index                <Down>    next-undeleted
-bind  index                <Up>      previous-undeleted
-bind  index                s         save-message
-bind  index                y         imap-fetch-mail
-bind  index,pager          A         create-alias
-bind  index,pager          C         decode-copy
-bind  index,pager          D         decode-save
-bind  index,pager          N         search-opposite
-bind  index,pager          \Co       sidebar-open
-bind  index,pager          a         group-reply
-bind  pager                <Down>    next-line
-bind  pager                <Up>      previous-line
-bind  pager                G         bottom
-bind  pager                gg        top
-bind  pager                q         exit
-# bind  pager                q         quit
-bind  pager                t         tag-message
-bind index          m         mail
+bind editor              \Cn       history-down
+bind editor              \Cp       history-up
+bind generic             gg        first-entry
+bind generic             q         exit
+bind generic             t         tag-entry
+bind generic,index       G         last-entry
+bind generic,index,pager /         search
+bind generic,index,pager \Cb       previous-page
+bind generic,index,pager \Cd       half-down
+bind generic,index,pager \Ce       next-line
+bind generic,index,pager \Cf       next-page
+bind generic,index,pager \Cu       half-up
+bind index               <Backtab> previous-new-then-unread
+bind index               <Down>    next-undeleted
+bind index               <Up>      previous-undeleted
+bind index               m         mail
+bind index               s         save-message
+bind index               y         imap-fetch-mail
+bind index               z         sidebar-toggle-visible
+bind index,pager         A         create-alias
+bind index,pager         N         search-opposite
+bind index,pager         \CN       sidebar-next
+bind index,pager         \CP       sidebar-prev
+bind index,pager         \Co       sidebar-open
+bind index,pager         a         group-reply
+bind pager               <Down>    next-line
+bind pager               <Up>      previous-line
+bind pager               G         bottom
+bind pager               gg        top
+bind pager               q         exit
+bind pager               t         tag-message
 
-macro index                c         "<change-folder>?"
-macro index,pager          dd        "<delete-message><sync-mailbox>" "Move message to trash"
-macro index,pager          gx        "<pipe-message>urlview<Enter>"   "call urlview to extract URLs out of a message"
-macro index,pager          M         "<decode-save>?"
-macro pager,attach,compose gx        "<pipe-entry>urlview<Enter>"     "call urlview to extract URLs out of a message"
+macro index                c  "<change-folder>?"
+macro index,pager          dd "<delete-message><sync-mailbox>" "Move message to trash"
+macro index,pager          gx "<pipe-message>urlview<Enter>"   "call urlview to extract URLs out of a message"
+macro pager,attach,compose gx "<pipe-entry>urlview<Enter>"     "call urlview to extract URLs out of a message"
 # }}}
 # {{{ SIDEBAR
 set mail_check_stats
@@ -143,8 +145,5 @@ set sidebar_visible = yes
 set sidebar_width=30
 # }}}
 # Testing
+source ~/.spamrc
 
-
-set ssl_force_tls = yes
-set ssl_starttls = yes
-set smtp_authenticators = "login"
