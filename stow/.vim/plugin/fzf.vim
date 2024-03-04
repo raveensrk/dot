@@ -38,12 +38,12 @@ inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'hei
 " Global line completion (not just open buffers. ripgrep required.)
 "
 if exists("g:rg_path_list")
-    " echomsg "rg paths is present..."
+    " echo "rg paths is present..."
 else
-    " echomsg "rg paths is not present..."
+    " echo "rg paths is not present..."
     let g:rg_path_list = [" . "]
 endif
-" echomsg g:rg_path_list
+" echo g:rg_path_list
 let g:rg_path = join(uniq(sort(g:rg_path_list)), " ")
 " echomsg g:rg_path
 let g:rgsource = "rg --follow -n ^ --color always --hidden " . g:rg_path

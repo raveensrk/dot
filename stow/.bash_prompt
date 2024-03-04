@@ -56,7 +56,7 @@ update_prompt_v1 () {
 }
 
 update_prompt () {
-    PS1="$ "
+    PS1="\[${GREEN}\]$"
     export PS1
 }
 

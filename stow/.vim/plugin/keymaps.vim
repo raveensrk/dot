@@ -27,7 +27,7 @@ nmap <leader>X :%bd\|e#<cr>
 nmap <leader>Y :.w! ~/.vim_clip<cr>!xclip ~/.vim_clip<cr>
 nmap <leader>` :Scratch<cr>
 nmap <leader>a 0
-nmap <leader>c :wa \| silent lmake! \| redraw! \| lopen \| llast \| wincmd p<cr>
+nmap <leader>c :wa \| silent lmake! \| redraw! \| lopen \| llast<cr>
 nmap <leader>d :bd<cr>
 nmap <leader>e $
 nmap <leader>fB :redir >> ~/bookmarks \| echo expand("%:p") . ':' . getpos(".")[1] \| echo expand("%:h") \| redir END \| tabnew ~/bookmarks \| sort \| w \| execute '%!uniq' \| w<cr>
