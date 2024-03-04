@@ -56,8 +56,10 @@ update_prompt_v1 () {
 }
 
 update_prompt () {
-    PS1="$ "
+    PS1="$ $BRIGHT${CYAN}"
     export PS1
+    PS0="${NORMAL}${WHITE}"
+    export PS0
 }
 
 export PROMPT_COMMAND="update_prompt"

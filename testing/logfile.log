@@ -13,4 +13,5 @@ UVM_FATAL @ 300000000: reporter [PH_TIMEOUT] Explicit timeout of 300000000 hit, 
 UVM_ERROR logfile.log(25) @ 0: uvm_test_top.fcu2_env.reset_agent_inst.reset_driver [NOVIF] virtual interface must be set for: uvm_test_top.fcu2_env.reset_agent_inst.reset_driver.vif
 line5
 UVM_ERROR logfile.log(25) @ 0: uvm_test_top.fcu2_env.reset_agent_i.reset_driver [NOVIF] virtual interface must be set for: uvm_test_top.fcu2_env.reset_agent_i.reset_driver.vif
+UVM_INFO /Users/raveenkumarwork/.1my_repos/dotfiles-main/testing/logfile.log(50) @ 2087500: reporter@@rsu2_fcu2_sequence [data_sequence] rsu2_fcu2_item.rsu2_fcu2_rx_q_e[7] = 8
 

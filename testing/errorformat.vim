@@ -8,6 +8,7 @@ set errorformat+=%.%#xmvlog:\ %\\%#%t\\,%o%.%#(%f\\,%l\|%c):\ %m
 " set errorformat+=%.%#xmsim:\ %\\%#E\\,%o:\ %m
 set errorformat+=%E%.%#xmsim:\ %\\%#E\\,%o:\ %m,%C%.%#File:\ %f\\,\ line\ =\ %l\\,\ pos\ =\ %c,%Z
 set errorformat+=%EUVM_FATAL\ @\ %.%#:\ %o
-set errorformat+=%E%o\ %f(%l)\ @\ %c:\ %m%.%#
+" set errorformat+=%E%o\ %f(%l)\ @\ %c:\ %m%.%#
+set errorformat+=%IUVM_INFO\ %f(%l)\ @\ %c:\ %m%.%#
 w
 tabnew +lmake | lopen
