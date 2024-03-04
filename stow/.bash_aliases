@@ -255,3 +255,5 @@ alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"
 alias ,note="vim ~/iCloud/$(,date).txt -c \"norm gg\" -c \"norm 2O\" -c \"norm p\""
 alias ,clipboard="vim ~/clipboard.txt -c \"norm gg\" -c \"norm 5O\" -c \"norm p\""
 alias ,.="cd ~/my_repos"
+
+clear

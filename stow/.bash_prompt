@@ -50,14 +50,16 @@ unset -f bold; bold () { tput bold; }
 unset -f reverse; reverse () { tput smso; }
 unset -f underline; underline () { tput smul; }
 
-update_prompt () {
-    # local tag
-    # if cat ~/.bookmarks | grep -E "^$PWD .*" > /dev/null; then
-    #     tag=$(cat ~/.bookmarks | grep -E "^$PWD .*" | cut -d " " -f 2- | sed 's/ \+/ /g')
-    # fi
+update_prompt_v1 () {
     PS1="\[${RED}\][\s] \[${LIME_YELLOW}\][\V] \[${CYAN}\][$SHLVL] \[${MAGENTA}\][\!] \[${RED}\]\u \[${GREEN}\]@ \[${BLUE}\]\h \[${NC}\]: \[${YELLOW}\]\w \[${NC}\]\n$ "
     export PS1
 }
+
+update_prompt () {
+    PS1="$ "
+    export PS1
+}
+
 export PROMPT_COMMAND="update_prompt"
 # export PS1="\u @ \h : \W\n $ "
 echob () {
