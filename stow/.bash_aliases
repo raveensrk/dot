@@ -123,7 +123,7 @@ man() {
 # export EDITOR="vim"
 alias ,bashrc="vim ~/.bashrc"
 alias ,vimrc="vim ~/.vimrc"
-alias v=vim
+alias v="vim"
 alias vl='vim -c "normal '\''0"'
 # }}}
 # RANGER {{{

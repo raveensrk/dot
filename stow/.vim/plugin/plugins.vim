@@ -1,5 +1,6 @@
 if 0
     git clone https://github.com/MattesGroeger/vim-bookmarks.git ~/.vim/bundle/vim-bookmarks
+    git clone https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup ~/.vim/bundle/Damian-Conway-s-Vim-Setup
 endif
 
 let g:bookmark_no_default_key_mappings = 1

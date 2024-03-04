@@ -26,7 +26,7 @@ set timeout               = 15
 set ts_enabled            = yes
 set use_domain            = no
 set use_threads           = "threads"
-set index_format = "%Z %04H %N %[%F] %s %f %X"
+set index_format = "%Z %H %N %[%F] %a %s %X"
 unset imap_passive
 set real_name = "Raveen Kumar"
 # }}}
@@ -141,6 +141,7 @@ bind pager i noop
 bind pager               q         exit
 bind pager               t         tag-message
 
+macro index               R    "T.<Enter>;<clear-flag>o\Ct.<Enter>"
 macro index                c  "<change-folder>?"
 # }}}
 # {{{ SIDEBAR

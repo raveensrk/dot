@@ -1,4 +1,5 @@
 source $VIMRUNTIME/vimrc_example.vim
+let g:pathogen_blacklist = ['Damian-Conway-s-Vim-Setup']
 
 execute pathogen#infect()
 syntax on
@@ -176,3 +177,4 @@ autocmd WinNew * wincmd =
 autocmd FileType sh set formatprg=shfmt\ % 
 autocmd! BufWritePre
 autocmd BufWritePre *.txt s/ \+$//e
+
