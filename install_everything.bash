@@ -12,9 +12,14 @@ set -e
 [ ! -d "$HOME/.mutt/cache/headers" ] && mkdir -p "$HOME/.mutt/cache/headers"
 [ ! -d "$HOME/.mutt/cache/bodies" ] && mkdir -p "$HOME/.mutt/cache/bodies"
 
-[ ! -f ~/.vim/autoload/pathogen.vim ] &&
-	mkdir -p ~/.vim/autoload ~/.vim/bundle &&
-	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+if [ ! -f ~/.vim/autoload/pathogen.vim ]; then
+	mkdir -p ~/.vim/autoload ~/.vim/bundle
+	if command -v curl >/dev/null; then
+		curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+	else
+		wget -nc https://tpo.pe/pathogen.vim -o ~/.vim/autoload/pathogen.vim
+	fi
+fi
 
 stow -R stow -t "$HOME" --no-folding
 
