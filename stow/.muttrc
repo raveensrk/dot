@@ -164,3 +164,17 @@ color markers     brightred default
 color quoted      green default
 color tilde       blue default
 color tree        red default
+
+set count_alternatives = yes
+set attach_save_dir = "~/tmp"
+auto_view text/plain
+auto_view text/html
+attachments  +A */.*
+attachments -I */.*
+attachments  -A text/vcard text/x-vcard
+attachments  -A application/pgp.*
+attachments  -A application/pkcs7-.* application/x-pkcs7-.*
+attachments  -I multipa/mixed
+attachments  -I multipa/alternativ
+attachments  -I multipa/related
+attachments +I text/plain
