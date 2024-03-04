@@ -12,3 +12,4 @@ command! SplitPlusargs :s/ -p/ \\\r-p/g
 command! PlugSync :exec "PlugClean | PlugUpgrade | sleep 2 |  PlugUpdate | sleep 10 | PlugInstall"
 command! SnippetList tabnew ~/.vim/quick_snippet.txt
 command! SnippetCreate .w >> ~/.vim/quick_snippet.txt
+command! Scratch tabnew /tmp/scratch.vim

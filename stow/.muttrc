@@ -137,6 +137,7 @@ bind index,pager         a         group-reply
 bind pager               <Down>    next-line
 bind pager               <Up>      previous-line
 bind pager               G         bottom
+bind pager i noop
 bind pager               q         exit
 bind pager               t         tag-message
 
