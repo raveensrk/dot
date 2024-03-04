@@ -172,6 +172,8 @@ set tags=./tags,../tags
 set path+=*
 " set path+=**;~/ " This is awesome but find search takes too long
 set path+=./;~/
+set path+=~/my_repos/dotfiles-main/**
+set path+=~/.my_bash_aliases
 
 autocmd WinNew * wincmd =
 autocmd FileType sh set formatprg=shfmt\ % 

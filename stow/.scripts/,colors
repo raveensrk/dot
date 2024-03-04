@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+{
+	for i in $(seq 256); do
+		tput setaf 255
+		echo $(tput setab $i)Color $i
+	done
+} | less
