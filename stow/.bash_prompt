@@ -56,7 +56,7 @@ update_prompt_v1 () {
 }
 
 update_prompt () {
-    PS1="$BRIGHT${CYAN}$ "
+    PS1="$(tput setab 237)$BRIGHT${CYAN}$ "
     export PS1
     PS0="${NORMAL}${NC}"
     export PS0
