@@ -2,6 +2,7 @@ if 0
     git clone https://github.com/MattesGroeger/vim-bookmarks.git ~/.vim/bundle/vim-bookmarks
     git clone https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup ~/.vim/bundle/Damian-Conway-s-Vim-Setup
     git clone https://github.com/itchyny/lightline.vim.git ~/.vim/bundle/lightline.vim
+    git clone https://github.com/andreasvc/vim-256noir ~/.vim/bundle/vim-256noir
 endif
 
 let g:bookmark_no_default_key_mappings = 1
@@ -28,7 +29,14 @@ let g:lightline = {
             \ }
             \ }
 
-let g:gruvbox_contrast_dark='medium'
-colo gruvbox
-set background=dark
-highlight CursorLine ctermbg=16
+" let g:gruvbox_contrast_dark='medium'
+" colo gruvbox
+" set background=dark
+" highlight CursorLine ctermbg=16
+colorscheme 256_noir
+
+" Change highlighting of cursor line when entering/leaving Insert Mode
+set cursorline
+highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=233 guifg=NONE guibg=#121212
+autocmd InsertEnter * highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=234 guifg=NONE guibg=#1c1c1c
+autocmd InsertLeave * highlight CursorLine cterm=NONE ctermfg=NONE ctermbg=233 guifg=NONE guibg=#121212

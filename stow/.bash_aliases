@@ -245,6 +245,7 @@ alias ,hexdump="hexdump -Cv"
 ,google() {
 	open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+')
 }
+
 alias ,compress="tar -cva -f "
 
 export TERM=xterm-256color
@@ -255,5 +256,10 @@ alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"
 alias ,note="vim ~/iCloud/$(,date).txt -c \"norm gg\" -c \"norm 2O\" -c \"norm p\""
 alias ,clipboard="vim ~/clipboard.txt -c \"norm gg\" -c \"norm 5O\" -c \"norm p\""
 alias ,.="cd ~/my_repos"
+export CDPATH+=":$HOME/my_repos"
+
+,github() { 
+    open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+')
+}
 
 clear

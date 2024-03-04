@@ -27,7 +27,7 @@ nmap <leader>A ggVG
 nmap <leader>D :bd!<cr>
 nmap <leader>G :lvim /"/ **<CR>lopen<CR>lfirst<CR>
 nmap <leader>R :s//"/g
-nmap <leader>X :%bd\|e#<cr>
+nmap <leader>K :%bd\|e#<cr>
 nmap <leader>y :.w! ~/.vim_clip<cr>:silent !xclip ~/.vim_clip<cr>:redraw!<cr>
 xmap <leader>y :w! ~/.vim_clip<cr>:silent !xclip ~/.vim_clip<cr>:redraw!<cr>
 nmap <leader>p "+p<cr>
@@ -52,6 +52,9 @@ nmap <leader>s :so<cr>
 nmap <leader>t :set nowrap!<cr>
 nmap <leader>w :w<CR>
 nmap <leader>x yyq:p<CR>
+xmap <leader>x yq:p<CR>
+nmap <leader>X :.!bash<CR>redraw!<CR>
+xmap <leader>X :!bash<CR>redraw!<CR>
 nmap <leader>Y ggVGy2<C-o>
 nmap Y yg_
 nmap _ :vertical resize -5<CR>
