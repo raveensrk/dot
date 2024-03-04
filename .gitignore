@@ -68,3 +68,4 @@ stow/.emacs.d/.persistent-scratch
 tags
 /stow_my_emacs/.emacs.d/init.el.orig
 /emacs/.emacs.d/.#init.el
+pathogen.vim
