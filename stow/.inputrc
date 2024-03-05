@@ -26,7 +26,7 @@ set completion-map-case On
 set completion-prefix-display-length 1
 set completion-query-items 25
 set editing-mode vi
-set expand-tilde On
+# set expand-tilde On
 set history-preserve-point On
 set history-size 1000
 set horizontal-scroll-mode Off

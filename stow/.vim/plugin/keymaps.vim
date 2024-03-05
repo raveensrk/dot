@@ -10,11 +10,10 @@ nmap ,,, :copen<cr>
 nmap Q  q
 nmap q <NOP>
 "}}}
-
-func Eatchar(pat)
+function Eatchar(pat)
     let c = nr2char(getchar(0))
     return (c =~ a:pat) ? '' : c
-endfunc
+endfunction
 iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
 iab lr <C-R>=printf("<leader")<CR><C-R>=Eatchar('\s')<CR>><C-R>=Eatchar('\s')<CR>
 nnoremap ; :

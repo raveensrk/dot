@@ -281,11 +281,21 @@ export CDPATH+="$HOME/my_repos"
 export MANPAGER="vim +MANPAGER --not-a-term -"
 
 idk () {
-    local declare -a files
-    files("~/.bash_aliases", "~/.inputrc", "~/.vimrc")
+    local files
+    declare -a files
+    files=("$HOME/.bash_aliases" "$HOME/.inputrc" "$HOME/.vimrc")
     echo So you dont know what to do eh...
-    for file in ${files[@]}; do
-
+    select opt in ${files[@]}; do
+        echo You selected ${opt}...
+        echo Editing in vim... in...
+        sleep 1
+        echo 3
+        sleep 1
+        echo 2
+        sleep 1
+        echo 1
+        break
     done
+    vim $opt
 }
 clear
