@@ -1,4 +1,4 @@
-syntax clear
+" syntax clear
 set background=dark
 syntax case ignore
 hi Normal       ctermfg=white ctermbg=black
