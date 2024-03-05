@@ -55,10 +55,17 @@ update_prompt_v1 () {
     export PS1
 }
 
-update_prompt () {
-    PS1="$(tput setab 237)$BRIGHT${CYAN}$ "
+update_prompt_v2 () {
+    PS1="\[$(tput setab 237)$BRIGHT${CYAN}\]$ "
     export PS1
     PS0="${NORMAL}${NC}"
+    export PS0
+}
+
+update_prompt () {
+    PS1="\[$(tput setab 237)${CYAN}$(tput bold)$\]"
+    export PS1
+    PS0="\[$(tput sgr0)\]"
     export PS0
 }
 

@@ -10,6 +10,10 @@
         tput setaf $i
         printf "    "
         printf "Foreground Color"
+        printf "    "
+        tput setaf 6
+		tput setab $i
+        printf "CYAN Background"
         printf "\n"
 	done
 } | less
