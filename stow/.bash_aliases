@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # BASH ALIASES sourced at ~/.bashrc
-# set -o vi
-set -o emacs
+set -o vi
+# set -o emacs
 export EDITOR="vim"
 # {{{ PROMPT AND COLORS
 source "$HOME/.bash_prompt"
@@ -22,19 +22,23 @@ for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 # {{{ BASH SHOPTS
 # This will exit bash shell as soon as it receives C-d as the last command
 export IGNOREEOF=0
-shopt -s direxpand
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-shopt -s histappend # append to the history file, don't overwrite it
-HISTCONTROL=        # Use ignoreboth to ingore both duplicated and commands that start with space
-HISTSIZE=
-HISTFILESIZE=
+# shopt -s direxpand
+shopt -s histappend
+shopt -s checkwinsize
+shopt -s checkjobs
+shopt -s execfail
+shopt -s cmdhist
+shopt -s lithist
+shopt -s no_empty_cmd_completion
+export HISTCONTROL="ignoredups,erasedups"
+export HISTSIZE=1000
+export HISTFILESIZE=1000
+export HISTIGNORE="^v,^vim,^cd,^ls,^l"
 export HISTTIMEFORMAT="[%F %T] "
-export HISTFILE=~/.bash_history                     # Change the file location because certain bash sessions truncate .bash_history file upon close. # http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
-export PROMPT_COMMAND="history -a; $PROMPT_COMMAND" # Force prompt to write history after every command. http://superuser.com/questions/20900/bash-history-loss
-shopt -s checkwinsize                               # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+export HISTFILE=~/.bash_history
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+# export PROMPT_COMMAND="$PROMPT_COMMAND"
+
 # }}}
 # {{{ INTERFACE
 if [ -v xset ]; then
@@ -256,7 +260,7 @@ alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"
 alias ,note="vim ~/iCloud/$(,date).txt -c \"norm gg\" -c \"norm 2O\" -c \"norm p\""
 alias ,clipboard="vim ~/clipboard.txt -c \"norm gg\" -c \"norm 5O\" -c \"norm p\""
 alias ,.="cd ~/my_repos"
-export CDPATH+=":$HOME/my_repos"
+export CDPATH+="$HOME/my_repos"
 
 ,github() { 
     open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+')
@@ -267,4 +271,5 @@ export CDPATH+=":$HOME/my_repos"
     git log -p -S $@
 }
 
+export MANPAGER="vim +MANPAGER --not-a-term -"
 clear

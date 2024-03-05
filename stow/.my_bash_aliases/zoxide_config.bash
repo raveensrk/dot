@@ -125,4 +125,4 @@ fi
 # To initialize zoxide, add this to your configuration (usually ~/.bashrc):
 #
 eval "$(zoxide init bash)"
-alias cd=z
+# alias cd=z

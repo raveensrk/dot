@@ -137,9 +137,9 @@ set titlestring=%f
 set titleold="Terminal"
 set helpheight=10
 function! Bookmarks()
-  setlocal errorformat+=%f%.%#
-  lexp  eval('g:netrw_bookmarklist')
-  lopen 5
+    setlocal errorformat+=%f%.%#
+    lexp  eval('g:netrw_bookmarklist')
+    lopen 5
 endfunction
 
 set complete+=t
@@ -155,7 +155,7 @@ set winfixheight
 set winfixwidth
 set isfname-==
 set isfname-=,
-autocmd FileType netrw cd %:p:h
+    autocmd FileType netrw cd %:p:h
 
 packadd cfilter
 set switchbuf=uselast
@@ -176,10 +176,17 @@ set path+=~/my_repos/dotfiles-main/**
 set path+=~/.my_bash_aliases
 
 autocmd WinNew * wincmd =
-autocmd FileType sh set formatprg=shfmt\ % 
+    autocmd FileType sh set formatprg=shfmt\ % 
 autocmd! BufWritePre
 autocmd BufWritePre *.txt s/ \+$//e
 
 " let &cdpath = ',' .. substitute(substitute($CDPATH, '[, ]', '\\\0', 'g'), ':', ',', 'g')
 " set cdpath+="~/my_repos/dotfiles-main"
- set cdpath+=~/my_repos/**
+set cdpath+=~/my_repos/**
+let g:ft_man_open_mode = 'vert'
+let g:ft_man_folding_enable = 1
+" autocmd FileType man setlocal foldmethod=indent foldenable
+let g:ft_man_no_sect_fallback = 1
+set keywordprg=:Man
+
+
