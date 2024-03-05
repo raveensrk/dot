@@ -63,7 +63,7 @@ set nonumber
 " set relativenumber
 " }}}
 " {{{ INTERFACE
-set nowrap
+set wrap
 set nolinebreak
 set cursorline
 set cursorlineopt=both

@@ -262,4 +262,9 @@ export CDPATH+=":$HOME/my_repos"
     open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+')
 }
 
+,git_pickaxe () {
+    # This function will search for all the change logs and contents containing the "string"
+    git log -p -S $@
+}
+
 clear
