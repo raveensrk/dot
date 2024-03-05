@@ -13,7 +13,7 @@ filetype plugin indent on
 set autoread
 set mouse=a
 set nocompatible
-set hidden
+" set hidden
 set backspace=indent,eol,start
 set encoding=utf-8
 set noerrorbells
@@ -174,20 +174,13 @@ set path+=*
 set path+=.*
 set path+=./;~/
 set path+=~/my_repos
-" runtime! plugin/**/*.vim
 
 autocmd WinNew * wincmd =
     autocmd FileType sh set formatprg=shfmt\ % 
 autocmd! BufWritePre
 autocmd BufWritePre *.txt s/ \+$//e
-
-" let &cdpath = ',' .. substitute(substitute($CDPATH, '[, ]', '\\\0', 'g'), ':', ',', 'g')
-" set cdpath+="~/my_repos/dotfiles-main"
-set cdpath+=~/my_repos/**
-let g:ft_man_open_mode = 'vert'
 let g:ft_man_folding_enable = 1
-" autocmd FileType man setlocal foldmethod=indent foldenable
+autocmd FileType man setlocal foldmethod=indent foldenable
 let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
-
 

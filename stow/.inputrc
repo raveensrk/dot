@@ -31,3 +31,5 @@ $if Bash
 "\C-xf": "\C-af \C-e\n"
 "\C-xb": "\C-z bg\n"
 $endif
+
+set colored-stats On

@@ -1,17 +1,18 @@
-" autocmd FileType netrw nmap <buffer> <nowait> OC   <cr>
-" autocmd FileType netrw nmap <buffer> <nowait> OD    - 
-" nmap <silent><leader> :WhichKey '<Space>'<CR>
-map F <Plug>Sneak_F
-map T <Plug>Sneak_T
-map f <Plug>Sneak_f
-map t <Plug>Sneak_t
-nmap + :vertical resize +5<CR>
-
+" Location and Quickfix list{{{
+nmap ,, :lopen<cr>
 nmap ,n :lnext<cr>
 nmap ,p :lprevious<cr>
 nmap ,,n :cnext<cr>
 nmap ,,p :cprevious<cr>
+nmap ,,, :copen<cr>
+"}}}
+" Fix annoyances{{{
+nmap Q  q
+nmap q <NOP>
+"}}}
 
+nnoremap ; :
+nnoremap : :
 nmap ,cd :cd %:h<CR>
 nmap <leader>. :e .<CR>
 nmap <leader>/ :Lines<CR>
@@ -28,9 +29,17 @@ nmap <leader>D :bd!<cr>
 nmap <leader>G :lvim /"/ **<CR>lopen<CR>lfirst<CR>
 nmap <leader>R :s//"/g
 nmap <leader>K :%bd\|e#<cr>
-nmap <leader>y :.w! ~/.vim_clip<cr>:silent !xclip ~/.vim_clip<cr>:redraw!<cr>
-xmap <leader>y :w! ~/.vim_clip<cr>:silent !xclip ~/.vim_clip<cr>:redraw!<cr>
-nmap <leader>p "+p<cr>
+nmap <leader>h :help 
+if has('clipboard')
+    nmap <leader>y "+y
+    xmap <leader>y "+y
+else
+    nmap <leader>y :.w! ~/.vim_clip<cr>:silent !xclip ~/.vim_clip<cr>:redraw!<cr>
+
+    xmap <leader>y :w! ~/.vim_clip<cr>:silent !xclip ~/.vim_clip<cr>:redraw!<cr>
+endif
+nmap <leader>p :norm o<cr>mm"+p`m
+nmap <leader>Y ggVGy2<C-o>
 nmap <leader>` :Scratch<cr>
 nmap <leader>a 0
 nmap <leader>c :wa \| silent lmake! \| redraw! \| lopen \| llast<cr>
@@ -39,7 +48,8 @@ nmap <leader>e $
 nmap <leader>fB :redir >> ~/bookmarks \| echo expand("%:p") . ':' . getpos(".")[1] \| echo expand("%:h") \| redir END \| tabnew ~/bookmarks \| sort \| w \| execute '%!uniq' \| w<cr>
 nmap <leader>fb :Buffers<CR>
 nmap <leader>fc :e ~/.vimrc<CR>
-nmap <leader>ff :Files<cr>
+nmap <leader>fF :Files<cr>
+nmap <leader>ff :find 
 nmap <leader>fg :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @* = expand("%:p")<cr>
@@ -51,11 +61,14 @@ nmap <leader>r :RangerChooser<cr>
 nmap <leader>s :so<cr>
 nmap <leader>t :set nowrap!<cr>
 nmap <leader>w :w<CR>
-nmap <leader>x yyq:p<CR>
-xmap <leader>x yq:p<CR>
+nmap <leader>x :.so<CR>
+xmap <leader>x :so<CR>
 nmap <leader>X :.!bash<CR>redraw!<CR>
 xmap <leader>X :!bash<CR>redraw!<CR>
-nmap <leader>Y ggVGy2<C-o>
+nmap <leader>z <C-w>
+nmap <leader>T :tab split<CR>
+nmap <leader>S :tab split<CR>:term<cr>
+
 nmap Y yg_
 nmap _ :vertical resize -5<CR>
 nmap ga <Plug>(EasyAlign)

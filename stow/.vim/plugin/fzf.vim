@@ -25,10 +25,10 @@ xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
 " Insert mode completion
-imap <c-x><c-k> <plug>(fzf-complete-word)
+" imap <c-x><c-k> <plug>(fzf-complete-word)
 " imap <c-x><c-f> <plug>(fzf-complete-path)
-inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --hidden --files')
-imap <c-x>l <plug>(fzf-complete-line)
+" inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --hidden --files')
+imap <c-x><c-l> <plug>(fzf-complete-line)
 
 command! -bang DOT call fzf#vim#files('$MY_REPOS', <bang>0)
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': ['--exact', '--layout=reverse', '--info=inline']}, <bang>0)

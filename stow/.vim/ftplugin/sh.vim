@@ -5,3 +5,4 @@ iab case,        <ESC>:read ~/.vim/my_snippets/sh/case.txt<CR>i
 iab cv,          <ESC>:read   ~/.vim/my_snippets/sh/cv.txt  <CR>i
 iab if,          if [[ $var == 1 ]]; then<CR>fi
 set iskeyword+=,
+set nu

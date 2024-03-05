@@ -2,7 +2,6 @@
 
 # BASH ALIASES sourced at ~/.bashrc
 set -o vi
-# set -o emacs
 export EDITOR="vim"
 # {{{ PROMPT AND COLORS
 source "$HOME/.bash_prompt"
@@ -30,13 +29,16 @@ shopt -s execfail
 shopt -s cmdhist
 shopt -s lithist
 shopt -s no_empty_cmd_completion
+shopt -s dotglob
+shopt -s globstar
+
 export HISTCONTROL="ignoredups,erasedups"
 export HISTSIZE=1000
 export HISTFILESIZE=1000
-export HISTIGNORE="^v,^vim,^cd,^ls,^l"
+export HISTIGNORE="v:vim:cd:ls:l"
 export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_history
-export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+export PROMPT_COMMAND="$PROMPT_COMMAND"
 # export PROMPT_COMMAND="$PROMPT_COMMAND"
 
 # }}}
