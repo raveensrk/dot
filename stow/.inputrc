@@ -1,24 +1,8 @@
-$include  /etc/inputrc
+$include /etc/inputrc
 
-set completion-map-case On
-set colored-stats On
-set colored-completion-prefix on
-set colored-completion-prefix On
-set completion-display-width -1
-set bell-style visible
-# set editing-mode vi
-# set keymap vi
-# set vi-cmd-mode-string (:)
-# set vi-ins-mode-string (+)
-set show-mode-in-prompt On
-set skip-completed-text On
-set show-all-if-ambiguous On
-set completion-ignore-case On
-set menu-complete-display-prefix On # Perform partial completion on the first Tab press, only start cycling full results on the second Tab press
-"TAB": menu-complete # If there are multiple matches for completion, Tab should cycle through them
-"\e[A":history-search-backward # Cycle through history based on characters already typed on the line
+"TAB": menu-complete               
+"\e[A":history-search-backward     
 "\e[B":history-search-forward
-Control-o: "> output"
 
 $if Bash
 # Quote the current or previous word
@@ -32,4 +16,26 @@ $if Bash
 "\C-xb": "\C-z bg\n"
 $endif
 
+set bell-style visible
+set blink-matching-paren On
+set colored-completion-prefix On
 set colored-stats On
+set completion-display-width -1
+set completion-ignore-case On
+set completion-map-case On
+set completion-prefix-display-length 1
+set completion-query-items 25
+set editing-mode vi
+set expand-tilde On
+set history-preserve-point On
+set history-size 1000
+set horizontal-scroll-mode Off
+set keymap vi
+set menu-complete-display-prefix On 
+set print-completions-horizontally On
+set show-all-if-ambiguous On
+set show-all-if-unmodified On
+set show-mode-in-prompt On
+set skip-completed-text On
+set vi-cmd-mode-string (:)
+set vi-ins-mode-string (+)

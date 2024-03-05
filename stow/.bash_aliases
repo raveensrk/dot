@@ -22,7 +22,7 @@ for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 # This will exit bash shell as soon as it receives C-d as the last command
 export IGNOREEOF=0
 # shopt -s direxpand
-shopt -s histappend
+# shopt -s histappend
 shopt -s checkwinsize
 shopt -s checkjobs
 shopt -s execfail
@@ -30,12 +30,17 @@ shopt -s cmdhist
 shopt -s lithist
 shopt -s no_empty_cmd_completion
 shopt -s dotglob
+shopt -s dirspell
 shopt -s globstar
+shopt -s nocaseglob
+shopt -s nocasematch
+shopt -s progcomp_alias
+
 
 export HISTCONTROL="ignoredups,erasedups"
 export HISTSIZE=1000
 export HISTFILESIZE=1000
-export HISTIGNORE="v:vim:cd:ls:l"
+export HISTIGNORE="v*:vim*:cd:ls*:l*"
 export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_history
 export PROMPT_COMMAND="$PROMPT_COMMAND"
