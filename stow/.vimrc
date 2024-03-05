@@ -180,3 +180,6 @@ autocmd FileType sh set formatprg=shfmt\ %
 autocmd! BufWritePre
 autocmd BufWritePre *.txt s/ \+$//e
 
+" let &cdpath = ',' .. substitute(substitute($CDPATH, '[, ]', '\\\0', 'g'), ':', ',', 'g')
+" set cdpath+="~/my_repos/dotfiles-main"
+ set cdpath+=~/my_repos/**

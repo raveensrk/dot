@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
 {
+    tput  sgr0
 	for i in $(seq 256); do
-		tput setaf 255
-		echo $(tput setab $i)Color $i
+		tput sgr0
+		tput setab $i
+        printf "Background Color $i"
+		tput sgr0
+        tput setaf $i
+        printf "    "
+        printf "Foreground Color"
+        printf "\n"
 	done
 } | less
