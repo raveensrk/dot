@@ -168,12 +168,13 @@ set viminfo+=r~/.vim/plugged
 set exrc secure
 let mapleader = " "
 
+" set path+=**;~/ " This is awesome but find search takes too long
 set tags=./tags,../tags
 set path+=*
-" set path+=**;~/ " This is awesome but find search takes too long
+set path+=.*
 set path+=./;~/
-set path+=~/my_repos/dotfiles-main/**
-set path+=~/.my_bash_aliases
+set path+=~/my_repos
+" runtime! plugin/**/*.vim
 
 autocmd WinNew * wincmd =
 autocmd FileType sh set formatprg=shfmt\ % 
