@@ -279,4 +279,13 @@ export CDPATH+="$HOME/my_repos"
 }
 
 export MANPAGER="vim +MANPAGER --not-a-term -"
+
+idk () {
+    local declare -a files
+    files("~/.bash_aliases", "~/.inputrc", "~/.vimrc")
+    echo So you dont know what to do eh...
+    for file in ${files[@]}; do
+
+    done
+}
 clear

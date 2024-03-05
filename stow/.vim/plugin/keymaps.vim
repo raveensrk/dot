@@ -11,8 +11,15 @@ nmap Q  q
 nmap q <NOP>
 "}}}
 
+func Eatchar(pat)
+    let c = nr2char(getchar(0))
+    return (c =~ a:pat) ? '' : c
+endfunc
+iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
+iab lr <C-R>=printf("<leader")<CR><C-R>=Eatchar('\s')<CR>><C-R>=Eatchar('\s')<CR>
 nnoremap ; :
 nnoremap : :
+nnoremap 
 nmap ,cd :cd %:h<CR>
 nmap <leader>. :e .<CR>
 nmap <leader>/ :Lines<CR>
