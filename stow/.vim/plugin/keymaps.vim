@@ -7,8 +7,8 @@ nmap ,,p :cprevious<cr>
 nmap ,,, :copen<cr>
 "}}}
 " Fix annoyances{{{
-nmap Q  q
-nmap q <NOP>
+nnoremap Q  q
+nnoremap q <NOP>
 "}}}
 function Eatchar(pat)
     let c = nr2char(getchar(0))
@@ -16,25 +16,32 @@ function Eatchar(pat)
 endfunction
 iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
 iab lr <C-R>=printf("<leader")<CR><C-R>=Eatchar('\s')<CR>><C-R>=Eatchar('\s')<CR>
+"Terminal{{{
 nnoremap ; :
 nnoremap : :
-nnoremap 
+nnoremap <leader>; :term 
 nmap ,cd :cd %:h<CR>
+"}}}
 nmap <leader>. :e .<CR>
+ " Searching{{{
 nmap <leader>/ :Lines<CR>
 nmap <leader>? :BLines<CR>
+"}}}
+" Tabs and buffers{{{
 nmap <leader><down> :tabnext<cr>
 nmap <leader><leader><up> :lprevious<cr>
+nmap <leader>K :%bd\|e#<cr>
+nmap <leader>D :bd!<cr>
 nmap <leader><leader><down> :lnext<cr>
 nmap <leader><left> :bp<cr>
 nmap <leader><right> :bn<cr>
 nmap <leader><up> :tabprev<cr>
+"}}}
+" Editing
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
-nmap <leader>D :bd!<cr>
 nmap <leader>G :lvim /"/ **<CR>lopen<CR>lfirst<CR>
 nmap <leader>R :s//"/g
-nmap <leader>K :%bd\|e#<cr>
 nmap <leader>h :help 
 if has('clipboard')
     nmap <leader>y "+y

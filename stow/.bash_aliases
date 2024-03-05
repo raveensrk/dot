@@ -283,7 +283,12 @@ export MANPAGER="vim +MANPAGER --not-a-term -"
 idk () {
     local files
     declare -a files
-    files=("$HOME/.bash_aliases" "$HOME/.inputrc" "$HOME/.vimrc")
+    files=(
+        "$HOME/.bash_aliases"
+        "$HOME/.inputrc" 
+        "$HOME/.vimrc"
+        "$HOME/.vim/plugin/keymaps.vim"
+    )
     echo So you dont know what to do eh...
     select opt in ${files[@]}; do
         echo You selected ${opt}...
