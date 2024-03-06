@@ -64,6 +64,8 @@ set nonumber
 " set relativenumber
 " }}}
 " {{{ INTERFACE
+set pumheight=5
+set completeopt=""
 set wrap
 set nolinebreak
 set cursorline

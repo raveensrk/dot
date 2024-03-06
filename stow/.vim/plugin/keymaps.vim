@@ -7,6 +7,8 @@ nmap ,,p :cprevious<cr>,,
 nmap ,,, :copen<cr>
 "}}}
 " Fix annoyances{{{
+imap <TAB> <C-n>
+imap <S-Tab> <C-p>
 nnoremap Q  q
 nnoremap q <NOP>
 "}}}
@@ -22,12 +24,13 @@ nnoremap : :
 nnoremap <leader>; :term 
 nmap ,cd :cd %:h<CR>
 "}}}
-nmap <leader>. :e .<CR>
  " Searching{{{
+nmap <leader>h :help 
 nmap <leader>/ :Lines<CR>
 nmap <leader>? :BLines<CR>
 "}}}
 " Tabs and buffers{{{
+nmap <leader>. :e .<CR>
 nmap <leader><down> :tabnext<cr>
 nmap <leader><leader><up> :lprevious<cr>
 nmap <leader>K :%bd\|e#<cr>
@@ -39,12 +42,14 @@ nmap <leader><up> :tabprev<cr>
 nmap <leader>F :set winfixbuf!<cr>
 "}}}
 " Editing{{{
+nmap <Tab> mm==`m
+vmap <Tab> mm=`m
+nmap <leader>R :s//"/g
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
 nmap <leader>G :lvim /"/ **<CR>lopen<CR>lfirst<CR>
 "}}}
-nmap <leader>R :s//"/g
-nmap <leader>h :help 
+ " Copy and paste{{{
 if has('clipboard')
     nmap <leader>y "+y
     xmap <leader>y "+y
@@ -55,6 +60,7 @@ else
 endif
 nmap <leader>p :norm o<cr>mm"+p`m
 nmap <leader>Y ggVGy2<C-o>
+"}}}
 nmap <leader>` :Scratch<cr>
 nmap <leader>a 0
 nmap <leader>c :wa \| silent lmake! \| redraw! \| lopen \| llast<cr>
