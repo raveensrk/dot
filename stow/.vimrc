@@ -174,7 +174,9 @@ set path+=*
 set path+=.*
 set path+=./;~/
 set path+=~/my_repos
-
+set showtabline=2
+set showcmdloc="status"
+ set showcmd
 autocmd WinNew * wincmd =
     autocmd FileType sh set formatprg=shfmt\ % 
 autocmd! BufWritePre

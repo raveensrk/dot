@@ -10,7 +10,7 @@ nmap ,,, :copen<cr>
 nnoremap Q  q
 nnoremap q <NOP>
 "}}}
-function Eatchar(pat)
+function! Eatchar(pat)
     let c = nr2char(getchar(0))
     return (c =~ a:pat) ? '' : c
 endfunction
@@ -37,10 +37,11 @@ nmap <leader><left> :bp<cr>
 nmap <leader><right> :bn<cr>
 nmap <leader><up> :tabprev<cr>
 "}}}
-" Editing
+" Editing{{{
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
 nmap <leader>G :lvim /"/ **<CR>lopen<CR>lfirst<CR>
+"}}}
 nmap <leader>R :s//"/g
 nmap <leader>h :help 
 if has('clipboard')
@@ -87,11 +88,12 @@ nmap _ :vertical resize -5<CR>
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 vmap <leader>dd "_d
-" nmap <leader><Right> <C-w>l<leader>
-" nmap <leader><Up> <C-w>k<leader>
-" nmap <leader><Down> <C-w>j<leader>
-" nmap <leader><Left> <C-w>h<leader>
-" set ttimeoutlen=3000 ttimeout timeout timeoutlen=1000
-nmap <leader><leader>= mmggVGgq`m
-nmap <leader>o :norm mmo`m
-nmap <leader>O :norm mmO`m
+nmap <Right> <nop>
+nmap <Up>   <nop>
+nmap <Down> <nop>
+nmap <Left> <nop>
+set ttimeoutlen=9000 ttimeout timeout timeoutlen=9000
+nmap <leader>n h<leader>
+nmap <leader>e j<leader>
+nmap <leader>i k<leader>
+nmap <leader>o l<leader>

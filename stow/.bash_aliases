@@ -2,6 +2,8 @@
 
 # BASH ALIASES sourced at ~/.bashrc
 set -o vi
+
+bind -m vi-command 'q':end-of-file
 export EDITOR="vim"
 # {{{ PROMPT AND COLORS
 source "$HOME/.bash_prompt"

@@ -16,6 +16,13 @@ $if Bash
 "\C-xb": "\C-z bg\n"
 $endif
 
+
+ $if mode=vi
+    set keymap vi-command
+    "q": end-of-file
+$endif
+
+
 set bell-style visible
 set blink-matching-paren On
 set colored-completion-prefix On

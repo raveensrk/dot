@@ -109,7 +109,8 @@ macro index,pager          x "<pipe-message>urlview<Enter>" "call urlview to ext
 macro pager,attach,compose x "<pipe-entry>urlview<Enter>"   "call urlview to extract URLs out of a message"
 bind  index                g first-entry
 bind  pager                g top
-
+ bind index <Space> noop
+ bind index <Space>e next-line
 bind editor              \Cn       history-down
 bind editor              \Cp       history-up
 bind generic             q         exit
