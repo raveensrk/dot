@@ -31,7 +31,7 @@ set completion-display-width -1
 set completion-ignore-case On
 set completion-map-case On
 set completion-prefix-display-length 1
-set completion-query-items 25
+set completion-query-items 50
 set editing-mode vi
 # set expand-tilde On
 set history-preserve-point On

@@ -1,3 +1,4 @@
+
 source $VIMRUNTIME/vimrc_example.vim
 let g:pathogen_blacklist = ['Damian-Conway-s-Vim-Setup']
 

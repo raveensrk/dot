@@ -269,7 +269,7 @@ alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"
 alias ,note="vim ~/iCloud/$(,date).txt -c \"norm gg\" -c \"norm 2O\" -c \"norm p\""
 alias ,clipboard="vim ~/clipboard.txt -c \"norm gg\" -c \"norm 5O\" -c \"norm p\""
 alias ,.="cd ~/my_repos"
-export CDPATH+="$HOME/my_repos"
+export CDPATH+=":$HOME/my_repos"
 
 ,github() { 
     open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+')
@@ -305,4 +305,9 @@ idk () {
     done
     vim $opt
 }
+alias cd="pushd"
+alias cds="dirs -v"
+alias dc="pushd +1"
+alias ,vim_startup_benchmark="vim --startuptime $HOME/.vimstartuptime"
+alias vim="vim -w $HOME/.vimscriptout"
 clear

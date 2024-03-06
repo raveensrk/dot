@@ -88,10 +88,10 @@ nmap _ :vertical resize -5<CR>
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 vmap <leader>dd "_d
-nmap <Right> <nop>
-nmap <Up>   <nop>
-nmap <Down> <nop>
-nmap <Left> <nop>
+" nmap <Right> <nop>
+" nmap <Up>   <nop>
+" nmap <Down> <nop>
+" nmap <Left> <nop>
 set ttimeoutlen=9000 ttimeout timeout timeoutlen=9000
 nmap <leader>n h<leader>
 nmap <leader>e j<leader>

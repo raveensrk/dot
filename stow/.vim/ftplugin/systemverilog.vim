@@ -1,4 +1,4 @@
-
+command! SplitPlusargs :s/ -p/ \\\r-p/g
 " set errorformat+=%.%#xmvlog:\ %.%#\\,%.%#(%f\\,%l\|%c%.%#
 " set errorformat=%.%#xmvlog:\ %\\%#E\\,%.%#(%f\\,%l\|%c):\ %m
 " set makeprg=runIus\ -ed\ -do\ compile\ -t\ fcu2__a_template_test

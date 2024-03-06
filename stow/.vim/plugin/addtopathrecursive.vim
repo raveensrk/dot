@@ -11,6 +11,3 @@ function! AddToPathRecursive (mypath)
     let &path = ',' .. join(split_path, ",")
 endfunction
 
-call AddToPathRecursive('~/my_repos')
-
-
