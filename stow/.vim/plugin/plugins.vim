@@ -50,11 +50,11 @@ let g:lightline = {
 
 function! IsWinFixBuf()
   if (&winfixbuf)
-    echomsg "win fix buf"
+    " echomsg "win fix buf"
     exe printf('hi ModifiedColor cterm=bold ctermfg=255 ctermbg=27')
     return " FIX"
   else
-    echomsg "no win fix buf"
+    " echomsg "no win fix buf"
     exe printf('hi ModifiedColor cterm=bold ctermfg=245 ctermbg=245')
     return "    "
   endif
