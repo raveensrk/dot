@@ -2,13 +2,13 @@
 
 # BASH ALIASES sourced at ~/.bashrc
 set -o vi
-
-bind -m vi-command 'q':end-of-file
+# bind -m vi-command 'q':end-of-file
 export EDITOR="vim"
 # {{{ PROMPT AND COLORS
 source "$HOME/.bash_prompt"
 # }}}
 # {{{ ENVIRONMENT VARIABLES
+export is_linux=$(uname -a | cut -d ' ' -f 1)
 export MY_REPOS="$HOME/my_repos"
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
@@ -247,7 +247,6 @@ done
 
 # TESTING
 
-export is_linux=$(uname -a | cut -d ' ' -f 1)
 alias ,ff="source $HOME/.scripts/bg_fg_fzf"
 alias ,hexdump="hexdump -Cv"
 
