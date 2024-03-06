@@ -1,7 +1,32 @@
 if 0
-    git clone https://github.com/MattesGroeger/vim-bookmarks.git ~/.vim/bundle/vim-bookmarks
-    git clone https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup ~/.vim/bundle/Damian-Conway-s-Vim-Setup
-    git clone https://github.com/itchyny/lightline.vim.git ~/.vim/bundle/lightline.vim
+    !git clone https://github.com/MattesGroeger/vim-bookmarks.git ~/.vim/bundle/vim-bookmarks
+    !git clone https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup ~/.vim/bundle/Damian-Conway-s-Vim-Setup
+    !git clone https://github.com/itchyny/lightline.vim.git ~/.vim/bundle/lightline.vim
+    !git clone https://github.com/gcmt/taboo.vim.git ~/.vim/bundle/taboo.vim
+" Damian-Conway-s-Vim-Setup/
+" fzf.vim/
+" fzf/
+" gruvbox/
+" lightline.vim/
+" taboo.vim/
+" tcomment_vim/
+" vim-256noir/
+" vim-ai/
+" vim-bookmarks/
+" vim-easy-align/
+" vim-easymotion/
+" vim-eunuch/
+" vim-indent-guides/
+" vim-linebox/
+" vim-peekaboo/
+" vim-repeat/
+" vim-sensible/
+" vim-sneak/
+" vim-startify/
+" vim-surround/
+" vim-unimpaired/
+" vim-vinegar/
+" vim-which-key/
 endif
 
 let g:bookmark_no_default_key_mappings = 1
