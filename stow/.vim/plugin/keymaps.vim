@@ -1,9 +1,9 @@
 " Location and Quickfix list{{{
 nmap ,, :lopen<cr>
-nmap ,n :lnext<cr>
-nmap ,p :lprevious<cr>
-nmap ,,n :cnext<cr>
-nmap ,,p :cprevious<cr>
+nmap ,n :lnext<cr>,
+nmap ,p :lprevious<cr>,
+nmap ,,n :cnext<cr>,,
+nmap ,,p :cprevious<cr>,,
 nmap ,,, :copen<cr>
 "}}}
 " Fix annoyances{{{
@@ -36,6 +36,7 @@ nmap <leader><leader><down> :lnext<cr>
 nmap <leader><left> :bp<cr>
 nmap <leader><right> :bn<cr>
 nmap <leader><up> :tabprev<cr>
+nmap <leader>F :set winfixbuf!<cr>
 "}}}
 " Editing{{{
 nmap <leader>= gg=G2<C-o>

@@ -84,7 +84,8 @@ set wildignorecase
 set scrolloff=999
 set sidescrolloff=1
 
-set virtualedit=all
+" set virtualedit=all
+" set virtualedit=
 " set textwidth=0 wrapmargin=0
 " }}}
 " {{{ BACKUPS AND UNDO
@@ -174,7 +175,8 @@ set tags=./tags,../tags
 set path+=*
 set path+=.*
 set path+=./;~/
-set path+=~/my_repos
+set path+=~/my_repos/**
+set path+=~/my_repos/**/.*
 set showtabline=2
 set showcmdloc="status"
  set showcmd

@@ -1,3 +1,4 @@
+set nowrap
 command! SplitPlusargs :s/ -p/ \\\r-p/g
 " set errorformat+=%.%#xmvlog:\ %.%#\\,%.%#(%f\\,%l\|%c%.%#
 " set errorformat=%.%#xmvlog:\ %\\%#E\\,%.%#(%f\\,%l\|%c):\ %m
@@ -32,4 +33,4 @@ set shiftwidth=2
 set smartindent
 set tabstop=2 softtabstop=2
 set formatprg=verible-verilog-format\ --column_limit\ 999\ -
-nmap <leader>= mmggVGgq`m
+nmap <leader><leader>= mmggVGgq`m
