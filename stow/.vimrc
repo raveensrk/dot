@@ -81,6 +81,7 @@ set wildmode=longest,list,full
 set wildmenu
 set wildignorecase
 " set wildoptions=pum
+set wildoptions=fuzzy
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
 set scrolloff=999
@@ -108,7 +109,6 @@ set backupdir=~/.vim/backup
 "   autocmd VimEnter * :Vexplore
 " augroup END
 let g:netrw_keepdir=0
-autocmd FileType netrw silent! cd %:p:h
 "}}}
 " {{{ VIM SESSIONS AND VIEWS
 " autocmd BufWinLeave *.* mkview!
@@ -159,7 +159,6 @@ set winfixheight
 set winfixwidth
 set isfname-==
 set isfname-=,
-    autocmd FileType netrw cd %:p:h
 
 packadd cfilter
 set switchbuf=uselast
@@ -190,4 +189,4 @@ let g:ft_man_folding_enable = 1
 autocmd FileType man setlocal foldmethod=indent foldenable
 let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
-
+set autochdir 

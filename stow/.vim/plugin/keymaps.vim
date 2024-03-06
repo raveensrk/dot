@@ -1,10 +1,10 @@
 " Location and Quickfix list{{{
-nmap ,, :lopen<cr>
-nmap ,n :lnext<cr>,
-nmap ,p :lprevious<cr>,
-nmap ,,n :cnext<cr>,,
-nmap ,,p :cprevious<cr>,,
-nmap ,,, :copen<cr>
+nmap ,,, :lopen<cr>
+nmap ,,n :lnext<cr>,,
+nmap ,,p :lprevious<cr>,,
+nmap ,n :cnext<cr>,
+nmap ,p :cprevious<cr>,
+nmap ,c :copen<cr>
 "}}}
 " Fix annoyances{{{
 imap <TAB> <C-n>
@@ -63,11 +63,11 @@ nmap <leader>Y ggVGy2<C-o>
 "}}}
 nmap <leader>` :Scratch<cr>
 nmap <leader>a 0
-nmap <leader>c :wa \| silent lmake! \| redraw! \| lopen \| llast<cr>
+nmap <leader>c :wa \| silent make! \| redraw! \| copen \| clast<cr>
 nmap <leader>d :bd<cr>
 nmap <leader>e $
 nmap <leader>fB :redir >> ~/bookmarks \| echo expand("%:p") . ':' . getpos(".")[1] \| echo expand("%:h") \| redir END \| tabnew ~/bookmarks \| sort \| w \| execute '%!uniq' \| w<cr>
-nmap <leader>fb :Buffers<CR>
+nmap <leader>fb :b 
 nmap <leader>fc :e ~/.vimrc<CR>
 nmap <leader>fF :Files<cr>
 nmap <leader>ff :find 
@@ -87,6 +87,7 @@ xmap <leader>x :so<CR>
 nmap <leader>X :.!bash<CR>redraw!<CR>
 xmap <leader>X :!bash<CR>redraw!<CR>
 nmap <leader>z <C-w>
+nmap <leader>Z :windo set scrollbind!<CR>
 nmap <leader>T :tab split<CR>
 nmap <leader>S :tab split<CR>:term<cr>
 

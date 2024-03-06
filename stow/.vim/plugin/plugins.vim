@@ -57,6 +57,7 @@ let g:lightline = {
       \           [ 'readonly', 'filename', 'modified' ]
       \         ],
       \ 'right': [ ['bufnum'], 
+      \             [ 'isscrollbind' ], 
       \             [ 'iswinfixbuf2' ], 
       \             [ 'lineinfo' ],
       \            [ 'percent' ]
@@ -65,13 +66,25 @@ let g:lightline = {
       \ 'inactive': {
       \ 'left': [ [ 'filename' ] ],
       \ 'right': [ ['bufnum'] ,
+      \             [ 'isscrollbind2' ],
       \             [ 'iswinfixbuf2' ],
       \             [ 'lineinfo' ],
       \            [ 'percent' ] ] },
       \ 'component' : {
-      \   'iswinfixbuf2': '%#ModifiedColor#%{IsWinFixBuf()}'
+      \   'iswinfixbuf2': '%#ModifiedColor#%{IsWinFixBuf()}',
+      \   'isscrollbind': '%#ModifiedColor#%{IsScrollBind()}',
+      \   'isscrollbind2': '%#ModifiedColor#%{IsScrollBind()}'
       \ }
       \}
+function! IsScrollBind()
+  if (&scrollbind)
+    exe printf('hi ModifiedColor cterm=bold ctermfg=2 ctermbg=27')
+    return " BIND"
+  else
+    exe printf('hi ModifiedColor cterm=bold ctermfg=245 ctermbg=245')
+    return "     "
+  endif
+endfunction
 
 function! IsWinFixBuf()
   if (&winfixbuf)

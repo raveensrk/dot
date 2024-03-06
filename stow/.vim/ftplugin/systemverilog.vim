@@ -1,3 +1,4 @@
+set nu
 set nowrap
 command! SplitPlusargs :s/ -p/ \\\r-p/g
 " set errorformat+=%.%#xmvlog:\ %.%#\\,%.%#(%f\\,%l\|%c%.%#
