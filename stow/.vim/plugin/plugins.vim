@@ -43,15 +43,51 @@ nmap <Leader>md <Plug>BookmarkMoveDown
 nmap <Leader>mg <Plug>BookmarkMoveToLine
 
 
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
 let g:sneak#label = 1
 let g:gruvbox_contrast_dark="hard"
 set noshowmode
+set showcmd
+
+
 let g:lightline = {
-            \ 'component': {
-            \   'lineinfo': '%3l:%-2v%<',
-            \ }
-            \ }
+		\ 'colorscheme': 'gruvbox',
+      \ 'active': {
+      \ 'left': [ [ 'paste' ],
+      \           [ 'readonly', 'filename', 'modified' ]
+      \         ],
+      \ 'right': [ ['bufnum'], 
+      \             [ 'iswinfixbuf2' ], 
+      \             [ 'lineinfo' ],
+      \            [ 'percent' ]
+      \          ] 
+      \},
+      \ 'inactive': {
+      \ 'left': [ [ 'filename' ] ],
+      \ 'right': [ ['bufnum'] ,
+      \             [ 'iswinfixbuf2' ],
+      \             [ 'lineinfo' ],
+      \            [ 'percent' ] ] },
+      \ 'component' : {
+      \   'iswinfixbuf2': '%#ModifiedColor#%{IsWinFixBuf()}'
+      \ }
+      \}
+
+function! IsWinFixBuf()
+  if (&winfixbuf)
+    echomsg "win fix buf"
+    exe printf('hi ModifiedColor cterm=bold ctermfg=255 ctermbg=27')
+    return " FIX"
+  else
+    echomsg "no win fix buf"
+    exe printf('hi ModifiedColor cterm=bold ctermfg=245 ctermbg=245')
+    return "    "
+  endif
+endfunction
+" call lightline#init()
+" call lightline#colorscheme()
+" call lightline#update()
+" call lightline#enable()
 
 let g:gruvbox_contrast_dark='medium'
 colo gruvbox
