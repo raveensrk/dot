@@ -3,6 +3,7 @@ if 0
     !git clone https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup ~/.vim/bundle/Damian-Conway-s-Vim-Setup
     !git clone https://github.com/itchyny/lightline.vim.git ~/.vim/bundle/lightline.vim
     !git clone https://github.com/gcmt/taboo.vim.git ~/.vim/bundle/taboo.vim
+    !git clone https://github.com/airblade/vim-rooter.git ~/.vim/bundle/vim-rooter
 " Damian-Conway-s-Vim-Setup/
 " fzf.vim/
 " fzf/
@@ -42,6 +43,7 @@ nmap <Leader>mu <Plug>BookmarkMoveUp
 nmap <Leader>md <Plug>BookmarkMoveDown
 nmap <Leader>mg <Plug>BookmarkMoveToLine
 
+let g:rooter_patterns = ['.git', 'Makefile', '.exrc']
 
 let g:indent_guides_enable_on_vim_startup = 0
 let g:sneak#label = 1

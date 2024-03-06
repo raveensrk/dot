@@ -62,11 +62,16 @@ update_prompt_v2 () {
     export PS0
 }
 
-update_prompt () {
+update_prompt_v3 () {
     PS1="\W:\[$(tput setab 237)\]\[${CYAN}\]\[$(tput bold)\]$"
     export PS1
     PS0="\[$(tput sgr0)\]"
     export PS0
+}
+
+update_prompt () {
+    PS1="\W:$ "
+    export PS1
 }
 
 export PROMPT_COMMAND="update_prompt"

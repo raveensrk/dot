@@ -168,7 +168,7 @@ autocmd QuickFixCmdPost make set wrap
 autocmd QuickFixCmdPost make set nowinfixheight nowinfixwidth
 set viminfo+=r/opt/homebrew/
 set viminfo+=r~/.vim/plugged
-set exrc secure
+" set exrc secure
 let mapleader = " "
 
 " set path+=**;~/ " This is awesome but find search takes too long
@@ -189,4 +189,4 @@ let g:ft_man_folding_enable = 1
 autocmd FileType man setlocal foldmethod=indent foldenable
 let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
-set autochdir 
+" set autochdir 

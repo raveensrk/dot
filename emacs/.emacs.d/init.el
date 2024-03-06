@@ -578,9 +578,9 @@
   )
 ;; (setq debug-on-error nil)
 
-(use-package syntax-subword
-  :config
-  (global-syntax-subword-mode nil))
+;; (use-package syntax-subword
+;;   :config
+;;   (global-syntax-subword-mode nil))
 
 (setq-default menu-bar-mode nil)
 (setq-default tool-bar-mode nil)

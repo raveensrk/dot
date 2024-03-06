@@ -7,7 +7,7 @@
  '(ace-window-display-mode t)
  '(after-save-hook '(executable-make-buffer-file-executable-if-script-p))
  '(apropos-compact-layout t)
- '(auto-hscroll-mode 'current-line)
+ '(auto-hscroll-mode t)
  '(aw-dispatch-when-more-than 1)
  '(beacon-blink-delay 0.7)
  '(beacon-blink-duration 1)
@@ -85,6 +85,7 @@
  '(magit-repository-directories '(("~/my_repos" . 1)))
  '(midnight-mode t)
  '(num3-group-size 4)
+ '(org-agenda-files nil)
  '(org-capture-templates
    '(("c" "capture" entry
       (file "~/org/capture")
