@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# vim: set filetype=sh:
+
+set -e
+# set -x
+
+clear 
+cat <<HERE > /tmp/ignore 
+testing
+.git
+README
+.local
+emacs
+.packages
+HERE
+
+paths="$HOME/my_repos/dotfiles-main"
+paths+=" "
+paths+="$HOME/iCloud/Journal"
+
+echo So you dont know what to do eh...
+files=$(find $paths  -type f | \
+    grep -v -f /tmp/ignore | \
+    fzf --keep-right -d '/' -m -e --with-nth=-1)
+echo Editing files ${files[@]} in vim... in...
+echo  Have a great day...
+vim ${files[@]}
+echo Bye...
