@@ -9,8 +9,6 @@ fi
 # brew update
 
 packages=(
-	exa
-	# mpv
 	autoconf
 	automake
 	basictex
@@ -39,7 +37,6 @@ packages=(
 	neofetch
 	newsboat
 	pandoc
-	pipes-sh
 	pkg-config
 	poppler
 	python
@@ -52,14 +49,12 @@ packages=(
 	stow
 	tldr
 	neomutt
-	tmux
 	universal-ctags
 	up
 	urlview
 	vim
 	w3m
 	wget
-	zoxide
 	shfmt
 	cyrus-sasl
 )

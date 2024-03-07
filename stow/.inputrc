@@ -17,7 +17,7 @@ $if Bash
 $endif
 
 
- $if mode=vi
+$if mode=vi
     set keymap vi-command
     "q": end-of-file
 $endif

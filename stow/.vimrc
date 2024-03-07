@@ -31,8 +31,8 @@ set novb t_vb=
 "   Ps = 4  -> steady underline.
 "   Ps = 5  -> blinking bar (xterm).
 "   Ps = 6  -> steady bar (xterm).
-let &t_SI = "\e[6 q"
-let &t_EI = "\e[2 q"
+" let &t_SI = "\e[6 q"
+" let &t_EI = "\e[2 q"
 " }}}
 " NAVIGATION {{{
 " set splitbelow splitright
@@ -160,7 +160,7 @@ set winfixwidth
 set isfname-==
 set isfname-=,
 
-packadd cfilter
+    packadd cfilter
 set switchbuf=uselast
 autocmd! BufEnter *.log setlocal readonly 
 autocmd! BufEnter *.log setlocal wrap
@@ -180,7 +180,7 @@ set path+=~/my_repos/**
 set path+=~/my_repos/**/.*
 set showtabline=2
 set showcmdloc="status"
- set showcmd
+set showcmd
 autocmd WinNew * wincmd =
     autocmd FileType sh set formatprg=shfmt\ % 
 autocmd! BufWritePre
@@ -189,4 +189,6 @@ let g:ft_man_folding_enable = 1
 autocmd FileType man setlocal foldmethod=indent foldenable
 let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
-" set autochdir 
+set showmode
+set hidden
+

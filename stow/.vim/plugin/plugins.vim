@@ -4,30 +4,30 @@ if 0
     !git clone https://github.com/itchyny/lightline.vim.git ~/.vim/bundle/lightline.vim
     !git clone https://github.com/gcmt/taboo.vim.git ~/.vim/bundle/taboo.vim
     !git clone https://github.com/airblade/vim-rooter.git ~/.vim/bundle/vim-rooter
-" Damian-Conway-s-Vim-Setup/
-" fzf.vim/
-" fzf/
-" gruvbox/
-" lightline.vim/
-" taboo.vim/
-" tcomment_vim/
-" vim-256noir/
-" vim-ai/
-" vim-bookmarks/
-" vim-easy-align/
-" vim-easymotion/
-" vim-eunuch/
-" vim-indent-guides/
-" vim-linebox/
-" vim-peekaboo/
-" vim-repeat/
-" vim-sensible/
-" vim-sneak/
-" vim-startify/
-" vim-surround/
-" vim-unimpaired/
-" vim-vinegar/
-" vim-which-key/
+    " Damian-Conway-s-Vim-Setup/
+    " fzf.vim/
+    " fzf/
+    " gruvbox/
+    " lightline.vim/
+    " taboo.vim/
+    " tcomment_vim/
+    " vim-256noir/
+    " vim-ai/
+    " vim-bookmarks/
+    " vim-easy-align/
+    " vim-easymotion/
+    " vim-eunuch/
+    " vim-indent-guides/
+    " vim-linebox/
+    " vim-peekaboo/
+    " vim-repeat/
+    " vim-sensible/
+    " vim-sneak/
+    " vim-startify/
+    " vim-surround/
+    " vim-unimpaired/
+    " vim-vinegar/
+    " vim-which-key/
 endif
 
 let g:bookmark_no_default_key_mappings = 1
@@ -45,66 +45,51 @@ nmap <Leader>mg <Plug>BookmarkMoveToLine
 
 let g:rooter_patterns = ['.git', 'Makefile', '.exrc']
 
-let g:indent_guides_enable_on_vim_startup = 0
 let g:sneak#label = 1
-let g:gruvbox_contrast_dark="hard"
-set noshowmode
+set showmode
 set showcmd
 
+colo quiet
+set background=dark
 
-let g:lightline = {
-		\ 'colorscheme': 'gruvbox',
-      \ 'active': {
-      \ 'left': [ [ 'paste' ],
-      \           [ 'readonly', 'filename', 'modified' ]
-      \         ],
-      \ 'right': [ ['bufnum'], 
-      \             [ 'isscrollbind' ], 
-      \             [ 'iswinfixbuf2' ], 
-      \             [ 'lineinfo' ],
-      \            [ 'percent' ]
-      \          ] 
-      \},
-      \ 'inactive': {
-      \ 'left': [ [ 'filename' ] ],
-      \ 'right': [ ['bufnum'] ,
-      \             [ 'isscrollbind2' ],
-      \             [ 'iswinfixbuf2' ],
-      \             [ 'lineinfo' ],
-      \            [ 'percent' ] ] },
-      \ 'component' : {
-      \   'iswinfixbuf2': '%#ModifiedColor#%{IsWinFixBuf()}',
-      \   'isscrollbind': '%#ModifiedColor#%{IsScrollBind()}',
-      \   'isscrollbind2': '%#ModifiedColor#%{IsScrollBind()}'
-      \ }
-      \}
 function! IsScrollBind()
-  if (&scrollbind)
-    exe printf('hi ModifiedColor cterm=bold ctermfg=2 ctermbg=27')
-    return " BIND"
-  else
-    exe printf('hi ModifiedColor cterm=bold ctermfg=245 ctermbg=245')
-    return "     "
-  endif
+    if (&scrollbind)
+        return "BIND"
+    else
+        return ""
+    endif
 endfunction
 
 function! IsWinFixBuf()
-  if (&winfixbuf)
-    " echomsg "win fix buf"
-    exe printf('hi ModifiedColor cterm=bold ctermfg=255 ctermbg=27')
-    return " FIX"
-  else
-    " echomsg "no win fix buf"
-    exe printf('hi ModifiedColor cterm=bold ctermfg=245 ctermbg=245')
-    return "    "
-  endif
+    if (&winfixbuf)
+        return "FIX"
+    else
+        return ""
+    endif
 endfunction
-" call lightline#init()
-" call lightline#colorscheme()
-" call lightline#update()
-" call lightline#enable()
+let g:lightline = {
+            \ 'colorscheme': 'default',
+            \ 'active': {
+            \ 'left': [ [ 'paste' ],
+            \           [ 'readonly', 'filename', 'modified' ]
+            \         ],
+            \ 'right': [ ['bufnum'], 
+            \             [ 'isscrollbind2' ], 
+            \             [ 'iswinfixbuf2' ], 
+            \             [ 'lineinfo' ],
+            \            [ 'percent' ]
+            \          ] 
+            \},
+            \ 'inactive': {
+            \ 'left': [ [ 'filename' ] ],
+            \ 'right': [ ['bufnum'] ,
+            \             [ 'isscrollbind2' ],
+            \             [ 'iswinfixbuf2' ],
+            \             [ 'lineinfo' ],
+            \            [ 'percent' ] ] },
+            \ 'component' : {
+            \   'iswinfixbuf2': '%{IsWinFixBuf()}',
+            \   'isscrollbind2': '%{IsScrollBind()}'
+            \ }
+            \}
 
-let g:gruvbox_contrast_dark='medium'
-colo gruvbox
-set background=dark
-highlight CursorLine ctermbg=16

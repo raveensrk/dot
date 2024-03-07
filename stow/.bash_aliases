@@ -42,7 +42,7 @@ shopt -s progcomp_alias
 export HISTCONTROL="ignoredups,erasedups"
 export HISTSIZE=1000
 export HISTFILESIZE=1000
-export HISTIGNORE="v*:vim*:cd:ls*:l*"
+export HISTIGNORE=""
 export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_history
 export PROMPT_COMMAND="$PROMPT_COMMAND"
@@ -281,29 +281,6 @@ export CDPATH+=":$HOME/my_repos"
 
 export MANPAGER="vim +MANPAGER --not-a-term -"
 
-idk () {
-    local files
-    declare -a files
-    files=(
-        "$HOME/.bash_aliases"
-        "$HOME/.inputrc" 
-        "$HOME/.vimrc"
-        "$HOME/.vim/plugin/keymaps.vim"
-    )
-    echo So you dont know what to do eh...
-    select opt in ${files[@]}; do
-        echo You selected ${opt}...
-        echo Editing in vim... in...
-        sleep 1
-        echo 3
-        sleep 1
-        echo 2
-        sleep 1
-        echo 1
-        break
-    done
-    vim $opt
-}
 alias cd="pushd"
 alias cds="dirs -v"
 alias dc="pushd +1"
