@@ -12,6 +12,13 @@ web:*.{html,css,js}*
 --glob=!.git/*
 --glob=!*tags*
 --glob=!*TAGS*
+--glob=!*sos*
+--glob=!*.bin
+--glob=!*.bin
+--glob=!*.gz
+--glob=!*.tar
+--glob=!*.mat
+--glob=!*.pyc
 
 # or
 --glob
@@ -27,3 +34,6 @@ web:*.{html,css,js}*
 # include softlinks
 --follow
 
+# Also show hidden files
+--hidden
+--vimgrep

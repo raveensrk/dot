@@ -2,8 +2,6 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-
-
 check_dir () {
     local dir="$1"
     [ -d $HOME/.$dir ] || exit 2 # Exit script if the directory is not present

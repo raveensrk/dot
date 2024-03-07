@@ -1,11 +1,12 @@
 #!/bin/bash
 
+# set -x
+# set -e
+
 source ~/.bash_prompt
 
 # This will auto commit, pull and push a given repository
 
-# set -x
-# set -e
 
 DOTFILES=$1 # Can also sync other repos not just dotfiles. DOTFILES variable input can be any valid git repo.
 
@@ -30,47 +31,9 @@ done < "$tmp_file"
 
 
 pwd
-
-if [[ "$clean" == "1" ]]; then
-    echo ""
-else
-    # Following code will wait for 5 seconds and auto commit
-    # git diff
-    # git status -s
-    # read -t 5 -p "Adding these changes in 5 seconds... Press ^C to cancel or type m to create a new commit message" message 
-    # if [ "$message" = "m" ]; then
-    #     echo Enter Message:
-    #     read -re message2
-    #     git add . && git status -s
-    #     git commit -m "$message2"
-    # else
-    #     git add . && git status -s
-    #     git commit -m "Reorganizing and Updating"
-    # fi
-
-    # Run lazygit for commit
+if [[ ! "$clean" == "1" ]]; then
     lazygit
-
-fi
-
-
-# echo -e "Preparing to pull, merge and push.."
-git fetch > /dev/null 
-git merge --no-commit --no-ff main > /dev/null 
-if [ $? -ne 0 ]; then
-    git merge --abort
-    echo -e "${RED}MERGE FAILED... Running lazygit...${NC}" 
-    lazygit
-else
-    git merge > /dev/null
-    git push -q
-    green
-    echo "
-┌────┐                                  
-│Done│                                  
-└────┘                   
-"
-    nc
+    echo "Done"
 fi
 
 popd > /dev/null 

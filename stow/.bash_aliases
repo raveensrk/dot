@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-
 # BASH ALIASES sourced at ~/.bashrc
-set -o vi
-# bind -m vi-command 'q':end-of-file
-export EDITOR="vim"
+
 # {{{ PROMPT AND COLORS
 source "$HOME/.bash_prompt"
 # }}}
 # {{{ ENVIRONMENT VARIABLES
+export EDITOR="vim"
+export TERM=xterm-256color
 export is_linux=$(uname -a | cut -d ' ' -f 1)
 export MY_REPOS="$HOME/my_repos"
 # export DISPLAY=:0
@@ -25,6 +24,7 @@ for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 export IGNOREEOF=0
 # shopt -s direxpand
 # shopt -s histappend
+set -o vi
 shopt -s checkwinsize
 shopt -s checkjobs
 shopt -s execfail
@@ -235,6 +235,25 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
     '''
 }
 # }}}
+# Convenience{{{
+alias ,hexdump="hexdump -Cv"
+,google() { open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+') ;}
+alias ,compress="tar -cva -f "
+alias ,tmux_conf="vim ~/.tmux.conf"
+alias ,chatgpt="https://chat.openai.com"
+alias ,muttrc="vim ~/.muttrc"
+alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"
+alias ,note="vim ~/iCloud/$(,date).txt -c \"norm gg\" -c \"norm 2O\" -c \"norm p\""
+alias ,clipboard="vim ~/clipboard.txt -c \"norm gg\" -c \"norm 5O\" -c \"norm p\""
+alias ,.="cd ~/my_repos"
+export CDPATH+=":$HOME/my_repos"
+,github() { open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+') ; }
+,git_pickaxe () { git log -p -S $@ ; }
+alias cd="pwd >> ~/tmp/recent_dirs && cd"
+alias cds="cd $(fzf < ~/tmp/recent_dirs)"
+alias dc="cd -"
+alias ,vim_startup_benchmark="vim --startuptime $HOME/.vimstartuptime"
+# }}}
 # {{{ Other Sources
 [ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
 # export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
@@ -244,46 +263,3 @@ for f in ~/.my_bash_aliases/*; do
 	source "$f"
 done
 # }}}
-
-# TESTING
-
-alias ,ff="source $HOME/.scripts/bg_fg_fzf"
-alias ,hexdump="hexdump -Cv"
-
-# if [ "$TERM" = "screen-256color" ]; then
-# 	tmux rename-window "HOME"
-# fi
-
-,google() {
-	open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+')
-}
-
-alias ,compress="tar -cva -f "
-
-export TERM=xterm-256color
-alias ,tmux_conf="vim ~/.tmux.conf"
-alias ,chatgpt="chatgpt -i"
-alias ,muttrc="vim ~/.muttrc"
-alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"
-alias ,note="vim ~/iCloud/$(,date).txt -c \"norm gg\" -c \"norm 2O\" -c \"norm p\""
-alias ,clipboard="vim ~/clipboard.txt -c \"norm gg\" -c \"norm 5O\" -c \"norm p\""
-alias ,.="cd ~/my_repos"
-export CDPATH+=":$HOME/my_repos"
-
-,github() { 
-    open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+')
-}
-
-,git_pickaxe () {
-    # This function will search for all the change logs and contents containing the "string"
-    git log -p -S $@
-}
-
-export MANPAGER="vim +MANPAGER --not-a-term -"
-
-alias cd="pushd"
-alias cds="dirs -v"
-alias dc="pushd +1"
-alias ,vim_startup_benchmark="vim --startuptime $HOME/.vimstartuptime"
-alias vim="vim -w $HOME/.vimscriptout"
-clear

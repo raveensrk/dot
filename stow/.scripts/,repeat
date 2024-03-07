@@ -2,6 +2,6 @@
 
 while : ; do
     eval "$1"
-    echo Repeating previous command in 3 seconds...
-    sleep 3
+    echo Repeating previous command in 1 seconds...
+    sleep 1
 done
