@@ -2,9 +2,7 @@
 # vim: set filetype=sh:
 
 set -e
-# set -x
 
-clear 
 cat <<HERE > /tmp/ignore 
 testing
 .git
@@ -14,15 +12,70 @@ emacs
 .packages
 HERE
 
-paths="$HOME/my_repos/dotfiles-main"
-paths+=" "
-paths+="$HOME/iCloud/Journal"
+browse () {
+    paths="$HOME/my_repos/dotfiles-main"
+    paths+=" "
+    paths+="$HOME/iCloud/Journal"
+    files=$(find $paths  -type f | \
+        grep -v -f /tmp/ignore | \
+        fzf --preview='head -n 999 {}' --keep-right -d '/' -m -e --with-nth=-1)
 
-echo So you dont know what to do eh...
-files=$(find $paths  -type f | \
-    grep -v -f /tmp/ignore | \
-    fzf --preview='head -n 999 {}' --keep-right -d '/' -m -e --with-nth=-1)
-echo Editing files ${files[@]} in vim... in...
-echo  Have a great day...
-vim ${files[@]}
+    echo Editing files ${files[@]} in vim... in...
+    echo  Have a great day...
+    vim ${files[@]}
+}
+
+journal () {
+    find ~/iCloud/Journal -type  f | grep -v -f /tmp/ignore | fzf
+}
+
+mail () {
+    fzf <<-HERE 
+~/mutt_accounts/multicoreware.muttrc
+~/mutt_accounts/gmail.muttrc
+~/mutt_accounts/blog.muttrc
+~/mutt_accounts/office365.muttrc
+~/mutt_accounts/multi_account.muttrc
+~/mutt_accounts/apple_personal.muttrc
+~/mutt_accounts/family.muttrc
+~/mutt_accounts/matrimonial.muttrc
+HERE
+}
+
+books () {
+    books="$HOME/iCloud/projects/Books"
+    books+=" $HOME/iCloud/projects/cadence-docs/"
+    find $books -type f | sort | fzf --layout=reverse +s -d / --with-nth=-1 | xargs open
+}
+
+
+main_menu="IDK\n"
+main_menu+="Browse\n"
+main_menu+="Today\n"
+main_menu+="Books\n"
+main_menu+="Inbox\n"
+main_menu+="Journal\n"
+main_menu+="Diet\n"
+main_menu+="Routine\n"
+main_menu+="Daily\n"
+main_menu+="Mail\n"
+
+choice=$(printf $main_menu | fzf --prompt="You dont know what to do eh...")
+
+case "$choice" in
+    "IDK") vim $0 && exit 0 ;;
+    "Browse") browse ;;
+    "Books") books ;;
+    "Journal") journal ;;
+    "Mail") neomutt -F $(mail) ;;
+    "Today")
+        vim -p \
+            ~/ICloud/Journal/daily_journal/$(date -I).txt \
+            ~/ICloud/Journal/diet_journal/$(date -I).txt \
+            ~/iCloud/Journal/medication_journal/$(date -I).txt \
+            ~/iCloud/Journal/routine.txt
+        ;;
+    *) printf "WRONG OPTION...\n" && exit 2 ;;
+esac
+
 echo Bye...

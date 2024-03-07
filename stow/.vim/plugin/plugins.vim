@@ -49,7 +49,7 @@ let g:sneak#label = 1
 set showmode
 set showcmd
 
-colo quiet
+colo gruvbox
 set background=dark
 
 function! IsScrollBind()
@@ -67,6 +67,7 @@ function! IsWinFixBuf()
         return ""
     endif
 endfunction
+
 let g:lightline = {
             \ 'colorscheme': 'default',
             \ 'active': {
