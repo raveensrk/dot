@@ -33,7 +33,7 @@ shopt -s execfail
 shopt -s cmdhist
 shopt -s lithist
 shopt -s no_empty_cmd_completion
-shopt -s dotglob
+# shopt -s dotglob
 shopt -s dirspell
 shopt -s globstar
 shopt -s nocaseglob
@@ -138,7 +138,7 @@ man() {
 # export EDITOR="vim"
 alias ,bashrc="vim ~/.bashrc"
 alias ,vimrc="vim ~/.vimrc"
-alias v="vim"
+alias v="vim -c 'History'"
 alias vl='vim -c "normal '\''0"'
 # }}}
 # RANGER {{{

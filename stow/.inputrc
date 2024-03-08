@@ -42,7 +42,8 @@ set menu-complete-display-prefix On
 set print-completions-horizontally On
 set show-all-if-ambiguous On
 set show-all-if-unmodified On
-set show-mode-in-prompt On
+set show-mode-in-prompt Off
 set skip-completed-text On
 set vi-cmd-mode-string (:)
 set vi-ins-mode-string (+)
+set match-hidden-files Off
