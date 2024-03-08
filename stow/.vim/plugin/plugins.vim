@@ -1,4 +1,7 @@
 if 0
+	!mkdir -p ~/.vim/autoload ~/.vim/bundle
+	!curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+	" !wget -k -nc https://tpo.pe/pathogen.vim -o ~/.vim/autoload/pathogen.vim
     !git clone https://github.com/MattesGroeger/vim-bookmarks.git ~/.vim/bundle/vim-bookmarks
     !git clone https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup ~/.vim/bundle/Damian-Conway-s-Vim-Setup
     !git clone https://github.com/itchyny/lightline.vim.git ~/.vim/bundle/lightline.vim
@@ -43,13 +46,11 @@ nmap <Leader>mu <Plug>BookmarkMoveUp
 nmap <Leader>md <Plug>BookmarkMoveDown
 nmap <Leader>mg <Plug>BookmarkMoveToLine
 
-let g:rooter_patterns = ['.git', 'Makefile', '.exrc']
-
 let g:sneak#label = 1
 set showmode
 set showcmd
-
 colo gruvbox
+let g:gruvbox_contrast_dark="hard"
 set background=dark
 
 function! IsScrollBind()
