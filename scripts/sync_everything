@@ -2,7 +2,6 @@
 
 delete_ds_store $HOME/my_repos
 reinstall_before
-dotscripts_checker
 sync_all_repos "$MY_REPOS"
 reinstall
 
