@@ -12,6 +12,8 @@ export MY_REPOS="$HOME/my_repos"
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.scripts:$PATH"
+export PATH="$HOME/scripts:$PATH"
+export PATH="$HOME/my_repos/dotfiles-main/scripts:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
@@ -251,7 +253,7 @@ export CDPATH+=":$HOME/my_repos"
 alias cd="pwd >> ~/tmp/recent_dirs && cd"
 alias dc="cd -"
 alias ,vim_startup_benchmark="vim --startuptime $HOME/.vimstartuptime"
-alias cds="cd $(fzf < ~/tmp/recent_dirs)"
+alias cds='cd $(fzf +s < ~/tmp/recent_dirs)'
 alias ,dot="fzf -d / --with-nth=-1 +s < <(find $HOME/my_repos/dotfiles-main -type f)"
 # }}}
 # {{{ Other Sources

@@ -67,7 +67,7 @@ nmap <leader>fF :Files<cr>
 nmap <leader>ff :find 
 nmap <leader>fg :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
-nmap <leader>fp :let @* = expand("%:p")<cr>
+nmap <leader>fp :let @+ = expand("%:p")<cr>
 nmap <leader>fr :History<CR>
 nmap <leader>fw :Windows<CR>
 nmap <leader>gf :e <cfile><CR>
