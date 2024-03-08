@@ -228,7 +228,6 @@ fi
 # }}}
 # {{{ GREP
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
-
 ,find-grep() {
 	echo '''
     find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
@@ -250,15 +249,13 @@ export CDPATH+=":$HOME/my_repos"
 ,github() { open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+') ; }
 ,git_pickaxe () { git log -p -S $@ ; }
 alias cd="pwd >> ~/tmp/recent_dirs && cd"
-alias cds="cd $(fzf < ~/tmp/recent_dirs)"
 alias dc="cd -"
 alias ,vim_startup_benchmark="vim --startuptime $HOME/.vimstartuptime"
+alias cds="cd $(fzf < ~/tmp/recent_dirs)"
+alias ,dot="fzf -d / --with-nth=-1 +s < <(find $HOME/my_repos/dotfiles-main -type f)"
 # }}}
 # {{{ Other Sources
-[ ! -d ~/.local/scripts ] && mkdir ~/.local/scripts
-# export PATH="${PATH}$(find -L "$HOME/.local/scripts" -type d -printf ":%h/%f")"
 [ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
-# touch ~/.my_bash_aliases/tmp # So I dont get errors in for loop
 for f in ~/.my_bash_aliases/*; do
 	source "$f"
 done

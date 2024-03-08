@@ -11,4 +11,5 @@ function! Eatchar(pat)
 endfunction
 " iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
 iab lr <C-R>=printf("<leader")<CR><C-R>=Eatchar('\s')<CR>><C-R>=Eatchar('\s')<CR>
+iab --- -------------------------------------------------- 
 

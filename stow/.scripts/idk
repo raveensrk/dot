@@ -48,34 +48,37 @@ books () {
     find $books -type f | sort | fzf --layout=reverse +s -d / --with-nth=-1 | xargs open
 }
 
-
 main_menu="IDK\n"
 main_menu+="Browse\n"
 main_menu+="Today\n"
+main_menu+="Mail\n"
 main_menu+="Books\n"
 main_menu+="Inbox\n"
 main_menu+="Journal\n"
-main_menu+="Diet\n"
-main_menu+="Routine\n"
 main_menu+="Daily\n"
-main_menu+="Mail\n"
+main_menu+="Routine\n"
+main_menu+="Diet\n"
 
-choice=$(printf $main_menu | fzf --prompt="You dont know what to do eh...")
 
-case "$choice" in
-    "IDK") vim $0 && exit 0 ;;
-    "Browse") browse ;;
-    "Books") books ;;
-    "Journal") journal ;;
-    "Mail") neomutt -F $(mail) ;;
-    "Today")
-        vim -p \
-            ~/ICloud/Journal/daily_journal/$(date -I).txt \
-            ~/ICloud/Journal/diet_journal/$(date -I).txt \
-            ~/iCloud/Journal/medication_journal/$(date -I).txt \
-            ~/iCloud/Journal/routine.txt
-        ;;
-    *) printf "WRONG OPTION...\n" && exit 2 ;;
-esac
+while :; do
+    choice=$(printf $main_menu | fzf +s --layout=reverse --prompt="You dont know what to do eh...")
+    case "$choice" in
+        "IDK") vim $0 ;;
+        "Today")
+            vim -p \
+                ~/ICloud/Journal/daily_journal/$(date -I).txt \
+                ~/ICloud/Journal/diet_journal/$(date -I).txt \
+                ~/iCloud/Journal/medication_journal/$(date -I).txt \
+                ~/iCloud/Journal/routine.txt
+
+            ;;
+        "Browse") browse ;;
+        "Books") books ;;
+        "Journal") journal ;;
+        "Mail") neomutt -F $(mail) ;;
+        *) printf "WRONG OPTION...\n" ;;
+    esac
+    sleep 1
+done
 
 echo Bye...
