@@ -10,7 +10,3 @@ for f in $(find . -iname install.sh); do
 done
 popd > /dev/null  || exit 2
 
-~/.scripts/find_broken_symlinks ~/.scripts
-~/.scripts/find_broken_symlinks ~/.my_bash_aliases
-~/.scripts/delete_empty_directories ~/.scripts
-~/.scripts/find_infinite_loop_symlinks ~/.scripts
