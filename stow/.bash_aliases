@@ -169,46 +169,7 @@ ranger_cd() {
 
 alias r="ranger_cd"
 
-# This binds Ctrl-O to ranger-cd:
-bind '"\C-o":"ranger-cd\C-m"'
-
-# shellcheck shell=sh
-
-# Compatible with ranger 1.5.3 through 1.9.*
-#
-# Change the prompt when you open a shell from inside ranger
-#
-# Source this file from your shell startup file (.bashrc, .zshrc etc) for it to
-# work.
-
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
-# }}}
-# {{{ Completion system
-if [ -f /etc/bash_completion ]; then
-	# shellcheck disable=SC1091
-	. /etc/bash_completion
-fi
-# shellcheck disable=SC1090
-[ -f ~/.local/etc/profile.d/bash_completion.sh ] && source ~/.local/etc/profile.d/bash_completion.sh
-
-# Use bash-completion, if available
-# shellcheck disable=SC1090
-[[ $PS1 && -f ~/.local/share/bash-completion/bash_completion ]] &&
-	. ~/.local/share/bash-completion/bash_completion
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-	if [ -f /usr/share/bash-completion/bash_completion ]; then
-		# shellcheck disable=SC1091
-		. /usr/share/bash-completion/bash_completion
-	elif [ -f /etc/bash_completion ]; then
-		# shellcheck disable=SC1091
-		. /etc/bash_completion
-	fi
-fi
-
 # }}}
 # {{{ BUG FIXES
 # MACOS Specific {{{
@@ -246,14 +207,10 @@ alias ,muttrc="vim ~/.muttrc"
 alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"
 alias ,note="vim ~/iCloud/$(,date).txt -c \"norm gg\" -c \"norm 2O\" -c \"norm p\""
 alias ,clipboard="vim ~/clipboard.txt -c \"norm gg\" -c \"norm 5O\" -c \"norm p\""
-alias ,.="cd ~/my_repos"
-export CDPATH+=":$HOME/my_repos"
 ,github() { open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+') ; }
 ,git_pickaxe () { git log -p -S $@ ; }
-alias cd="pwd >> ~/tmp/recent_dirs && cd"
 alias dc="cd -"
 alias ,vim_startup_benchmark="vim --startuptime $HOME/.vimstartuptime"
-alias cds='cd $(fzf +s < ~/tmp/recent_dirs)'
 alias ,dot="fzf -d / --with-nth=-1 +s < <(find $HOME/my_repos/dotfiles-main -type f)"
 # }}}
 # {{{ Other Sources
@@ -261,4 +218,5 @@ alias ,dot="fzf -d / --with-nth=-1 +s < <(find $HOME/my_repos/dotfiles-main -typ
 for f in ~/.my_bash_aliases/*; do
 	source "$f"
 done
-# }}}
+export os=$(uname -a | cut -d ' ' -f 1)
+[[ $os = "Darwin" ]] && source ~/my_repos/dotfiles-main/environment/macos

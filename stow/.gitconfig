@@ -8,7 +8,6 @@
 	email = raveen.srk.kumar@gmail.com
 [maintenance]
 	repo = ~/my_repos/dotfiles-main
-	repo = /zfs_inter_data/home/rkumar/my_repos/dotfiles-main
 [alias]
 	staash = stash --all
 [rerere]
