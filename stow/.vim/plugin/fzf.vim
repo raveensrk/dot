@@ -73,11 +73,11 @@ let g:fzf_colors =
 
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-command! -nargs=* Rg
-      \ call fzf#vim#grep(
-      \   'rg --hidden --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
-      \   1,
-      \   {'options': '--delimiter : --nth 1..'})
+" command! -nargs=* Rg
+"       \ call fzf#vim#grep(
+"       \   'rg --hidden --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
+"       \   1,
+"       \   {'options': '--delimiter : --nth 1..'})
 
 command! -nargs=* DOTG
       \ call fzf#vim#grep(

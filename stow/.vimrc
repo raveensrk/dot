@@ -75,7 +75,7 @@ set hlsearch
 set incsearch
 set ruler
 " set columns=80
-" set colorcolumn=80
+set colorcolumn=79
 " highlight ColorColumn ctermbg=0 guibg=lightgrey
 set wildmode=longest,list,full
 set wildmenu
@@ -173,22 +173,22 @@ let mapleader = " "
 
 " set path+=**;~/ " This is awesome but find search takes too long
 set tags=./tags,../tags
-set path+=*
-set path+=.*
-set path+=./;~/
-set path+=~/my_repos/**
-set path+=~/my_repos/**/.*
+" set path+=*
+" set path+=.*
+" set path+=./;~/
+" set path+=~/my_repos/**
+" set path+=~/my_repos/**/.*
 set showtabline=2
-set showcmdloc="status"
+set showcmdloc="last"
 set showcmd
-autocmd WinNew * wincmd =
-    autocmd FileType sh set formatprg=shfmt\ % 
+set showmode
+let &showbreak = '+++ '
+autocmd FileType sh set formatprg=shfmt\ % 
 autocmd! BufWritePre
 autocmd BufWritePre *.txt s/ \+$//e
 let g:ft_man_folding_enable = 1
 autocmd FileType man setlocal foldmethod=indent foldenable
 let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
-set showmode
 set hidden
-
+let g:netrw_hide=1

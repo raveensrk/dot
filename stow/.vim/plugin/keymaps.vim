@@ -20,8 +20,8 @@ nmap ,cd :cd %:h<CR>
 "}}}
  " Searching{{{
 nmap <leader>h :help 
-nmap <leader>/ :Lines<CR>
-nmap <leader>? :BLines<CR>
+nmap <leader>/ :BLines<CR>
+nmap <leader>? :Lines<CR>
 "}}}
 " Tabs and buffers{{{
 nmap <leader>. :e .<CR>
@@ -61,10 +61,9 @@ nmap <leader>c :wa \| silent make! \| redraw! \| copen \| clast<cr>
 nmap <leader>d :bd<cr>
 nmap <leader>e $
 nmap <leader>fB :redir >> ~/bookmarks \| echo expand("%:p") . ':' . getpos(".")[1] \| echo expand("%:h") \| redir END \| tabnew ~/bookmarks \| sort \| w \| execute '%!uniq' \| w<cr>
-nmap <leader>fb :b 
+nmap <leader>fb :Buffers<CR> 
 nmap <leader>fc :e ~/.vimrc<CR>
-nmap <leader>fF :Files<cr>
-nmap <leader>ff :find 
+nmap <leader>ff :Files<cr>
 nmap <leader>fg :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @+ = expand("%:p")<cr>

@@ -11,7 +11,6 @@ export is_linux=$(uname -a | cut -d ' ' -f 1)
 export MY_REPOS="$HOME/my_repos"
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.scripts:$PATH"
 export PATH="$HOME/scripts:$PATH"
 export PATH="$HOME/my_repos/dotfiles-main/scripts:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
