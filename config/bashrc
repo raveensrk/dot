@@ -4,9 +4,11 @@
 export DOT="$HOME/dot"
 source "$DOT/config/prompt"
 # {{{ ENVIRONMENT VARIABLES
+alias neomutt="neomutt"
 alias vim="vim -u $DOT/config/vimrc"
 export INPUTRC="$DOT/config/inputrc"
-export EDITOR="vim"
+export EDITOR="vim -u $DOT/config/vimrc"
+export VISUAL="vim -u $DOT/config/vimrc"
 export TERM=xterm-256color
 export is_linux=$(uname -a | cut -d ' ' -f 1)
 # export DISPLAY=:0
@@ -77,10 +79,11 @@ alias ,rsync="rsync -CazhPvu"                                         # -C
 # }}}
 # {{{ PAGERS
 export PAGER='less'
+export MANPAGER='less'
 # Less colors
 #-------------------
 alias less='less --ignore-case'
-export LESS=-wR
+export LESS=-wRi
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
 export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
 export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
@@ -164,3 +167,4 @@ alias ,dot="ranger_cd $HOME/dot"
 export os=$(uname -a | cut -d ' ' -f 1)
 source "$DOT/config/fzf"
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
+# export BASH_ENV="$DOT/config/bashrc"

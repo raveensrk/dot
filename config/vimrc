@@ -68,14 +68,18 @@ set pumheight=5
 set completeopt=""
 set wrap
 set nolinebreak
+set cursorlineopt=screenline,number
 set cursorline
-set cursorlineopt=both
 set hlsearch
 set incsearch
 set ruler
 " set columns=80
 set colorcolumn=79
-" highlight ColorColumn ctermbg=0 guibg=lightgrey
+highlight ColorColumn ctermbg=233
+highlight clear CursorLine
+highlight clear CursorLineNr
+highlight CursorLine ctermbg=235
+highlight CursorLineNr ctermbg=235
 set wildmode=longest,list,full
 set wildmenu
 set wildignorecase
@@ -91,11 +95,14 @@ set sidescrolloff=1
 " set textwidth=0 wrapmargin=0
 " }}}
 " {{{ BACKUPS AND UNDO
+" set undodir=~/.vim/undo
+" set backupdir=~/.vim/backup
 set noswapfile
-set backup writebackup
-set undofile
-set undodir=~/.vim/undo
-set backupdir=~/.vim/backup
+set nobackup
+set nowritebackup
+set noundofile
+" if ! isdirectory("~/.vim/undo")   | call mkdir("~/.vim/undo",   'p') | endif
+" if ! isdirectory("~/.vim/backup") | call mkdir("~/.vim/backup", 'p') | endif
 " }}}
 " {{{ NETRW
 " let g:netrw_altv = 1
@@ -141,8 +148,8 @@ function! Bookmarks()
     lopen 5
 endfunction
 
-set complete+=t
-set completeopt+=popup,preview
+" set complete+=t
+" set completeopt+=popup,preview
 set makeef=/tmp/errorfile
 set foldclose="all"
 set showfulltag
