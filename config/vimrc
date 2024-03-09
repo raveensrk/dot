@@ -1,5 +1,5 @@
-
 source $VIMRUNTIME/vimrc_example.vim
+set runtimepath^=~/dot/config/vim
 let g:pathogen_blacklist = ['Damian-Conway-s-Vim-Setup']
 
 execute pathogen#infect()
@@ -70,7 +70,6 @@ set wrap
 set nolinebreak
 set cursorline
 set cursorlineopt=both
-set nocursorcolumn
 set hlsearch
 set incsearch
 set ruler
@@ -119,10 +118,6 @@ let g:netrw_keepdir=0
 " augroup END
 " }}}
 "{{{ FINALLY SOURCE CUSTOM PER USER CONGIFS
-
-for f in split(glob('~/.my_vim_configs/*.vim'), '\n')
-    exe 'source' f
-endfor
 
 "}}}
 " ↑ WORKING CONFIGS ABOVE ↑

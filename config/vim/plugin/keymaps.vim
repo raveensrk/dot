@@ -47,12 +47,8 @@ nmap <leader>G :lvim /"/ **<CR>lopen<CR>lfirst<CR>
 if has('clipboard')
     nmap <leader>y "+y
     xmap <leader>y "+y
-else
-    nmap <leader>y :.w! ~/.vim_clip<cr>:silent !xclip ~/.vim_clip<cr>:redraw!<cr>
-
-    xmap <leader>y :w! ~/.vim_clip<cr>:silent !xclip ~/.vim_clip<cr>:redraw!<cr>
+    nmap <leader>p :norm o<cr>mm"+p`m
 endif
-nmap <leader>p :norm o<cr>mm"+p`m
 nmap <leader>Y ggVGy2<C-o>
 "}}}
 nmap <leader>` :Scratch<cr>
@@ -60,7 +56,7 @@ nmap <leader>a 0
 nmap <leader>c :wa \| silent make! \| redraw! \| copen \| clast<cr>
 nmap <leader>d :bd<cr>
 nmap <leader>e $
-nmap <leader>fB :redir >> ~/bookmarks \| echo expand("%:p") . ':' . getpos(".")[1] \| echo expand("%:h") \| redir END \| tabnew ~/bookmarks \| sort \| w \| execute '%!uniq' \| w<cr>
+nmap <leader>fm :Marks<CR>
 nmap <leader>fb :Buffers<CR> 
 nmap <leader>fc :e ~/.vimrc<CR>
 nmap <leader>ff :Files<cr>
@@ -89,12 +85,4 @@ nmap _ :vertical resize -5<CR>
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 vmap <leader>dd "_d
-" nmap <Right> <nop>
-" nmap <Up>   <nop>
-" nmap <Down> <nop>
-" nmap <Left> <nop>
 set ttimeoutlen=9000 ttimeout timeout timeoutlen=9000
-nmap <leader>n h<leader>
-nmap <leader>e j<leader>
-nmap <leader>i k<leader>
-nmap <leader>o l<leader>

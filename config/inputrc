@@ -4,25 +4,6 @@ $include /etc/inputrc
 "\e[A":history-search-backward     
 "\e[B":history-search-forward
 
-$if Bash
-# Quote the current or previous word
-"\C-xq": "\eb\"\ef\""
-"\C-x\"": "\"\C-b\""
-"\C-xr": re-read-init-file
-"\C-xx": "sync_everything\n"
-"\C-xl": "\C-e | less\n"
-"\C-xh": "\C-e --help | less\n"
-"\C-xf": "\C-af \C-e\n"
-"\C-xb": "\C-z bg\n"
-$endif
-
-
-$if mode=vi
-    set keymap vi-command
-    "q": end-of-file
-$endif
-
-
 set bell-style visible
 set blink-matching-paren On
 set colored-completion-prefix On

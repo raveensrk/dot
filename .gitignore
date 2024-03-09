@@ -7,3 +7,5 @@
 .DS_Store
 /TAGS
 tags
+config/vim/bundle
+**.*swp

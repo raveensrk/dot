@@ -1,24 +1,23 @@
 #!/usr/bin/env bash
 # BASH ALIASES sourced at ~/.bashrc
 
-# {{{ PROMPT AND COLORS
-source "$HOME/.bash_prompt"
-# }}}
+export DOT="$HOME/dot"
+source "$DOT/config/prompt"
 # {{{ ENVIRONMENT VARIABLES
+alias vim="vim -u $DOT/config/vimrc"
+export INPUTRC="$DOT/config/inputrc"
 export EDITOR="vim"
 export TERM=xterm-256color
 export is_linux=$(uname -a | cut -d ' ' -f 1)
-export MY_REPOS="$HOME/my_repos"
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/scripts:$PATH"
-export PATH="$HOME/my_repos/dotfiles-main/scripts:$PATH"
+export PATH="$HOME/script:$PATH"
+export PATH="$DOT/script:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 if [ -d /var/lib/flatpak/exports/bin ]; then
 	export PATH="/var/lib/flatpak/exports/bin:$PATH"
 fi
-for dir in $(find ~/.scripts -type d); do export PATH="$dir:$PATH"; done
 # }}}
 # {{{ BASH SHOPTS
 # This will exit bash shell as soon as it receives C-d as the last command
@@ -50,29 +49,6 @@ export PROMPT_COMMAND="$PROMPT_COMMAND"
 # export PROMPT_COMMAND="$PROMPT_COMMAND"
 
 # }}}
-# {{{ INTERFACE
-if [ -v xset ]; then
-	# Insead of this use macos settings -> keyboard -> repeat fast -> delay short
-	xset r rate 300 50
-	xset m 10 1
-fi
-# Colors
-export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-	if test -r ~/.dircolors; then
-		eval "$(dircolors -b ~/.dircolors)"
-	else
-		eval "$(dircolors -b)"
-	fi
-	alias dir='dir --color=auto'
-	alias vdir='vdir --color=auto'
-
-	alias grep='grep --color=auto'
-	alias fgrep='fgrep --color=auto'
-	alias egrep='egrep --color=auto'
-fi
-# }}}
 # {{{ ALIASES
 if command -v bat >/dev/null; then
 	alias cat=bat
@@ -83,15 +59,7 @@ alias ,transposehv="tr ' ' '\n'" # Transpose horizontal to vertical
 alias ,untar="tar xf"
 alias ,hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 # LS aliases
-
-if command -v exa >/dev/null; then
-	alias ls='exa'
-	alias l="exa -lah"
-else
-	alias ls='ls --color=auto'
-	alias l="ls -Alh"
-fi
-alias ltr="ls -tr"
+alias l="ls -A"
 alias ..="cd .."
 alias ,top_faster_refresh='top -d 0.125'
 alias ,date='date -I'
@@ -102,12 +70,9 @@ alias mkdir="mkdir -v"
 alias cp="cp -vi"
 alias mv="mv -vi"
 alias rm="rm -vi"
-alias tmux="tmux -2"
-alias t="tmux attach || tmux"
 alias ,tree="tree -C"
 alias ,tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias ,rsync="rsync -CazhPvu"                                         # -C
-alias ,rp="realpath"
 
 # }}}
 # {{{ PAGERS
@@ -115,7 +80,7 @@ export PAGER='less'
 # Less colors
 #-------------------
 alias less='less --ignore-case'
-export LESS=-R
+export LESS=-wR
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
 export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
 export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
@@ -123,6 +88,8 @@ export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
 export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+export LESS_TERMCAP_Ss=$'\E[1;36m'     # begin underline
+export LESS_TERMCAP_Se=$'\E[0m'        # reset underline
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -134,25 +101,12 @@ man() {
 }
 # }}}
 # {{{ VIM
-# export EDITOR="vim"
-alias ,bashrc="vim ~/.bashrc"
 alias ,vimrc="vim ~/.vimrc"
 alias v="vim -c 'History'"
 alias vl='vim -c "normal '\''0"'
 # }}}
 # RANGER {{{
-# shellcheck shell=sh
-
-# Compatible with ranger 1.4.2 through 1.9.*
-#
-# Automatically change the current working directory after closing ranger
-#
-# This is a shell function to automatically change the current working
-# directory to the last visited one after ranger quits. Either put it into your
-# .zshrc/.bashrc/etc or source this file from your shell configuration.
-# To undo the effect of this function, you can type "cd -" to return to the
-# original directory.
-
+alias ranger="ranger -r $DOT/config/ranger"
 ranger_cd() {
 	temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"
 	local dir_or_file
@@ -189,7 +143,6 @@ fi
 # }}}
 # }}}
 # {{{ GREP
-export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 ,find-grep() {
 	echo '''
     find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
@@ -200,22 +153,14 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep"
 alias ,hexdump="hexdump -Cv"
 ,google() { open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+') ;}
 alias ,compress="tar -cva -f "
-alias ,tmux_conf="vim ~/.tmux.conf"
-alias ,chatgpt="https://chat.openai.com"
-alias ,muttrc="vim ~/.muttrc"
-alias ,bashal="vim ~/.bash_aliases && source ~/.bashrc"
-alias ,note="vim ~/iCloud/$(,date).txt -c \"norm gg\" -c \"norm 2O\" -c \"norm p\""
-alias ,clipboard="vim ~/clipboard.txt -c \"norm gg\" -c \"norm 5O\" -c \"norm p\""
+alias ,chatgpt="open https://chat.openai.com"
+alias ,note="vim ~/iCloud/inbox.txt"
+alias ,clipboard=",note"
 ,github() { open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+') ; }
 ,git_pickaxe () { git log -p -S $@ ; }
 alias dc="cd -"
-alias ,vim_startup_benchmark="vim --startuptime $HOME/.vimstartuptime"
-alias ,dot="fzf -d / --with-nth=-1 +s < <(find $HOME/my_repos/dotfiles-main -type f)"
+alias ,dot="ranger_cd $HOME/dot"
 # }}}
-# {{{ Other Sources
-[ ! -d ~/.my_bash_aliases ] && mkdir ~/.my_bash_aliases
-for f in ~/.my_bash_aliases/*; do
-	source "$f"
-done
 export os=$(uname -a | cut -d ' ' -f 1)
-[[ $os = "Darwin" ]] && source ~/my_repos/dotfiles-main/environment/macos
+source "$DOT/config/fzf"
+[[ $os = "Darwin" ]] && source "$DOT/config/macos"

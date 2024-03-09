@@ -11,16 +11,10 @@ omap <leader><tab> <plug>(fzf-maps-o)
 imap <expr> <c-x>f fzf#vim#complete#path('rg --hidden --files')
 imap <c-x>k <plug>(fzf-complete-word)
 imap <c-x>l <plug>(fzf-complete-line)
-command! -bang DOT call fzf#vim#files('$MY_REPOS/dotfiles-main', <bang>0)
+command! -bang DOT call fzf#vim#files('$HOME/dot', <bang>0)
 nmap <leader>f. :DOT<CR>
 command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': ['--exact', '--layout=reverse', '--info=inline']}, <bang>0)
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.9, 'xoffset': 1 }})
-if exists("g:rg_path_list")
-else
-    let g:rg_path_list = [" . "]
-endif
-let g:rg_path = join(uniq(sort(g:rg_path_list)), " ")
-let g:rgsource = "rg --follow -n ^ --color always --hidden " . g:rg_path
 
 inoremap <expr> <c-x>L fzf#vim#complete(fzf#wrap({
       \ 'prefix': '^.*$',
@@ -73,17 +67,6 @@ let g:fzf_colors =
 
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-" command! -nargs=* Rg
-"       \ call fzf#vim#grep(
-"       \   'rg --hidden --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>),
-"       \   1,
-"       \   {'options': '--delimiter : --nth 1..'})
-
-command! -nargs=* DOTG
-      \ call fzf#vim#grep(
-      \   'rg . --hidden --column --line-number --no-heading --color=always --smart-case $HOME/my_repos/dotfiles-main '.shellescape(<q-args>),
-      \   1,
-      \   {'options': ' --delimiter : --nth 1..'})
 
 let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 

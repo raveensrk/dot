@@ -49,9 +49,9 @@ nmap <Leader>mg <Plug>BookmarkMoveToLine
 let g:sneak#label = 1
 set showmode
 set showcmd
-colo gruvbox
-let g:gruvbox_contrast_dark="hard"
-set background=dark
+" colo gruvbox
+" let g:gruvbox_contrast_dark="hard"
+" set background=dark
 
 function! IsScrollBind()
     if (&scrollbind)

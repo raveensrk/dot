@@ -31,9 +31,9 @@ web:*.{html,css,js}*
 # Because who cares about case!?
 --smart-case
 
-# include softlinks
---follow
+# # include softlinks
+# --follow
 
 # Also show hidden files
---hidden
+# --hidden
 --vimgrep
