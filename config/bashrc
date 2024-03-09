@@ -2,7 +2,7 @@
 # BASH ALIASES sourced at ~/.bashrc
 
 export DOT=$HOME/dot
-source $DOT/config/prompt
+source "$DOT/config/prompt"
 # {{{ ENVIRONMENT VARIABLES
 alias neomutt="neomutt"
 export INPUTRC=$DOT/config/inputrc
@@ -62,7 +62,6 @@ alias ,transposehv="tr ' ' '\n'" # Transpose horizontal to vertical
 alias ,untar="tar xf"
 alias ,hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 # LS aliases
-alias l="ls -A"
 alias ..="cd .."
 alias ,top_faster_refresh='top -d 0.125'
 alias ,date='date -I'
@@ -119,13 +118,13 @@ ranger_cd() {
 
 	ranger --choosedir="$temp_file" -- "${dir_or_file:-$PWD}"
 	if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
-		cd "$chosen_dir"
+		cd "$chosen_dir" || return
 	fi
 	rm -f -- "$temp_file"
 }
 
 alias r="ranger_cd"
-alias r="nnn"
+alias l="r"
 
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 # }}}
@@ -156,12 +155,12 @@ fi
 # }}}
 # Convenience{{{
 alias ,hexdump="hexdump -Cv"
-,google() { open $(echo "https://www.google.com/search?q=$@" | tr ' ' '+') ;}
+,google() { open "$(echo "https://www.google.com/search?q=$*" | tr ' ' '+')" ;}
 alias ,compress="tar -cva -f "
 alias ,chatgpt="open https://chat.openai.com"
 alias ,note="vim ~/iCloud/inbox.txt"
 alias ,clipboard=",note"
-,github() { open $(echo "https://github.com/search?q=$@&type=repositories&s=stars&o=desc" | tr ' ' '+') ; }
+,github() { open $(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+') ; }
 ,git_pickaxe () { git log -p -S $@ ; }
 alias dc="cd -"
 # }}}
@@ -169,7 +168,5 @@ export os=$(uname -a | cut -d ' ' -f 1)
 source "$DOT/config/fzf"
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
 # export BASH_ENV="$DOT/config/bashrc"
-export NNN_PLUG='x:!bash "$nnn"'
-export NNN_OPENER="$DOT/script/nuke"
-alias nnn="nnn -c"
-
+[[ -f ~/script/custom.sh ]] && source ~/script/custom.sh
+alias shellcheck="shellcheck -x"
