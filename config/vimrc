@@ -12,7 +12,7 @@ filetype plugin indent on
 " }}}
 " BASICS {{{
 set autoread
-set mouse=a
+set mouse=""
 set nocompatible
 " set hidden
 set backspace=indent,eol,start

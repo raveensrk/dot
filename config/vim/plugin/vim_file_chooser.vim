@@ -15,7 +15,7 @@ function! RangeChooser()
     if has("gui_running")
         exec 'silent !xterm -e ranger --choosefiles=' . shellescape(temp)
     else
-        exec 'silent !ranger --choosefiles=' . shellescape(temp)
+        exec 'silent !ranger -r $DOT/config/ranger --choosefiles=' . shellescape(temp)
     endif
     if !filereadable(temp)
         redraw!

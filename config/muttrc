@@ -3,9 +3,9 @@
 # unmailboxes *
 #{{{ Basics
 set beep_new = yes
-ignore *
-unignore from: date subject to cc
-hdr_order From Date: From: To: Cc: Subject:
+# ignore *
+# unignore from: date subject to cc
+# hdr_order From Date: From: To: Cc: Subject:
 set ssl_force_tls = yes
 set ssl_starttls = yes
 set smtp_authenticators = "login"
@@ -164,18 +164,18 @@ set sidebar_width=30
 set sidebar_component_depth = 2
 # }}}
 # Testing
-source ~/.spamrc
+source $HOME/script/spamrc
 
 set count_alternatives = yes
 set attach_save_dir = "~/tmp"
-auto_view text/plain
-auto_view text/html
-attachments  +A */.*
-attachments -I */.*
-attachments  -A text/vcard text/x-vcard
-attachments  -A application/pgp.*
-attachments  -A application/pkcs7-.* application/x-pkcs7-.*
-attachments  -I multipa/mixed
-attachments  -I multipa/alternativ
-attachments  -I multipa/related
-attachments +I text/plain
+# auto_view text/plain
+# auto_view text/html
+# attachments  +A */.*
+# attachments -I */.*
+# attachments  -A text/vcard text/x-vcard
+# attachments  -A application/pgp.*
+# attachments  -A application/pkcs7-.* application/x-pkcs7-.*
+# attachments  -I multipa/mixed
+# attachments  -I multipa/alternativ
+# attachments  -I multipa/related
+# attachments +I text/plain

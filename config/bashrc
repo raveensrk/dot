@@ -11,7 +11,8 @@ export VIMINIT=":source $MYVIMRC"
 export EDITOR="vim"
 export VISUAL="vim"
 export TERM=xterm-256color
-export is_linux=$(uname -a | cut -d ' ' -f 1)
+is_linux=$(uname -a | cut -d ' ' -f 1)
+export is_linux
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
@@ -27,7 +28,7 @@ fi
 export IGNOREEOF=0
 # shopt -s direxpand
 # shopt -s histappend
-set -o vi
+# set -o vi
 shopt -s checkwinsize
 shopt -s checkjobs
 shopt -s execfail
@@ -109,12 +110,12 @@ alias v="vim -c 'History'"
 alias vl='vim -c "normal '\''0"'
 # }}}
 # RANGER {{{
-alias ranger="ranger -r $DOT/config/ranger"
+alias ranger="ranger -r \$DOT/config/ranger"
 ranger_cd() {
 	temp_file="$(mktemp -t "ranger_cd.XXXXXXXXXX")"
 	local dir_or_file
 
-	[[ -f "$@" ]] && dir_or_file=$(dirname "$@") || dir_or_file="$@"
+	[[ -f "$*" ]] && dir_or_file=$(dirname "$@") || dir_or_file="$*"
 
 	ranger --choosedir="$temp_file" -- "${dir_or_file:-$PWD}"
 	if chosen_dir="$(cat -- "$temp_file")" && [ -n "$chosen_dir" ] && [ "$chosen_dir" != "$PWD" ]; then
@@ -124,7 +125,6 @@ ranger_cd() {
 }
 
 alias r="ranger_cd"
-alias l="r"
 
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 # }}}
@@ -160,13 +160,14 @@ alias ,compress="tar -cva -f "
 alias ,chatgpt="open https://chat.openai.com"
 alias ,note="vim ~/iCloud/inbox.txt"
 alias ,clipboard=",note"
-,github() { open $(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+') ; }
-,git_pickaxe () { git log -p -S $@ ; }
+,github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')" ; }
+,git_pickaxe () { git log -p -S "$@" ; }
 alias dc="cd -"
 # }}}
-export os=$(uname -a | cut -d ' ' -f 1)
+os=$(uname -a | cut -d ' ' -f 1)
+export os
 source "$DOT/config/fzf"
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
-# export BASH_ENV="$DOT/config/bashrc"
-[[ -f ~/script/custom.sh ]] && source ~/script/custom.sh
-alias shellcheck="shellcheck -x"
+# shellcheck source-path=~/script
+[[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
+

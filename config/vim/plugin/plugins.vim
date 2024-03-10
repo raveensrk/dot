@@ -7,6 +7,7 @@ if 0
     !git clone https://github.com/itchyny/lightline.vim.git ~/.vim/bundle/lightline.vim
     !git clone https://github.com/gcmt/taboo.vim.git ~/.vim/bundle/taboo.vim
     !git clone https://github.com/airblade/vim-rooter.git ~/.vim/bundle/vim-rooter
+    !git clone https://github.com/vim-scripts/YankRing.vim.git ~/dot/config/vim/bundle/YankRing
     " Damian-Conway-s-Vim-Setup/
     " fzf.vim/
     " fzf/

@@ -1,8 +1,5 @@
 $include /etc/inputrc
 
-"TAB": menu-complete               
-"\e[A":history-search-backward     
-"\e[B":history-search-forward
 
 set bell-style visible
 set blink-matching-paren On
@@ -18,7 +15,7 @@ set editing-mode vi
 set history-preserve-point On
 set history-size 1000
 set horizontal-scroll-mode Off
-set keymap vi
+set keymap vi-insert
 set menu-complete-display-prefix On 
 set print-completions-horizontally On
 set show-all-if-ambiguous On
@@ -28,3 +25,8 @@ set skip-completed-text On
 set vi-cmd-mode-string (:)
 set vi-ins-mode-string (+)
 set match-hidden-files Off
+
+"TAB": menu-complete               
+"\C-a": vi-yank-arg
+"\C-i": menu-complete               
+"\e[Z": menu-complete-backward
