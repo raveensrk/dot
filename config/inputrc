@@ -30,3 +30,4 @@ set match-hidden-files Off
 "\C-a": vi-yank-arg
 "\C-i": menu-complete               
 "\e[Z": menu-complete-backward
+"\C-l": clear-screen
