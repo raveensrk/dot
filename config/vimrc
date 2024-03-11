@@ -197,3 +197,7 @@ let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
 set hidden
 let g:netrw_hide=1
+
+if filereadable(expand('~/script/custom.vim'))
+    source ~/script/custom.vim
+endif

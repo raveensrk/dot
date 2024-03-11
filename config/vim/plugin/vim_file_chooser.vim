@@ -13,9 +13,9 @@ function! RangeChooser()
     " with ranger 1.4.2 through 1.5.0 instead.
     "exec 'silent !ranger --choosefile=' . shellescape(temp)
     if has("gui_running")
-        exec 'silent !xterm -e ranger --choosefiles=' . shellescape(temp)
+        exec 'silent !xterm -e $RANGER --choosefiles=' . shellescape(temp)
     else
-        exec 'silent !ranger -r $DOT/config/ranger --choosefiles=' . shellescape(temp)
+        exec 'silent !$RANGER -r $DOT/config/ranger --choosefiles=' . shellescape(temp)
     endif
     if !filereadable(temp)
         redraw!
