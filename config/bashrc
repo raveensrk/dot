@@ -171,3 +171,6 @@ source "$DOT/config/fzf"
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
 alias path="echo \$PATH | tr ':' '\n'"
 alias gl="lazygit -p \$DOT"
+if [ "$is_linux" != "Darwin" ]; then
+    export PATH="$DOT/bin/linux:$PATH"
+fi
