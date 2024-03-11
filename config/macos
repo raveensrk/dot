@@ -12,8 +12,8 @@ export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export PATH="/Library/TeX/texbin:$PATH"
 export SHELL="/opt/homebrew/bin/bash"
 export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH"
-
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$DOT/bin/macos:$PATH"
 fortune
 
 ,2x2() {

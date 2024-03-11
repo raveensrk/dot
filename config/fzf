@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-export FZF_DEFAULT_OPTS="--preview='head -n 999 {}' --layout=reverse +s -e --history=$HOME/.fzf_history"
+export FZF_DEFAULT_OPTS="--layout=reverse +s -e --history=$HOME/.fzf_history"
 export FZF_COMPLETION_OPTS="--layout=reverse +s -e --history=$HOME/.fzf_history"
-# export FZF_CTRL_T_COMMAND="command find -L . 2> /dev/null"
-# export FZF_DEFAULT_COMMAND="command find -L . 2> /dev/null"
-# export FZF_ALT_C_COMMAND="command find -L . -type d 2> /dev/null"
 export RIPGREP_CONFIG_PATH="$DOT/config/ripgrep"
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f "$HOME/.fzf.bash" ] && source "$HOME/.fzf.bash"

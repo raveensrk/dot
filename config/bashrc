@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# BASH ALIASES sourced at ~/.bashrc
+# bashrc
 
 export DOT=$HOME/dot
 source "$DOT/config/prompt"
@@ -170,4 +170,3 @@ source "$DOT/config/fzf"
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
 # shellcheck source-path=~/script
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
-

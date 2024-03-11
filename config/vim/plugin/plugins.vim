@@ -8,6 +8,7 @@ if 0
     !git clone https://github.com/gcmt/taboo.vim.git ~/.vim/bundle/taboo.vim
     !git clone https://github.com/airblade/vim-rooter.git ~/.vim/bundle/vim-rooter
     !git clone https://github.com/vim-scripts/YankRing.vim.git ~/dot/config/vim/bundle/YankRing
+    !git clone git@github.com:tpope/vim-speeddating.git ~/dot/config/vim/bundle/vim-speeddating
     " Damian-Conway-s-Vim-Setup/
     " fzf.vim/
     " fzf/
@@ -70,10 +71,19 @@ function! IsWinFixBuf()
     endif
 endfunction
 
+function! WhichDirectory()
+        return "PWD: " . expand("%:p:h:t")
+endfunction
+
+	let g:lightline = {
+		\ 'colorscheme': 'wombat',
+		\ }
+
 let g:lightline = {
             \ 'colorscheme': 'default',
             \ 'active': {
             \ 'left': [ [ 'paste' ],
+            \             ['whichdirectory'],
             \           [ 'readonly', 'filename', 'modified' ]
             \         ],
             \ 'right': [ ['bufnum'], 
@@ -84,7 +94,10 @@ let g:lightline = {
             \          ] 
             \},
             \ 'inactive': {
-            \ 'left': [ [ 'filename' ] ],
+            \ 'left': [ 
+            \             ['whichdirectory'],
+            \ [ 'filename' ]
+            \         ],
             \ 'right': [ ['bufnum'] ,
             \             [ 'isscrollbind2' ],
             \             [ 'iswinfixbuf2' ],
@@ -92,7 +105,8 @@ let g:lightline = {
             \            [ 'percent' ] ] },
             \ 'component' : {
             \   'iswinfixbuf2': '%{IsWinFixBuf()}',
-            \   'isscrollbind2': '%{IsScrollBind()}'
+            \   'isscrollbind2': '%{IsScrollBind()}',
+            \   'whichdirectory': '%{WhichDirectory()}'
             \ }
             \}
 

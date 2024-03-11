@@ -1,6 +1,6 @@
 let g:fzf_vim = {}
-let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7, 'relative': v:true } }
-let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-/']
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'relative': v:true } }
+let g:fzf_preview_window = ['right,50%', 'ctrl-/']
 let g:fzf_buffers_jump = 1
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 let g:fzf_tags_command = 'ctags -R'
@@ -67,14 +67,4 @@ let g:fzf_colors =
 
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-
 let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
-
-command! -bang -nargs=* History 
-            \ call fzf#vim#history(
-            \ {'options': 
-            \ ['--layout=reverse', 
-            \ '--info=inline', 
-            \ '--delimiter=/', 
-            \ '--with-nth=-1']
-            \ })
