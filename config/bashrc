@@ -169,3 +169,5 @@ source "$DOT/config/fzf"
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
 # shellcheck source-path=~/script
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
+alias path="echo \$PATH | tr ':' '\n'"
+alias gl="lazygit -p \$DOT"
