@@ -14,11 +14,13 @@ web:*.{html,css,js}*
 --glob=!*TAGS*
 --glob=!*sos*
 --glob=!*.bin
---glob=!*.bin
 --glob=!*.gz
 --glob=!*.tar
 --glob=!*.mat
 --glob=!*.pyc
+--glob=!*.dat
+--glob=!*.SVM
+--glob=!*.vRefine
 
 # or
 --glob
@@ -36,4 +38,4 @@ web:*.{html,css,js}*
 
 # Also show hidden files
 # --hidden
---vimgrep
+--max-filesize=1M
