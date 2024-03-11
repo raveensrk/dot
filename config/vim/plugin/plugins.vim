@@ -6,7 +6,7 @@ if 0
     !~/dot/config/vim/bundle/fzf/install --all
     !git  clone 'git@github.com:junegunn/fzf.vim'                            ~/dot/config/vim/bundle/fzf.vim
     !git  clone 'git@github.com:junegunn/vim-easy-align'                     ~/dot/config/vim/bundle/vim-easy-align
-    !git  clone 'git@github.com:junegunn/vim-peekaboo.git'                   ~/dot/config/vim/bunble/vim-peekaboo
+    !git  clone 'git@github.com:junegunn/vim-peekaboo.git'                   ~/dot/config/vim/bundle/vim-peekaboo
     !git  clone 'git@github.com:justinmk/vim-sneak.git'                      ~/dot/config/vim/bundle/vim-sneak
     !git  clone 'git@github.com:liuchengxu/vim-which-key'                    ~/dot/config/vim/bundle/vim-which-key
     !git  clone 'git@github.com:madox2/vim-ai.git'                           ~/dot/config/vim/bundle/vim-ai.git
