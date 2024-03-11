@@ -155,7 +155,6 @@ fi
 # }}}
 # Convenience{{{
 alias ,hexdump="hexdump -Cv"
-,google() { open "$(echo "https://www.google.com/search?q=$*" | tr ' ' '+')" ;}
 alias ,compress="tar -cva -f "
 alias ,chatgpt="open https://chat.openai.com"
 alias ,note="vim ~/iCloud/inbox.txt"
