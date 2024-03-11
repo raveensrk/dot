@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+ 
+find -iname "*#*" -exec rm -i {} \;
+find -iname "*~*" -exec rm -i {} \;
