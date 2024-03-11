@@ -27,8 +27,8 @@ export WHITE="\[$(tput setaf 7)\]"
 export YELLOW="\[$(tput setaf 3)\]"
 
 update_prompt () {
-    export PS1="${RESET}\W:$ "
-    export PS0="${CYAN}"
+    # export PS1="${CYAN}\W:$ ${RESET}"
+    export PS1="\W:$ "
 }
 
 export PROMPT_COMMAND="update_prompt"
