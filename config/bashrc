@@ -176,3 +176,6 @@ if [ "$is_linux" != "Darwin" ]; then
     export PATH="$DOT/bin/linux:$PATH"
 fi
 alias l="ls -lAh"
+vimhelp () {
+    vim -c "help $*"
+}
