@@ -1,6 +1,9 @@
 source $VIMRUNTIME/vimrc_example.vim
 set runtimepath^=~/dot/config/vim
 let g:pathogen_blacklist = ['Damian-Conway-s-Vim-Setup']
+if ($is_linux != "Darwin") 
+    let g:pathogen_blacklist += ['vim-ai.git']
+endif
 
 execute pathogen#infect()
 syntax on
