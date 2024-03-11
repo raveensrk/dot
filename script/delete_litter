@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
  
-find -iname "*#*" -exec rm -i {} \;
-find -iname "*~*" -exec rm -i {} \;
+find . -iname "*#*" -exec rm -i {} \;
+find . -iname "*~*" -exec rm -i {} \;
+[ -d ~/Downloads ] && rm -f ~/Downloads/*.dcv
+find . -iname ".DS_Store" -print -delete

@@ -24,8 +24,8 @@ if [ -d /var/lib/flatpak/exports/bin ]; then
 fi
 # }}}
 # {{{ BASH SHOPTS
-# This will exit bash shell as soon as it receives C-d as the last command
-export IGNOREEOF=0
+# This will exit bash shell after pressing control d 5 times
+export IGNOREEOF=5
 # shopt -s direxpand
 # shopt -s histappend
 # set -o vi
