@@ -1,4 +1,5 @@
 if 0
+    !git clone 'git@github.com:pelodelfuego/vim-swoop.git'                  ~/dot/config/vim/bundle/vim-swoop
     !curl -LSso ~/dot/config/vim/autoload/pathogen.vim                       https://tpo.pe/pathogen.vim
     !git  clone 'https://github.com/dense-analysis/ale'                      ~/dot/config/vim/bundle/ale
     !git  clone 'git@github.com:easymotion/vim-easymotion'                   ~/dot/config/vim/bundle/vim-easymotion

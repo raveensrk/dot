@@ -65,7 +65,7 @@ nmap <leader>ff :CtrlP<cr>
 nmap <leader>fg :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @+ = expand("%:p")<cr>
-nmap <leader>fr :CtrlPMixed<CR>
+nmap <leader>fr :CtrlPMRUFiles<CR>
 nmap <leader>fd :CtrlPBookmarkDir<CR>
 nmap <leader>gf :e <cfile><CR>
 nmap <leader>q :q<CR>
@@ -82,6 +82,12 @@ nmap <leader>z <C-w>
 nmap <leader>Z :windo set scrollbind!<CR>
 nmap <leader>T :tab split<CR>
 nmap <leader>S :tab split<CR>:term<cr>
+
+let g:swoopUseDefaultKeyMap = 0
+nmap <Leader>ll :call Swoop()<CR>
+vmap <Leader>ll :call SwoopSelection()<CR>
+nmap <Leader>lm :call SwoopMulti()<CR>
+vmap <Leader>lm :call SwoopMultiSelection()<CR>
 
 nmap Y yg_
 nmap _ :vertical resize -5<CR>
