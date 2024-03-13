@@ -203,4 +203,3 @@ let g:netrw_hide=1
 if filereadable(expand('~/script/custom.vim'))
     source ~/script/custom.vim
 endif
-set shortmess="filnxtToOSrmwcCFa"

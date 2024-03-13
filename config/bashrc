@@ -177,6 +177,10 @@ alias l="ls -lAh"
 vimhelp () {
     vim -c "help $*"
 }
+unset -f emacs
+emacs () {
+    echo "Do you mean vim?..."
+}
 export -f emacs
 unset -f vimplugins
 declare -fxr vimplugins
