@@ -1,10 +1,12 @@
 " Location and Quickfix list{{{
-nmap ,,, :lopen<cr>
+nmap ,,C :lclose<cr>
+nmap ,,c :lopen<cr>
 nmap ,,n :lnext<cr>,,
 nmap ,,p :lprevious<cr>,,
 nmap ,n :cnext<cr>,
 nmap ,p :cprevious<cr>,
 nmap ,c :copen<cr>
+nmap ,C :cclose<cr>
 "}}}
 " Fix annoyances{{{
 imap <TAB> <C-n>
@@ -56,15 +58,15 @@ nmap <leader>a 0
 nmap <leader>c :wa \| silent make! \| redraw! \| copen \| clast<cr>
 nmap <leader>d :bd<cr>
 nmap <leader>e $
-nmap <leader>fm :Marks<CR>
-nmap <leader>fb :Buffers<CR> 
+nmap <leader>fm :CtrlPBookmark<CR>
+nmap <leader>fb :CtrlPBuffer<CR> 
 nmap <leader>fc :e ~/.vimrc<CR>
-nmap <leader>ff :Files<cr>
+nmap <leader>ff :CtrlP<cr>
 nmap <leader>fg :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @+ = expand("%:p")<cr>
-nmap <leader>fr :History<CR>
-nmap <leader>fw :Windows<CR>
+nmap <leader>fr :CtrlPMixed<CR>
+nmap <leader>fd :CtrlPBookmarkDir<CR>
 nmap <leader>gf :e <cfile><CR>
 nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>

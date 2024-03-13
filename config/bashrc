@@ -104,7 +104,7 @@ man() {
 # }}}
 # {{{ VIM
 alias ,vimrc="vim ~/.vimrc"
-alias v="vim -c 'History'"
+alias v="vim -c 'CtrlPMixed'"
 alias vl='vim -c "normal '\''0"'
 # }}}
 # RANGER {{{

@@ -165,7 +165,7 @@ set sidebar_component_depth = 2
 # }}}
 # Testing
 source $HOME/script/spamrc
-
+save-hook . "+[Gmail]All Mail"
 set count_alternatives = yes
 set attach_save_dir = "~/tmp"
 # auto_view text/plain

@@ -30,6 +30,8 @@ function! RangeChooser()
     endif
     " Edit the first item.
     exec 'edit ' . fnameescape(names[0])
+    " Change the current directory to the files location
+    exec 'cd ' . expand("%:p:h")
     " Add any remaning items to the arg list/buffer list.
     for name in names[1:]
         exec 'argadd ' . fnameescape(name)
@@ -38,3 +40,4 @@ function! RangeChooser()
 endfunction
 command! -bar RangerChooser call RangeChooser()
 nnoremap <leader>r :<C-U>RangerChooser<CR>
+

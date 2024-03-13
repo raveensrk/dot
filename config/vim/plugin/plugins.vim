@@ -2,9 +2,9 @@ if 0
     !curl -LSso ~/dot/config/vim/autoload/pathogen.vim                       https://tpo.pe/pathogen.vim
     !git  clone 'https://github.com/dense-analysis/ale'                      ~/dot/config/vim/bundle/ale
     !git  clone 'git@github.com:easymotion/vim-easymotion'                   ~/dot/config/vim/bundle/vim-easymotion
-    !git  clone 'git@github.com:junegunn/fzf'                                ~/dot/config/vim/bundle/fzf
-    !~/dot/config/vim/bundle/fzf/install --all
-    !git  clone 'git@github.com:junegunn/fzf.vim'                            ~/dot/config/vim/bundle/fzf.vim
+    " !git  clone 'git@github.com:junegunn/fzf'                                ~/dot/config/vim/bundle/fzf
+    " !~/dot/config/vim/bundle/fzf/install --all
+    " !git  clone 'git@github.com:junegunn/fzf.vim'                            ~/dot/config/vim/bundle/fzf.vim
     !git  clone 'git@github.com:junegunn/vim-easy-align'                     ~/dot/config/vim/bundle/vim-easy-align
     !git  clone 'git@github.com:junegunn/vim-peekaboo.git'                   ~/dot/config/vim/bundle/vim-peekaboo
     !git  clone 'git@github.com:justinmk/vim-sneak.git'                      ~/dot/config/vim/bundle/vim-sneak
