@@ -9,6 +9,7 @@ while read -re line; do
 done
 
 cat <<HERE >> ~/script/custom.sh
+unset -f $name
 declare -fxr $name
 $name () {
 $(printf "%b" "$expansion")

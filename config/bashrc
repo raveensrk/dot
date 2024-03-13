@@ -177,3 +177,34 @@ alias l="ls -lAh"
 vimhelp () {
     vim -c "help $*"
 }
+export -f emacs
+unset -f vimplugins
+declare -fxr vimplugins
+vimplugins () {
+vim ~/dot/config/vim/plugin/plugins.vim
+}
+export -f vimplugins
+unset -f c
+declare -fxr c
+c () {
+text=""
+while read -re line; do
+text+="$line
+"
+done
+echo "$text" >> ~/capture.txt
+}
+export -f c
+unset -f vimgrep
+declare -fxr vimgrep
+vimgrep () {
+vim -c "grep $1 **"
+}
+export -f vimgrep
+unset -f unlock-pdf
+declare -fxr unlock-pdf
+unlock-pdf () {
+read -p "Enter Password: " -re pass
+qpdf --password="$pass" --decrypt "$1" "$2"
+}
+export -f unlock-pdf
