@@ -189,7 +189,7 @@ set showtabline=2
 set showcmdloc="last"
 set showcmd
 set showmode
-let &showbreak = '+++ '
+" let &showbreak = '+++ '
 autocmd FileType sh set formatprg=shfmt\ % 
 autocmd! BufWritePre
 autocmd BufWritePre *.txt s/ \+$//e
@@ -203,3 +203,4 @@ let g:netrw_hide=1
 if filereadable(expand('~/script/custom.vim'))
     source ~/script/custom.vim
 endif
+set shortmess="filnxtToOSrmwcCFa"

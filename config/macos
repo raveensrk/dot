@@ -25,4 +25,4 @@ fortune
 	[[ "${#@}" -ne 5 ]] && echo ERROR: Need 5 file names... && return 2
 	vim "$4" -c "split $2 | vsplit $1 |  wincmd j | vsplit $3 | wincmd k | vsplit $5"
 }
-
+alias killsafari="osascript -e 'quit app \"safari.app\"'"

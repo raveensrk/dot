@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# set -e
-# set -x
-
-fg $(jobs | fzf --tac | cut -d [ -f 2 | cut -d ] -f 1)

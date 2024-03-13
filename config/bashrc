@@ -19,9 +19,6 @@ export PATH="$HOME/script:$PATH"
 export PATH="$DOT/script:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
-if [ -d /var/lib/flatpak/exports/bin ]; then
-	export PATH="/var/lib/flatpak/exports/bin:$PATH"
-fi
 # }}}
 # {{{ BASH SHOPTS
 # This will exit bash shell after pressing control d 5 times
@@ -41,6 +38,7 @@ shopt -s globstar
 shopt -s nocaseglob
 shopt -s nocasematch
 shopt -s progcomp_alias
+shopt -s autocd
 
 
 export HISTCONTROL="ignoredups,erasedups"
@@ -106,7 +104,7 @@ man() {
 # }}}
 # {{{ VIM
 alias ,vimrc="vim ~/.vimrc"
-alias v="vim -c 'History'"
+alias v="vim -c 'CtrlPMixed'"
 alias vl='vim -c "normal '\''0"'
 # }}}
 # RANGER {{{
@@ -165,8 +163,8 @@ alias dc="cd -"
 # }}}
 os=$(uname -a | cut -d ' ' -f 1)
 export os
-source "$DOT/config/fzf"
-source "$DOT/config/zoxide"
+# source "$DOT/config/fzf"
+# source "$DOT/config/zoxide"
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
 # shellcheck source-path=~/script
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
@@ -176,3 +174,37 @@ if [ "$is_linux" != "Darwin" ]; then
     export PATH="$DOT/bin/linux:$PATH"
 fi
 alias l="ls -lAh"
+vimhelp () {
+    vim -c "help $*"
+}
+export -f emacs
+unset -f vimplugins
+declare -fxr vimplugins
+vimplugins () {
+vim ~/dot/config/vim/plugin/plugins.vim
+}
+export -f vimplugins
+unset -f c
+declare -fxr c
+c () {
+text=""
+while read -re line; do
+text+="$line
+"
+done
+echo "$text" >> ~/capture.txt
+}
+export -f c
+unset -f vimgrep
+declare -fxr vimgrep
+vimgrep () {
+vim -c "grep $1 **"
+}
+export -f vimgrep
+unset -f unlock-pdf
+declare -fxr unlock-pdf
+unlock-pdf () {
+read -p "Enter Password: " -re pass
+qpdf --password="$pass" --decrypt "$1" "$2"
+}
+export -f unlock-pdf

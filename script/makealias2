@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+read -p "Enter the alias name: " -re name
+echo "Enter the expansion: "
+
+expansion=""
+while read -re line; do
+    expansion+="$line\n"
+done
+
+cat <<HERE >> ~/script/custom.sh
+unset -f $name
+declare -fxr $name
+$name () {
+$(printf "%b" "$expansion")
+}
+export -f $name
+HERE
+
