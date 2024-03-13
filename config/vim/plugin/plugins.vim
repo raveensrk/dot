@@ -27,6 +27,7 @@ if 0
     !git  clone 'https://github.com/mechatroner/rainbow_csv'                 ~/dot/config/vim/bundle/rainbow_csv
     !git  clone 'https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup' ~/dot/config/vim/bundle/Damian-Conway-s-Vim-Setup
     !git  clone 'https://github.com/vim-scripts/YankRing.vim.git'            ~/dot/config/vim/bundle/YankRing
+    !git  clone 'git@github.com:ctrlpvim/ctrlp.vim.git'                      ~/dot/config/vim/bundle/ctrlp
 endif
 
 let g:bookmark_no_default_key_mappings = 1

@@ -1,6 +1,5 @@
 " Contains all my abbreviations
 " --------------------------------
-"
 ab vaild valid
 ab teh the
 ab fro for
@@ -11,5 +10,5 @@ function! Eatchar(pat)
 endfunction
 " iabbr <silent> if if ()<Left><C-R>=Eatchar('\s')<CR>
 iab lr <C-R>=printf("<leader")<CR><C-R>=Eatchar('\s')<CR>><C-R>=Eatchar('\s')<CR>
-iab --- -------------------------------------------------- 
+iab --- ------------------------------------------------------------------------------  
 iab #! #!/usr/bin/env bash<CR>
