@@ -104,8 +104,8 @@ man() {
 # }}}
 # {{{ VIM
 alias ,vimrc="vim ~/.vimrc"
-alias v="vim -c 'CtrlPMixed'"
-alias vl='vim -c "normal '\''0"'
+alias v="vim"
+alias vfr="vim -c 'CtrlPMixed'"
 # }}}
 # RANGER {{{
 export RANGER="ranger -r $DOT/config/ranger"

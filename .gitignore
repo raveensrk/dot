@@ -10,3 +10,4 @@ tags
 config/vim/bundle
 **.*swp
 config/vim/.netrwhist
+config/vim/spell
