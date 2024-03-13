@@ -21,10 +21,14 @@ web:*.{html,css,js}*
 --glob=!*.dat
 --glob=!*.SVM
 --glob=!*.vRefine
+--glob=!*.out
+--glob=!*.o
 
 # or
 --glob
 !git/*
+--glob=!tags
+--glob=!TAGS
 
 # Set the colors.
 --colors=line:none

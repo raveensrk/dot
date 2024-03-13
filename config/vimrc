@@ -92,6 +92,8 @@ set wildoptions=fuzzy
 " the screen
 set scrolloff=999
 set sidescrolloff=1
+set sidescroll=1
+set scrollopt=ver,jump,hor
 
 " set virtualedit=all
 " set virtualedit=
@@ -135,7 +137,7 @@ let g:netrw_keepdir=0
 let g:netrw_dirhistmax=1000
 
 " set grepprg=grep\ -RnH\ $*\ --exclude=\"tags\"\ --exclude=\"TAGS\"\ /dev/null
-set grepprg=rg\ --no-heading\ --with-filename\ --column\ --ignore-file\ $HOME/.scripts/.ignore\ $*
+set grepprg=RIPGREP_CONFIG_PATH=~/dot/config/ripgrep\ rg\ --no-heading\ --with-filename\ --column\ -g\ !tags\ -g\ !TAGS\ $*
 
 set showcmdloc="statusline"
 set statusline=[%n]%m%r%f%=%h%w%y%q%k[%p%%][%04l,%04v][%L]%S

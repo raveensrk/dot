@@ -1,6 +1,6 @@
 let g:fzf_vim = {}
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9, 'relative': v:true } }
-let g:fzf_preview_window = ['right,50%', 'ctrl-/']
+let g:fzf_preview_window = ['hidden', 'ctrl-/']
 let g:fzf_buffers_jump = 1
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 let g:fzf_tags_command = 'ctags -R'

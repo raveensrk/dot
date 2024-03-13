@@ -4,4 +4,4 @@ find . -iname "*#*" -exec rm -i {} \;
 find . -iname "*~*" -exec rm -i {} \;
 [ -d ~/Downloads ] && rm -f ~/Downloads/*.dcv
 find . -iname ".DS_Store" -print -delete
-find . -iname ".SVM" -print -delete
+find . -iname "*.SVM" -print -delete

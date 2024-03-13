@@ -19,13 +19,14 @@ if 0
     !git  clone 'git@github.com:tpope/vim-surround'                          ~/dot/config/vim/bundle/vim-surround
     !git  clone 'git@github.com:tpope/vim-unimpaired'                        ~/dot/config/vim/bundle/vim-unimpaired
     !git  clone 'git@github.com:tpope/vim-vinegar'                           ~/dot/config/vim/bundle/vim-vinegar
+    !git  clone 'git@github.com:tpope/vim-eunuch'                           ~/dot/config/vim/bundle/vim-eunuch
     !git  clone 'https://github.com/MattesGroeger/vim-bookmarks.git'         ~/dot/config/vim/bundle/vim-bookmarks
     !git  clone 'https://github.com/gcmt/taboo.vim.git'                      ~/dot/config/vim/bundle/taboo.vim
     !git  clone 'https://github.com/itchyny/lightline.vim.git'               ~/dot/config/vim/bundle/lightline.vim
     !git  clone 'https://github.com/mechatroner/rainbow_csv'                 ~/dot/config/vim/bundle/rainbow_csv
     !git  clone 'https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup' ~/dot/config/vim/bundle/Damian-Conway-s-Vim-Setup
     !git  clone 'https://github.com/vim-scripts/YankRing.vim.git'            ~/dot/config/vim/bundle/YankRing
-    !git  clone 'git@github.com:ctrlpvim/ctrlp.vim.git'                      ~/dot/config/vim/bundle/ctrlp
+    !git clone 'git@github.com:preservim/tagbar.git'                         ~/dot/config/vim/bundle/tagbar
 endif
 
 let g:bookmark_no_default_key_mappings = 1
