@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+read -p "Enter the script name: " -re name
+
+touch ~/script/"$name"
+chmod +x ~/script/"$name"
+vim ~/script/"$name" -c "read $HOME/dot/config/vim/skeleton/bash"

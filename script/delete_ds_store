@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# echo "Deleting .DS_Store file from $1..."
+find $1 -iname ".DS_Store" -print -delete

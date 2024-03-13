@@ -40,7 +40,6 @@ shopt -s nocasematch
 shopt -s progcomp_alias
 shopt -s autocd
 
-
 export HISTCONTROL="ignoredups,erasedups"
 export HISTSIZE=1000
 export HISTFILESIZE=1000
@@ -105,7 +104,7 @@ man() {
 # {{{ VIM
 alias ,vimrc="vim ~/.vimrc"
 alias v="vim"
-alias vfr="vim -c 'CtrlPMixed'"
+alias vfr="vim -c 'CtrlPMRUFiles'"
 # }}}
 # RANGER {{{
 export RANGER="ranger -r $DOT/config/ranger"
@@ -152,64 +151,39 @@ fi
 }
 # }}}
 # Convenience{{{
-alias ,hexdump="hexdump -Cv"
-alias ,compress="tar -cva -f "
-alias ,chatgpt="open https://chat.openai.com"
-alias ,note="vim ~/iCloud/inbox.txt"
-alias ,clipboard=",note"
-,github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')" ; }
-,git_pickaxe () { git log -p -S "$@" ; }
+alias hexdump="hexdump -Cv"
+alias compress="tar -cva -f "
+,github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
+,git_pickaxe() { git log -p -S "$@"; }
 alias dc="cd -"
 # }}}
 os=$(uname -a | cut -d ' ' -f 1)
 export os
-# source "$DOT/config/fzf"
-# source "$DOT/config/zoxide"
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
 # shellcheck source-path=~/script
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
 alias path="echo \$PATH | tr ':' '\n' | tac"
-alias gl="lazygit -p \$DOT"
+alias gl="lazygit -p \$DOT && lazygit -p \$HOME/work"
 if [ "$is_linux" != "Darwin" ]; then
-    export PATH="$DOT/bin/linux:$PATH"
+	export PATH="$DOT/bin/linux:$PATH"
 fi
 alias l="ls -lAh"
-vimhelp () {
-    vim -c "help $*"
+vimhelp() {
+	vim -c "help $*"
 }
-unset -f emacs
-emacs () {
-    echo "Do you mean vim?..."
+vimplugins() {
+	vim ~/dot/config/vim/plugin/plugins.vim
 }
-export -f emacs
-unset -f vimplugins
-declare -fxr vimplugins
-vimplugins () {
-vim ~/dot/config/vim/plugin/plugins.vim
+unlock-pdf() {
+	read -p "Enter Password: " -re pass
+	qpdf --password="$pass" --decrypt "$1" "$2"
 }
-export -f vimplugins
-unalias c
-unset -f c
-declare -fxr c
-c () {
-text=""
-while read -re line; do
-text+="$line
-"
-done
-echo "$text" >> ~/capture.txt
+emacs() {
+	echo "Do you mean vim?..."
 }
-export -f c
-unset -f vimgrep
-declare -fxr vimgrep
-vimgrep () {
-vim -c "grep $1 **"
+dot() {
+	cd ~/dot || return 2
 }
-export -f vimgrep
-unset -f unlock-pdf
-declare -fxr unlock-pdf
-unlock-pdf () {
-read -p "Enter Password: " -re pass
-qpdf --password="$pass" --decrypt "$1" "$2"
+script() {
+	cd ~/script/ || return 2
 }
-export -f unlock-pdf

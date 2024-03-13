@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-name="$(basename "$1")"
-name_without_extension="${name%\.*}"
-echo "$name_without_extension"

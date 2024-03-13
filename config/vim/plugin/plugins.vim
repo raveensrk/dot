@@ -1,4 +1,5 @@
 if 0
+    !git clone https://github.com/chrisbra/Colorizer                        ~/dot/config/vim/bundle/Colorizer
     !git clone 'git@github.com:pelodelfuego/vim-swoop.git'                  ~/dot/config/vim/bundle/vim-swoop
     !curl -LSso ~/dot/config/vim/autoload/pathogen.vim                       https://tpo.pe/pathogen.vim
     !git  clone 'https://github.com/dense-analysis/ale'                      ~/dot/config/vim/bundle/ale
@@ -49,3 +50,8 @@ set showcmd
 " colo gruvbox
 " let g:gruvbox_contrast_dark="hard"
 " set background=dark
+let g:colorizer_auto_color = 1
+    let g:colorizer_conceal_cursor_mode='nvc'
+
+    let g:yankring_history_dir = expand('~/dot/config/vim')
+let g:yankring_history_file = expand('yankring_history')

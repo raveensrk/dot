@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -euo pipefail
+
+read -re -p "Man page category: " opt
+man -k . | grep "($opt)" | cut -d "(" -f 1 | shuf | head -n 1 | xargs man
+# I think this only works on macos, linux not tested

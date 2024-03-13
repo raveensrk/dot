@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# This program will print and sort only addresses when piped from neomutt
-
-grep From: | tr ' ' '\n' | grep "^<" | sort | uniq | tr -d "<>" | grep @ | sort
-
-

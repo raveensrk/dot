@@ -98,3 +98,26 @@ augroup CtrlPDirMRU
 augroup END
 let g:ctrlp_buftag_ctags_bin = ''
 let g:ctrlp_user_command_async = 1
+function! s:setcwd()
+    let cph = expand('%:p:h', 1)
+    if cph =~ '^.\+://' | retu | en
+    for mkr in ['.git/', '.hg/', '.svn/', '.bzr/', '_darcs/', '.vimprojects', '.root']
+        let wd = call('find'.(mkr =~ '/$' ? 'dir' : 'file'), [mkr, cph.';'])
+        if wd != '' | let &acd = 0 | brea | en
+    endfo
+    exe 'lc!' fnameescape(wd == '' ? cph : substitute(wd, mkr.'$', '.', ''))
+endfunction
+
+autocmd BufEnter * call s:setcwd()
+command! DOT CtrlP ~/dot
+command! Tags CtrlPTag
+command! Line CtrlPLine
+nmap <leader>fR :CtrlPClearAllCaches<cr>
+nmap <leader>fb :CtrlPBuffer<cr>
+nmap <leader>fd :CtrlPBookmarkDir<CR>
+nmap <leader>ff :CtrlP<cr>
+nmap <leader>fm :CtrlPBookmark<CR>
+nmap <leader>fq :CtrlPQuickfix<cr>
+nmap <leader>fr :CtrlPMRUFiles<CR>
+nmap <leader>fl :CtrlPLine<CR>
+nmap <leader>fh :Helptags<CR>

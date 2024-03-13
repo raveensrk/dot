@@ -18,7 +18,7 @@ nnoremap q <NOP>
 nnoremap ; :
 nnoremap : :
 nnoremap <leader>; :term 
-nmap ,cd :cd %:h<CR>
+nmap <leader>cd :cd %:h<CR>
 "}}}
  " Searching{{{
 nmap <leader>h :help 
@@ -55,18 +55,12 @@ nmap <leader>Y ggVGy2<C-o>
 "}}}
 nmap <leader>` :Scratch<cr>
 nmap <leader>a 0
-nmap <leader>c :wa \| silent make! \| redraw! \| copen \| clast<cr>
 nmap <leader>d :bd<cr>
 nmap <leader>e $
-nmap <leader>fm :CtrlPBookmark<CR>
-nmap <leader>fb :CtrlPBuffer<CR> 
 nmap <leader>fc :e ~/.vimrc<CR>
-nmap <leader>ff :CtrlP<cr>
 nmap <leader>fg :Rg<cr>
 nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @+ = expand("%:p")<cr>
-nmap <leader>fr :CtrlPMRUFiles<CR>
-nmap <leader>fd :CtrlPBookmarkDir<CR>
 nmap <leader>gf :e <cfile><CR>
 nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>

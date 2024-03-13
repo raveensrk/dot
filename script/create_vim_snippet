@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -e
+# set -x
+
+help () {
+    less "$0"
+}
+
+ft="$1"
+name="$2"
+
+[[ ! -v ft ]] && echo Error! && help && exit 2
+[[ ! -v name ]] && echo Error! && help && exit 2
+
+vim ~/dot/config/vim/snippet/"$1"/"$2"
+vim ~/dot/config/vim/ftplugin/$1.vim
