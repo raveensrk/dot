@@ -100,15 +100,18 @@ set scrollopt=ver,jump,hor
 " set textwidth=0 wrapmargin=0
 " }}}
 " {{{ BACKUPS AND UNDO
-" set undodir=~/.vim/undo
-" set backupdir=~/.vim/backup
+if ! isdirectory(expand("~/.vim/undo"))   | call mkdir(expand("~/.vim/undo"),   'p') | endif
+if ! isdirectory(expand("~/.vim/backup")) | call mkdir(expand("~/.vim/backup"), 'p') | endif
+set undodir=$HOME/.vim/undo
+set backupdir=$HOME/.vim/backup
 set noswapfile
-set nobackup
-set nowritebackup
-set noundofile
-" if ! isdirectory("~/.vim/undo")   | call mkdir("~/.vim/undo",   'p') | endif
-" if ! isdirectory("~/.vim/backup") | call mkdir("~/.vim/backup", 'p') | endif
+set backup
+set writebackup
+set undofile
 " }}}
+
+
+
 " {{{ NETRW
 " let g:netrw_altv = 1
 " let g:netrw_banner = 0
@@ -167,7 +170,7 @@ set winfixwidth
 set isfname-==
 set isfname-=,
 
-    packadd cfilter
+packadd cfilter
 set switchbuf=uselast
 autocmd! BufEnter *.log setlocal readonly 
 autocmd! BufEnter *.log setlocal wrap
@@ -189,8 +192,6 @@ set showtabline=2
 set showcmdloc="last"
 set showcmd
 set showmode
-" let &showbreak = '+++ '
-autocmd FileType sh set formatprg=shfmt\ % 
 autocmd! BufWritePre
 autocmd BufWritePre *.txt s/ \+$//e
 let g:ft_man_folding_enable = 1
@@ -201,5 +202,7 @@ set hidden
 let g:netrw_hide=1
 
 if filereadable(expand('~/script/custom.vim'))
-    source ~/script/custom.vim
+    execute 'source ' . expand('~/script/custom.vim')
 endif
+set gdefault
+command! Format :norm mmggVGgq`m

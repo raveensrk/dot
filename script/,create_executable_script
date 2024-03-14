@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-touch $1
-chmod +x $1
-vim $1 -c "read ~/.vim/skeleton/bash" -c "w" -c "e!"

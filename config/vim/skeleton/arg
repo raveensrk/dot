@@ -1,0 +1,24 @@
+help () {
+    less "$0"
+}
+
+while [ "$1" ]; do
+    case "$1" in
+        --input|-i)
+            shift
+            input="$1"
+            ;;
+        --help|-h)
+            help
+            ;;
+        *)
+            echo "ERROR! WRONG Argument!"
+            help
+            exit 2
+            ;;
+    esac
+    shift
+done
+
+echo "$input"
+

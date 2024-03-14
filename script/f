@@ -1,0 +1,12 @@
+#!/bin/bash
+
+path=$(realpath "$(which "$1")")
+
+if [ -f "$path" ]; then
+    $EDITOR "$path"
+fi
+
+which "$path"
+type "$path"
+whereis "$path"
+exit 0

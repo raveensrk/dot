@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-$EDITOR ~/capture.txt
+text=""
+while read -re line; do
+text+="$line
+"
+done
+echo "$text" >> ~/capture.txt

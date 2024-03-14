@@ -13,7 +13,6 @@ packages=(
 	automake
 	basictex
 	bat
-	cmatrix
 	cscope
 	curl
 	dialog
@@ -46,13 +45,12 @@ packages=(
 	ruby
 	shellcheck
 	sqlite
-	stow
 	tldr
 	neomutt
 	universal-ctags
 	up
 	urlview
-	vim
+	# vim
 	w3m
 	wget
 	shfmt
@@ -74,5 +72,3 @@ for package in "${packages[@]}"; do
 	fi
 done
 
-python3 -m pip install --upgrade pip
-python3 -m pip install --user pynvim

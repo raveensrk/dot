@@ -1,10 +1,3 @@
-set nu
-set nowrap
-command! SplitPlusargs :s/ -p/ \\\r-p/g
-" set errorformat+=%.%#xmvlog:\ %.%#\\,%.%#(%f\\,%l\|%c%.%#
-" set errorformat=%.%#xmvlog:\ %\\%#E\\,%.%#(%f\\,%l\|%c):\ %m
-" set makeprg=runIus\ -ed\ -do\ compile\ -t\ fcu2__a_template_test
-" set makeprg=xrun\ %
 iab Constructor function new(string name, uvm_component p = null);<CR>    super.new(name,p);<CR>    obj_name = new("obj_name",this);<CR>endfunction
 iab casee case(sel)<CR>	2'b00    : out = a;<CR>  2'b01    : out = b;<CR>  2'b10    : out = c;<CR>  default  : out = 0;<CR>endcase
 iab displayy $display("None");
@@ -30,8 +23,14 @@ iab uvm_fatall `uvm_fatal(get_name(), $psprintf(""));
 set autoindent
 set expandtab
 set isfname-==
-set shiftwidth=2
+set shiftwidth=4
 set smartindent
-set tabstop=2 softtabstop=2
-set formatprg=verible-verilog-format\ -
-nmap <leader><leader>= mmggVGgq`m
+set tabstop=4 softtabstop=4
+set formatprg=verible-verilog-format
+set nu
+set nowrap
+command! SplitPlusargs :s/ -p/ \\\r-p/g
+" set errorformat+=%.%#xmvlog:\ %.%#\\,%.%#(%f\\,%l\|%c%.%#
+" set errorformat=%.%#xmvlog:\ %\\%#E\\,%.%#(%f\\,%l\|%c):\ %m
+" set makeprg=runIus\ -ed\ -do\ compile\ -t\ fcu2__a_template_test
+" set makeprg=xrun\ %

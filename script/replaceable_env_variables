@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -e
+
+declare -A valid
+# valid[0]='a'
+# valid[1]='b'
+# valid['third']='c'
+for item in $(env); do
+	# tput sgr0
+	path=$(echo $item | cut -d "=" -f 2-)
+	var=$(echo $item | cut -d "=" -f 1)
+	[[ ! -d "$path" ]] && continue
+	[[ $path = "" ]] && continue
+	[[ $path = "." ]] && continue
+	[[ $path = ".." ]] && continue
+	[[ $path = "./" ]] && continue
+	[[ $path = "../" ]] && continue
+	[[ $path = "//" ]] && continue
+	[[ $var = "PWD" ]] && continue
+	[[ $var = "TMPDIR" ]] && continue
+	[[ $var = "OLDPWD" ]] && continue
+    echo valid variable is $var and path is $path...
+	valid["$var"]="$path"
+done      
+
+echo valid associative array is ${valid[@]@k}
+
+# sed_command='sed -e ";^$;d"'
+ sed_command="gsed "
+for key in ${!valid[@]}; do
+    echo $key
+    path=${valid[$key]}
+    sed_command+=" -e s@$path@\$$key@g"
+done
+echo ---------------------
+echo $sed_command
+echo ---------------------
+
+tput setab 1
+[[ "$1" = "" ]] && [[ ! -p /dev/stdin ]] && echo No arg or std in... && exit 2
+tput sgr0
+
+cat "${1:-/dev/stdin}" | $sed_command

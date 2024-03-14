@@ -11,3 +11,5 @@ config/vim/bundle
 **.*swp
 config/vim/.netrwhist
 .config/lazygit/config.yml
+config/vim/spell
+config/vim/yankring_history_v2.txt

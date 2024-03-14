@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+compgen -A function -abckg | sort | uniq | fzy | xargs eval
