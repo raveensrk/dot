@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+echo "Enter name of the script: " | lolcat -a
+read -re name
+
+loc="$HOME/script/$name"
+
+create_executable_script "$loc"
+
+cat "$HOME/dot/config/vim/skeleton/bash" >> "$loc"
+history -a
+tail -10 ~/.bash_history | grep -iv "^#" >> "$loc"
+
+vim "$loc"

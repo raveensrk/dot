@@ -136,7 +136,7 @@ bind index               <Backtab> previous-new-then-unread
 bind index               <Down>    next-undeleted
 bind index               <Up>      previous-undeleted
 bind index               m         mail
-bind index               s         save-message
+bind index,pager         s         save-message
 bind index               y         imap-fetch-mail
 bind index               z         sidebar-toggle-visible
 bind index,pager         A         create-alias

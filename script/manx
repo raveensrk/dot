@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+man -k . | cut -d "(" -f 1 | fzy | xargs man

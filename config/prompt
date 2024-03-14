@@ -31,4 +31,4 @@ update_prompt () {
     export PS1="\W:$ "
 }
 
-export PROMPT_COMMAND="update_prompt"
+export PROMPT_COMMAND="history -a && update_prompt"

@@ -170,7 +170,7 @@ set winfixwidth
 set isfname-==
 set isfname-=,
 
-    packadd cfilter
+packadd cfilter
 set switchbuf=uselast
 autocmd! BufEnter *.log setlocal readonly 
 autocmd! BufEnter *.log setlocal wrap

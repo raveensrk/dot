@@ -83,7 +83,7 @@ vmap <Leader>ll :call SwoopSelection()<CR>
 nmap <Leader>lm :call SwoopMulti()<CR>
 vmap <Leader>lm :call SwoopMultiSelection()<CR>
 
-nmap Y yg_
+nmap Y y$
 nmap _ :vertical resize -5<CR>
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
