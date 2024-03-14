@@ -26,7 +26,7 @@ set isfname-==
 set shiftwidth=4
 set smartindent
 set tabstop=4 softtabstop=4
-set formatprg=verible-verilog-format
+set formatprg=verible-verilog-format\ --indentation_spaces\ 4\ --over_column_limit_penalty\ 78\ -
 set nu
 set nowrap
 command! SplitPlusargs :s/ -p/ \\\r-p/g
@@ -34,3 +34,4 @@ command! SplitPlusargs :s/ -p/ \\\r-p/g
 " set errorformat=%.%#xmvlog:\ %\\%#E\\,%.%#(%f\\,%l\|%c):\ %m
 " set makeprg=runIus\ -ed\ -do\ compile\ -t\ fcu2__a_template_test
 " set makeprg=xrun\ %
+command! Lint :term verible-verilog-lint %

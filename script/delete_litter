@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
- 
+
+export PATH+=":~/dot/script"
+
 find . -iname "*#*" -exec rm -i {} \;
 find . -iname "*~*" -exec rm -i {} \;
 [ -d ~/Downloads ] && rm -f ~/Downloads/*.dcv

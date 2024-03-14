@@ -184,3 +184,6 @@ dot() {
 script() {
 	cd ~/script/ || return 2
 }
+fd () {
+    cd "$(find . -type d | fzy)" || { echo error && return 2;}
+}
