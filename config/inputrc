@@ -33,7 +33,7 @@ set match-hidden-files Off
 "\C-p": previous-history
 "\C-n": next-history
 # "\C-r": reverse-search-history
-"\C-r": "history | cut -d ] -f 2- | sort | uniq | fzy"
+"\C-r": "eval $(history | cut -d ] -f 2- | sort | uniq | fzy)"
 "\C-xa": yank-last-arg
 "\C-k": kill-line
 "\C-y": yank

@@ -3,6 +3,7 @@
 ab vaild valid
 ab teh the
 ab fro for
+ab dispaly display
 
 function! Eatchar(pat)
     let c = nr2char(getchar(0))

@@ -26,7 +26,7 @@ set isfname-==
 set shiftwidth=4
 set smartindent
 set tabstop=4 softtabstop=4
-set formatprg=verible-verilog-format
+set formatprg=verible-verilog-format\ --indentation_spaces\ 4\ --over_column_limit_penalty\ 78\ -
 set nu
 set nowrap
 command! SplitPlusargs :s/ -p/ \\\r-p/g
@@ -39,3 +39,4 @@ command! SplitPlusargs :s/ -p/ \\\r-p/g
 let g:ale_linters = {
 \   'systemverilog': 'all'
 \}
+command! Lint :term verible-verilog-lint %

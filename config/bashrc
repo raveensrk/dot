@@ -54,25 +54,22 @@ export PROMPT_COMMAND="$PROMPT_COMMAND"
 if command -v bat >/dev/null; then
 	alias cat=bat
 fi
-alias ,chop="tr -d '\n'"         # Remove newline
-alias ,transposevh="tr '\n' ' '" # Transpose vertical to horizontal
-alias ,transposehv="tr ' ' '\n'" # Transpose horizontal to vertical
-alias ,untar="tar xf"
-alias ,hcat="paste -s" # To concatenate the contents of a vertical file horizontally
-# LS aliases
+alias chop="tr -d '\n'"         # Remove newline
+alias untar="tar xf"
+alias hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 alias ..="cd .."
-alias ,top_faster_refresh='top -d 0.125'
-alias ,date='date -I'
-alias ,date_yesterday='/bin/date -I -v-1d'
-alias ,date1="date +%Y%m%d%H%M%S"
-alias ,date2='date -Iseconds | sed "s/:/-/g"'
+alias top2='top -d 0.125'
+alias date2='date -I'
+alias date2_yesterday='/bin/date -I -v-1d'
+alias date2_long="date +%Y%m%d%H%M%S"
+alias date2_long_long='date -Iseconds | sed "s/:/-/g"'
 alias mkdir="mkdir -v"
 alias cp="cp -vi"
 alias mv="mv -vi"
 alias rm="rm -vi"
-alias ,tree="tree -C"
-alias ,tree2="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
-alias ,rsync="rsync -CazhPvu"                                         # -C
+alias tree2="tree -C"
+alias tree3="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
+alias rsync="rsync -CazhPvu"                                         # -C
 
 # }}}
 # {{{ PAGERS
@@ -102,7 +99,7 @@ man() {
 }
 # }}}
 # {{{ VIM
-alias ,vimrc="vim ~/.vimrc"
+alias vimrc="vim ~/.vimrc"
 alias v="vim"
 alias vfr="vim -c 'CtrlPMRUFiles'"
 # }}}
@@ -144,7 +141,7 @@ fi
 # }}}
 # }}}
 # {{{ GREP
-,find-grep() {
+find-grep() {
 	echo '''
     find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
     '''
@@ -153,8 +150,8 @@ fi
 # Convenience{{{
 alias hexdump="hexdump -Cv"
 alias compress="tar -cva -f "
-,github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
-,git_pickaxe() { git log -p -S "$@"; }
+github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
+git_pickaxe() { git log -p -S "$@"; }
 alias dc="cd -"
 # }}}
 os=$(uname -a | cut -d ' ' -f 1)
@@ -163,7 +160,7 @@ export os
 # shellcheck source-path=~/script
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
 alias path="echo \$PATH | tr ':' '\n' | tac"
-alias gl="lazygit -p \$DOT && lazygit -p \$HOME/work"
+alias gl="clear && lazygit -p \$DOT && lazygit -p \$HOME/work"
 if [ "$is_linux" != "Darwin" ]; then
 	export PATH="$DOT/bin/linux:$PATH"
 fi
@@ -186,4 +183,7 @@ dot() {
 }
 script() {
 	cd ~/script/ || return 2
+}
+fd () {
+    cd "$(find . -type d | fzy)" || { echo error && return 2;}
 }

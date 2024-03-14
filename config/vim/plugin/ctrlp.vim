@@ -7,7 +7,8 @@ let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:100,results:10'
 let g:ctrlp_switch_buffer = 'Et'
 let g:ctrlp_reuse_window = 'netrw\|help\|quickfix'
 let g:ctrlp_tabpage_position = 'ac'
-let g:ctrlp_working_path_mode = 'ra'
+" let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode = ''
 let g:ctrlp_root_markers = ['.root']
 let g:ctrlp_use_caching = 1
 let g:ctrlp_clear_cache_on_exit = 0
@@ -108,7 +109,7 @@ function! s:setcwd()
     exe 'lc!' fnameescape(wd == '' ? cph : substitute(wd, mkr.'$', '.', ''))
 endfunction
 
-autocmd BufEnter * call s:setcwd()
+" autocmd BufEnter * call s:setcwd()
 command! DOT CtrlP ~/dot
 command! Tags CtrlPTag
 command! Line CtrlPLine
