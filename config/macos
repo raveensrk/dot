@@ -16,12 +16,12 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/bin/macos:$PATH"
 fortune
 
-,2x2() {
+2x2() {
 	[[ "${#@}" -ne 4 ]] && echo ERROR: Need 4 file names... && return 2
 	vim "$4" -c "split $2 | vsplit $1 |  wincmd j | vsplit $3"
 }
 
-,2x2_1() {
+2x2_1() {
 	[[ "${#@}" -ne 5 ]] && echo ERROR: Need 5 file names... && return 2
 	vim "$4" -c "split $2 | vsplit $1 |  wincmd j | vsplit $3 | wincmd k | vsplit $5"
 }
