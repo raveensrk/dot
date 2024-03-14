@@ -21,8 +21,8 @@ export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 # }}}
 # {{{ BASH SHOPTS
-# This will exit bash shell after pressing control d 5 times
-export IGNOREEOF=5
+# This will exit bash shell after pressing control d 2 times
+export IGNOREEOF=1
 # shopt -s direxpand
 # shopt -s histappend
 # set -o vi

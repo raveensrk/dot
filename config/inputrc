@@ -27,7 +27,18 @@ set vi-ins-mode-string (+)
 set match-hidden-files Off
 
 "TAB": menu-complete               
-"\C-a": vi-yank-arg
+# "\C-a": vi-yank-arg
+"\C-a": beginning-of-line
+"\C-e": end-of-line
+"\C-p": previous-history
+"\C-n": next-history
+# "\C-r": reverse-search-history
+"\C-r": "history | cut -d ] -f 2- | sort | uniq | fzy"
+"\C-xa": yank-last-arg
+"\C-k": kill-line
+"\C-y": yank
+"\M-y": yank-pop
+"\C-s": forward-search-history
 "\C-i": menu-complete               
 "\e[Z": menu-complete-backward
 "\C-l": clear-screen
