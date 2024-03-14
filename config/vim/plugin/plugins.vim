@@ -55,3 +55,4 @@ let g:colorizer_auto_color = 1
 
     let g:yankring_history_dir = expand('~/dot/config/vim')
 let g:yankring_history_file = expand('yankring_history')
+let g:ale_virtualtext_cursor=0
