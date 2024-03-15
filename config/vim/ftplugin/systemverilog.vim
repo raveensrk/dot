@@ -34,4 +34,9 @@ command! SplitPlusargs :s/ -p/ \\\r-p/g
 " set errorformat=%.%#xmvlog:\ %\\%#E\\,%.%#(%f\\,%l\|%c):\ %m
 " set makeprg=runIus\ -ed\ -do\ compile\ -t\ fcu2__a_template_test
 " set makeprg=xrun\ %
+" let g:ale_linters = {'systemverilog': ['verible-verilog-lint']}
+" let g:ale_linters_explicit = 1
+let g:ale_linters = {
+\   'systemverilog': 'all'
+\}
 command! Lint :term verible-verilog-lint %

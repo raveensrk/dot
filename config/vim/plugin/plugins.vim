@@ -28,7 +28,7 @@ if 0
     !git  clone 'https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup' ~/dot/config/vim/bundle/Damian-Conway-s-Vim-Setup
     !git  clone 'https://github.com/vim-scripts/YankRing.vim.git'            ~/dot/config/vim/bundle/YankRing
     !git clone 'git@github.com:preservim/tagbar.git'                         ~/dot/config/vim/bundle/tagbar
-        !git  clone 'git@github.com:ctrlpvim/ctrlp.vim.git'                      ~/dot/config/vim/bundle/ctrlp
+    !git  clone 'git@github.com:ctrlpvim/ctrlp.vim.git'                      ~/dot/config/vim/bundle/ctrlp
 endif
 
 let g:bookmark_no_default_key_mappings = 1
@@ -51,7 +51,15 @@ set showcmd
 " let g:gruvbox_contrast_dark="hard"
 " set background=dark
 let g:colorizer_auto_color = 1
-    let g:colorizer_conceal_cursor_mode='nvc'
+let g:colorizer_conceal_cursor_mode='nvc'
 
-    let g:yankring_history_dir = expand('~/dot/config/vim')
+let g:yankring_history_dir = expand('~/dot/config/vim')
 let g:yankring_history_file = expand('yankring_history')
+let g:ale_virtualtext_cursor=0
+
+source ~/dot/config/vim/bundle/Damian-Conway-s-Vim-Setup/plugin/dragvisuals.vim                          
+let g:DVB_TrimWS = 1                                    
+vmap  <expr>  <S-LEFT>   DVB_Drag('left')               
+vmap  <expr>  <S-RIGHT>  DVB_Drag('right')              
+vmap  <expr>  <S-DOWN>   DVB_Drag('down')               
+vmap  <expr>  <S-UP>     DVB_Drag('up')                 
