@@ -99,7 +99,7 @@ man() {
 }
 # }}}
 # {{{ VIM
-alias vimrc="vim ~/.vimrc"
+alias vimrc="vim $DOT/config/vimrc"
 alias v="vim"
 alias vfr="vim -c 'CtrlPMRUFiles'"
 # }}}
@@ -181,9 +181,27 @@ emacs() {
 dot() {
 	cd ~/dot || return 2
 }
+ffdot() {
+    dot
+    ff
+}
+fgdot() {
+    dot
+    fg
+}
 script() {
 	cd ~/script/ || return 2
 }
 fd () {
     cd "$(find . -type d | fzy)" || { echo error && return 2;}
 }
+alias bashrc="vim \$DOT/config/bashrc"
+unset -f resetbash
+declare -fxr resetbash
+resetbash () {
+    clear
+    echo Resetting... | lolcat
+    sleep 1
+    exec bash -i -l -c "source $HOME/dot/config/bashrc"
+}
+export -f resetbash
