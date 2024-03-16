@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+combined="/tmp/combined.md"
+
+[ -f $combined ] && rm $combined
+
+while read -re line; do
+	filename=$(basename "$line" .txt)
+	{
+		printf "%s\n\n" "# $filename"
+		cat "$line"
+		printf "\n\n"
+	} >>"$combined"
+done < <(find "$1" -type f)
+
+pandoc "$combined" -o /tmp/combined.pdf
+open /tmp/combined.pdf
+
+[ -f $combined ] && rm $combined

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+from=$(grep -e "^From:" /dev/stdin | grep --color -o -e "<.*@.*\..*>" | tr -d "<>" | sed 's/^/\.\*/g' | sed 's/$/\.\*/g' )
+
+spamstring="spam \"^From:$from\" SPAM"
+echo "$spamstring"
+echo -e "Added \e[31m$spamstring\e[0m to ~/script/spamrc. Restart neomutt for changes to take effect."
+echo "$spamstring" >> ~/script/spamrc

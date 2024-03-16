@@ -11,7 +11,7 @@ syntax keyword xNotes  notes
 hi Normal ctermfg=white
 hi Notes  ctermfg=white ctermbg=blue
 
-hi link xTodo   CocErrorSign
+hi link xTodo   Constant
 hi link xDone   LightlineLeft_active_0_tabsel
 hi link xOthers Question
 hi link xNotes  Notes
