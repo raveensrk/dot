@@ -205,3 +205,4 @@ resetbash () {
     exec bash -i -l -c "source $HOME/dot/config/bashrc"
 }
 export -f resetbash
+export RIPGREP_CONFIG_PATH="$HOME/dot/config/ripgrep"
