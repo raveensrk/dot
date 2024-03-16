@@ -187,3 +187,4 @@ script() {
 fd () {
     cd "$(find . -type d | fzy)" || { echo error && return 2;}
 }
+export RIPGREP_CONFIG_PATH="$HOME/dot/config/ripgrep"

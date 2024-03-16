@@ -43,3 +43,6 @@ web:*.{html,css,js}*
 # Also show hidden files
 # --hidden
 --max-filesize=1M
+
+# Dont ignore .gitignore files
+--no-ignore
