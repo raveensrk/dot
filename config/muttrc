@@ -26,7 +26,7 @@ set timeout               = 15
 set ts_enabled            = yes
 set use_domain            = no
 set use_threads           = "threads"
-set index_format = "%Z %H %N %[%F] %a %s %X"
+set index_format = "%Z %4.4H %[%F] %20.20a %s"
 unset imap_passive
 set real_name = "Raveen Kumar"
 # }}}
@@ -114,13 +114,13 @@ color tree        red default
 bind  generic,pager        t  noop
 bind  index,pager          s  noop
 macro index,pager          d "<delete-message><sync-mailbox>" "Move message to trash"
-
-macro index,pager          x "<pipe-message>urlview<Enter>" "call urlview to extract URLs out of a message"
-macro pager,attach,compose x "<pipe-entry>urlview<Enter>"   "call urlview to extract URLs out of a message"
+macro pager          X "<pipe-message>addtospamrc<Enter>"
+macro index          \Cs ":source ~/dot/config/muttrc<Enter>"
+# macro index,pager          x "<pipe-message>urlview<Enter>" "call urlview to extract URLs out of a message"
+# macro pager,attach,compose x "<pipe-entry>urlview<Enter>"   "call urlview to extract URLs out of a message"
 bind  index                g first-entry
 bind  pager                g top
- bind index <Space> noop
- bind index <Space>e next-line
+bind index <Space> noop
 bind editor              \Cn       history-down
 bind editor              \Cp       history-up
 bind generic             q         exit
@@ -165,7 +165,6 @@ set sidebar_component_depth = 2
 # }}}
 # Testing
 source $HOME/script/spamrc
-save-hook . "+[Gmail]All Mail"
 set count_alternatives = yes
 set attach_save_dir = "~/tmp"
 # auto_view text/plain

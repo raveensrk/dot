@@ -204,6 +204,6 @@ let g:netrw_hide=1
 if filereadable(expand('~/script/custom.vim'))
     execute 'source ' . expand('~/script/custom.vim')
 endif
-set gdefault
+" set gdefault
 command! Format :norm mmggVGgq`m
 set autochdir

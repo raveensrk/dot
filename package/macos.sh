@@ -16,6 +16,7 @@ packages=(
 	cscope
 	curl
 	dialog
+    dict
 	ffmpeg
 	ffmpegthumbnailer
 	findutils

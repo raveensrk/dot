@@ -10,11 +10,11 @@ unset -f blue; blue () { tput setaf 4; }
 unset -f nc; nc () { tput sgr0; }
 
 # gfind -P $1 -xtype l
-count=$(find "$1" -type l ! -exec test -e {} \; -print | wc -l)
+count=$(find . -type l ! -exec test -e {} \; -print | wc -l)
 [[ $count -eq 0 ]] && exit 0
 
 
-readarray -t broken_links < <(find "$1" -type l ! -exec test -e {} \; -print)
+readarray -t broken_links < <(find . -type l ! -exec test -e {} \; -print)
 for link in "${broken_links[@]}"; do
     yellow
     echo "Removing broken symlink..."
