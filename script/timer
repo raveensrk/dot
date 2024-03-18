@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+val=1
+count=0
+if [[ "$1" = "" ]]; then
+	val=1
+else
+    val="$1"
+fi
+echo "Timer set for $val mins..."
+
+seconds=$((val*60))
+echo $seconds
+
+while test $count -lt $seconds; do
+    count=$((count+1))
+    echo Sleeping... $count...
+	sleep 1
+done
+
+for ((i = 0; i < 5; i++)); do
+	sleep 1
+	mpv ~/dot/audio/big-ben.mp3
+done

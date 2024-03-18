@@ -7,6 +7,7 @@ syntax keyword xTodo   todo
 syntax keyword xDone   done
 syntax keyword xOthers others
 syntax keyword xNotes  notes
+syntax region xSeperator  start=/^---/ end="---$"
 
 hi Normal ctermfg=white
 hi Notes  ctermfg=white ctermbg=blue
@@ -15,6 +16,7 @@ hi link xTodo   Constant
 hi link xDone   LightlineLeft_active_0_tabsel
 hi link xOthers Question
 hi link xNotes  Notes
+hi link xSeperator Constant
 sign define notes text=>> linehl=xNotes
 
 " test sign

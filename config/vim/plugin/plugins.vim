@@ -21,6 +21,7 @@ if 0
     !git  clone 'git@github.com:tpope/vim-unimpaired'                        ~/dot/config/vim/bundle/vim-unimpaired
     !git  clone 'git@github.com:tpope/vim-vinegar'                           ~/dot/config/vim/bundle/vim-vinegar
     !git  clone 'git@github.com:tpope/vim-eunuch'                           ~/dot/config/vim/bundle/vim-eunuch
+    !git  clone 'git@github.com:tpope/vim-fugitive'                           ~/dot/config/vim/bundle/vim-fugitive
     !git  clone 'https://github.com/MattesGroeger/vim-bookmarks.git'         ~/dot/config/vim/bundle/vim-bookmarks
     !git  clone 'https://github.com/gcmt/taboo.vim.git'                      ~/dot/config/vim/bundle/taboo.vim
     !git  clone 'https://github.com/itchyny/lightline.vim.git'               ~/dot/config/vim/bundle/lightline.vim

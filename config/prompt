@@ -27,8 +27,34 @@ export WHITE="\[$(tput setaf 7)\]"
 export YELLOW="\[$(tput setaf 3)\]"
 
 update_prompt () {
-    # export PS1="${CYAN}\W:$ ${RESET}"
-    export PS1="\W:$ "
+    local errorcode="$?"
+    if [ $errorcode -eq 0 ] ; then
+        colorcode="[$errorcode]"
+    else
+        colorcode="\[\e[31m[$errorcode]\e[0m\]"
+    fi
+    # PS1="\[\e[46m\]\[\e[30m\]"
+    # PS1+="$colorcode"
+    # PS1+="\[\e[46m\]\[\e[30m\]"
+    # PS1+=" \W : $"
+    # PS1+="\[\e[0m\] "
+    PS1="\[\e[48;5;234m\]\[\e[37m\]"
+    PS1+="$colorcode"
+    PS1+="\[\e[48;5;234m\]\[\e[37m\]"
+    PS1+=" | "
+    PS1+="\d \@"
+    PS1+=" | "
+    PS1+="\[\e[33m\]"
+    PS1+="\W"
+    PS1+="\[\e[37m\]"
+    PS1+=" "
+    PS1+=":"
+    PS1+=" "
+    PS1+="$"
+    PS1+=" "
+    PS1+="\[\e[0m\]"
+    PS1+="\n"
+    export PS1
 }
 
-export PROMPT_COMMAND="history -a && update_prompt"
+export PROMPT_COMMAND="update_prompt && history -a"

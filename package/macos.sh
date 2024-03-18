@@ -11,7 +11,7 @@ fi
 packages=(
 	autoconf
 	automake
-	basictex
+	# basictex
 	bat
 	cscope
 	curl
@@ -32,6 +32,7 @@ packages=(
 	lazygit
 	lesspipe
 	lolcat
+    mpv
 	mactex
 	mediainfo
 	neofetch
@@ -60,16 +61,4 @@ packages=(
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-for package in "${packages[@]}"; do
-	if brew list --versions "$package"; then
-		echo "Package $package, is already installed..."
-	else
-		if brew install --cask "$package"; then
-			echo "Package $package, installed as cask..."
-		else
-			brew install "$package"
-			echo "Package $package, installed as not cask..."
-		fi
-	fi
-done
-
+brew install ${packages[@]}
