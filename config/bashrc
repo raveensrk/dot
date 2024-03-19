@@ -156,6 +156,8 @@ alias dc="cd -"
 # }}}
 os=$(uname -a | cut -d ' ' -f 1)
 export os
+source "$DOT/config/fzf"
+source "$DOT/config/zoxide"
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
 # shellcheck source-path=~/script
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
