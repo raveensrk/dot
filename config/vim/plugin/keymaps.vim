@@ -9,10 +9,10 @@ nmap ,c :copen<cr>
 nmap ,C :cclose<cr>
 "}}}
 " Fix annoyances{{{
-imap <TAB> <C-n>
-imap <S-Tab> <C-p>
-nnoremap Q  q
-nnoremap q <NOP>
+" imap <TAB> <C-n>
+" imap <S-Tab> <C-p>
+" nnoremap Q  q
+" nnoremap q <NOP>
 "}}}
 "Terminal{{{
 nnoremap ; :
@@ -64,7 +64,7 @@ nmap <leader>fp :let @+ = expand("%:p")<cr>
 nmap <leader>gf :e <cfile><CR>
 nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>
-nmap - :RangerChooser<cr>
+" nmap - :RangerChooser<cr>
 nmap <leader>s :so<cr>
 nmap <leader>t :set nowrap!<cr>
 nmap <leader>w :w<CR>

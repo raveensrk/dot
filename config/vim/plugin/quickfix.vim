@@ -1,1 +1,1 @@
-autocmd QuickFixCmdPost * copen | clast | cprevious
+" autocmd QuickFixCmdPost * copen | clast | cprevious

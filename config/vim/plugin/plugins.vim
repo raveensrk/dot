@@ -1,11 +1,12 @@
 if 0
+    !git clone https://github.com/MarcWeber/vim-addon-qf-layout.git ~/dot/config/vim/bundle/vim-addon-qf-layout
     !git clone https://github.com/chrisbra/Colorizer                        ~/dot/config/vim/bundle/Colorizer
     !git clone 'git@github.com:pelodelfuego/vim-swoop.git'                  ~/dot/config/vim/bundle/vim-swoop
     !curl -LSso ~/dot/config/vim/autoload/pathogen.vim                       https://tpo.pe/pathogen.vim
     !git  clone 'https://github.com/dense-analysis/ale'                      ~/dot/config/vim/bundle/ale
     !git  clone 'git@github.com:easymotion/vim-easymotion'                   ~/dot/config/vim/bundle/vim-easymotion
+    " !~/dot/config/vim/bundle/fzf/install --all
     !git  clone 'git@github.com:junegunn/fzf'                                ~/dot/config/vim/bundle/fzf
-    !~/dot/config/vim/bundle/fzf/install --all
     !git  clone 'git@github.com:junegunn/fzf.vim'                            ~/dot/config/vim/bundle/fzf.vim
     !git  clone 'git@github.com:junegunn/vim-easy-align'                     ~/dot/config/vim/bundle/vim-easy-align
     !git  clone 'git@github.com:junegunn/vim-peekaboo.git'                   ~/dot/config/vim/bundle/vim-peekaboo
@@ -67,3 +68,12 @@ vmap  <expr>  <S-LEFT>   DVB_Drag('left')
 vmap  <expr>  <S-RIGHT>  DVB_Drag('right')              
 vmap  <expr>  <S-DOWN>   DVB_Drag('down')               
 vmap  <expr>  <S-UP>     DVB_Drag('up')                 
+
+" This declares the defaults, so just add the keys to .vimrc you want to change
+let g:vim_addon_qf_layout = {}
+let g:vim_addon_qf_layout.quickfix_formatters = [ 'NOP', 'vim_addon_qf_layout#DefaultFormatter', 'vim_addon_qf_layout#FormatterNoFilename', 'vim_addon_qf_layout#Reset' ]
+let g:vim_addon_qf_layout.lhs_cycle = '<buffer> \v'
+let g:vim_addon_qf_layout.file_name_align_max_width = 60
+
+" Optionally you can define your own mappings like this:
+noremap \no_filenames call vim_addon_qf_layout#ReformatWith('vim_addon_qf_layout#FormatterNoFilename')<cr>
