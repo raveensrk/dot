@@ -68,7 +68,7 @@ set nonumber
 " }}}
 " {{{ INTERFACE
 set pumheight=5
-set completeopt=""
+set completeopt="menu,preview"
 set wrap
 set nolinebreak
 set cursorlineopt=screenline,number
@@ -86,8 +86,8 @@ highlight CursorLineNr ctermbg=235
 set wildmode=longest,list,full
 set wildmenu
 set wildignorecase
-" set wildoptions=pum
-set wildoptions=fuzzy
+set wildoptions=pum
+" set wildoptions=fuzzy
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
 set scrolloff=999
@@ -207,3 +207,5 @@ endif
 " set gdefault
 command! Format :norm mmggVGgq`m
 " set autochdir
+"
+autocmd CursorMoved * redraw!

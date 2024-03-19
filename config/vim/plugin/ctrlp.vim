@@ -102,7 +102,7 @@ let g:ctrlp_user_command_async = 1
 function! s:setcwd()
     let cph = expand('%:p:h', 1)
     if cph =~ '^.\+://' | retu | en
-    for mkr in ['.git/', '.hg/', '.svn/', '.bzr/', '_darcs/', '.vimprojects', '.root']
+    for mkr in [ '.root', '.git/', '.hg/', '.svn/', '.bzr/', '_darcs/', '.vimprojects']
         let wd = call('find'.(mkr =~ '/$' ? 'dir' : 'file'), [mkr, cph.';'])
         if wd != '' | let &acd = 0 | brea | en
     endfo
