@@ -89,4 +89,5 @@ nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 vmap <leader>dd "_d
 set ttimeoutlen=9000 ttimeout timeout timeoutlen=9000
-nmap gl :!lazygit -p ~/dot<CR>
+nmap lg :!lazygit -p ~/dot && lazygit -p ~/work<CR>
+nmap - :e .<cr>
