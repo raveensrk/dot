@@ -18,6 +18,7 @@ packages=(
 	dialog
     dict
 	ffmpeg
+    hstr
 	ffmpegthumbnailer
 	findutils
 	fortune
