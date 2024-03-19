@@ -93,10 +93,10 @@ let g:ctrlp_use_readdir = 1
 let g:ctrlp_path_nolim = 0
 let g:ctrlp_compare_lim = 100
 let g:ctrlp_extensions = ['tag', 'quickfix', 'file', 'mixed', 'bookmarkdir']
-augroup CtrlPDirMRU
-    autocmd!
-    autocmd FileType * if &modifiable | execute 'silent CtrlPBookmarkDirAdd! %:p:h' | endif
-augroup END
+" augroup CtrlPDirMRU
+"     autocmd!
+"     autocmd FileType * if &modifiable | execute 'silent CtrlPBookmarkDirAdd! %:p:h' | endif
+" augroup END
 let g:ctrlp_buftag_ctags_bin = ''
 let g:ctrlp_user_command_async = 1
 function! s:setcwd()
@@ -109,16 +109,16 @@ function! s:setcwd()
     exe 'lc!' fnameescape(wd == '' ? cph : substitute(wd, mkr.'$', '.', ''))
 endfunction
 
-autocmd BufEnter * call s:setcwd()
-command! DOT CtrlP ~/dot
-command! Tags CtrlPTag
-command! Line CtrlPLine
-nmap <leader>fR :CtrlPClearAllCaches<cr>
-nmap <leader>fb :CtrlPBuffer<cr>
-nmap <leader>fd :CtrlPBookmarkDir<CR>
-nmap <leader>ff :CtrlP<cr>
-nmap <leader>fm :CtrlPBookmark<CR>
-nmap <leader>fq :CtrlPQuickfix<cr>
-nmap <leader>fr :CtrlPMRUFiles<CR>
-nmap <leader>fl :CtrlPLine<CR>
-nmap <leader>fh :Helptags<CR>
+" autocmd BufEnter * call s:setcwd()
+" command! DOT CtrlP ~/dot
+" command! Tags CtrlPTag
+" command! Line CtrlPLine
+" nmap <leader>fR :CtrlPClearAllCaches<cr>
+" nmap <leader>fb :CtrlPBuffer<cr>
+" nmap <leader>fd :CtrlPBookmarkDir<CR>
+" nmap <leader>ff :CtrlP<cr>
+" nmap <leader>fm :CtrlPBookmark<CR>
+" nmap <leader>fq :CtrlPQuickfix<cr>
+" nmap <leader>fr :CtrlPMRUFiles<CR>
+" nmap <leader>fl :CtrlPLine<CR>
+" nmap <leader>fh :Helptags<CR>

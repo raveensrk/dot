@@ -1,7 +1,8 @@
 nmap <leader>h :help <CR>
 let g:fzf_vim = {}
 let g:fzf_layout = { 'down': '40%' }
-let g:fzf_preview_window = ['hidden', 'right,50%', 'ctrl-/']
+" let g:fzf_preview_window = ['hidden', 'right,50%', 'ctrl-/']
+let g:fzf_preview_window = []
 let g:fzf_buffers_jump = 1
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 let g:fzf_tags_command = 'ctags -R'
@@ -69,3 +70,14 @@ let g:fzf_colors =
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
+
+set autochdir
+command! DOT Files ~/dot
+nmap <leader>fb :Buffers<cr>
+" nmap <leader>fd :CtrlPBookmarkDir<CR>
+nmap <leader>ff :Files<cr>
+" nmap <leader>fm :CtrlPBookmark<CR>
+" nmap <leader>fq :CtrlPQuickfix<cr>
+nmap <leader>fr :History<CR>
+nmap <leader>fl :Lines<CR>
+nmap <leader>fh :Helptags<CR>
