@@ -1,0 +1,2 @@
+unmap -
+map - :e .<CR>
