@@ -1,4 +1,5 @@
 iab #!,          #!/usr/bin/env bash<CR><CR>
+" TODO instead of this used a :IS command to insert a snippet
 iab arg_parse,   <ESC>:read $DOT/snippet/sh/arg_parse.txt<CR>i
 iab ask,         <ESC>:read $DOT/snippet/sh/ask.txt<CR>i
 iab case,        <ESC>:read $DOT/snippet/sh/case.txt<CR>i

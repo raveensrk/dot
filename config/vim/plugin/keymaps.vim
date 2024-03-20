@@ -39,6 +39,9 @@ nmap <leader>F :set winfixbuf!<cr>
 "}}}
 " Editing{{{
 nmap <Tab> mm==`m
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+nmap Y y$
 vmap <Tab> mm=`m
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
@@ -52,18 +55,8 @@ if has('clipboard')
 endif
 nmap <leader>Y ggVGy2<C-o>
 "}}}
-nmap <leader>` :Scratch<cr>
-nmap <leader>a 0
-nmap <leader>d :bd<cr>
-nmap <leader>e $
-nmap <leader>fc :e ~/.vimrc<CR>
-nmap <leader>fg :Rg<cr>
-nmap <leader>fi :echo expand("%:p")<cr>
-nmap <leader>fp :let @+ = expand("%:p")<cr>
-nmap <leader>gf :e <cfile><CR>
 nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>
-" nmap - :RangerChooser<cr>
 nmap <leader>s :so<cr>
 nmap <leader>t :set nowrap!<cr>
 nmap <leader>w :w<CR>
@@ -71,21 +64,7 @@ nmap <leader>x :.so<CR>
 xmap <leader>x :so<CR>
 nmap <leader>X :.!bash<CR>redraw!<CR>
 xmap <leader>X :!bash<CR>redraw!<CR>
-nmap <leader>z <C-w>
-nmap <leader>Z :windo set scrollbind!<CR>
-nmap <leader>T :tab split<CR>
-nmap <leader>S :tab split<CR>:term<cr>
-
-let g:swoopUseDefaultKeyMap = 0
-nmap <Leader>ll :call Swoop()<CR>
-vmap <Leader>ll :call SwoopSelection()<CR>
-nmap <Leader>lm :call SwoopMulti()<CR>
-vmap <Leader>lm :call SwoopMultiSelection()<CR>
-
-nmap Y y$
-nmap _ :vertical resize -5<CR>
-nmap ga <Plug>(EasyAlign)
-xmap ga <Plug>(EasyAlign)
+nmap <leader><leader>r :registers<CR>
 vmap <leader>dd "_d
 set ttimeoutlen=9000 ttimeout timeout timeoutlen=9000
 nmap lg :!lazygit -p ~/dot && lazygit -p ~/work<CR>

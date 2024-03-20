@@ -1,4 +1,4 @@
-source ~/dot/config/vim/bundle/Damian-Conway-s-Vim-Setup/plugin/dragvisuals.vim                          
+source ~/.vim/bundle/Damian-Conway-s-Vim-Setup/plugin/dragvisuals.vim                          
 let g:DVB_TrimWS = 1                                    
 vmap  <expr>  <S-LEFT>   DVB_Drag('left')               
 vmap  <expr>  <S-RIGHT>  DVB_Drag('right')              

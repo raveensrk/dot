@@ -83,11 +83,13 @@ highlight clear CursorLine
 highlight clear CursorLineNr
 highlight CursorLine ctermbg=235
 highlight CursorLineNr ctermbg=235
-set wildmode=longest,list,full
+" set wildmode=longest,list,full
+set wildmode=lastused,full
 set wildmenu
+set wildignore=""
 set wildignorecase
 " set wildoptions=pum
-set wildoptions=fuzzy
+set wildoptions=tagfile,fuzzy
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
 set scrolloff=999
@@ -156,12 +158,12 @@ function! Bookmarks()
     lopen 5
 endfunction
 " set complete+=t
-set wildoptions=pum
+" set wildoptions=pum
 set completeopt+=menu,preview
 set makeef=/tmp/errorfile
 set foldclose="all"
 set showfulltag
-set showmatch
+set maxcombine=6
 set verbosefile=/tmp/verbosefile
 set whichwrap+=<,>,[,]
 set equalalways
@@ -214,3 +216,23 @@ set background=dark
 
 set showmode
 set showcmd
+set shortmess+=I
+set virtualedit=block
+" start of line
+cnoremap <C-A>		<Home>
+" back one character
+cnoremap <C-B>		<Left>
+" delete character under cursor
+cnoremap <C-D>		<Del>
+" end of line
+cnoremap <C-E>		<End>
+" forward one character
+cnoremap <C-F>		<Right>
+" recall newer command-line
+cnoremap <C-N>		<Down>
+" recall previous (older) command-line
+cnoremap <C-P>		<Up>
+" back one word
+cnoremap <Esc><C-B>	<S-Left>
+" forward one word
+cnoremap <Esc><C-F>	<S-Right>
