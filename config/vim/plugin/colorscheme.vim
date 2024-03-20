@@ -1,5 +1,5 @@
 if 0
-!git clone https://github.com/wuelnerdotexe/vim-enfocado ~/dot/config/vim/bundle/vim-enfocado
+!git clone https://github.com/wuelnerdotexe/vim-enfocado ~/.vim/bundle/vim-enfocado
 endif
 
 
