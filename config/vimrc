@@ -206,6 +206,9 @@ if filereadable(expand('~/script/custom.vim'))
 endif
 " set gdefault
 command! Format :norm mmggVGgq`m
-" set autochdir
+set autochdir
 "
-autocmd CursorMoved * redraw!
+" autocmd CursorMoved * redraw!
+" colo gruvbox
+set background=dark
+

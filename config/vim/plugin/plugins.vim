@@ -52,9 +52,6 @@ nmap <Leader>mg <Plug>BookmarkMoveToLine
 let g:sneak#label = 1
 set showmode
 set showcmd
-" colo gruvbox
-" let g:gruvbox_contrast_dark="hard"
-" set background=dark
 let g:colorizer_auto_color = 1
 let g:colorizer_conceal_cursor_mode='nvc'
 
