@@ -1,5 +1,5 @@
 if 0
-    !git clone git@github.com:skywind3000/vim-quickui.git ~/dot/config/vim/bundle/vim-quickui
+    !git clone git@github.com:skywind3000/vim-quickui.git ~/.vim/bundle/vim-quickui
 endif
 
 "======================================================================
