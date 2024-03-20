@@ -40,7 +40,6 @@ nmap <leader>F :set winfixbuf!<cr>
 " Editing{{{
 nmap <Tab> mm==`m
 vmap <Tab> mm=`m
-nmap <leader>R :%s///gc<Left><Left><Left>
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
 nmap <leader>G :lvim /"/ **<CR>lopen<CR>lfirst<CR>
@@ -90,4 +89,3 @@ xmap ga <Plug>(EasyAlign)
 vmap <leader>dd "_d
 set ttimeoutlen=9000 ttimeout timeout timeoutlen=9000
 nmap lg :!lazygit -p ~/dot && lazygit -p ~/work<CR>
-nmap - :e .<cr>

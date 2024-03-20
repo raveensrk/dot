@@ -83,11 +83,11 @@ highlight clear CursorLine
 highlight clear CursorLineNr
 highlight CursorLine ctermbg=235
 highlight CursorLineNr ctermbg=235
-" set wildmode=longest,list,full
-" set wildmenu
-" set wildignorecase
+set wildmode=longest,list,full
+set wildmenu
+set wildignorecase
 " set wildoptions=pum
-" set wildoptions=fuzzy
+set wildoptions=fuzzy
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
 set scrolloff=999
@@ -212,3 +212,5 @@ set autochdir
 " colo gruvbox
 set background=dark
 
+set showmode
+set showcmd
