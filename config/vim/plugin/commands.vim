@@ -26,4 +26,3 @@ command! Scratch  split /tmp/scratch.vim
 command! SnippetCreate call SnippetCreate()
 command! SnippetList Files $DOT/config/vim/snippet
 command! SplitArguments :s/ --/ \\\r--/g
-command! GTags !universal-ctags -R . && echo "set tags+=$(realpath tags)" >> $HOME/script/tags.vim
