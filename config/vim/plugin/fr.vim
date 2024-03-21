@@ -9,5 +9,18 @@ func! QfOldFiles(info)
     endfor
     return l
 endfunc
-command! FR call setqflist([], ' ', {'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})
+command! FR call setqflist([], ' ', {'title': 'Recent files', 'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})
 nmap <leader>fr :FR<cr>:copen<cr>
+
+function! TimeoutBuffer()
+    call timer_start(10000, "bunfr()")
+    echomsg "Timer completed..."
+endfunction
+call TimeoutBuffer()
+
+			func MyHandler(timer)
+			  echo 'Handler called'
+			endfunc
+			let timer = timer_start(500, 'MyHandler',
+				\ {'repeat': 3})
+
