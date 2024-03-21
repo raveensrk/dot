@@ -19,4 +19,4 @@ function! FR () abort
 endfunction
 
 command! FR execute 'call FR() | copen'
-nmap fr :FR<cr>
+nmap fr :FR<cr>/
