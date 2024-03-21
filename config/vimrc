@@ -144,8 +144,7 @@ let g:netrw_dirhistmax=1000
 " set grepprg=grep\ -RnH\ $*\ --exclude=\"tags\"\ --exclude=\"TAGS\"\ /dev/null
 set grepprg=RIPGREP_CONFIG_PATH=~/dot/config/ripgrep\ rg\ --no-heading\ --with-filename\ --column\ -g\ !tags\ -g\ !TAGS\ $*
 
-set showcmdloc="statusline"
-set statusline=[%n]%m%r%f%=%h%w%y%q%k[%p%%][%04l,%04v][%L]%S
+" set statusline=[%n]%m%r%f%=%h%w%y%q%k[%p%%][%04l,%04v][%L]%S
 set previewpopup=height:10,width:60
 set browsedir="buffer"
 set title
@@ -190,7 +189,7 @@ set tags=./tags,../tags
 " set path+=./;~/
 set path+=~/script
 set path+=~/dot/**
-set showtabline=2
+set showtabline=0
 set showcmdloc="last"
 set showcmd
 set showmode
@@ -236,3 +235,4 @@ cnoremap <C-P>		<Up>
 cnoremap <Esc><C-B>	<S-Left>
 " forward one word
 cnoremap <Esc><C-F>	<S-Right>
+set laststatus=0

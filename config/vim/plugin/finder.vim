@@ -2,7 +2,7 @@ set autochdir
 nmap <leader>ff :find 
 nmap <leader>fg :vimgrep // **<Left><Left><Left><Left>
 nmap <leader>fb :b 
-nmap <leader>fr :bro ol<cr>
+" nmap <leader>fr :bro ol<cr>
 nmap <leader>gf :e <cfile><CR>
 nmap <leader>fc :e ~/.vimrc<CR>
 nmap <leader>fi :echo expand("%:p")<cr>
