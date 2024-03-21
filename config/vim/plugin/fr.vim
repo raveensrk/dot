@@ -1,22 +1,13 @@
-function! FR () abort
-    let fr = readfile(expand('~/.viminfo'))
-    let tmp = tempname()
-    let f = []
-    for line in v:oldfiles
-        " echomsg line
-        if match(line, '\~/Library/Mobile\ Documents/com\~apple\~CloudDocs')
-            let line = substitute(line, '\~/Library/Mobile\ Documents/com\~apple\~CloudDocs', '\~/iCloud', '')
-        endif
-        let f = f + [line]
+set laststatus=2
+func! QfOldFiles(info)
+    " get information about a range of quickfix entries
+    let items = getqflist({'id' : a:info.id, 'items' : 1}).items
+    let l = []
+    for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+        " use the simplified file name
+        call add(l, fnamemodify(bufname(items[idx].bufnr), ':p:t'))
     endfor
-    " let f = filter(f, 'v:val !~ "vim91"')
-    " let f = filter(f, 'v:val !~ "\.vim"')
-    " let f = filter(f, 'v:val !~ "/private/var/folders/"')
-    call writefile(f, tmp)
-    set errorformat+=%f
-    cgetexpr copy(f)
-    " execute 'edit' . tmp
-endfunction
-
-command! FR execute 'call FR() | copen'
-nmap fr :FR<cr>/
+    return l
+endfunc
+command! FR call setqflist([], ' ', {'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})
+nmap <leader>fr :FR<cr>:copen<cr>

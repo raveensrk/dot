@@ -4,11 +4,11 @@ set background=dark
 
 syntax case    ignore
 
-syntax match xTodo   /todo/
+syntax match xTodo   /^todo/
 hi xTodo   ctermfg=130 ctermbg=black
 
-syntax keyword xDone   done
-hi link xDone   LightlineLeft_active_0_tabsel
+syntax match xDone   /^done/
+hi xDone ctermfg=232 ctermbg=28
 
 syntax keyword xOthers others
 hi link xOthers Question
@@ -25,22 +25,5 @@ hi Notes  ctermfg=white ctermbg=blue
 hi Dash ctermfg=blue ctermbg=black
 syntax match Dash /^-/
 
-sign define notes text=>> linehl=xNotes
-
-" test sign
-
-" call search("xNotes")
-" let val = line('.')
-" echo val
-" sign define piet text=>> texthl=Search linehl=Notes
-" exec ":sign place 3 line=" . val . " " . 'name=piet file=' . expand("%:p") 
-"
-
-let [searchposl, searchposc ] = searchpos("test sign", "n")
-echomsg searchposl 
-" function! PlaceSigns(text)
-" call search(a:text)
-" let val = line('.')
-" exec ":sign place 2 line=" . val . " " . 'name=notes file=' . expand("%:p") 
-" echomsg ":sign place 2 line=" . val . " " . 'name=notes file=' . expand("%:p") 
-" endfunction
+call PlaceSign("todo", "sign_todo", "ToolbarButton", "xTodo", "0")
+call PlaceSign("done", "sign_done", "ToolbarButton", "xDone", "0")

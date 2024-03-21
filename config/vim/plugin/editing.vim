@@ -15,3 +15,4 @@ nmap <leader>t :set nowrap!<cr>
 nmap <leader><leader>r :registers<CR>
 vmap <leader>dd "_d
 set list
+nnoremap V 0v$
