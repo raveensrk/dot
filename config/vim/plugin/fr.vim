@@ -13,10 +13,11 @@ function! FR () abort
     " let f = filter(f, 'v:val !~ "\.vim"')
     " let f = filter(f, 'v:val !~ "/private/var/folders/"')
     call writefile(f, tmp)
-    set errorformat+=%f
+    setlocal errorformat&vim
+    " set errorformat+=%f
     cgetexpr copy(f)
     " execute 'edit' . tmp
 endfunction
 
 command! FR execute 'call FR() | copen'
-nmap fr :FR<cr>/
+nmap fr :FR<cr>

@@ -20,6 +20,7 @@ git clone 'git@github.com:tpope/vim-sensible' &
 git clone 'git@github.com:tpope/vim-speeddating.git' &
 git clone 'git@github.com:tpope/vim-surround' &
 git clone 'git@github.com:tpope/vim-unimpaired' &
+git clone 'git@github.com:tpope/vim-dispatch' &
 git clone 'git@github.com:tpope/vim-vinegar' &
 git clone 'git@github.com:yegappan/taglist.git' &
 git clone 'https://github.com/dense-analysis/ale' &
@@ -27,3 +28,4 @@ git clone 'https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup' &
 git clone https://github.com/MarcWeber/vim-addon-qf-layout.git &
 git clone https://github.com/chrisbra/unicode.vim.git &
 git clone https://github.com/wuelnerdotexe/vim-enfocado &
+wait
