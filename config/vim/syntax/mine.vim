@@ -3,20 +3,28 @@
 set background=dark
 
 syntax case    ignore
-syntax keyword xTodo   todo
+
+syntax match xTodo   /todo/
+hi xTodo   ctermfg=130 ctermbg=black
+
 syntax keyword xDone   done
+hi link xDone   LightlineLeft_active_0_tabsel
+
 syntax keyword xOthers others
+hi link xOthers Question
+
 syntax keyword xNotes  notes
+hi link xNotes  Notes
+
 syntax region xSeperator  start=/^---/ end="---$"
+hi link xSeperator Constant
 
 hi Normal ctermfg=white
 hi Notes  ctermfg=white ctermbg=blue
 
-hi link xTodo   Constant
-hi link xDone   LightlineLeft_active_0_tabsel
-hi link xOthers Question
-hi link xNotes  Notes
-hi link xSeperator Constant
+hi Dash ctermfg=blue ctermbg=black
+syntax match Dash /^-/
+
 sign define notes text=>> linehl=xNotes
 
 " test sign

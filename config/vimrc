@@ -138,8 +138,6 @@ let g:netrw_keepdir=1
 " ↑ WORKING CONFIGS ABOVE ↑
 " ↓ TESTING ↓
 
-" set grepprg=grep\ -RnH\ $*\ --exclude=\"tags\"\ --exclude=\"TAGS\"\ /dev/null
-set grepprg=RIPGREP_CONFIG_PATH=~/dot/config/ripgrep\ rg\ --no-heading\ --with-filename\ --column\ -g\ !tags\ -g\ !TAGS\ $*
 
 " set statusline=[%n]%m%r%f%=%h%w%y%q%k[%p%%][%04l,%04v][%L]%S
 set previewpopup=height:10,width:60

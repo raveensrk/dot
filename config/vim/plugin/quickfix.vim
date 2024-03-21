@@ -5,3 +5,11 @@ let g:vim_addon_qf_layout.quickfix_formatters = [ 'vim_addon_qf_layout#DefaultFo
 let g:vim_addon_qf_layout.lhs_cycle = '<buffer> \v'
 let g:vim_addon_qf_layout.file_name_align_max_width = 20
 
+nmap ,,C :lclose<cr>
+nmap ,,c :lopen<cr>
+nmap ,,n :lnext<cr>,,
+nmap ,,p :lprevious<cr>,,
+nmap ,n :cnext<cr>,
+nmap ,p :cprevious<cr>,
+nmap ,c :copen<cr>
+nmap ,C :cclose<cr>
