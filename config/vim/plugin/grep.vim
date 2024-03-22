@@ -1,9 +1,9 @@
 set laststatus=0
 function! FG () abort
     set wildoptions=pum,fuzzy,tagfile
+    let pattern=input("Enter pattern to search: ", ".")
     let dir=input("Enter dir path to search: ", "**", "dir")
     let extension=input("Enter extension to search: ", "**.*")
-    let pattern=input("Enter pattern to search: ", ".")
     redraw!
     let cmd =  "vimgrep " .. "/" .. pattern .. "/"  .. " " .. dir .. "/" .. extension
     execute cmd

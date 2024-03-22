@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+SRC=""
+DST=""
+src_id=""
+dst_id=""
+
+[ -z "$SRC" ] && read -p "ENTER Source name: " -re SRC  || exit 2
+[ -z "$DST" ] && read -p "ENTER Destination name: " -re DST   || exit 2
+[ -z "$src_id" ] && read -p "ENTER src_id: " -re src_id   || exit 2
+[ -z "$dst_id" ] && read -p "ENTER dst_id: " -re dst_id   || exit 2
+
+
+git diff -b -w -M --minimal --word-diff --src-prefix="$SRC" --dst-prefix="$DST" "$src_id" "$dst_id"
