@@ -37,5 +37,3 @@ cnoremap <Esc><C-B>	<S-Left>
 " forward one word
 cnoremap <Esc><C-F>	<S-Right>
 set laststatus=0
-
-
