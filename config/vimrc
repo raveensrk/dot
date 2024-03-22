@@ -67,7 +67,7 @@ set nonumber
 " set relativenumber
 " }}}
 " {{{ INTERFACE
-set pumheight=5
+set pumheight=10
 set completeopt="menu,preview"
 set wrap
 set nolinebreak
@@ -96,11 +96,7 @@ set scrolloff=999
 set sidescrolloff=1
 set sidescroll=1
 set scrollopt=ver,jump,hor
-
-" set virtualedit=all
-" set virtualedit=
-" set textwidth=0 wrapmargin=0
-" }}}
+"  }}}
 " {{{ BACKUPS AND UNDO
 if ! isdirectory(expand("~/.vim/undo"))   | call mkdir(expand("~/.vim/undo"),   'p') | endif
 if ! isdirectory(expand("~/.vim/backup")) | call mkdir(expand("~/.vim/backup"), 'p') | endif
@@ -202,32 +198,6 @@ if filereadable(expand('~/script/custom.vim'))
 endif
 " set gdefault
 command! Format :norm mmggVGgq`m
-set autochdir
-"
-" autocmd CursorMoved * redraw!
-" colo gruvbox
-set background=dark
-
 set showmode
 set showcmd
 set shortmess+=I
-set virtualedit=block
-" start of line
-cnoremap <C-A>		<Home>
-" back one character
-cnoremap <C-B>		<Left>
-" delete character under cursor
-cnoremap <C-D>		<Del>
-" end of line
-cnoremap <C-E>		<End>
-" forward one character
-cnoremap <C-F>		<Right>
-" recall newer command-line
-cnoremap <C-N>		<Down>
-" recall previous (older) command-line
-cnoremap <C-P>		<Up>
-" back one word
-cnoremap <Esc><C-B>	<S-Left>
-" forward one word
-cnoremap <Esc><C-F>	<S-Right>
-set laststatus=0
