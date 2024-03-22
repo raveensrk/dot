@@ -10,17 +10,17 @@ func! QfOldFiles(info)
     return l
 endfunc
 command! FR call setqflist([], ' ', {'title': 'Recent files', 'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})
-nmap <leader>fr :FR<cr>:copen<cr>
+command! TQ call timer_start(5000, 'TimeoutQuickFixWindow', {'repeat': 1})
+" let timer = timer_start(5000, 'TimeoutBuffer',
+"             \ {'repeat': 1})
+nmap <leader>fr :FR<cr>:copen<cr>:TQ<cr>
 
-function! TimeoutBuffer()
-    call timer_start(10000, "bunfr()")
-    echomsg "Timer completed..."
+function! TimeoutQuickFixWindow(timer)
+    " let bufnr = bufnr("Recent Files")
+    " echowindow bufnr
+    " execute '!date'
+    " echowindow "Timer completed..." .. a:timer
+    execute 'cclose'
 endfunction
-call TimeoutBuffer()
 
-			func MyHandler(timer)
-			  echo 'Handler called'
-			endfunc
-			let timer = timer_start(500, 'MyHandler',
-				\ {'repeat': 3})
 
