@@ -1,23 +1,26 @@
-function! FR () abort
-    let fr = readfile(expand('~/.viminfo'))
-    let tmp = tempname()
-    let f = []
-    for line in v:oldfiles
-        " echomsg line
-        if match(line, '\~/Library/Mobile\ Documents/com\~apple\~CloudDocs')
-            let line = substitute(line, '\~/Library/Mobile\ Documents/com\~apple\~CloudDocs', '\~/iCloud', '')
-        endif
-        let f = f + [line]
+set laststatus=2
+func! QfOldFiles(info)
+    " get information about a range of quickfix entries
+    let items = getqflist({'id' : a:info.id, 'items' : 1}).items
+    let l = []
+    for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
+        " use the simplified file name
+        call add(l, fnamemodify(bufname(items[idx].bufnr), ':p:t'))
     endfor
-    " let f = filter(f, 'v:val !~ "vim91"')
-    " let f = filter(f, 'v:val !~ "\.vim"')
-    " let f = filter(f, 'v:val !~ "/private/var/folders/"')
-    call writefile(f, tmp)
-    setlocal errorformat&vim
-    " set errorformat+=%f
-    cgetexpr copy(f)
-    " execute 'edit' . tmp
+    return l
+endfunc
+command! FR call setqflist([], ' ', {'title': 'Recent files', 'lines' : v:oldfiles, 'efm' : '%f', 'quickfixtextfunc' : 'QfOldFiles'})
+command! TQ call timer_start(5000, 'TimeoutQuickFixWindow', {'repeat': 1})
+" let timer = timer_start(5000, 'TimeoutBuffer',
+"             \ {'repeat': 1})
+nmap <leader>fr :FR<cr>:copen<cr>:TQ<cr>
+
+function! TimeoutQuickFixWindow(timer)
+    " let bufnr = bufnr("Recent Files")
+    " echowindow bufnr
+    " execute '!date'
+    " echowindow "Timer completed..." .. a:timer
+    execute 'cclose'
 endfunction
 
-command! FR execute 'call FR() | copen'
-nmap fr :FR<cr>
+

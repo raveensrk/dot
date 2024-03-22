@@ -4,9 +4,16 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-[ -d ~/.vim/bundle ] && rm -rf ~/.vim/bundle
-mkdir -p ~/.vim/bundle && cd ~/.vim/bundle
 mkdir -p ~/.vim/autoload
+# [ -d ~/.vim/bundle ] && rm -rf ~/.vim/bundle
+mkdir -p ~/.vim/bundle && cd ~/.vim/bundle
+for dir in *; do
+    pushd "$dir"
+    git pull &
+    popd
+done
+wait
+
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &
 git clone 'git@github.com:easymotion/vim-easymotion' &
 git clone 'git@github.com:junegunn/vim-easy-align' &
@@ -29,3 +36,5 @@ git clone https://github.com/MarcWeber/vim-addon-qf-layout.git &
 git clone https://github.com/chrisbra/unicode.vim.git &
 git clone https://github.com/wuelnerdotexe/vim-enfocado &
 wait
+exit 0
+
