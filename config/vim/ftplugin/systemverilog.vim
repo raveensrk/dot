@@ -38,6 +38,6 @@ command! SplitPlusargs :s/ -p/ \\\r-p/g
 " let g:ale_linters = {'systemverilog': ['verible-verilog-lint']}
 " let g:ale_linters_explicit = 1
 let g:ale_linters = {
-\   'systemverilog': 'all'
+\   'systemverilog': []
 \}
 command! Lint :term verible-verilog-lint %
