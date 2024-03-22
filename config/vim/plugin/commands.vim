@@ -3,18 +3,6 @@ function! SnippetCreate ()
 	execute ".w $DOT/config/vim/snippet/" . name . ".txt"
 endfunction
 
-function! FindReferences ()
-	let word=input("Enter word or symbol: ")
-	let dir=input("Enter directory path: ", "**", "dir")
-	try
-		execute "vimgrep /" . word . "/ " . dir . "/**"
-	catch
-		echoerr "Command Error..."
-		return
-	endtry
-	copen
-endfunction 
-
 command! CD :cd %:p:h 
 command! Date -1read !date -I
 command! DiffFold :set diffopt=filler,context:0
