@@ -9,16 +9,16 @@ fi
 # brew update
 
 packages=(
+	# basictex
+	# vim
 	autoconf
 	automake
-	# basictex
 	bat
 	cscope
 	curl
+	cyrus-sasl
 	dialog
-    dict
 	ffmpeg
-    hstr
 	ffmpegthumbnailer
 	findutils
 	fortune
@@ -33,10 +33,10 @@ packages=(
 	lazygit
 	lesspipe
 	lolcat
-    mpv
 	mactex
 	mediainfo
 	neofetch
+	neomutt
 	newsboat
 	pandoc
 	pkg-config
@@ -47,17 +47,19 @@ packages=(
 	rsync
 	ruby
 	shellcheck
+	shfmt
 	sqlite
 	tldr
-	neomutt
 	universal-ctags
 	up
 	urlview
-	# vim
 	w3m
 	wget
-	shfmt
-	cyrus-sasl
+    dict
+    direnv
+    entr
+    hstr
+    mpv
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1

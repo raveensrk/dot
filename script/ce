@@ -4,4 +4,4 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-vim ~/capture.txt
+vim ~/capture.txt -c "norm G"

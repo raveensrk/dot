@@ -71,18 +71,9 @@ set pumheight=10
 set completeopt="menu,preview"
 set wrap
 set nolinebreak
-set cursorlineopt=screenline,number
-set cursorline
 set hlsearch
 set incsearch
 set ruler
-" set columns=80
-set colorcolumn=79
-highlight ColorColumn ctermbg=233
-highlight clear CursorLine
-highlight clear CursorLineNr
-highlight CursorLine ctermbg=235
-highlight CursorLineNr ctermbg=235
 " set wildmode=longest,list,full
 set wildmode=lastused,full
 set wildmenu

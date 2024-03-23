@@ -14,6 +14,7 @@ nmap <leader>Y ggVGy2<C-o>
 nmap <leader>t :set nowrap!<cr>
 nmap <leader><leader>r :registers<CR>
 vmap <leader>dd "_d
+vmap <leader>R. y:s+"++gc<Left><Left><Left>
 set list
 nnoremap v <C-v>
 nnoremap <C-v> v
@@ -37,3 +38,5 @@ cnoremap <Esc><C-B>	<S-Left>
 " forward one word
 cnoremap <Esc><C-F>	<S-Right>
 set laststatus=0
+nnoremap <S-UP> :move -2<cr>
+nnoremap <S-DOWN> :move +1<cr>

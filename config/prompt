@@ -1,59 +1,7 @@
 #!/usr/bin/env bash
-# Color codes
-# Black       0;30     Dark Gray     1;30
-# Blue        0;34     Light Blue    1;34
-# Green       0;32     Light Green   1;32
-# Cyan        0;36     Light Cyan    1;36
-# Red         0;31     Light Red     1;31
-# Purple      0;35     Light Purple  1;35
-# Brown       0;33     Yellow        1;33
-# Light Gray  0;37     White         1;37
-export BLACK="\[$(tput setaf 0)\]"
-export BLINK="\[$(tput blink)\]"
-export BLUE="\[$(tput setaf 4)\]"
-export BRIGHT="\[$(tput bold)\]"
-export CYAN="\[$(tput setaf 6)\]"
-export GREEN="\[$(tput setaf 2)\]"
-export LIME_YELLOW="\[$(tput setaf 190)\]"
-export MAGENTA="\[$(tput setaf 5)\]"
-export NC="\[$(tput sgr0)\]"
-export NORMAL="\[$(tput sgr0)\]"
-export POWDER_BLUE="\[$(tput setaf 153)\]"
-export RED="\[$(tput setaf 1)\]"
-export RESET="\[$(tput sgr0)\]"
-export REVERSE="\[$(tput smso)\]"
-export UNDERLINE="\[$(tput smul)\]"
-export WHITE="\[$(tput setaf 7)\]"
-export YELLOW="\[$(tput setaf 3)\]"
 
 update_prompt () {
-    local errorcode="$?"
-    if [ $errorcode -eq 0 ] ; then
-        colorcode="[$errorcode]"
-    else
-        colorcode="\[\e[31m[$errorcode]\e[0m\]"
-    fi
-    # PS1="\[\e[46m\]\[\e[30m\]"
-    # PS1+="$colorcode"
-    # PS1+="\[\e[46m\]\[\e[30m\]"
-    # PS1+=" \W : $"
-    # PS1+="\[\e[0m\] "
-    PS1="\[\e[48;5;234m\]\[\e[37m\]"
-    PS1+="$colorcode"
-    PS1+="\[\e[48;5;234m\]\[\e[37m\]"
-    PS1+=" | "
-    PS1+="\d \@"
-    PS1+=" | "
-    PS1+="\[\e[33m\]"
-    PS1+="\W"
-    PS1+="\[\e[37m\]"
-    PS1+=" "
-    PS1+=":"
-    PS1+=" "
-    PS1+="$"
-    PS1+=" "
-    PS1+="\[\e[0m\]"
-    # PS1+="\n"
+    PS1="[$?|\W]:$"
     export PS1
 }
 

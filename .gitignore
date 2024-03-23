@@ -7,11 +7,7 @@
 .DS_Store
 /TAGS
 tags
-config/vim/bundle
 **.*swp
-config/vim/.netrwhist
-.config/lazygit/config.yml
+test.txt
 config/vim/spell
-config/vim/yankring_history_v2.txt
-package/fzy-1.0
-package/fzy-1.0.tar.gz
+config/vim/.netrwhist

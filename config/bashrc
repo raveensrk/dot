@@ -210,3 +210,4 @@ export -f resetbash
 export RIPGREP_CONFIG_PATH="$HOME/dot/config/ripgrep"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 alias v='vim -c "normal '\''0"'
+eval "$(direnv hook bash)"

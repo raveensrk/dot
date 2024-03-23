@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -eo pipefail
 IFS=$'\n\t'
 # set -x
 
-vim -c "Files"
+pattern=${pattern:-$1}
+[ -z "$pattern" ] && read -re pattern
+
+readarray -t files < <(find . -type f -iname "*$pattern*")
+
+[ "${#files[@]}" -eq 1 ] && $EDITOR "${files[@]}" && exit 0
+# shellcheck disable=2048
+select file in "${files[@]}"; do
+    $EDITOR "$file"
+    break
+done
+
+
