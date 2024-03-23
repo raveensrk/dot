@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 update_prompt () {
-    PS1="[$?|\W]:$"
+    PS1="[$?|\W]:$ "
     export PS1
 }
 

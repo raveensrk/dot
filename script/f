@@ -2,9 +2,7 @@
 
 path=$(realpath "$(which "$1")")
 
-if [ -f "$path" ]; then
-    $EDITOR "$path"
-fi
+[ -f "$path" ] && $EDITOR "$path" && exit 0
 
 which "$path"
 type "$path"

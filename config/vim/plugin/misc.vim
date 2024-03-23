@@ -31,3 +31,16 @@ autocmd BufEnter,WinEnter * highlight CursorLineNr ctermbg=black
 command! DiffWithSaved :w !diff % -
 command! TrimWhiteSpace %s/ \+$//g
 command! KeyCodes :help keycodes
+command! YankHistory redir! > /tmp/vim_history | history cmd -20, | redir END | tabnew /tmp/vim_history 
+function! Bookmark() abort
+    let bookmark=expand("%:p:~").":".line(".").":".col(".")." # ".getline(".")
+    echowindow bookmark
+    redir! >> ~/.bookmarks | echo bookmark | redir END
+endfunction
+command! Bookmark call Bookmark()
+nmap ,bm :Bookmark<CR>
+nmap ,bl :tabnew ~/.bookmarks<CR>
+let g:EasyMotion_keys = 'arstzxcvqwfp'
+let g:EasyMotion_smartcase = 1
+nnoremap ,f <Plug>(easymotion-s)
+set laststatus=2
