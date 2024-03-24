@@ -13,7 +13,9 @@ command! FR call setqflist([], ' ', {'title': 'Recent files', 'lines' : v:oldfil
 command! TQ call timer_start(5000, 'TimeoutQuickFixWindow', {'repeat': 1})
 " let timer = timer_start(5000, 'TimeoutBuffer',
 "             \ {'repeat': 1})
-nmap <leader>fr :FR<cr>:copen<cr>:TQ<cr>
+let g:enable_fuzzyy_MRU_files = 1
+" nmap <leader>fr :FR<cr>:copen<cr>:TQ<cr>
+nmap <leader>fr :FuzzyMRUFiles<cr>
 
 function! TimeoutQuickFixWindow(timer)
     " let bufnr = bufnr("Recent Files")

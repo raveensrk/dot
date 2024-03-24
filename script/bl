@@ -4,4 +4,5 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-vim -c "FuzzyMRUFiles" 
+urlview ~/bookmarks.txt  
+# fzf +s < ~/bookmarks.txt  

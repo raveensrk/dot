@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-pkg=$(brew list | fzy)
-
-read  -p "Uninstall $pkg? Y/n: " -re choice
-
-[ "$choice" = "Y" ] && brew uninstall "$pkg"

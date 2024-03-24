@@ -20,29 +20,34 @@ export PATH="$DOT/script:$PATH"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 # }}}
-# {{{ BASH SHOPTS
 # This will exit bash shell after pressing control d 2 times
 export IGNOREEOF=1
-# shopt -s direxpand
-# shopt -s histappend
 # set -o vi
-shopt -s checkwinsize
+
+# {{{ BASH SHOPTS
+# shopt -s direxpand
+# shopt -s dotglob
+# shopt -s histappend
+shopt -s autocd
+shopt -s cdable_vars
+shopt -s cdspell
 shopt -s checkjobs
-shopt -s execfail
+shopt -s checkwinsize
 shopt -s cmdhist
+shopt -s dirspell
+shopt -s execfail
+shopt -s globstar
+shopt -s histreedit
+shopt -s histverify
 shopt -s lithist
 shopt -s no_empty_cmd_completion
-# shopt -s dotglob
-shopt -s dirspell
-shopt -s globstar
 shopt -s nocaseglob
 shopt -s nocasematch
 shopt -s progcomp_alias
-shopt -s autocd
 
-export HISTCONTROL="ignoredups,erasedups"
-export HISTSIZE=1000
-export HISTFILESIZE=1000
+export HISTCONTROL=erasedups:ignoredups
+export HISTSIZE=-1
+export HISTFILESIZE=-1
 export HISTIGNORE=""
 export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_history
@@ -173,14 +178,7 @@ source "$DOT/config/zoxide"
 # shellcheck source-path=~/script
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
 alias path="echo \$PATH | tr ':' '\n' | tac"
-alias gl="clear && lazygit -p \$DOT && lazygit -p \$HOME/work"
 alias l="ls -lAh"
-vimhelp() {
-	vim -c "help $*"
-}
-vimplugins() {
-	vim ~/dot/config/vim/plugin/plugins.vim
-}
 unlock-pdf() {
 	read -p "Enter Password: " -re pass
 	qpdf --password="$pass" --decrypt "$1" "$2"
@@ -191,31 +189,21 @@ emacs() {
 dot() {
 	cd ~/dot || return 2
 }
-ffdot() {
-    dot
-    ff
-}
-fgdot() {
-    dot
-    fg
-}
 script() {
 	cd ~/script/ || return 2
 }
 fd () {
-    cd "$(find . -type d | fzy)" || { echo error && return 2;}
+    cd "$(find . -type d | fzf)" || { echo error && return 2;}
 }
 alias bashrc="vim \$DOT/config/bashrc"
-unset -f resetbash
-declare -fxr resetbash
 resetbash () {
     clear
     echo Resetting... | lolcat
     sleep 1
     exec bash -i -l -c "source $HOME/dot/config/bashrc"
 }
-export -f resetbash
 export RIPGREP_CONFIG_PATH="$HOME/dot/config/ripgrep"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 alias v='vim -c "normal '\''0"'
 eval "$(direnv hook bash)"
+export COLORTERM="Yes"

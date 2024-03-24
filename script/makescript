@@ -3,7 +3,10 @@
 set -euo pipefail
 
 read -p "Enter the script name: " -re name
+read -p "Enter the path: " -re path
 
-touch ~/script/"$name"
-chmod +x ~/script/"$name"
-vim ~/script/"$name" -c "read $HOME/dot/config/vim/skeleton/bash"
+path=${path/\~/$HOME}
+
+touch "${path}/${name}"
+chmod +x "${path}/$name"
+vim "${path}/$name" -c "read $HOME/dot/config/vim/skeleton/bash"

@@ -4,4 +4,4 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-vim -c "silent grep! '$*'"
+vim -c "FindGrep"

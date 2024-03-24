@@ -8,10 +8,10 @@ nmap ,gg :!google
 hi CurSearch ctermbg=black ctermfg=1
 hi Search ctermbg=black ctermfg=154
 
-set cursorline
-set cursorlineopt=screenline,number
+" set cursorline
+" set cursorlineopt=screenline,number
 " set columns=80
-set colorcolumn=+1
+" set colorcolumn=+1
 " set cursorcolumn
 autocmd BufEnter,WinEnter * highlight ALEInfoLine ctermfg=3 ctermbg=black
 autocmd BufEnter,WinEnter * highlight ALEInfo ctermfg=white ctermbg=black
@@ -48,3 +48,5 @@ set laststatus=2
 command! TitleCase s/\v<(.)(\w*)/\u\1\L\2/g
 " highlight NonText ctermfg=green ctermbg=black
 highlight SpecialKey ctermfg=2 ctermbg=NONE
+highlight Normal ctermbg=NONE
+let g:enable_fuzzyy_keymaps = 0

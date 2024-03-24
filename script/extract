@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -eo pipefail
 IFS=$'\n\t'
 # set -x
 
+[ -z "$1" ] && echo Need filename as first argument... && exit 2
+
 file="$1"
+
+
 for i in $(seq 78); do
 	printf "%s" "█"
     [ "$i" -eq 78 ] && printf "\n"

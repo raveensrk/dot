@@ -16,7 +16,7 @@ nmap <leader><leader>r :registers<CR>
 vmap <leader>dd "_d
 vmap <leader>R. y:s+"++gc<Left><Left><Left>
 vmap <leader>R% y:%s+"++gc<Left><Left><Left>
-set list
+set nolist
 nnoremap v <C-v>
 nnoremap <C-v> v
 set virtualedit=block
@@ -41,3 +41,4 @@ cnoremap <Esc><C-F>	<S-Right>
 set laststatus=0
 nnoremap <S-UP> :move -2<cr>
 nnoremap <S-DOWN> :move +1<cr>
+nmap <leader>H :helpgrep 

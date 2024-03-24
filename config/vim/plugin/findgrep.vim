@@ -1,5 +1,7 @@
-set laststatus=0
-function! FG () abort
+" Just a small wrapper around vimgrep. I always wanted it to be more
+" interactive just like emacs find-grep. This seems to do the job.
+
+function! FindGrep () abort
     set wildoptions=pum,fuzzy,tagfile
     let dir=expand("%:p:h").."/**"
     let ext="**."..expand("%:e")
@@ -13,7 +15,5 @@ function! FG () abort
     echowindow cmd
     set wildoptions=fuzzy,tagfile
 endfunction
-command! FG call FG()
-" nmap <leader>fg :vimgrep // **<Left><Left><Left><Left>
-nmap <leader>fg :FG<CR>
-nmap <leader>H :helpgrep 
+command! FindGrep call FindGrep()
+nmap <leader>fg :FindGrep<CR>

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Bookmark script
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+echo "Enter bookmark file, directory, url, or just text: "
+read -re bookmark
+
+echo "$bookmark" >> ~/bookmarks.txt

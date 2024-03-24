@@ -16,6 +16,8 @@ nmap <leader>h :help
 nmap <leader>q :q<CR>
 nmap <leader>r :RangerChooser<cr>
 nmap <leader>w :w<CR>
-set grepprg=RIPGREP_CONFIG_PATH=~/dot/config/ripgrep\ rg\ --no-heading\ --with-filename\ --column\ -g\ !tags\ -g\ !TAGS\ $*
+" set grepprg=RIPGREP_CONFIG_PATH=~/dot/config/ripgrep\ rg\ --no-heading\ --with-filename\ --column\ -g\ !tags\ -g\ !TAGS\ $*
 set title titlestring=%F titlelen=70
-set path+=~/dot/**/**
+set path+=$HOME/dot/**
+set path+=$HOME/script/**
+set path+=~/work/**/**
