@@ -44,3 +44,7 @@ let g:EasyMotion_keys = 'arstzxcvqwfp'
 let g:EasyMotion_smartcase = 1
 nnoremap ,f <Plug>(easymotion-s)
 set laststatus=2
+
+command! TitleCase s/\v<(.)(\w*)/\u\1\L\2/g
+" highlight NonText ctermfg=green ctermbg=black
+highlight SpecialKey ctermfg=2 ctermbg=NONE

@@ -1,10 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
 
 path=$(realpath "$(which "$1")")
 
 [ -f "$path" ] && $EDITOR "$path" && exit 0
 
 which "$path"
-type "$path"
-whereis "$path"
+# type "$path"
+# whereis "$path"
 exit 0

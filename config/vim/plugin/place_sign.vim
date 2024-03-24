@@ -55,7 +55,7 @@ function! PlaceSign (string, sign_name, sign_highlight, linehl, test) abort
     endfor
 endfunction
 
-if 1
+if 0
     call PlaceSign("what", "sign_what", "ToolbarButton", "WildMenu", "0")
     " call PlaceSign("WHAT", "WHAT", "ToolbarButton", "WildMenu", "1")
     call PlaceSign("present", "WHAT", "ToolbarButton", "WildMenu", "0")

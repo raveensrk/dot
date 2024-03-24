@@ -4,4 +4,4 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-vim -c "FR" -c "copen"
+vim -c "FR" -c "copen" -c "wincmd o"

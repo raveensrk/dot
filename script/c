@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-text=""
+for i in $(seq 78); do
+	printf "%s" "-"
+    [ "$i" -eq 78 ] && printf "\n"
+done >>~/capture.txt
+
 while read -re line; do
-text+="$line
-"
-done
-cat <<HERE >> ~/capture.txt
-------------------------------------------------------------------------------
-echo "$text"
-------------------------------------------------------------------------------
-HERE
+	echo "$line"
+done >> ~/capture.txt
