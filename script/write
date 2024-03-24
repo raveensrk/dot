@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+touch "$1"
+cat "$1"
+
+while read -re line; do
+    echo "$line"
+done >> "$1"

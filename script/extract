@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+file="$1"
+for i in $(seq 78); do
+	printf "%s" "█"
+    [ "$i" -eq 78 ] && printf "\n"
+done >> "$file"
+
+while read -re line; do
+	echo "$line"
+done >> "$file"
