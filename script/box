@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+text="$1"
+len="${#text}"
+len=$((len+4))
+
+printf "\t\t"
+jot -b █ "$len" | rs -g 0
+printf "\t\t█ %s █\n" "$text"
+printf "\t\t"
+jot -b █ "$len" | rs -g 0
+
+exit 0
