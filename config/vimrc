@@ -51,7 +51,7 @@ set dictionary="/usr/share/dict/words"
 " TABBING AND INDENT {{{
 set tabstop=4 softtabstop=4
 set shiftwidth=4
-set expandtab
+set noexpandtab
 set autoindent
 set smartindent
 set smarttab

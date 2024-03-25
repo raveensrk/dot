@@ -3,7 +3,6 @@ nmap ,cd :cd %:h<CR>
 nmap <leader>/ :BLines<CR>
 nmap <leader>? :Lines<CR>
 nmap <leader>a <C-6><CR>
-nmap <leader>d :bd<cr>
 nmap <leader>fb :b 
 nmap <leader>fc :e ~/.vimrc<CR>
 nmap <leader>ff :find *
