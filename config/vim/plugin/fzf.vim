@@ -74,7 +74,21 @@ let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 set autochdir
 command! FDot Files ~/dot 
 nmap <leader>fb :Buffers<cr>
-nmap <leader>ff :Files<cr>
+function! FindFiles () abort
+    set wildoptions=pum,fuzzy,tagfile
+    let dir=expand("%:p:h:~:.")
+    let dir=input("Enter dir path to search: ", dir, "dir")
+    redraw!
+    let cmd =  "Files "..dir
+    call histadd("cmd", cmd)
+    execute cmd
+    echowindow cmd
+    set wildoptions=fuzzy,tagfile
+endfunction
+command! FindFiles call FindFiles()
+nmap <leader>ff :FindFiles<cr>
+command! FindGrep call FindGrep()
+nmap <leader>fg :FindGrep<CR>
 " nmap <leader>fr :History<CR>
 nmap <leader>fl :Lines<CR>
 nmap <leader>fh :Helptags<CR>

@@ -50,5 +50,5 @@ command! TitleCase s/\v<(.)(\w*)/\u\1\L\2/g
 highlight SpecialKey ctermfg=2 ctermbg=NONE
 highlight Normal ctermbg=NONE
 let g:enable_fuzzyy_keymaps = 0
-nmap <leader>gs :Git<CR>
-nmap <leader>gp :Git push<CR>
+nmap <leader>gs :echowindow "Git status..."<CR>:Git<CR>
+nmap <leader>gp :echowindow "Git push..."<CR>:Git push<CR>
