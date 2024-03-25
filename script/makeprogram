@@ -10,6 +10,7 @@ declare -a repos
 repos=(
 	"Quit"
 	"https://github.com/junegunn/fzf/archive/refs/tags/0.48.1.tar.gz"
+	"https://github.com/eradman/entr/archive/refs/tags/5.5.tar.gz"
 )
 select repo in "${repos[@]}"; do
 	cd ~/tmp
