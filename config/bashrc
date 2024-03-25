@@ -11,8 +11,6 @@ export VIMINIT=":source $MYVIMRC"
 export EDITOR="vim"
 export VISUAL="vim"
 export TERM=xterm-256color
-is_linux=$(uname -a | cut -d ' ' -f 1)
-export is_linux
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
@@ -170,12 +168,10 @@ alias dc="cd -"
 os=$(uname -a | cut -d ' ' -f 1)
 export os
 [[ $os = "Darwin" ]] && source "$DOT/config/macos"
-if [ "$is_linux" != "Darwin" ]; then
-	export PATH="$DOT/bin/linux:$PATH"
-fi
+[[ "$os" != "Darwin" ]] && export PATH="$DOT/bin/linux:$PATH"
 source "$DOT/config/fzf"
 source "$DOT/config/zoxide"
-# shellcheck source-path=~/script
+# shellcheck disable=1091
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
 alias path="echo \$PATH | tr ':' '\n' | tac"
 alias l="ls -lAh"
