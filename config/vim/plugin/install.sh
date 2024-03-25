@@ -17,6 +17,8 @@ wait
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &
 git clone "git@github.com:easymotion/vim-easymotion" &
 git clone "git@github.com:junegunn/vim-easy-align" &
+git clone "git@github.com:junegunn/fzf" &
+git clone "git@github.com:junegunn/fzf.vim" &
 git clone "git@github.com:mhinz/vim-signify" &
 git clone "git@github.com:nathanaelkane/vim-indent-guides" &
 git clone "git@github.com:tomtom/tcomment_vim" &
