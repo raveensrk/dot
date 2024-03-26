@@ -1,0 +1,1 @@
+error_code = $fseek(fd, 1, $fscanf(fd, "%d", variable));
