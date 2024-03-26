@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+IFS=$'\n\t'
+# set -x
+
+main() {
+	lazygit -p ~/dot
+	lazygit -p ~/work
+}
+
+while true; do
+	main
+	[ "$1" != "loop" ] && break
+	echo Looping...
+	sleep 2
+done
