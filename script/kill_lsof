@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+
+lsof +D "$1" | awk -F " " '{print $2}' | sed -n '1,$p' | xargs kill
