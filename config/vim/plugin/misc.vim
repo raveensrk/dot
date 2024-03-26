@@ -57,4 +57,4 @@ nmap <leader>gp :echowindow "Git push..."<CR>:Git push<CR>
 command! SnippetRead fzf#run({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'sink': 'read'})
 inoremap <expr> <c-x>s fzf#vim#complete({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'reducer': { lines -> join(readfile(lines[0]))}})
 
-
+command! -nargs=1 -complete=dir TagsGen !ctags -R <args>
