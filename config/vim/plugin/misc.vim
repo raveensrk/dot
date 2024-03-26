@@ -37,9 +37,10 @@ function! Bookmark() abort
     echowindow bookmark
     redir! >> ~/.bookmarks | echo bookmark | redir END
 endfunction
-command! Bookmark call Bookmark()
-nmap ,bm :Bookmark<CR>
+command! BookmarkAdd call Bookmark()
+nmap ,bm :BookmarkAdd<CR>
 nmap ,bl :tabnew ~/.bookmarks<CR>
+command! BookmarkList tabnew ~/.bookmarks
 let g:EasyMotion_keys = 'arstzxcvqwfp'
 let g:EasyMotion_smartcase = 1
 nnoremap ,f <Plug>(easymotion-s)
@@ -52,3 +53,8 @@ highlight Normal ctermbg=NONE
 let g:enable_fuzzyy_keymaps = 0
 nmap <leader>gs :echowindow "Git status..."<CR>:Git<CR>
 nmap <leader>gp :echowindow "Git push..."<CR>:Git push<CR>
+
+command! SnippetRead fzf#run({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'sink': 'read'})
+inoremap <expr> <c-x>s fzf#vim#complete({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'reducer': { lines -> join(readfile(lines[0]))}})
+
+
