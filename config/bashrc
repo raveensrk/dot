@@ -76,7 +76,7 @@ alias rsync="rsync -CazhPvu"                                         # -C
 
 # }}}
 # {{{ PAGERS
-alias less='less -s -R -wi -S --ignore-case --use-color'
+alias less='less -s -R -wi -S --ignore-case'
 export PAGER='less'
 export MANPAGER='less'
 export MANCOLOR="Yes"
