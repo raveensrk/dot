@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+string="The Quick brown fox jumped over the lazy dog..."
+
+{
+# for ((i=30;i<=47;i++)); do
+#     echo -en "$i = \e[${i}m$string\e[0m"
+# 	echo ": \e[${i}mCode\e[0m"
+# done
+
+for ((i=0;i<256;i++)); do
+    echo -en "$i = \e[38;5;${i}m$string\e[0m"
+    cat <<-HERE
+	:color () { echo -e "\\e[38;5;${i}m" ;}
+	HERE
+done
+for ((i=0;i<256;i++)); do
+    echo -en "$i = \e[48;5;${i}m$string\e[0m"
+    echo ": Code='\e[48;5;${i}mText\e[0m'"
+done
+} | fzf +s --ansi | cut -d ":" -f 2
+
+cat <<-HERE
+no_color () { echo -e "\\e[0m" ;}
+HERE
+
+exit 0
