@@ -4,14 +4,14 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-text="$1"
+text="$*"
 len="${#text}"
 len=$((len+4))
 
 printf "\t\t"
-jot -b █ "$len" | rs -g 0
+jot -b █ "$len" | rs -w200 -g 0
 printf "\t\t█ %s █\n" "$text"
 printf "\t\t"
-jot -b █ "$len" | rs -g 0
+jot -b █ "$len" | rs -w200 -g 0
 
 exit 0
