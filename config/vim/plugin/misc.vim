@@ -54,7 +54,15 @@ let g:enable_fuzzyy_keymaps = 0
 nmap <leader>gs :echowindow "Git status..."<CR>:Git<CR>
 nmap <leader>gp :echowindow "Git push..."<CR>:Git push<CR>
 
-command! SnippetRead fzf#run({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'sink': 'read'})
+command! SnippetRead call fzf#run({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'sink': 'read'})
+nmap <leader>sr :SnippetRead<CR>
+
 inoremap <expr> <c-x>s fzf#vim#complete({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'reducer': { lines -> join(readfile(lines[0]))}})
 
 command! -nargs=1 -complete=dir TagsGen !ctags -R <args>
+let g:fuzzyy_window_layout = { 'FuzzyFiles': { 'preview': 0 } }
+let g:fuzzyy_window_layout = { 'FuzzyMRUFiles': { 'preview': 0 } }
+
+command! FIX set winfixbuf
+
+autocmd BufNewFile *.sh 0read ~/dot/config/vim/skeleton/bash

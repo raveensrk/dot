@@ -1,0 +1,1 @@
+`uvm_fatal("ID", $sformatf("FATAL_MESSAGE!"));
