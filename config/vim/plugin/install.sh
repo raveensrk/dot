@@ -38,6 +38,7 @@ git clone "https://github.com/MarcWeber/vim-addon-qf-layout.git" &
 git clone "https://github.com/chrisbra/unicode.vim.git" &
 git clone "https://github.com/wuelnerdotexe/vim-enfocado" &
 git clone "git@github.com:Donaldttt/fuzzyy.git" &
+git clone "https://github.com/preservim/vim-markdown.git" &
 wait
 exit 0
 
