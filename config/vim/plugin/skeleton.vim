@@ -1,1 +1,3 @@
-autocmd BufNewFile  *.bash	0r $HOME/.vim/skeleton/bash
+autocmd BufNewFile *.bash	0read $DOT/config/vim/skeleton/bash
+autocmd BufNewFile *.sh		0read $DOT/config/vim/skeleton/bash
+autocmd BufNewFile *.sv		0read $DOT/config/vim/skeleton/sv/main.sv

@@ -4,13 +4,10 @@ set -eo pipefail
 IFS=$'\n\t'
 # set -x
 
-main() {
-	lazygit -p ~/dot
-	lazygit -p ~/work
-}
-
 while true; do
-	main
+	while read -re line; do
+		lazygit -p "${line/\~/$HOME}"
+	done <~/projects.txt
 	[ "$1" != "loop" ] && break
 	echo Looping...
 	sleep 2
