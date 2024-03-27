@@ -1,0 +1,5 @@
+class new_class extends uvm_object;
+    function new(string name="new_class");
+        super.new(name);
+    endfunction
+endclass: new_class

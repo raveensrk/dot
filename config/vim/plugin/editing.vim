@@ -44,3 +44,4 @@ set laststatus=0
 nnoremap <S-UP> :move -2<cr>
 nnoremap <S-DOWN> :move +1<cr>
 nmap <leader>H :helpgrep 
+command! TitleCase s/\v<(.)(\w*)/\u\1\L\2/g

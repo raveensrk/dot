@@ -1,9 +1,12 @@
-function! SnippetCreate ()
+function! SnippetCreate (start,end)
 	let name=input("Enter name of snippet: ")
 	let filetype=input("Enter filetype of snippet: ")
-	execute ".w $DOT/config/vim/snippet/".filetype."/".name.".txt"
+	let cmd = a:start.",".a:end."w $DOT/config/vim/snippet/".filetype."/".name.".txt"
+    echowindow cmd
+	execute cmd
 endfunction
-command! SnippetCreate call SnippetCreate()
+command! -range SnippetCreate call SnippetCreate(<line1>,<line2>)
+
 
 function! SkeletonCreate ()
 	let name=input("Enter name of Skeleton: ")
