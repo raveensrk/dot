@@ -15,7 +15,7 @@ command! TQ call timer_start(5000, 'TimeoutQuickFixWindow', {'repeat': 1})
 "             \ {'repeat': 1})
 let g:enable_fuzzyy_MRU_files = 1
 " nmap <leader>fr :FR<cr>:copen<cr>:TQ<cr>
-nmap <leader>fr :FuzzyMRUFiles<cr>
+" nmap <leader>fr :FuzzyMRUFiles<cr>
 
 function! TimeoutQuickFixWindow(timer)
     " let bufnr = bufnr("Recent Files")

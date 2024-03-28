@@ -112,7 +112,7 @@ man() {
 # {{{ VIM
 alias vimrc="vim $DOT/config/vimrc"
 alias v="vim"
-alias vfr="vim -c 'CtrlPMRUFiles'"
+alias fr="vim -c 'History'"
 # }}}
 # RANGER {{{
 export RANGER="ranger -r $DOT/config/ranger"
@@ -200,6 +200,5 @@ resetbash () {
 }
 export RIPGREP_CONFIG_PATH="$HOME/dot/config/ripgrep"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
-alias v='vim -c "normal '\''0"'
 eval "$(direnv hook bash)"
 export COLORTERM="Yes"

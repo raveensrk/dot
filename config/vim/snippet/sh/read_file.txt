@@ -1,0 +1,18 @@
+while read -u 10 -re line ; do
+	echo "$line"
+	select option in Yes No Quit; do
+		case "$option" in
+		Yes)
+			echo "Yes"
+			;;
+		No)
+			echo "No"
+			;;
+		Quit)
+			echo "Quit"
+			;;
+		esac
+		break
+	done
+	break
+done 10<  "file.txt"
