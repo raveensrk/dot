@@ -68,14 +68,12 @@ set nonumber
 " }}}
 " {{{ INTERFACE
 set pumheight=10
-set completeopt="menu,preview"
 set wrap
 set nolinebreak
 set hlsearch
 set incsearch
 set ruler
-" set wildmode=longest,list,full
-set wildmode=lastused,full
+set wildmode=list:longest,full
 set wildmenu
 set wildignore=#*,./,
 set wildignorecase
@@ -192,3 +190,4 @@ command! Format :norm mmggVGgq`m
 set showmode
 set showcmd
 set shortmess+=I
+set nu
