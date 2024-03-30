@@ -1,0 +1,3 @@
+function void report_phase(uvm_phase phase);
+	super.report_phase(phase);
+endfunction : report_phase

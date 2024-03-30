@@ -6,7 +6,7 @@ nmap <leader>a <C-6><CR>
 nmap <leader>fb :b 
 nmap <leader>fc :e ~/.vimrc<CR>
 nmap <leader>ff :find *
-nmap <leader>f. :e ./
+nmap <leader>e :e ./
 nmap <leader>fi :echo expand("%:p")<cr>
 nmap <leader>fp :let @+ = expand("%:p")<cr>
 nmap <leader>gf :e <cfile><CR>

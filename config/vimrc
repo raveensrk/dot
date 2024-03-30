@@ -191,3 +191,4 @@ set showmode
 set showcmd
 set shortmess+=I
 set nu
+set foldlevelstart=99
