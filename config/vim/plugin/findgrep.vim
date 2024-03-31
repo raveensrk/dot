@@ -10,7 +10,7 @@ function! FindGrep () abort
     call chdir(dir)
     let extension=input("Enter extension to search: ", ext)
     redraw!
-    let cmd =  "vimgrep ".."/"..pattern.."/".." "..dir.."/**".."/"..extension
+    let cmd =  "vimgrep! ".."/"..pattern.."/".." "..dir.."/**".."/"..extension
 	echowindow cmd
     call histadd("cmd", cmd)
     execute cmd
