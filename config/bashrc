@@ -27,7 +27,7 @@ export IGNOREEOF=1
 # shopt -s dotglob
 # shopt -s histappend
 shopt -s autocd
-shopt -s cdable_vars
+# shopt -s cdable_vars
 shopt -s cdspell
 shopt -s checkjobs
 shopt -s checkwinsize
