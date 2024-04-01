@@ -11,5 +11,5 @@ let g:fuzzyy_window_layout = { 'FuzzyFiles': { 'preview': 0 } }
 let g:fuzzyy_window_layout = { 'FuzzyMRUFiles': { 'preview': 0 } }
 
 command! FIX set winfixbuf
-
+set nu
 command! LazyGit !lazygit

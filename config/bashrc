@@ -27,7 +27,7 @@ export IGNOREEOF=1
 # shopt -s dotglob
 # shopt -s histappend
 shopt -s autocd
-shopt -s cdable_vars
+# shopt -s cdable_vars
 shopt -s cdspell
 shopt -s checkjobs
 shopt -s checkwinsize
@@ -160,7 +160,7 @@ find-grep() {
 # }}}
 # Convenience{{{
 alias hexdump="hexdump -Cv"
-alias compress="tar -cva -f "
+alias compress="tar -cvza -f "
 github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
 git_pickaxe() { git log -p -S "$@"; }
 alias dc="cd -"
@@ -174,7 +174,8 @@ source "$DOT/config/zoxide"
 # shellcheck disable=1091
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
 alias path="echo \$PATH | tr ':' '\n' | tac"
-alias l="ls -lAh"
+alias ls="ls -X --group-directories-first  --color"
+alias l="ls -X --group-directories-first  --color -lAh"
 unlock-pdf() {
 	read -p "Enter Password: " -re pass
 	qpdf --password="$pass" --decrypt "$1" "$2"
@@ -206,3 +207,7 @@ export COLORTERM="Yes"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
 export PATH="$DOT/script:$PATH"
+export EDITOR="vim"
+export VISUAL="vim"
+alias q="exit"
+alias grep="grep -nH --color"
