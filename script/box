@@ -10,9 +10,9 @@ len=$((len + 4))
 
 # printf "\t\t"
 {
-	jot -b - "$len" | rs -w200 -g 0
-	printf " %s\n" "$text"
-	jot -b - "$len" | rs -w200 -g 0
+	jot -b -  "$len" | rs -w30 -g 0
+	printf "%s\n" "$text"
+	jot -b - "$len" | rs -w30 -g 0
 } | lolcat
 
 exit 0

@@ -189,9 +189,6 @@ dot() {
 script() {
 	cd ~/script/ || return 2
 }
-fd () {
-    cd "$(find . -type d | fzf)" || { echo error && return 2;}
-}
 alias bashrc="vim \$DOT/config/bashrc"
 resetbash () {
     clear
@@ -211,3 +208,4 @@ export EDITOR="vim"
 export VISUAL="vim"
 alias q="exit"
 alias grep="grep -nH --color"
+source "$DOT/script/fd"

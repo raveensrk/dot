@@ -4,10 +4,10 @@
 function! FindGrep () abort
     " set wildoptions=pum,fuzzy,tagfile
     let dir=expand("%:p:h")
-    let ext="**."..expand("%:e")
+    let ext="**.*"..expand("%:e")
     let pattern=input("Enter pattern to search: ", expand("<cword>"))
     let dir=input("Enter dir path to search: ", dir, "dir")
-    call chdir(dir)
+    " call chdir(dir)
     let extension=input("Enter extension to search: ", ext)
     redraw!
     let cmd =  "vimgrep! ".."/"..pattern.."/".." "..dir.."/**".."/"..extension
@@ -18,3 +18,5 @@ function! FindGrep () abort
 endfunction
 command! FindGrep call FindGrep()
 nmap <leader>fg :FindGrep<CR>
+
+" There is some bug here

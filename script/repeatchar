@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+# shellcheck disable=2034
+for i in $(seq "$1"); do
+	printf "%s" "$2"
+done
+
+
+

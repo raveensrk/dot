@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-printf "%s\n" "----------------" | lolcat
-printf "%s\n" "Capturing..." | lolcat
-printf "%s\n\n\n" "----------------" | lolcat
+box "Capturing...<<<" 
+
+
 while read -re line; do
 	echo "$line"
 done >>~/capture.txt
@@ -12,6 +12,4 @@ for i in $(seq 78); do
 	[ "$i" -eq 78 ] && printf "\n" >>~/capture.txt
 done
 
-printf "%s\n" "----------------" | lolcat
-printf "%s\n" "Captured..." | lolcat
-printf "%s\n\n\n" "----------------" | lolcat
+box ">>>...Captured" 
