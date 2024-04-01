@@ -4,5 +4,6 @@ eval "$(zoxide init bash --cmd cd)"
 
 cd () {
 	__zoxide_z "$@"
-	exa --group-directories-first
+	ls  -X --color --group-directories-first
+
 }

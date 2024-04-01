@@ -174,7 +174,8 @@ source "$DOT/config/zoxide"
 # shellcheck disable=1091
 [[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
 alias path="echo \$PATH | tr ':' '\n' | tac"
-alias l="ls -lAh"
+alias ls="ls -X --group-directories-first  --color"
+alias l="ls -X --group-directories-first  --color -lAh"
 unlock-pdf() {
 	read -p "Enter Password: " -re pass
 	qpdf --password="$pass" --decrypt "$1" "$2"
@@ -207,3 +208,6 @@ source "$DOT/config/exa"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
 export PATH="$DOT/script:$PATH"
+export EDITOR="vim"
+export VISUAL="vim"
+alias q="exit"
