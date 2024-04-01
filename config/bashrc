@@ -202,3 +202,8 @@ export RIPGREP_CONFIG_PATH="$HOME/dot/config/ripgrep"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 eval "$(direnv hook bash)"
 export COLORTERM="Yes"
+
+source "$DOT/config/exa"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/script:$PATH"
+export PATH="$DOT/script:$PATH"

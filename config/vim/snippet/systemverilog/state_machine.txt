@@ -1,0 +1,57 @@
+// vim: set filetype=systemverilog:
+// Simple state machine
+
+int present_state, next_state;
+int this_state;
+
+parameter int STATE_A = 0;
+parameter int STATE_B = 1;
+parameter int STATE_B2 = 2;
+parameter int STATE_C = 3;
+parameter int STATE_D = 4;
+
+present_state = 0;
+next_state = 0;
+
+for (int i = 0; i < 100; i++) begin
+
+    count++;
+
+    present_state = next_state;
+
+    $sformatf("present_state = %0d", present_state);
+
+    case (present_state)
+        default: begin
+            $sformatf("Unknown state = %0d", present_state);
+        end
+
+        STATE_A: begin
+            this_state = 0;
+            next_state = STATE_B;
+        end
+
+        STATE_B: begin
+            this_state = 1;
+            next_state = STATE_B2;
+        end
+
+        STATE_B2: begin
+            this_state = 2;
+            next_state = STATE_C;
+        end
+
+        STATE_C: begin
+            this_state = 3;
+            next_state = STATE_D;
+        end
+
+        STATE_D: begin
+            this_state = 4;
+            next_state = STATE_A;
+            count = 0;
+        end
+
+    endcase
+end
+

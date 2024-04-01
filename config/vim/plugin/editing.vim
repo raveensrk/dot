@@ -1,8 +1,8 @@
-nmap <Tab> mm==`m
+" nmap <Tab> mm==`m
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 nmap Y y$
-vmap <Tab> mm=`m
+" vmap <Tab> mm=`m
 nmap <leader>= gg=G2<C-o>
 nmap <leader>A ggVG
 if has('clipboard')

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+git diff -b -w -M --minimal --word-diff 

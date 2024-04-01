@@ -1,0 +1,12 @@
+for option in "$@"; do
+	case "$option" in
+		name)
+			echo "$option"
+			exit 0
+			;;
+		*)
+			echo "Unknown option..."
+			exit 2
+			;;
+	esac
+done
