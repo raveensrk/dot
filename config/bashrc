@@ -160,7 +160,7 @@ find-grep() {
 # }}}
 # Convenience{{{
 alias hexdump="hexdump -Cv"
-alias compress="tar -cva -f "
+alias compress="tar -cvza -f "
 github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
 git_pickaxe() { git log -p -S "$@"; }
 alias dc="cd -"
