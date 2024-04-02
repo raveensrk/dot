@@ -9,10 +9,16 @@ len="${#text}"
 len=$((len + 4))
 
 # printf "\t\t"
+# {
+# 	printjot -b - "$len" | rs -w200 -g 0
+# 	printf "%s\n" "$text"
+# 	jot -b - "$len" | rs -w200 -g 0
+# } | lolcat
+
 {
-	jot -b - "$len" | rs -w200 -g 0
-	printf "%s\n" "$text"
-	jot -b - "$len" | rs -w200 -g 0
+	print_centered - -
+	print_centered "$text"
+	print_centered - -
 } | lolcat
 
 exit 0

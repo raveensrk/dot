@@ -55,13 +55,23 @@ packages=(
 	urlview
 	w3m
 	wget
-    dict
-    direnv
-    entr
-    hstr
-    mpv
+	dict
+	direnv
+	entr
+	hstr
+	mpv
 )
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 
 brew install ${packages[@]}
+
+macport_packages=(
+	"gtkwave"
+	"gtk2"
+	"sqlite3-tcl"
+)
+
+sudo port install ${macport_packages[@]}
+
+sudo port select --set pygments py312-pygments
