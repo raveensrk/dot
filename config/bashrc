@@ -176,10 +176,6 @@ source "$DOT/config/zoxide"
 alias path="echo \$PATH | tr ':' '\n' | tac"
 alias ls="ls -X --group-directories-first  --color"
 alias l="ls -X --group-directories-first  --color -lAh"
-unlock-pdf() {
-	read -p "Enter Password: " -re pass
-	qpdf --password="$pass" --decrypt "$1" "$2"
-}
 emacs() {
 	echo "Do you mean vim?..."
 }

@@ -73,7 +73,7 @@ let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
 set autochdir
 command! FDot Files ~/dot 
-nmap <leader>fb :Buffers<cr>
+" nmap <leader>fb :Buffers<cr>
 function! FindFiles () abort
     set wildoptions=pum,fuzzy,tagfile
     let dir=expand("%:p:h:~:.")

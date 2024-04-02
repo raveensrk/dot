@@ -1,0 +1,4 @@
+always_comb begin
+    $display("main.in       = %0d", m1.in);
+    $display("secondary.in  = %0d", m1.s1.in);
+end

@@ -1,0 +1,3 @@
+interface main_if (input int in, output int out);
+    int a, b, c;
+endinterface: main_if

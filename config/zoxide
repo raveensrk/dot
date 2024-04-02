@@ -9,7 +9,11 @@ eval "$(zoxide init bash --cmd cd)"
 # }
 #
 cd () {
-	builtin cd "$1" || return 2
+	realpath "$1" >> /tmp/cds
+	builtin cd $1 || return 2
 	ls  -X --color --group-directories-first
+}
 
+cds () {
+	cd "$(tac /tmp/cds | fzf +s)" || return 2
 }

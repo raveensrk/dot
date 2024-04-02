@@ -2,9 +2,31 @@
 # Bookmark script
 set -euo pipefail
 IFS=$'\n\t'
-# set -x
 
-echo "Enter bookmark file, directory, url, or just text: "
-read -re bookmark
+file="$HOME/bookmarks.txt"
 
-echo "$bookmark" >> ~/bookmarks.txt
+for option in "$@"; do
+	case "$option" in
+		list)
+			urlview < <(sort "$file")
+			exit 0
+			;;
+		edit)
+			$EDITOR "$file"
+			exit 0
+			;;
+		add)
+		
+			box "New bookmark"
+			while read -re line ; do
+				echo -n "$line"
+			done >> "$file"
+			exit 0
+			;;
+		*)
+			echo "Error. Invalid Argument." | red
+			exit 0
+			;;
+	esac
+done
+

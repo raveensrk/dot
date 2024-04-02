@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+read -p "Enter Password: " -re pass
+out="$(basename "$1" ".pdf")"
+out="${out}_unlocked"
+qpdf --password="$pass" --decrypt "$1" "$out.pdf"
+

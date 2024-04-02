@@ -14,6 +14,7 @@ export SHELL="/opt/homebrew/bin/bash"
 export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/bin/macos:$PATH"
+export PATH="/opt/local/bin:$PATH"
 fortune
 
 2x2() {

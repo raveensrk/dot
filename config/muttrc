@@ -101,6 +101,7 @@ mono underline underline
 # }}}
 # Key Bindings{{{
 
+bind  index         <Esc>a  alias-dialog
 bind  generic,pager        t  noop
 bind  index,pager          s  noop
 macro index,pager          d "<delete-message><sync-mailbox>" "Move message to trash"
@@ -144,6 +145,7 @@ bind pager               t         tag-message
 
 macro index               R    "T.<Enter>;<clear-flag>o\Ct.<Enter>"
 macro index                c  "<change-folder>?"
+macro index,pager S "<save-message>+Saved<Enter>"
 # }}}
 # {{{ SIDEBAR
 set mail_check_stats

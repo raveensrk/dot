@@ -7,7 +7,7 @@ IFS=$'\n\t'
 read -p "Filename Pattern: " -re pattern
 read -p "Path: " -re path
 
-cmd="find $path -type f -iname '*$pattern*'"
+cmd="find -L $path -type f -iname '*$pattern*'"
 history -s "$cmd"
 readarray -t files < <(eval "$cmd")
 
