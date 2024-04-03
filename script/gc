@@ -4,4 +4,10 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-git commit -m "$@"
+if [[ "$#" -eq 0 ]]; then
+	read -p "Enter commit message: " -i "Update" -re message
+else
+	message="$*"
+fi
+
+git commit -m "$message"
