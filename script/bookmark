@@ -7,8 +7,8 @@ file="$HOME/bookmarks.txt"
 
 for option in "$@"; do
 	case "$option" in
-		list)
-			urlview < <(sort "$file")
+		list|open)
+			sort "$file" | fzf +s | cut -d "|" -f 2 | xargs open 
 			exit 0
 			;;
 		edit)

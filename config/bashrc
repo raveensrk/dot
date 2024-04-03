@@ -47,7 +47,7 @@ export HISTCONTROL=erasedups:ignoredups
 export HISTSIZE=-1
 export HISTFILESIZE=-1
 export HISTIGNORE=""
-export HISTTIMEFORMAT="[%F %T] "
+# export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_history
 export PROMPT_COMMAND="$PROMPT_COMMAND"
 # export PROMPT_COMMAND="$PROMPT_COMMAND"
@@ -203,5 +203,5 @@ export PATH="$DOT/script:$PATH"
 export EDITOR="vim"
 export VISUAL="vim"
 alias q="exit"
-alias grep="grep -nH --color"
+alias grep="grep --color"
 source "$DOT/script/fd"
