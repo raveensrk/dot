@@ -19,7 +19,7 @@ for option in "$@"; do
 		
 			box "New bookmark"
 			while read -re line ; do
-				echo -n "$line"
+				echo "$line"
 			done >> "$file"
 			exit 0
 			;;

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
- 
-eval "$(zoxide init bash --cmd cd)"
+
+# eval "$(zoxide init bash --cmd cd)"
 
 # cd () {
 # 	__zoxide_z "$@"
@@ -8,12 +8,22 @@ eval "$(zoxide init bash --cmd cd)"
 #
 # }
 #
-cd () {
-	realpath "$1" >> /tmp/cds
-	builtin cd $1 || return 2
-	ls  -X --color --group-directories-first
+
+readonly cds="$HOME/cds.txt"
+
+cd() {
+	if test -z "$1"; then
+		builtin cd "$HOME" || return 2
+	elif [[ "$1" == "-" ]]; then
+		builtin cd - || return 2
+		realpath "$1" >>"$cds"
+	else
+		builtin cd "$1" || return 2
+		realpath "$1" >>"$cds"
+	fi
+	ls -X --color --group-directories-first
 }
 
-cds () {
-	cd "$(tac /tmp/cds | fzf +s)" || return 2
+cds() {
+	cd "$(tac "$cds" | fzf +s)" || return 2
 }

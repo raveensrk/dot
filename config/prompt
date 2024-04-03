@@ -1,34 +1,10 @@
 #!/usr/bin/env bash
 
+source "$DOT/config/colors"
+
 update_prompt() {
 	PS1="[$?|\j|\W]:$ "
 	export PS1
 }
 
 export PROMPT_COMMAND="update_prompt && history -a"
-
-green() {
-	echo -e "\e[38;5;2m"
-	cat <&0
-	echo -e "\e[0m"
-}
-
-red() {
-	echo -e "\e[38;5;1m"
-	cat <&0
-	echo -e "\e[0m"
-}
-
-
-yellow() {
-	echo -e "\e[38;5;11m"
-	cat <&0
-	echo -e "\e[0m"
-}
-
-
-blue() {
-	echo -e "\e[38;5;75m"
-	cat <&0
-	echo -e "\e[0m"
-}

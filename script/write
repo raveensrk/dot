@@ -5,8 +5,15 @@ IFS=$'\n\t'
 # set -x
 
 touch "$1"
-cat "$1"
+tail -n 10 "$1"
 
 while read -re line; do
-    echo "$line"
-done >> "$1"
+	if [ "$line" = "q" ]; then
+		break
+	else
+		echo "$line" >>"$1"
+	fi
+done
+
+mpv ~/script/little-whoosh.mp3 >/dev/null 2>&1 &
+exit 0
