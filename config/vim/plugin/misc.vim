@@ -13,3 +13,8 @@ let g:fuzzyy_window_layout = { 'FuzzyMRUFiles': { 'preview': 0 } }
 command! FIX set winfixbuf
 set nu
 command! LazyGit !lazygit
+
+nmap <C-w>> <C-w>><C-w>
+nmap <C-w>< <C-w><<C-w>
+
+command! GB Git add . | Git commit -m "Bug fix" | Git push
