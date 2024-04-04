@@ -124,7 +124,6 @@ let g:netrw_keepdir=1
 " ↓ TESTING ↓
 
 
-" set statusline=[%n]%m%r%f%=%h%w%y%q%k[%p%%][%04l,%04v][%L]%S
 set previewpopup=height:10,width:60
 set browsedir="buffer"
 set title
@@ -186,9 +185,41 @@ if filereadable(expand('~/script/custom.vim'))
     execute 'source ' . expand('~/script/custom.vim')
 endif
 " set gdefault
+"
+
 command! Format :norm mmggVGgq`m
 set showmode
 set showcmd
 set shortmess+=I
 set nu
 set foldlevelstart=99
+func! Fix() abort
+	let status="┆%n"
+	if &winfixbuf
+		let status.="┆%#Directory#FIX%*"
+	else
+		let status.="┆BUF"
+	endif
+	let status.="┆%M"
+	let status.="┆%R"
+	let status.="┆%f"
+	let status.="┆%S"
+	let status.="┆%="
+	let status.="┆%H"
+	let status.="┆%W"
+	let status.="┆%Y"
+	let status.="┆%q"
+	let status.="┆%k"
+	let status.="┆%p%%"
+	" let status.="%b"
+	" let status.="┆"
+	let status.="┆%l,%v"
+	let status.="┆"
+	" let status.="%L"
+	" let status.="┆"
+	return status
+endfunc
+
+set showcmd
+set showcmdloc=statusline
+set statusline=%{%Fix()%}
