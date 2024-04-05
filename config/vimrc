@@ -192,7 +192,7 @@ set showmode
 set showcmd
 set shortmess+=I
 set nu
-set foldlevelstart=99
+" set foldlevelstart=99
 func! Fix() abort
 	let status="┆%n"
 	if &winfixbuf

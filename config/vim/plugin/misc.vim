@@ -13,8 +13,10 @@ let g:fuzzyy_window_layout = { 'FuzzyMRUFiles': { 'preview': 0 } }
 command! FIX set winfixbuf
 set nu
 command! LazyGit !lazygit
+command! LG !lazygit
 
 nmap <C-w>> <C-w>><C-w>
 nmap <C-w>< <C-w><<C-w>
 
 command! GB Git add . | Git commit -m "Bug fix" | Git push
+command! -range Align <line1>,<line2>EasyAlign */ \|(\|)\|=\|[\|\]\|;/ 
