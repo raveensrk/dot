@@ -19,4 +19,20 @@ nmap <C-w>> <C-w>><C-w>
 nmap <C-w>< <C-w><<C-w>
 
 command! GB Git add . | Git commit -m "Bug fix" | Git push
-command! -range Align <line1>,<line2>EasyAlign */ \|(\|)\|=\|[\|\]\|;/ 
+" command! -range Align <line1>,<line2>EasyAlign * / \|["]\+\|[\|\]\|,\|(\|)\|=\|;/<l1r1
+" command! -range Align <line1>,<line2>EasyAlign * / \|["]\+\|[\|\]\|,\|(\|)\|=\|;/<l1r1
+function! Align(first, last)
+    execute a:first.",".a:last.'EasyAlign */["]\+/'
+    execute a:first.",".a:last.'EasyAlign */[(]\+/'
+    execute a:first.",".a:last.'EasyAlign */[,]\+/'
+    execute a:first.",".a:last.'EasyAlign */[)]\+/'
+    execute a:first.",".a:last.'EasyAlign */[;]\+/'
+    execute a:first.",".a:last.'EasyAlign */[=]\+/'
+    execute a:first.",".a:last.'EasyAlign */[\[]\+/'
+    execute a:first.",".a:last.'EasyAlign */[\]]\+/'
+    execute "norm gv"
+endfunction
+command -range Align call Align(<line1>, <line2>)
+
+
+" command! -range Align <line1>,<line2>EasyAlign**/"\|[\|\]\|,\|[()]\|=\|;/ 
