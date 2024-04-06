@@ -2,8 +2,11 @@
 # Bookmark script
 set -euo pipefail
 IFS=$'\n\t'
+source ~/dot/config/colors
 
 file="$HOME/bookmarks.txt"
+
+[ "$#" -eq 0 ] && echo "Error: No arguments provided..." | red && exit 2
 
 for option in "$@"; do
 	case "$option" in
@@ -16,7 +19,8 @@ for option in "$@"; do
 			exit 0
 			;;
 		add)
-		
+			box "Bookmarks"
+			bat ~/bookmarks.txt
 			box "New bookmark"
 			while read -re line ; do
 				echo "$line"

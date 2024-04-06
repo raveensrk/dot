@@ -87,6 +87,6 @@ function! FindFiles () abort
 endfunction
 command! FindFiles call FindFiles()
 " nmap <leader>ff :FindFiles<cr>
-nmap <leader>fr :History<CR>
+nmap <leader>fr :History!<CR>
 nmap <leader>fl :Lines<CR>
 nmap <leader>fh :Helptags<CR>
