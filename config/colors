@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+# set -euo pipefail
+# IFS=$'\n\t'
+# set -x
+# https://gist.github.com/ConnerWill/d4b6c776b509add763e17f9f113fd25b
+
+green() {
+	echo -e "\e[38;5;2m"
+	cat <&0
+	echo -e "\e[0m"
+}
+
+red() {
+	echo -e "\e[38;5;1m"
+	cat <&0
+	echo -e "\e[0m"
+}
+
+yellow() {
+	echo -e "\e[38;5;11m"
+	cat <&0
+	echo -e "\e[0m"
+}
+
+blue() {
+	echo -e "\e[38;5;75m"
+	cat <&0
+	echo -e "\e[0m"
+}
+bold() {
+	echo -e "\e[1m"
+	cat <&0
+	echo -e "\e[0m"
+}
+italic() {
+	echo -e "\e[3m"
+	cat <&0
+	echo -e "\e[0m"
+}
+underline() {
+	echo -e "\e[4m"
+	cat <&0
+	echo -e "\e[0m"
+}
+dim() {
+	echo -e "\e[2m"
+	cat <&0
+	echo -e "\e[0m"
+}
+blink() {
+	echo -e "\e[5m"
+	cat <&0
+	echo -e "\e[0m"
+}
+inverse() {
+	echo -e "\e[7m"
+	cat <&0
+	echo -e "\e[0m"
+}
+hidden() {
+	echo -e "\e[8m"
+	cat <&0
+	echo -e "\e[0m"
+}
+strikethrough() {
+	echo -e "\e[9m"
+	cat <&0
+	echo -e "\e[0m"
+}
+magenta() {
+	echo -e "\e[35m"
+	cat <&0
+	echo -e "\e[0m"
+}
+cyan() {
+	echo -e "\e[36m"
+	cat <&0
+	echo -e "\e[0m"
+}

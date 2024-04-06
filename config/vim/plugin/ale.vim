@@ -1,1 +1,1 @@
-let g:ale_virtualtext_cursor=0
+let g:ale_virtualtext_cursor=1

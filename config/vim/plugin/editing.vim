@@ -40,8 +40,13 @@ cnoremap <C-P>		<Up>
 cnoremap <Esc><C-B>	<S-Left>
 " forward one word
 cnoremap <Esc><C-F>	<S-Right>
-set laststatus=0
+" set laststatus=0
 nnoremap <S-UP> :move -2<cr>
 nnoremap <S-DOWN> :move +1<cr>
 nmap <leader>H :helpgrep 
 command! TitleCase s/\v<(.)(\w*)/\u\1\L\2/g
+command! SplitUpLine norm DO<Esc>p
+command! SplitDownLine norm Do<Esc>p
+nmap ,su :SplitUpLine<CR>
+nmap ,sU :SplitDownLine<CR>
+

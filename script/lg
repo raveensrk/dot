@@ -5,9 +5,11 @@ IFS=$'\n\t'
 # set -x
 
 while true; do
-	while read -re line; do
-		lazygit -p "${line/\~/$HOME}"
-	done <~/projects.txt
+	while read -u 10 -re line; do
+		# lazygit -p "${line/\~/$HOME}"
+		# echo "${line/\~/$HOME}"
+		gitui -d "${line/\~/$HOME}"
+	done 10<~/projects.txt
 	[ "$1" != "loop" ] && break
 	echo Looping...
 	sleep 2

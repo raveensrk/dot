@@ -4,7 +4,13 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-text="$*"
+if [ "$#" -eq 0 ]; then
+	read -re line
+	text="$line"
+else
+	text="$*"
+fi
+
 len="${#text}"
 len=$((len + 4))
 

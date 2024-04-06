@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
 box "Capturing...<<<" 
-
-
-while read -re line; do
-	echo "$line"
-done >>~/capture.txt
-
-for i in $(seq 78); do
-	printf "%s" "-" >>~/capture.txt
-	[ "$i" -eq 78 ] && printf "\n" >>~/capture.txt
-done
-
+write "$HOME/capture.txt"
 box ">>>...Captured" 

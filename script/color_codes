@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+echo -----------------------
+echo "\e[{i}m"
+echo -----------------------
+for i in $(seq 0 9) $(seq 21 47) $(seq 90 110); do
+	echo -n -e "\e[${i}m${i}\e[0m"
+done
+echo ""
+echo -----------------------
+echo "\e[38;5;${i}m${i}\e[0m"
+echo -----------------------
+for i in $(seq 0 256); do
+	if [ $((i % 2)) -eq 0 ]; then
+		echo -n -e "\e[4m"
+	fi
+	echo -n -e "\e[38;5;${i}m${i}\e[0m"
+done
+echo ""
+echo -----------------------
+echo "\e[38;5;0m\e[48;5;${i}m${i}\e[0m"
+echo -----------------------
+for i in $(seq 0 256); do
+	if [ $((i % 2)) -eq 0 ]; then
+		echo -n -e "\e[4m"
+	fi
+	echo -n -e "\e[38;5;0m\e[48;5;${i}m${i}\e[0m"
+done
+echo ""
+echo -----------------------
+echo "\e[38;5;255m\e[48;5;${i}m${i}\e[0m"
+echo -----------------------
+for i in $(seq 0 256); do
+	if [ $((i % 2)) -eq 0 ]; then
+		echo -n -e "\e[4m"
+	fi
+	echo -n -e "\e[38;5;255m\e[48;5;${i}m${i}\e[0m"
+done
+echo ""

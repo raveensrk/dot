@@ -30,7 +30,8 @@ packages=(
 	imagemagick
 	ispell
 	jq
-	lazygit
+	# lazygit
+	gitui
 	lesspipe
 	lolcat
 	mactex

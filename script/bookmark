@@ -7,8 +7,8 @@ file="$HOME/bookmarks.txt"
 
 for option in "$@"; do
 	case "$option" in
-		list)
-			urlview < <(sort "$file")
+		list|open)
+			sort "$file" | fzf +s | cut -d "|" -f 2 | xargs open 
 			exit 0
 			;;
 		edit)
@@ -19,7 +19,7 @@ for option in "$@"; do
 		
 			box "New bookmark"
 			while read -re line ; do
-				echo -n "$line"
+				echo "$line"
 			done >> "$file"
 			exit 0
 			;;
