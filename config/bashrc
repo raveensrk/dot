@@ -112,7 +112,6 @@ man() {
 # {{{ VIM
 alias vimrc="vim $DOT/config/vimrc"
 alias v="vim"
-alias fr="vim -c 'History'"
 # }}}
 # RANGER {{{
 export RANGER="ranger -r $DOT/config/ranger"
