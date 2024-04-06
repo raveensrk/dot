@@ -12,8 +12,10 @@ let g:fuzzyy_window_layout = { 'FuzzyMRUFiles': { 'preview': 0 } }
 
 command! FIX set winfixbuf
 set nu
-command! LazyGit !lazygit
-command! LG !lazygit
+" command! LazyGit !lazygit
+" command! LG !lazygit
+command! LazyGit !gitui
+command! LG !gitui
 
 nmap <C-w>> <C-w>><C-w>
 nmap <C-w>< <C-w><<C-w>
