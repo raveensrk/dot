@@ -1,0 +1,6 @@
+# vim: set readonly: #
+
+%Error: /Users/raveenkumarwork/fcu2/fcu2/tb/print_and_write.sv:8:5: Define or directive not defined: '`uvm_info'
+    8 |     `uvm_info("BASE_TEST", $sformatf("%s", string1), UVM_NONE);
+      |     ^~~~~~~~~
+        fdisplay_example.sv:4:1: ... note: In file included from 'fdisplay_example.sv'
