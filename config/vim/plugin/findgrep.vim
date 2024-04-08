@@ -1,5 +1,5 @@
 " Just a small wrapper around vimgrep. I always wanted it to be more
-" interactive just like emacs find-grep. This seems to do the job.
+" interactive. This seems to do the job.
 
 set grepprg=RIPGREP_CONFIG_PATH=~/dot/config/ripgrep\ rg\ --no-heading\ --with-filename\ --column\ -g\ !tags\ -g\ !TAGS\ $*
 

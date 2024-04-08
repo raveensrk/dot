@@ -175,9 +175,7 @@ source "$DOT/config/zoxide"
 alias path="echo \$PATH | tr ':' '\n' | tac"
 alias ls="ls -X --group-directories-first  --color"
 alias l="ls -X --group-directories-first  --color -lAh"
-emacs() {
-	echo "Do you mean vim?..."
-}
+alias emacs="anim NOoOoOoO..."
 dot() {
 	cd ~/dot || return 2
 }
