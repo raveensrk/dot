@@ -1,11 +1,3 @@
-function! SnippetCreate (start,end)
-	let name=input("Enter name of snippet: ")
-	let filetype=input("Enter filetype of snippet: ")
-	let cmd = a:start.",".a:end."w $DOT/config/vim/snippet/".filetype."/".name.".txt"
-    echowindow cmd
-	execute cmd
-endfunction
-command! -range SnippetCreate call SnippetCreate(<line1>,<line2>)
 
 
 function! SkeletonCreate ()
@@ -33,5 +25,4 @@ command! LS  !pwd; ls -l
 command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
 command! RemoveDoubleSpaces :%s/  / /gc
 command! Scratch  split /tmp/scratch.vim
-command! SnippetList Files $DOT/config/vim/snippet
 command! SplitArguments :s/ --/ \\\r--/g

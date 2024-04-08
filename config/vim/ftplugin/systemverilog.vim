@@ -1,6 +1,6 @@
 " TODO change to :IS
-iab casee case(sel)<CR>	2'b00    : out = a;<CR>  2'b01    : out = b;<CR>  2'b10    : out = c;<CR>  default  : out = 0;<CR>endcase
-iab displayy $display("None");
+
+iab displayy $display("%s", variable);
 iab forr for (int i=0; i<=n; i++) begin<CR>end
 iab iff if () begin<CR>end else begin<CR>end
 iab ifft if($test$plusargs("")) begin<CR>end else begin<CR>end
