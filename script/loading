@@ -13,6 +13,14 @@ declare -i progress_gap=0
 declare -i remaining=0
 declare -a circles
 circles=("◐" "◓" "◑" "◒");
+
+# {
+# while [[ $SECONDS -lt $finish_time ]] ; do
+# 	echo "Some text"
+# 	sleep 2
+# done
+# } &
+
 while [[ $current_time -lt $finish_time ]]; do
 	current_time=$SECONDS
 	progress=$((current_time * 100 / finish_time))
@@ -39,5 +47,7 @@ while [[ $current_time -lt $finish_time ]]; do
 		echo -en "-"
 	done
 	echo "[$progress%]"
-	sleep 0.1
+	sleep 1
 done
+
+# wait
