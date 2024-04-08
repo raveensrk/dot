@@ -21,6 +21,8 @@ circles=("◐" "◓" "◑" "◒");
 # done
 # } &
 
+echo ""
+echo ""
 while [[ $current_time -lt $finish_time ]]; do
 	current_time=$SECONDS
 	progress=$((current_time * 100 / finish_time))
@@ -46,7 +48,7 @@ while [[ $current_time -lt $finish_time ]]; do
 	for ((i=0; i<progress_gap; i++)); do
 		echo -en "-"
 	done
-	echo "[$progress%]"
+	echo "[$((progress*2))%]"
 	sleep 1
 done
 
