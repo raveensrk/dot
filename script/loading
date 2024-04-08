@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+
+declare -i finish_time
+finish_time=${1}
+declare -i current_time=$SECONDS
+declare -i progress=0
+declare -i progress_gap=0
+declare -i remaining=0
+declare -a circles
+circles=("◐" "◓" "◑" "◒");
+while [[ $current_time -lt $finish_time ]]; do
+	current_time=$SECONDS
+	progress=$((current_time * 100 / finish_time))
+	progress_gap=$((100-progress))
+	progress=$((progress/2))
+	progress_gap=$((progress_gap/2))
+	remaining=$((50-progress_gap-progress)) # Could have used mod %
+	progress_gap=$((progress_gap+remaining))
+	# echo -n "Remaining = $remaining = "
+	# echo -e "current_time = $current_time"
+	# printf "Progress gap = %d\n" $progress_gap
+	# printf "Progress = %d" $progress
+	echo -en "\e[1A\e[2K"
+	echo -n "Loading: "
+	echo -en "\e[38;5;2m"
+	for ((i=0; i<progress; i++)); do
+		echo -en "="
+	done
+	mod=$((progress%4))
+	echo -en ">\e[38;5;3m"
+	echo -n "${circles[$mod]}"
+	echo -en "\e[0m"
+	for ((i=0; i<progress_gap; i++)); do
+		echo -en "-"
+	done
+	echo "[$progress%]"
+	sleep 0.1
+done
