@@ -1,0 +1,2 @@
+function! fname () abort
+endfunction

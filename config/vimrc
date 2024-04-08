@@ -62,8 +62,7 @@ set smarttab
 set foldmethod=marker
 " }}}
 " {{{ NUMBERING
-" set nonumber norelativenumber
-set nonumber 
+set number 
 " set relativenumber
 " }}}
 " {{{ INTERFACE
@@ -223,3 +222,4 @@ endfunc
 set showcmd
 set showcmdloc=statusline
 set statusline=%{%Fix()%}
+set nowrap
