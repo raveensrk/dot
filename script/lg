@@ -6,11 +6,8 @@ IFS=$'\n\t'
 
 while true; do
 	while read -u 10 -re line; do
-		if [[ "$(uname)" == "Darwin" ]]; then
-			gitui -d "${line/\~/$HOME}"
-		else
-			lazygit -p "${line/\~/$HOME}"
-		fi
+		# gitui -d "${line/\~/$HOME}"
+		lazygit -p "${line/\~/$HOME}"
 		echo "${line/\~/$HOME}"
 	done 10<~/projects.txt
 	[ "$1" != "loop" ] && break
