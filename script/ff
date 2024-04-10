@@ -5,7 +5,7 @@ IFS=$'\n\t'
 # set -x
 
 read -p "Filename Pattern: " -re pattern
-read -p "Path: " -i "$HOME/dot" -re path
+read -p "Path: " -i "$PWD" -re path
 
 cmd="find -L $path -type f -iname '*$pattern*'"
 history -s "$cmd"
