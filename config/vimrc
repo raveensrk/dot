@@ -9,10 +9,6 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-" HELP {{{
-" Press <F1> for help
-" K for help for word under cursor
-" }}}
 " BASICS {{{
 set autoread
 set mouse=""
@@ -108,18 +104,6 @@ let g:netrw_liststyle = 3
 " augroup END
 let g:netrw_keepdir=1
 "}}}
-" {{{ VIM SESSIONS AND VIEWS
-" autocmd BufWinLeave *.* mkview!
-" autocmd BufWinEnter *.* silent loadview
-" augroup my_folding
-"   au BufReadPre * setlocal foldmethod=indent
-"   au BufWinEnter * if &fdm == 'indent' | setlocal foldmethod=manual | endif
-" augroup END
-" }}}
-"{{{ FINALLY SOURCE CUSTOM PER USER CONGIFS
-
-"}}}
-" ↑ WORKING CONFIGS ABOVE ↑
 " ↓ TESTING ↓
 
 
