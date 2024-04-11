@@ -14,10 +14,6 @@ nmap <leader>Y ggVGy2<C-o>
 nmap <leader>t :set nowrap!<cr>
 nmap <leader><leader>r :registers<CR>
 vmap <leader>dd "_d
-vmap <leader>R. y:s+"++gc<Left><Left><Left>
-vmap <leader>R% y:%s+""++gc<Left><Left><Left>
-vmap <leader>Rw y:%s+\<"\>++gc<Left><Left><Left>
-nmap <leader>Rw :%s+\<\>++gc<Left><Left><Left>
 set nolist
 nnoremap v <C-v>
 nnoremap <C-v> v

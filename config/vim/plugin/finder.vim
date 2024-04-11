@@ -1,4 +1,4 @@
-set autochdir
+" set autochdir
 nmap ,cd :cd %:h<CR>
 nmap <leader>/ :BLines<CR>
 nmap <leader>? :Lines<CR>

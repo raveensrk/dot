@@ -25,5 +25,14 @@ cd() {
 }
 
 cds() {
-	cd "$(tac "$cds" | fzf +s)" || return 2
+	case "$1" in
+		edit)
+			$EDITOR "$cds"
+			return
+			;;
+		*)
+			echo "Wrong Option!"
+			;;
+	esac
+	cd "$(sort "$cds" | uniq | fzf +s)" || return 2
 }

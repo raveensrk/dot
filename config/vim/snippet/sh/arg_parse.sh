@@ -1,3 +1,7 @@
+help() {
+	less "$0"
+}
+
 while [ "$#" -ne 0 ]; do
       case "$1" in
            --help|-h)

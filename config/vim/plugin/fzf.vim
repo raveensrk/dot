@@ -71,7 +71,7 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
-set autochdir
+" set autochdir
 command! FDot Files ~/dot 
 " nmap <leader>fb :Buffers<cr>
 function! FindFiles () abort

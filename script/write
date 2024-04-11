@@ -5,6 +5,7 @@ IFS=$'\n\t'
 # set -x
 
 touch "$1"
+
 tail -n 10 "$1"
 
 while read -re line; do
