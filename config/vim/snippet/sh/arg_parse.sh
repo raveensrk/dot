@@ -1,5 +1,9 @@
 help() {
-	less "$0"
+	cat <<-HERE
+	Usage
+	-----------------
+
+	HERE
 }
 
 while [ "$#" -ne 0 ]; do
