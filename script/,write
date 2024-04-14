@@ -4,6 +4,8 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
+path="$(realpath "$1")"
+box "$path"
 touch "$1"
 
 tail -n 10 "$1"

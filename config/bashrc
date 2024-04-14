@@ -195,10 +195,11 @@ eval "$(direnv hook bash)"
 export COLORTERM="Yes"
 
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/script:$PATH"
 export PATH="$DOT/script:$PATH"
 export EDITOR="vim"
 export VISUAL="vim"
 alias q="exit"
 alias grep="grep --color"
 source "$DOT/script/fd"
+source recursively_add_to_path.sh
+recursively_add_to_path "$HOME/script"

@@ -156,7 +156,7 @@ set sidebar_width=30
 set sidebar_component_depth = 2
 # }}}
 # Testing
-source $HOME/script/spamrc
+source $HOME/script/mail/spamrc
 set count_alternatives = yes
 set attach_save_dir = "~/tmp"
 # auto_view text/plain

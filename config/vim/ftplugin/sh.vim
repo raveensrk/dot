@@ -4,3 +4,4 @@ autocmd BufEnter PKGBUILD,.env
 let g:ale_sh_shfmt_options =''
 set formatprg=shfmt
 set nospell
+set isk+=,

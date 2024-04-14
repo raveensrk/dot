@@ -5,8 +5,13 @@ set -euo pipefail
 read -p "Enter the script name: " -re name
 read -p "Enter the path: " -re path
 
-path=${path/\~/$HOME}
+path=$(realpath "${path/\~/$HOME}")
 
+echo "$path"
+
+if [[ ! -d "$path" ]]; then
+	mkdir -v -p "$path"
+fi
 touch "${path}/${name}"
 chmod +x "${path}/$name"
 vim "${path}/$name" -c "read $HOME/dot/config/vim/skeleton/bash"

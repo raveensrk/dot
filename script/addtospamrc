@@ -7,6 +7,6 @@ IFS=$'\n\t'
 from=$(grep -i -e "^from:" /dev/stdin)
 spamstring="spam \"^From:.*$from.*\" SPAM"
 echo "$spamstring"
-echo -e "Added \e[31m$spamstring\e[0m to ~/script/spamrc. Restart neomutt for changes to take effect."
-echo "$spamstring" >> ~/script/spamrc
-$EDITOR ~/script/Spamrc
+echo -e "Added \e[31m$spamstring\e[0m to ~/script/mail/spamrc. Restart neomutt for changes to take effect."
+echo "$spamstring" >> ~/script/mail/spamrc
+$EDITOR ~/script/mail/spamrc

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash 
+
+while : ; do
+    eval "$*"
+	echo "Repeating previous command in 1 seconds, $(date)..."
+    sleep 1
+done
