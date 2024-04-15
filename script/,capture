@@ -4,5 +4,4 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-box "Capturing..." 
-,write ~/capture.txt
+$EDITOR ~/capture.md
