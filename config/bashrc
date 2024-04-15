@@ -200,6 +200,6 @@ export EDITOR="vim"
 export VISUAL="vim"
 alias q="exit"
 alias grep="grep --color"
-source "$DOT/script/fd"
-source recursively_add_to_path.sh
+source ,fd_source
+source ,recursively_add_to_path.sh
 recursively_add_to_path "$HOME/script"
