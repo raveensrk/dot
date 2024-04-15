@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -x  # Enable debug mode
+
+pause() {
+    read -r
+}
+
+trap pause DEBUG
+
+# Your script commands go here
+echo "Hello, world!"
