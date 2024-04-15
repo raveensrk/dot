@@ -164,8 +164,8 @@ set keywordprg=:Man
 set hidden
 let g:netrw_hide=1
 
-if filereadable(expand('~/script/custom.vim'))
-    execute 'source ' . expand('~/script/custom.vim')
+if filereadable(expand('~/script/custom/custom.vim'))
+    execute 'source ' . expand('~/script/custom/custom.vim')
 endif
 " set gdefault
 "
