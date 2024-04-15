@@ -171,17 +171,11 @@ export os
 source "$DOT/config/fzf"
 source "$DOT/config/zoxide"
 # shellcheck disable=1091
-[[ -f "$HOME/script/custom.sh" ]] && source "$HOME/script/custom.sh"
+[[ -f "$HOME/script/custom/custom.sh" ]] && source "$HOME/script/custom/custom.sh"
 alias path="echo \$PATH | tr ':' '\n' | tac"
 alias ls="ls -X --group-directories-first  --color"
 alias l="ls -X --group-directories-first  --color -lAh"
 alias emacs="anim NOoOoOoO..."
-dot() {
-	cd ~/dot || return 2
-}
-script() {
-	cd ~/script/ || return 2
-}
 alias bashrc="vim \$DOT/config/bashrc"
 resetbash () {
     clear
