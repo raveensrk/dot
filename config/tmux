@@ -5,7 +5,7 @@ set-window-option -g xterm-keys on
 if-shell "uname | grep -q 'Darwin'" "set-option -g default-shell /opt/homebrew/bin/bash"
 # set -g remain-on-exit on
 if-shell "test -f ~/script/custom_tmux.conf"  "source ~/script/custom_tmux.conf"
-set -g mouse on
+set -g mouse off
 set -g pane-border-lines heavy
 set -g status-position top
 set -g status-right '#{prefix_highlight}'

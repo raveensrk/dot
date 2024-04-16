@@ -105,7 +105,7 @@ bind  index         <Esc>a  alias-dialog
 bind  generic,pager        t  noop
 bind  index,pager          s  noop
 macro index,pager          d "<delete-message><sync-mailbox>" "Move message to trash"
-macro pager          X "<pipe-message>addtospamrc<Enter>"
+macro pager          X "<pipe-message>,addtospamrc<Enter>"
 macro index          \Cs ":source ~/dot/config/muttrc<Enter>"
 macro index,pager          o "<pipe-message>urlview<Enter>" "call urlview to extract URLs out of a message"
 # macro pager,attach,compose x "<pipe-entry>urlview<Enter>"   "call urlview to extract URLs out of a message"
