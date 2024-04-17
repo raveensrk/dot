@@ -5,3 +5,5 @@ set formatprg=mdformat\ -
 
 silent command! -range=% Format <line1>,<line2>!mdformat --wrap 78 -
 silent autocmd BufWritePre *.md Format
+
+setlocal wrap
