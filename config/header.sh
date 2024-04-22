@@ -2,63 +2,52 @@
 
 source colors.sh
 
-header() {
-	string="${blue}Starting:$(realpath "$1")${nocolor}\n"
-	printf "%b" "$string"
+pushd2() {
+	command pushd "$1" >/dev/null || echor "Cannon push directory: $1"
 }
+export -f pushd2
 
-footer() {
-	string="${green}Done${nocolor}\n"
-	printf "%b" "$string"
+popd2() {
+	command popd >/dev/null || echor "Cannot pop out of directory: $PWD"
 }
+export -f popd2
 
 change_to_script_dir() {
 	local path
 	local dir
 	path=$(realpath "$1")
 	dir=$(dirname "$path")
-	echo "path = $path"
-	echo "dir = $dir"
-	pushd "$dir" || {
-		echo "ERROR! Cannot change dir = $dir" &&
-			exit 2
-	}
+	# echo "path = $path"
+	# echo "dir = $dir"
+	pushd2 "$dir" || echor "Unable to run pushd2 on dir = $dir"
 }
+export -f change_to_script_dir
 
 mkdir2() {
 	if [[ ! -d "$1" ]]; then
-		mkdir -vp "$1"
-	else
-		echo "$1" exists, Not creating directory...
+		command mkdir -p "$1"
 	fi
 }
+export -f mkdir2
 
 rm_mkdir() {
-	rm -rf "$1"
-	mkdir "$1"
+	command rm -rf "$1"
+	mkdir2 "$1"
 }
-
-pushd2() {
-	pushd "$1" >/dev/null || return 2
-}
-export -f pushd2
-
-popd2() {
-	popd >/dev/null || return 2
-}
-export -f popd2
-
-export -f header footer mkdir2 rm_mkdir change_to_script_dir
+export -f rm_mkdir
 
 require_file() {
 	if [[ ! -f "$1" ]]; then
 		echor "Require File: $1 does not exist."
+		exit 2
 	fi
 }
 export -f require_file
+
 require_dir() {
 	if [[ ! -d "$1" ]]; then
 		echor "Require Dir: $1 does not exist."
+		exit 2
 	fi
 }
 export -f require_dir
@@ -71,3 +60,8 @@ diff_unit_test() {
 	fi
 }
 export -f diff_unit_test
+
+reload() {
+	source "$HOME/.bashrc" || echor "Unable to reload .bashrc"
+}
+export -f reload

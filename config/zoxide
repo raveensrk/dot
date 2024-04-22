@@ -9,7 +9,7 @@
 # }
 #
 
-readonly cds="$HOME/cds.txt"
+export cds="$HOME/cds.txt"
 
 cd() {
 	if test -z "$1"; then
@@ -22,6 +22,7 @@ cd() {
 	echo "$PWD" >> "$HOME"/cds.txt
 	ls -X --color --group-directories-first
 }
+export -f cd
 
 cds() {
 	case "$1" in
@@ -35,3 +36,4 @@ cds() {
 	esac
 	cd "$(sort "$cds" | uniq | fzf +s)" || return 2
 }
+export -f cds
