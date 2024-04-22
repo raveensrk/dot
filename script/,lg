@@ -6,10 +6,8 @@ IFS=$'\n\t'
 
 source "before_lg.sh"
 
-while true; do
-	while read -u 10 -re line; do
-		# gitui -d "${line/\~/$HOME}"
-		lazygit -p "${line/\~/$HOME}"
-		echo "${line/\~/$HOME}"
-	done 10<~/projects.txt
-done
+while read -u 10 -re line; do
+	# gitui -d "${line/\~/$HOME}"
+	lazygit -p "${line/\~/$HOME}"
+	echo "${line/\~/$HOME}"
+done 10<~/projects.txt

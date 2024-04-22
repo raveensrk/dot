@@ -58,7 +58,7 @@ if command -v bat >/dev/null; then
 	alias cat=bat
 fi
 alias chop="tr -d '\n'"         # Remove newline
-alias untar="tar xf"
+alias untar="tar xvf"
 alias hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 alias ..="cd .."
 alias top2='top -d 0.125'
