@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+help() {
+	cat <<-HERE
+		Usage
+		-----------------
+		,make_book --input-dir md_files --output-dir output 
+	HERE
+	exit 0
+}
+
+while [ "$#" -ne 0 ]; do
+	case "$1" in
+	--help | -h)
+		help
+		;;
+	--input-dir)
+		shift
+		input_dir=$(realpath "$1")
+		;;
+	--output-dir)
+		shift
+		output_dir=$(realpath "$1")
+		;;
+	*)
+		echo "Unknown Argument: $1!"
+		exit 2
+		;;
+	esac
+	shift
+done
+
+[[ ! -d "$output_dir" ]] && mkdir "$output_dir"
+pushd "$output_dir" > /dev/null
+
+pandoc -s -toc=true --metadata title="BOOK" -f markdown -t html "$input_dir"/*.md -o "book".html
+pandoc -s -toc=true --metadata title="BOOK" -f markdown -t pdf "$input_dir"/*.md -o "book".pdf 
+
+
+popd > /dev/null

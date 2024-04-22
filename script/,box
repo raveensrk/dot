@@ -22,9 +22,9 @@ len=$((len + 4))
 # } | lolcat
 
 {
-	print_centered - -
-	print_centered "$text"
-	print_centered - -
+	,print_centered - -
+	,print_centered "$text"
+	,print_centered - -
 } | lolcat
 
 exit 0

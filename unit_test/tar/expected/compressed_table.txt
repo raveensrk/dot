@@ -1,0 +1,3 @@
+drwxr-xr-x  0 raveenkumarwork staff       0 Apr 22 15:13 some/sample/
+drwxr-xr-x  0 raveenkumarwork staff       0 Apr 22 15:14 some/sample/data/
+-rw-r--r--  0 raveenkumarwork staff       0 Apr 22 15:14 some/sample/data/file.txt

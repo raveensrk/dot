@@ -1,2 +1,3 @@
 set background=dark
-colo enfocado
+" colo enfocado
+colo meta5

@@ -16,11 +16,10 @@ cd() {
 		builtin cd "$HOME" || return 2
 	elif [[ "$1" == "-" ]]; then
 		builtin cd - || return 2
-		realpath "$1" >>"$cds"
 	else
 		builtin cd "$1" || return 2
-		realpath "$1" >>"$cds"
 	fi
+	echo "$PWD" >> "$HOME"/cds.txt
 	ls -X --color --group-directories-first
 }
 
