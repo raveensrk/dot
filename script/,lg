@@ -12,7 +12,4 @@ while true; do
 		lazygit -p "${line/\~/$HOME}"
 		echo "${line/\~/$HOME}"
 	done 10<~/projects.txt
-	[ "$1" != "loop" ] && break
-	echo Looping...
-	sleep 2
 done
