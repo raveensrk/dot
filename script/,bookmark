@@ -19,9 +19,9 @@ for option in "$@"; do
 			exit 0
 			;;
 		add)
-			box "Bookmarks"
+			,box "Bookmarks"
 			bat ~/bookmarks.txt
-			box "New bookmark"
+			,box "New bookmark"
 			while read -re line ; do
 				echo "$line"
 			done >> "$file"

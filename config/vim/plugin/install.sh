@@ -40,6 +40,9 @@ git clone "https://github.com/wuelnerdotexe/vim-enfocado" &
 git clone "git@github.com:Donaldttt/fuzzyy.git" &
 git clone "https://github.com/preservim/vim-markdown.git" &
 git clone "git@github.com:chrisbra/csv.vim.git" & 
+git clone "https://github.com/SidOfc/mkdx" &
+git clone "git@github.com:rafi/awesome-vim-colorschemes.git" &
+
 wait
 exit 0
 
