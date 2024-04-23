@@ -25,15 +25,6 @@ cd() {
 export -f cd
 
 cds() {
-	case "$1" in
-		edit)
-			$EDITOR "$cds"
-			return
-			;;
-		*)
-			echo "Wrong Option!"
-			;;
-	esac
 	cd "$(sort "$cds" | uniq | fzf +s)" || return 2
 }
 export -f cds
