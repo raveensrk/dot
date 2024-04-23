@@ -3,22 +3,26 @@
 green() {
 	echo -ne "\e[38;5;2m"
 }
+declare -fx green
 
 red() {
 	echo -ne "\e[38;5;1m"
 }
+declare -fx red
 
 yellow() {
 	echo -ne "\e[38;5;11m"
 }
-
+declare -fx yellow
 blue() {
 	echo -ne "\e[38;5;75m"
 }
+declare -fx blue
 
 nocolor() {
 	echo -ne "\e[0m"
 }
+declare -fx nocolor
 
 export green="\e[38;5;2m"
 export red="\e[38;5;1m"
@@ -26,6 +30,7 @@ export yellow="\e[38;5;11m"
 export blue="\e[38;5;75m"
 export nocolor="\e[0m"
 export dull="\e[2m"
+
 echog() {
 	echo -ne "\e[38;5;2m" "${@}" "\e[0m\n"
 }
@@ -48,3 +53,6 @@ echod () {
 }
 export -f echod
 
+source "provide_require.sh"
+
+provide colors

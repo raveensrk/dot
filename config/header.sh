@@ -3,12 +3,18 @@
 source colors.sh
 
 pushd2() {
-	command pushd "$1" >/dev/null || echor "Cannon push directory: $1"
+	command pushd "$1" >/dev/null || {
+		echor "Cannon push directory: $1" &&
+			return 2
+	}
 }
 export -f pushd2
 
 popd2() {
-	command popd >/dev/null || echor "Cannot pop out of directory: $PWD"
+	command popd >/dev/null || {
+		echor "Cannot pop out of directory: $PWD" &&
+			return 2
+	}
 }
 export -f popd2
 
@@ -19,7 +25,7 @@ change_to_script_dir() {
 	dir=$(dirname "$path")
 	# echo "path = $path"
 	# echo "dir = $dir"
-	pushd2 "$dir" || echor "Unable to run pushd2 on dir = $dir"
+	pushd2 "$dir"
 }
 export -f change_to_script_dir
 
@@ -31,37 +37,31 @@ mkdir2() {
 export -f mkdir2
 
 rm_mkdir() {
+	if [[ ! -d "$1" ]]; then
+		echor "rm_mkdir: $1 is not a directory..."
+		return 2
+	fi
 	command rm -rf "$1"
 	mkdir2 "$1"
 }
 export -f rm_mkdir
-
-require_file() {
-	if [[ ! -f "$1" ]]; then
-		echor "Require File: $1 does not exist."
-		exit 2
-	fi
-}
-export -f require_file
-
-require_dir() {
-	if [[ ! -d "$1" ]]; then
-		echor "Require Dir: $1 does not exist."
-		exit 2
-	fi
-}
-export -f require_dir
 
 diff_unit_test() {
 	if diff "$1" "$2"; then
 		echog "UNIT_TEST: TAR: PASS"
 	else
 		echor "UNIT_TEST: TAR: FAIL"
+		return 2
 	fi
 }
 export -f diff_unit_test
 
 reload() {
-	source "$HOME/.bashrc" || echor "Unable to reload .bashrc"
+	source "$HOME/.bashrc" || {
+		echor "Unable to reload .bashrc" &&
+			return 2
+	}
 }
 export -f reload
+
+provide header
