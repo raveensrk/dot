@@ -53,6 +53,5 @@ echod () {
 }
 export -f echod
 
-source "provide_require.sh"
+export PROVIDE_COLORS=1
 
-provide colors

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-,fd() {
+fd() {
 	local pattern
 	local path
 	local cmd
@@ -40,3 +40,4 @@
 	echo "Command: $cmd"
 	return "$code"
 }
+export -f fd

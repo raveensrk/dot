@@ -4,43 +4,38 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-clear
-
 declare -a repos
 repos=(
 	"Quit"
 	"https://github.com/junegunn/fzf/archive/refs/tags/0.48.1.tar.gz"
 	"https://github.com/eradman/entr/archive/refs/tags/5.5.tar.gz"
+	"https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz"
 )
 select repo in "${repos[@]}"; do
-	cd ~/tmp
-	wget -nc "$repo"
 	[ "$repo" = "Quit" ] && exit 0
-	select tarball in *.tar.gz *.tgz; do
-		tar xf "$tarball"
-		break
-	done
-	select dir in $(find . -type d -maxdepth 1); do
-		cd "$dir"
-		pwd
-		select post in "Custom" "Default"; do
-			case $post in
-			"Custom")
-				read -re command
-				eval "$command"
-				;;
-			"Default")
-				./configure --prefix="$HOME/.local"
-				make
-				make install
-				;;
-            "*")
-                echo wrong option
-                ;;
-			esac
-            break
-		done
-		break
-	done
+	mkdir2 ./tmp
+	pushd2 ./tmp
+	break
+done
+
+wget -nc "$repo"
+select tarball in *.tar.gz *.tgz; do
+	tar xf "$tarball"
+	break
+done
+select dir in $(find . -type d -maxdepth 1); do
+	pushd2 "$dir"
+	pwd
+	break
+done
+
+select config in "./configure --prefix=$HOME/.local" "./configure"; do
+	eval "$config"
+	break
+done
+
+make
+select install in "make install" quit; do
+	eval "$install"
 	break
 done

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 source colors.sh
+source require.sh
+require_var PROVIDE_REQUIRE
+require_var PROVIDE_COLORS
 
 pushd2() {
 	command pushd "$1" >/dev/null || {
@@ -64,4 +67,4 @@ reload() {
 }
 export -f reload
 
-provide header
+export PROVIDE_HEADER=1

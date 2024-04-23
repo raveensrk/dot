@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source "$DOT/config/colors"
-
 update_prompt() {
 	PS1="[$?|\j|\W]:$ "
 	export PS1

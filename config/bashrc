@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 # bashrc
 
-export DOT=$HOME/dot
-source "$DOT/config/prompt"
+
 # {{{ ENVIRONMENT VARIABLES
-alias neomutt="neomutt"
+export DOT=$HOME/dot
 export INPUTRC=$DOT/config/inputrc
 export MYVIMRC=$DOT/config/vimrc
 export VIMINIT=":source $MYVIMRC"
@@ -15,6 +14,10 @@ export TERM=xterm-256color
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
 export PATH="$DOT/script:$PATH"
+export PATH="$DOT/config:$PATH"
+source header.sh
+require_var PROVIDE_HEADER
+source "$DOT/config/prompt"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 # }}}
@@ -49,8 +52,6 @@ export HISTFILESIZE=-1
 export HISTIGNORE=""
 # export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_history
-export PROMPT_COMMAND="$PROMPT_COMMAND"
-# export PROMPT_COMMAND="$PROMPT_COMMAND"
 
 # }}}
 # {{{ ALIASES
@@ -134,6 +135,8 @@ alias r="ranger_cd"
 # }}}
 # {{{ BUG FIXES
 # MACOS Specific {{{
+
+
 if [ "$(uname -a | awk '{print $1}')" = "Darwin" ]; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
 	# https://github.com/platformio/platformio-atom-ide-terminal/issues/196
@@ -162,7 +165,6 @@ alias hexdump="hexdump -Cv"
 alias compress="tar -cvza -f "
 github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
 git_pickaxe() { git log -p -S "$@"; }
-alias dc="cd -"
 # }}}
 os=$(uname -a | cut -d ' ' -f 1)
 export os
@@ -185,7 +187,7 @@ resetbash () {
 }
 export RIPGREP_CONFIG_PATH="$HOME/dot/config/ripgrep"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
-eval "$(direnv hook bash)"
+# eval "$(direnv hook bash)"
 export COLORTERM="Yes"
 
 export PATH="$HOME/.local/bin:$PATH"
@@ -197,5 +199,5 @@ alias grep="grep --color"
 source fd_source
 source recursively_add_to_path.sh
 recursively_add_to_path "$HOME/script"
-export PATH+=":$HOME/dot/config"
-source header.sh
+export PATH="$HOME/dot/config:$PATH"
+export PROVIDE_BASHRC=1
