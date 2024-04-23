@@ -9,7 +9,7 @@
 # }
 #
 
-export cds="$HOME/cds.txt"
+cds="$HOME/cds.txt"
 
 cd() {
 	if test -z "$1"; then
@@ -22,9 +22,9 @@ cd() {
 	echo "$PWD" >> "$HOME"/cds.txt
 	ls -X --color --group-directories-first
 }
-export -f cd
+# export -f cd
 
 cds() {
 	cd "$(sort "$cds" | uniq | fzf +s)" || return 2
 }
-export -f cds
+# export -f cds

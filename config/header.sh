@@ -59,12 +59,12 @@ diff_unit_test() {
 }
 export -f diff_unit_test
 
-reload() {
+reload2() {
 	source "$HOME/.bashrc" || {
 		echor "Unable to reload .bashrc" &&
 			return 2
 	}
 }
-export -f reload
+export -f reload2
 
 export PROVIDE_HEADER=1
