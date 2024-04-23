@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+# set -x
+IFS=$'\n\t'
+
+
+# shellcheck disable=2046
+vim $(fzf -m)
+
+exit 0
+
