@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -PCaeuo pipefail
 # set -x
 IFS=$'\n\t'
 
 
-exit 0
