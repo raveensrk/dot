@@ -6,31 +6,4 @@ source ~/dot/config/colors
 
 file="$HOME/bookmarks.txt"
 
-[ "$#" -eq 0 ] && echo "Error: No arguments provided..." | red && exit 2
-
-for option in "$@"; do
-	case "$option" in
-		list|open)
-			sort "$file" | fzf +s | cut -d "|" -f 2 | xargs open 
-			exit 0
-			;;
-		edit)
-			$EDITOR "$file"
-			exit 0
-			;;
-		add)
-			,box "Bookmarks"
-			bat ~/bookmarks.txt
-			,box "New bookmark"
-			while read -re line ; do
-				echo "$line"
-			done >> "$file"
-			exit 0
-			;;
-		*)
-			echo "Error. Invalid Argument." | red
-			exit 0
-			;;
-	esac
-done
-
+sort "$file" | fzf +s | cut -d "|" -f 2 | xargs open 
