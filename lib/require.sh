@@ -2,7 +2,6 @@
 
 # echo "${BASH_VERSINFO[@]}"
 
-unset check_bash_version
 check_bash_version () {
 	printf "${blue}Checking if bash version is greater than or equal to 5...${nocolor}"
 	if [[ "${BASH_VERSINFO[0]}" -ge 5 ]]; then
@@ -12,10 +11,8 @@ check_bash_version () {
 		return 2
 	fi
 }
-export -f check_bash_version
 
 
-unset require_var
 require_var() {
 	printf "${blue}Checking if var $1 exists...${nocolor}"
 	if grep -q "^${1}=.*" <(env); then
@@ -25,9 +22,7 @@ require_var() {
 		printf "no\n"
 	fi
 }
-export -f require_var
 
-unset require_file
 require_file() {
 	printf "${blue}Checking if file $1 exists...${nocolor}"
 	if [[ ! -f "$1" ]]; then
@@ -37,9 +32,7 @@ require_file() {
 		printf "yes\n"
 	fi
 }
-export -f require_file
 
-unset require_dir
 require_dir() {
 	printf "${blue}Checking if directory $1 exists...${nocolor}"
 	if [[ ! -d "$1" ]]; then
@@ -49,9 +42,7 @@ require_dir() {
 		printf "yes\n"
 	fi
 }
-export -f require_dir
 
-unset require_cmd
 require_cmd() {
 	printf "${blue}Checking if command $1 exists...${nocolor}"
 	if ! type -t "$1"; then
@@ -61,4 +52,3 @@ require_cmd() {
 		printf "${green}yes${nocolor}...\n"
 	fi
 }
-export -f require_cmd

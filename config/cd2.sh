@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 
-# eval "$(zoxide init bash --cmd cd)"
-
-# cd () {
-# 	__zoxide_z "$@"
-# 	ls  -X --color --group-directories-first
-#
-# }
-#
-
-cds="$HOME/cds.txt"
-
-cd() {
+cd2() {
 	if test -z "$1"; then
 		builtin cd "$HOME" || return 2
 	elif [[ "$1" == "-" ]]; then
@@ -22,9 +11,8 @@ cd() {
 	echo "$PWD" >> "$HOME"/cds.txt
 	ls -X --color --group-directories-first
 }
-# export -f cd
 
-cds() {
-	cd "$(sort "$cds" | uniq | fzf +s)" || return 2
+cd2s() {
+	cd2s="$HOME/cds.txt"
+	cd "$(sort "$cd2s" | uniq | fzf +s)" || return 2
 }
-# export -f cds

@@ -20,11 +20,10 @@ source "$DOT/config/prompt"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 # }}}
+# {{{ BASH SHOPTS
 # This will exit bash shell after pressing control d 2 times
 export IGNOREEOF=1
 # set -o vi
-
-# {{{ BASH SHOPTS
 # shopt -s direxpand
 # shopt -s dotglob
 # shopt -s histappend
@@ -167,16 +166,18 @@ git_pickaxe() { git log -p -S "$@"; }
 # }}}
 os=$(uname -a | cut -d ' ' -f 1)
 export os
-[[ $os = "Darwin" ]] && source "$DOT/config/macos"
-[[ "$os" != "Darwin" ]] && export PATH="$DOT/bin/linux:$PATH"
-source "$DOT/config/fzf"
-source "$DOT/config/zoxide"
+if [[ $os == "Darwin" ]]; then
+	source "$DOT/config/macos"
+else
+	export PATH="$DOT/bin/linux:$PATH"
+fi
+source "$DOT/config/fzf.sh"
+source "$DOT/config/cd2.sh"
 # shellcheck disable=1091
 [[ -f "$HOME/script/custom/custom.sh" ]] && source "$HOME/script/custom/custom.sh"
 alias path="echo \$PATH | tr ':' '\n' | tac"
 alias ls="ls -X --group-directories-first  --color"
 alias l="ls -X --group-directories-first  --color -lAh"
-alias emacs="anim NOoOoOoO..."
 alias bashrc="vim \$DOT/config/bashrc"
 resetbash () {
     clear
@@ -184,17 +185,15 @@ resetbash () {
     sleep 1
     exec bash -i -l -c "source $HOME/dot/config/bashrc"
 }
-export RIPGREP_CONFIG_PATH="$HOME/dot/config/ripgrep"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 # eval "$(direnv hook bash)"
 export COLORTERM="Yes"
-
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/script:$PATH"
 export EDITOR="vim"
 export VISUAL="vim"
 alias q="exit"
 alias grep="grep --color"
-source fd_source
-source recursively_add_to_path.sh
+source "$DOT/script/fd2.sh"
+source "$DOT/script/recursively_add_to_path.sh"
 recursively_add_to_path "$HOME/script"

@@ -5,7 +5,7 @@ recursively_add_to_path () {
 	readarray -t array < <(find "$path" -type d -print0 | xargs -0 realpath)
 	# echo "${array[@]}"
 	PATH="$(echo "${array[@]}" | tr " " ":"):$PATH"
-	export PATH
+	# export PATH
 	# echo "PATH = $PATH"
 	return 0
 }

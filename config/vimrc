@@ -207,3 +207,4 @@ set showcmd
 set showcmdloc=statusline
 set statusline=%{%Fix()%}
 set nowrap
+set autochdir
