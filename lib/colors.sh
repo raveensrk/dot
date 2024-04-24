@@ -53,5 +53,3 @@ echod () {
 }
 export -f echod
 
-export PROVIDE_COLORS=1
-

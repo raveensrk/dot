@@ -2,8 +2,6 @@
 
 source colors.sh
 source require.sh
-require_var PROVIDE_REQUIRE
-require_var PROVIDE_COLORS
 
 pushd2() {
 	command pushd "$1" >/dev/null || {
@@ -50,10 +48,11 @@ rm_mkdir() {
 export -f rm_mkdir
 
 diff_unit_test() {
+	name="$3"
 	if diff "$1" "$2"; then
-		echog "UNIT_TEST: TAR: PASS"
+		echog "UNIT_TEST: $name:  PASS"
 	else
-		echor "UNIT_TEST: TAR: FAIL"
+		echor "UNIT_TEST: $name:  FAIL"
 		return 2
 	fi
 }
@@ -67,4 +66,3 @@ reload2() {
 }
 export -f reload2
 
-export PROVIDE_HEADER=1

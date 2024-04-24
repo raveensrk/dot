@@ -14,9 +14,8 @@ export TERM=xterm-256color
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
 export PATH="$DOT/script:$PATH"
-export PATH="$DOT/config:$PATH"
+export PATH="$HOME/dot/lib:$PATH"
 source header.sh
-require_var PROVIDE_HEADER
 source "$DOT/config/prompt"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
@@ -199,5 +198,3 @@ alias grep="grep --color"
 source fd_source
 source recursively_add_to_path.sh
 recursively_add_to_path "$HOME/script"
-export PATH="$HOME/dot/config:$PATH"
-export PROVIDE_BASHRC=1
