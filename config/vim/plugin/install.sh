@@ -11,8 +11,7 @@ for dir in *; do
     pushd "$dir"
     git pull &
     popd
-done
-wait
+done || echo "Nothing to pull"
 
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &
 git clone "git@github.com:easymotion/vim-easymotion" &
