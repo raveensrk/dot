@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -PCaeuo pipefail
+# set -x
+IFS=$'\n\t'
+
+
+gfind . -type f | gxargs -I{} -n1 du -h "{}" | sort -h

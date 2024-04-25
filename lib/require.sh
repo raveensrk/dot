@@ -52,3 +52,9 @@ require_cmd() {
 		printf "${green}yes${nocolor}...\n"
 	fi
 }
+
+source_if_exists(){
+	if [[ -f "$1" ]]; then
+		source "$1"
+	fi
+}

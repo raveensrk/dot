@@ -4,7 +4,7 @@ set -eo pipefail
 IFS=$'\n\t'
 # set -x
 
-source "before_lg.sh"
+source_if_exists "before_lg.sh"
 
 while read -u 10 -re line; do
 	# gitui -d "${line/\~/$HOME}"

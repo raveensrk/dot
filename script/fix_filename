@@ -1,16 +1,35 @@
 #!/usr/bin/env bash
 
-# Loop through all files in the current directory
-for file in *
-do
-  # Get the file name and extension
-  filename=$(basename "$file")
-  extension="${filename##*.}"
-  filename="${filename%.*}"
+set -PCaeuo pipefail
 
-  # Replace all special characters with _
-  new_filename="${filename/[^A-Za-z0-9._-]/_/g}"
+while read -re dir; do
+	# Get the dir name and extension
+	# Replace all special characters with _
+	new_dirname=$(echo "$dir" | tr -c "[:alnum:].\n/" "_" |
+		tr "[:upper:]" "[:lower:]" |
+		tr -dc "A-Za-z0-9._/" |
+		tr -s "_")
+	echo "dir = $dir"
+	echo "newdir = $new_dirname"
 
-  # Rename the file
-  mv -vi "$file" "${new_filename}.${extension}"
-done
+	# Rename the dir
+	if [[ "$dir" != "$new_dirname" ]]; then
+		mv -fv "$dir" "${new_dirname}" || rename -fc "$dir"
+	fi
+done < <(find . -type d)
+
+while read -re file; do
+	# Get the file name and extension
+	# Replace all special characters with _
+	new_filename=$(echo "$file" | tr -c "[:alnum:].\n/" "_" |
+		tr "[:upper:]" "[:lower:]" |
+		tr -dc "A-Za-z0-9._/" |
+		tr -s "_")
+	echo "File = $file"
+	echo "newfile = $new_filename"
+
+	# Rename the file
+	if [[ "$file" != "$new_filename" ]]; then
+		mv -fv "$file" "${new_filename}" || rename -fc "$file"
+	fi
+done < <(find . -type f)
