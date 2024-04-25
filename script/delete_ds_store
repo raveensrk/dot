@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
+set -PCaeuo pipefail
+# set -x
+IFS=$'\n\t'
+
+
 # echo "Deleting .DS_Store file from $1..."
-find $1 -iname ".DS_Store" -print -delete
+find "$1" -iname ".DS_Store" -print -delete
