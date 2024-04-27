@@ -4,7 +4,6 @@ set -PCaeuo pipefail
 IFS=$'\n\t'
 # set -x
 
-
 path=$(realpath "$(which "$1")")
 
 [ -f "$path" ] && $EDITOR "$path" && exit 0
