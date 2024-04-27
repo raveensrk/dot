@@ -1,5 +1,6 @@
-let b:vim_markdown_folding_disabled = 1
+let b:vim_markdown_folding_disabled = 0
 let b:vim_markdown_borderless_table = 0
+let g:vim_markdown_folding_level = 2
 setlocal conceallevel=0
 setlocal formatprg=prettier\ --parser\ markdown
 setlocal wrap
