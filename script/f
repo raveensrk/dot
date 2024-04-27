@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -PCaeuo pipefail
 IFS=$'\n\t'
 # set -x
 

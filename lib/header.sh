@@ -37,11 +37,7 @@ mkdir2() {
 }
 
 rm_mkdir() {
-	if [[ ! -d "$1" ]]; then
-		echor "rm_mkdir: $1 is not a directory..."
-		return 2
-	fi
-	command rm -rf "$1"
+	[[ -d "$1" ]] && command rm -rf "$1"
 	mkdir2 "$1"
 }
 

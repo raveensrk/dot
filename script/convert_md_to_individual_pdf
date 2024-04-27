@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -PCaeuo pipefail
+IFS=$'\n\t'
+# set -x
+
+cat <<-HERE
+	markdown_dir          = $markdown_dir
+	destination directory = $destination_dir
+HERE
+
+rm_mkdir "$destination_dir"
+
+while read -u 10 -re file; do
+	echob "File = $file"
+
+	until timeout 10 pandoc -s --toc-depth=2 --toc=true -f markdown -t pdf "$file" -o "$destination_dir"/"$(basename "$file").pdf"; do
+		echor "Convertion for $file failed..."
+		vim "$file"
+		[[ ! -f "$file" ]] && break
+		sleep 1
+	done
+done 10< <(gfind "$markdown_dir" -iname "*.md" | sort)

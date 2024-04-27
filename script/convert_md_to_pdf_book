@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -PCaeuo pipefail
+IFS=$'\n\t'
+# set -x
+
+
+cat <<-HERE
+md_dir    = $md_dir
+title     = $title
+book_name = $book_name
+HERE
+
+# shellcheck disable=2046
+# pandoc --verbose -s --toc-depth=2 --toc=true --metadata title="$title" -f markdown -t pdf  $(find "$md_dir" -iname "*.md" | sort)  -o "$book_name.pdf"
+
+[[ -f "$book_name.md" ]] && rm -i "$book_name".md
+
+gfind "$md_dir" -iname "*.md" | sort | xargs cat | prettier --parser markdown --prose-wrap always > "$book_name".md
+
+pandoc --fail-if-warnings=true -s --toc-depth=2 --toc=true --metadata title="$title" -f markdown -t pdf "$book_name".md -o "$book_name.pdf"
+
