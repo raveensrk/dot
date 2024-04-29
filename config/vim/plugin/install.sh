@@ -41,7 +41,8 @@ git clone "https://github.com/preservim/vim-markdown.git" &
 git clone "git@github.com:chrisbra/csv.vim.git" & 
 git clone "https://github.com/SidOfc/mkdx" &
 git clone "git@github.com:rafi/awesome-vim-colorschemes.git" &
-
+git clone "https://github.com/ledger/vim-ledger" &
+git clone --recurse-submodules "https://github.com/python-mode/python-mode.git" &
 wait
 exit 0
 

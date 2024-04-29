@@ -58,3 +58,10 @@ source_if_exists(){
 		source "$1"
 	fi
 }
+
+check_var_exists(){
+	if [[ -n "${!1}" ]]; then
+		echo "Variable exists ${1} = ${!1}"
+		return 2
+	fi
+}

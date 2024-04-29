@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Read the selected text from the standard input
+read -r selected_text
+
+for word in $selected_text; do
+	first_letter=$(echo "$word" | cut -c1 | tr '[:lower:]' '[:upper:]')
+	rest_of_text=$(echo "$word" | cut -c2-)
+	result+=("$first_letter$rest_of_text")
+done
+echo "${result[@]}" 
+
