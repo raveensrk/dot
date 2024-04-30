@@ -3,37 +3,42 @@
 green() {
 	echo -ne "\e[38;5;2m"
 }
+declare -xf green
 
 red() {
 	echo -ne "\e[38;5;1m"
 }
+declare -xf red
 
 yellow() {
 	echo -ne "\e[38;5;11m"
 }
+declare -xf yellow
 blue() {
 	echo -ne "\e[38;5;75m"
 }
+declare -xf blue
 
 nocolor() {
 	echo -ne "\e[0m"
 }
+declare -xf nocolor
 
-blink="\e[5m"
-blue="\e[38;5;75m"
-bold="\e[1m"
-cyan="\e[36m"
-dim="\e[2m"
-green="\e[38;5;2m"
-hidden="\e[8m"
-inverse="\e[7m"
-italic="\e[3m"
-magenta="\e[35m"
-nocolor="\e[0m"
-red="\e[38;5;1m"
-strikethrough="\e[9m"
-underline="\e[4m"
-yellow="\e[38;5;11m"
+declare -x blink="\e[5m"
+declare -x blue="\e[38;5;75m"
+declare -x bold="\e[1m"
+declare -x cyan="\e[36m"
+declare -x dim="\e[2m"
+declare -x green="\e[38;5;2m"
+declare -x hidden="\e[8m"
+declare -x inverse="\e[7m"
+declare -x italic="\e[3m"
+declare -x magenta="\e[35m"
+declare -x nocolor="\e[0m"
+declare -x red="\e[38;5;1m"
+declare -x strikethrough="\e[9m"
+declare -x underline="\e[4m"
+declare -x yellow="\e[38;5;11m"
 
 echog() {
 	echo -ne "\e[38;5;2m" "${@}" "\e[0m\n"
@@ -51,3 +56,5 @@ echoy() {
 echod () { 
 	echo -ne "\e[3m\e[2m\e[38;5;108m" "$@" "$nocolor" "\n"
 }
+
+declare -xf echog echob echor echoy echod

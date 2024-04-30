@@ -29,3 +29,4 @@ box() {
 		print_centered - -
 	} | lolcat
 }
+declare -xf box

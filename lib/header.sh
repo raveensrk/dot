@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -a
-
 source colors.sh
 source require.sh
 source box.sh
@@ -12,6 +10,7 @@ pushd2() {
 			return 2
 	}
 }
+declare -xf pushd2
 
 popd2() {
 	command popd >/dev/null || {
@@ -19,6 +18,7 @@ popd2() {
 			return 2
 	}
 }
+declare -xf popd2
 
 change_to_script_dir() {
 	local path
@@ -29,17 +29,20 @@ change_to_script_dir() {
 	# echo "dir = $dir"
 	pushd2 "$dir"
 }
+declare -xf change_to_script_dir
 
 mkdir2() {
 	if [[ ! -d "$1" ]]; then
 		command mkdir -p "$1"
 	fi
 }
+declare -xf mkdir2
 
 rm_mkdir() {
 	[[ -d "$1" ]] && command rm -rf "$1"
 	mkdir2 "$1"
 }
+declare -xf rm_mkdir
 
 diff_unit_test() {
 	name="$3"
@@ -50,6 +53,7 @@ diff_unit_test() {
 		return 2
 	fi
 }
+declare -xf diff_unit_test
 
 reload2() {
 	source "$HOME/.bashrc" || {
@@ -57,4 +61,4 @@ reload2() {
 			return 2
 	}
 }
-set +a
+declare -xf reload2

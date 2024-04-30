@@ -12,6 +12,8 @@ check_bash_version () {
 	fi
 }
 
+declare -xf check_bash_version
+
 
 require_var() {
 	printf "${blue}Checking if var $1 exists...${nocolor}"
@@ -22,6 +24,7 @@ require_var() {
 		printf "no\n"
 	fi
 }
+declare -xf require_var
 
 require_file() {
 	printf "${blue}Checking if file $1 exists...${nocolor}"
@@ -32,6 +35,7 @@ require_file() {
 		printf "yes\n"
 	fi
 }
+declare -xf require_file
 
 require_dir() {
 	printf "${blue}Checking if directory $1 exists...${nocolor}"
@@ -42,6 +46,7 @@ require_dir() {
 		printf "yes\n"
 	fi
 }
+declare -xf require_dir
 
 require_cmd() {
 	printf "${blue}Checking if command $1 exists...${nocolor}"
@@ -52,16 +57,12 @@ require_cmd() {
 		printf "${green}yes${nocolor}...\n"
 	fi
 }
+declare -xf require_cmd
 
 source_if_exists(){
 	if [[ -f "$1" ]]; then
 		source "$1"
 	fi
 }
+declare -xf source_if_exists
 
-check_var_exists(){
-	if [[ -n "${!1}" ]]; then
-		echo "Variable exists ${1} = ${!1}"
-		return 2
-	fi
-}
