@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-source_if_exists "before_lg.sh"
+source_if_exists ~/script/before_lg.sh
 
 while read -u 10 -re line; do
 	# gitui -d "${line/\~/$HOME}"
