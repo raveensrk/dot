@@ -32,8 +32,9 @@ change_to_script_dir() {
 declare -xf change_to_script_dir
 
 mkdir2() {
-	if [[ ! -d "$1" ]]; then
-		command mkdir -p "$1"
+	declare dir="$1"
+	if [[ ! -d "$dir" ]]; then
+		command mkdir -p "$dir"
 	fi
 }
 declare -xf mkdir2
