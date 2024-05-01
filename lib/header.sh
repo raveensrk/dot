@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-source colors.sh
-source require.sh
-source box.sh
+source "$LIB"/colors.sh
+source "$LIB"/require.sh
+source "$LIB"/box.sh
 
 pushd2() {
+	echoy "Changing to directory: $1"
 	command pushd "$1" >/dev/null || {
 		echor "Cannon push directory: $1" &&
 			return 2
@@ -34,13 +35,17 @@ declare -xf change_to_script_dir
 mkdir2() {
 	declare dir="$1"
 	if [[ ! -d "$dir" ]]; then
+		echoy "Making directory: $dir"
 		command mkdir -p "$dir"
 	fi
 }
 declare -xf mkdir2
 
 rm_mkdir() {
-	[[ -d "$1" ]] && command rm -rf "$1"
+	if [[ -d "$1" ]]; then
+		command rm -rf "$1"
+		echoy "Deleting directory: $1"
+	fi
 	mkdir2 "$1"
 }
 declare -xf rm_mkdir

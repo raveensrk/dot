@@ -15,7 +15,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
 export PATH="$DOT/script:$PATH"
 export PATH="$HOME/dot/lib:$PATH"
-source header.sh
+LIB="$DOT/lib" source "$DOT/lib/header.sh"
 source "$DOT/config/prompt"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
@@ -186,7 +186,7 @@ resetbash () {
     exec bash -i -l -c "source $HOME/dot/config/bashrc"
 }
 alias git_diff='git diff --minimal -w -b -M --word-diff'
-# eval "$(direnv hook bash)"
+eval "$(direnv hook bash)"
 export COLORTERM="Yes"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/script:$PATH"
