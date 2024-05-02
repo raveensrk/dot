@@ -34,7 +34,13 @@ function! Align(first, last)
     execute a:first.",".a:last.'EasyAlign */[\]]\+/'
     execute "norm gv"
 endfunction
-command -range Align call Align(<line1>, <line2>)
+command! -range Align call Align(<line1>, <line2>)
 
 
 " command! -range Align <line1>,<line2>EasyAlign**/"\|[\|\]\|,\|[()]\|=\|;/ 
+
+
+nmap <C-w>+ <C-w>+<C-w>
+nmap <C-w>- <C-w>-<C-w>
+nmap <C-w>> <C-w>><C-w>
+nmap <C-w>< <C-w><<C-w>

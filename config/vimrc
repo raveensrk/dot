@@ -68,12 +68,11 @@ set nolinebreak
 set hlsearch
 set incsearch
 set ruler
-set wildmode=list:longest,full
+" set wildmode=list:longest,full
 set wildmenu
 set wildignore=#*,./,
 set wildignorecase
-" set wildoptions=pum
-set wildoptions=tagfile,fuzzy
+set wildoptions=pum
 " These 2 settings will force the cursor line to always be at the center of
 " the screen
 set scrolloff=999
@@ -119,8 +118,8 @@ function! Bookmarks()
     lopen 5
 endfunction
 " set complete+=t
-" set wildoptions=pum
-set completeopt+=menu,preview
+set wildoptions=pum
+set completeopt+=popup,menu,preview
 set makeef=/tmp/errorfile
 set foldclose="all"
 set showfulltag

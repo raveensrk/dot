@@ -2,7 +2,6 @@
 # Bookmark script
 set -euo pipefail
 IFS=$'\n\t'
-source ~/dot/config/colors
 
 file="$HOME/bookmarks.txt"
 

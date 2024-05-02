@@ -12,3 +12,4 @@ test.txt
 config/vim/spell
 config/vim/.netrwhist
 unit_test/tar/observed
+script/bookmark2/target
