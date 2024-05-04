@@ -43,6 +43,7 @@ git clone "https://github.com/SidOfc/mkdx" &
 git clone "git@github.com:rafi/awesome-vim-colorschemes.git" &
 git clone "https://github.com/ledger/vim-ledger" &
 git clone "https://github.com/ycm-core/YouCompleteMe" &
+git clone "https://github.com/skywind3000/asyncrun.vim" &
 wait
 exit 0
 

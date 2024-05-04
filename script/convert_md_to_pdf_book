@@ -20,3 +20,4 @@ gfind "$md_dir" -iname "*.md" | sort | xargs cat | prettier --parser markdown --
 
 pandoc --fail-if-warnings=true -s --toc-depth=2 --toc=true --metadata title="$title" -f markdown -t pdf "$book_name".md -o "$book_name.pdf"
 
+[[ -f "$book_name.md" ]] && rm -f "$book_name".md
