@@ -4,14 +4,51 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-mkdir -p ~/.vim/autoload
+current_file=$(realpath "$0")
+
+help() {
+	cat <<-HERE
+		Usage
+		-----------------
+	HERE
+	exit 0
+}
+
+clean=0
+while [ "$#" -ne 0 ]; do
+	case "$1" in
+	--help | -h)
+		help
+		;;
+	--clean)
+		clean=1
+		;;
+	*)
+		echor "Unknown Argument: $1 while running $current_file!"
+		exit 2
+		;;
+	esac
+	shift
+done
+
+mkdir2 ~/.vim/autoload
 # [ -d ~/.vim/bundle ] && rm -rf ~/.vim/bundle
-mkdir -p ~/.vim/bundle && cd ~/.vim/bundle
-for dir in *; do
-    pushd "$dir"
-    git pull &
-    popd
-done || echo "Nothing to pull"
+
+if [[ "$clean" -eq 1 ]]; then
+	rm_mkdir ~/.vim/bundle
+	pushd2 ~/.vim/bundle
+else
+	mkdir2 ~/.vim/bundle
+	pushd2 ~/.vim/bundle
+	if [[ "$(command ls)" -ne 0 ]]; then
+		for dir in ./*; do
+			pushd2 "$dir"
+			git pull &
+			popd2
+		done
+	fi
+fi
+
 
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &
 git clone "git@github.com:easymotion/vim-easymotion" &
@@ -38,12 +75,10 @@ git clone "https://github.com/chrisbra/unicode.vim.git" &
 git clone "https://github.com/wuelnerdotexe/vim-enfocado" &
 git clone "git@github.com:Donaldttt/fuzzyy.git" &
 git clone "https://github.com/preservim/vim-markdown.git" &
-git clone "git@github.com:chrisbra/csv.vim.git" & 
-git clone "https://github.com/SidOfc/mkdx" &
+# git clone "git@github.com:chrisbra/csv.vim.git" &
+# git clone "https://github.com/SidOfc/mkdx" &
 git clone "git@github.com:rafi/awesome-vim-colorschemes.git" &
 git clone "https://github.com/ledger/vim-ledger" &
 git clone "https://github.com/ycm-core/YouCompleteMe" &
 git clone "https://github.com/skywind3000/asyncrun.vim" &
 wait
-exit 0
-
