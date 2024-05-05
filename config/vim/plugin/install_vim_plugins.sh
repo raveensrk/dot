@@ -40,7 +40,7 @@ if [[ "$clean" -eq 1 ]]; then
 else
 	mkdir2 ~/.vim/bundle
 	pushd2 ~/.vim/bundle
-	if [[ "$(command ls)" -ne 0 ]]; then
+	if [[ "$(command ls | wc -l)" -ne 0 ]]; then
 		for dir in ./*; do
 			pushd2 "$dir"
 			git pull &
@@ -81,4 +81,5 @@ git clone "git@github.com:rafi/awesome-vim-colorschemes.git" &
 git clone "https://github.com/ledger/vim-ledger" &
 git clone "https://github.com/ycm-core/YouCompleteMe" &
 git clone "https://github.com/skywind3000/asyncrun.vim" &
+git clone "https://tpope.io/vim/scriptease.git" &
 wait

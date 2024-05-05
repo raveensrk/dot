@@ -144,7 +144,7 @@ set viminfo+=r~/.vim/plugged
 let mapleader = " "
 
 " set path+=**;~/ " This is awesome but find search takes too long
-set tags=./tags,../tags
+set tags+=./tags,../tags
 " set path+=*
 " set path+=.*
 " set path+=./;~/

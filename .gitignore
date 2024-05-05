@@ -14,3 +14,4 @@ config/vim/.netrwhist
 unit_test/tar/observed
 script/bookmark2/target
 lib/__pycache__
+config/vim/snippet/python/__pycache__

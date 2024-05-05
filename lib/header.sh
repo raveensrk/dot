@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source "$LIB"/colors.sh
-source "$LIB"/require.sh
-source "$LIB"/box.sh
+source "$LIB/colors.sh"
+source "$LIB/require.sh"
+source "$LIB/box.sh"
 
 pushd2() {
 	if command pushd "$1" >/dev/null; then

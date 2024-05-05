@@ -5,7 +5,6 @@ alias find="/opt/homebrew/opt/findutils/bin/gfind"
 alias xargs="/opt/homebrew/opt/findutils/bin/gxargs"
 export HOMEBREW_NO_AUTO_UPDATE=1
 export LESSOPEN="|/opt/homebrew/bin/lesspipe.sh %s"
-export PATH="$HOME/Library/Python/3.11/bin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
@@ -15,7 +14,6 @@ export PATH="/opt/homebrew/opt/cyrus-sasl/sbin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/bin/macos:$PATH"
 export PATH="/opt/local/bin:$PATH"
-fortune
 
 2x2() {
 	[[ "${#@}" -ne 4 ]] && echo ERROR: Need 4 file names... && return 2
@@ -27,3 +25,6 @@ fortune
 	vim "$4" -c "split $2 | vsplit $1 |  wincmd j | vsplit $3 | wincmd k | vsplit $5"
 }
 alias killsafari="osascript -e 'quit app \"safari.app\"'"
+alias mail="open -a mail.app"
+
+fortune

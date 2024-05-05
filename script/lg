@@ -4,7 +4,7 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-source_if_exists ~/script/before_lg.sh
+~/script/before_lg.py
 
 while read -u 10 -re line; do
 	# gitui -d "${line/\~/$HOME}"
