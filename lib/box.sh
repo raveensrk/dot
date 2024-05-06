@@ -24,6 +24,6 @@ box() {
 	else
 		text="$*"
 	fi
-	echo "STAGE: $text"
+	echo -e "STAGE: $magenta$text$nocolor"
 }
 declare -xf box
