@@ -181,9 +181,9 @@ alias l="ls -X --group-directories-first  --color -lAh"
 alias bashrc="vim \$DOT/config/bashrc"
 resetbash () {
     clear
-    echo Resetting... | lolcat
+    echo Resetting...
     sleep 1
-    exec bash -i -l -c "source $HOME/dot/config/bashrc"
+    source "$DOT/config/bashrc"
 }
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 eval "$(direnv hook bash)"
@@ -197,3 +197,9 @@ alias grep="grep --color"
 source "$DOT/script/fd2.sh"
 source "$DOT/script/recursively_add_to_path.sh"
 recursively_add_to_path "$HOME/script"
+d () {
+	if ! cd "$(which "$1" | xargs dirname)"; then
+		echor "Unable to change directory..."
+		return 2
+	fi
+}
