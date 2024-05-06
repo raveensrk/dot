@@ -1,23 +1,26 @@
 #!/usr/bin/env bash
 
-source "$LIB"/colors.sh
-source "$LIB"/require.sh
-source "$LIB"/box.sh
+source "$LIB/colors.sh"
+source "$LIB/require.sh"
+source "$LIB/box.sh"
 
 pushd2() {
-	echoy "Changing to directory: $1"
-	command pushd "$1" >/dev/null || {
-		echor "Cannon push directory: $1" &&
-			return 2
-	}
+	if command pushd "$1" >/dev/null; then
+		echoy "Changing to directory: $1"
+	else
+		echor "Cannot push directory: $1"
+		return 2
+	fi
 }
 declare -xf pushd2
 
 popd2() {
-	command popd >/dev/null || {
-		echor "Cannot pop out of directory: $PWD" &&
-			return 2
-	}
+	if command popd >/dev/null; then
+		echoy "Popped Out of directory. Current Directory: $PWD"
+	else
+		echor "Cannot pop out of directory: $PWD"
+		return 2
+	fi
 }
 declare -xf popd2
 
@@ -43,6 +46,7 @@ declare -xf mkdir2
 
 rm_mkdir() {
 	if [[ -d "$1" ]]; then
+		chmod -R 777 "$1"
 		command rm -rf "$1"
 		echoy "Deleting directory: $1"
 	fi

@@ -4,6 +4,7 @@ set -PCaeuo pipefail
 IFS=$'\n\t'
 # set -x
 
+change_to_script_dir "$0"
 
 # cat <<-HERE
 # md_dir    = $md_dir
@@ -14,9 +15,16 @@ IFS=$'\n\t'
 # shellcheck disable=2046
 # pandoc --verbose -s --toc-depth=2 --toc=true --metadata title="$title" -f markdown -t pdf  $(find "$md_dir" -iname "*.md" | sort)  -o "$book_name.pdf"
 
-[[ -f "$book_name.md" ]] && rm -f "$book_name".md
+[[ -f "$book_name.md" ]] && rm -f "$book_name.md"
 
-gfind "$md_dir" -iname "*.md" | sort | xargs cat | prettier --parser markdown --prose-wrap always > "$book_name".md
+gfind "$md_dir" -iname "*.md" | sort | xargs cat | prettier --parser markdown --prose-wrap always >"$book_name.md"
 
-pandoc --fail-if-warnings=true -s --toc-depth=2 --toc=true --metadata title="$title" -f markdown -t pdf "$book_name".md -o "$book_name.pdf"
+# pandoc --fail-if-warnings=true \
+pandoc -s --toc-depth=1 \
+	--toc=true \
+	--metadata title="$title" \
+	-f markdown \
+	-t pdf "$book_name.md" \
+	-o "$book_name.pdf"
 
+[[ -f "$book_name.md" ]] && rm -f "$book_name.md"
