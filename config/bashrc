@@ -213,3 +213,21 @@ export PATH="$DOT/config/vim/snippet/python:$PATH"
 source "$DOT/config/gitconfig"
 alias tmux="tmux attach || tmux"
 alias t="tmux"
+
+fff() {
+	file="$(fff.py)"
+	echoy "Opening file in vim"
+	vim $file
+}
+
+ffd() {
+	pushd2 $(fff.py --dir)
+}
+export HOWDOI_COLORIZE=1
+alias howdoi="howdoi -a"
+if [[ -f ~/python_venv/bin/activate ]]; then
+	source ~/python_venv/bin/activate
+fi
+if command -v starship >/dev/null; then
+	eval "$(starship init bash)"
+fi
