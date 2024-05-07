@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # bashrc
 
-
 # {{{ ENVIRONMENT VARIABLES
 export DOT=$HOME/dot
 export INPUTRC=$DOT/config/inputrc
@@ -56,7 +55,7 @@ export HISTFILE=~/.bash_history
 if command -v bat >/dev/null; then
 	alias cat=bat
 fi
-alias chop="tr -d '\n'"         # Remove newline
+alias chop="tr -d '\n'" # Remove newline
 alias untar="tar xvf"
 alias hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 alias ..="cd .."
@@ -85,8 +84,8 @@ export MANCOLOR="Yes"
 # export LESS_TERMCAP_Ss=$'\e[48;5;16m'
 export LESS_TERMCAP_so=$'\e[38;5;3m'  #Yellow
 export LESS_TERMCAP_us=$'\e[38;5;40m' #green
-export LESS_TERMCAP_md=$'\e[38;5;4m' #blue
-export LESS_TERMCAP_mb=$'\e[38;5;1m' #Red
+export LESS_TERMCAP_md=$'\e[38;5;4m'  #blue
+export LESS_TERMCAP_mb=$'\e[38;5;1m'  #Red
 
 export LESS_TERMCAP_me=$'\e[0m'
 export LESS_TERMCAP_se=$'\e[0m'
@@ -100,12 +99,12 @@ export LESS_TERMCAP_Se=$'\e[0m'
 #------------------
 man() {
 	# LESS_TERMCAP_md=$'\e[01;31m'
-    # LESS_TERMCAP_me=$'\e[0m'
-    # LESS_TERMCAP_se=$'\e[0m'
-    # LESS_TERMCAP_so=$'\e[01;44;33m'
-    # LESS_TERMCAP_ue=$'\e[0m'
-    # LESS_TERMCAP_us=$'\e[01;32m'
-    command man "$@"
+	# LESS_TERMCAP_me=$'\e[0m'
+	# LESS_TERMCAP_se=$'\e[0m'
+	# LESS_TERMCAP_so=$'\e[01;44;33m'
+	# LESS_TERMCAP_ue=$'\e[0m'
+	# LESS_TERMCAP_us=$'\e[01;32m'
+	command man "$@"
 }
 # }}}
 # {{{ VIM
@@ -133,7 +132,6 @@ alias r="ranger_cd"
 # }}}
 # {{{ BUG FIXES
 # MACOS Specific {{{
-
 
 if [ "$(uname -a | awk '{print $1}')" = "Darwin" ]; then
 	eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -179,11 +177,11 @@ alias path="echo \$PATH | tr ':' '\n' | tac"
 alias ls="ls -X --group-directories-first  --color"
 alias l="ls -X --group-directories-first  --color -lAh"
 alias bashrc="vim \$DOT/config/bashrc"
-resetbash () {
-    clear
-    echo Resetting... | lolcat
-    sleep 1
-    exec bash -i -l -c "source $HOME/dot/config/bashrc"
+resetbash() {
+	clear
+	echo Resetting...
+	sleep 1
+	source "$DOT/config/bashrc"
 }
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 eval "$(direnv hook bash)"
@@ -197,6 +195,18 @@ alias grep="grep --color"
 source "$DOT/script/fd2.sh"
 source "$DOT/script/recursively_add_to_path.sh"
 recursively_add_to_path "$HOME/script"
+d() {
+	dir="$(which "$1" | xargs dirname)"
+	if [[ -d "$dir" ]]; then
+		if ! cd "$dir"; then
+			echor "Unable to change directory = $dir"
+			return 2
+		fi
+	else
+		echor "Not a directory = $dir"
+		return 2
+	fi
+}
 export PYTHONPATH+=":$DOT/lib:$HOME/python_venv/lib/python3.12/site-packages:$DOT/config/vim/snippet/python"
 export PATH="$DOT/config/vim/plugin:$PATH"
 export PATH="$DOT/config/vim/snippet/python:$PATH"
