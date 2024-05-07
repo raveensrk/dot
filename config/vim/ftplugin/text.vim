@@ -1,2 +1,1 @@
- set syntax=mine
- set spell
+ set nospell
