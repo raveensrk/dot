@@ -213,15 +213,15 @@ export PATH="$DOT/config/vim/snippet/python:$PATH"
 source "$DOT/config/gitconfig"
 alias tmux="tmux attach || tmux"
 alias t="tmux"
-
-fff() {
-	file="$(fff.py)"
-	echoy "Opening file in vim"
-	vim $file
+ffd() {
+	dir="$(find $(cat "$HOME/script/fff_list.txt" | envsubst) -type d | fzf -m +s)"
+	pushd2 $dir
 }
 
-ffd() {
-	pushd2 $(fff.py --dir)
+fff() {
+	file="$(find $(cat "$HOME/script/fff_list.txt" | envsubst) -type f | fzf -m +s)"
+	echoy "Opening file in vim: $file"
+	vim $file
 }
 export HOWDOI_COLORIZE=1
 alias howdoi="howdoi -a"

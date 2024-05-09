@@ -14,11 +14,12 @@ function! FindGrep () abort
     redraw!
     " let cmd =  "vimgrep! ".."/"..pattern.."/".." "..dir.."/**".."/"..extension
 	" There is some bug here
-    let cmd =  "silent grep! -e "..pattern.." "..dir
+    let cmd =  "grep! -e "..pattern.." "..dir
     redraw!
 	echowindow cmd
     call histadd("cmd", cmd)
-    execute cmd
+    execute 'cd ' .. dir
+    silent! execute cmd
     copen
     " set wildoptions=fuzzy,tagfile
 endfunction

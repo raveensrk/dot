@@ -14,7 +14,7 @@ def main():
     """
     This function get all the files and pipes it to fzf
     """
-    with open(os.path.expanduser("~/projects.txt")) as f:
+    with open(os.path.expanduser("~/script/fff_list.txt")) as f:
         dirs = f.readlines()
 
     dirs = [x.strip() for x in dirs]
