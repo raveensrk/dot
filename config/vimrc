@@ -127,8 +127,8 @@ set maxcombine=6
 set verbosefile=/tmp/verbosefile
 set whichwrap+=<,>,[,]
 set equalalways
-set winfixheight
-set winfixwidth
+" set winfixheight
+" set winfixwidth
 set isfname-==
 set isfname-=,
 
@@ -175,35 +175,36 @@ set showcmd
 set shortmess+=I
 set nu
 " set foldlevelstart=99
-func! Fix() abort
-	let status="┆%n"
-	if &winfixbuf
-		let status.="┆%#Directory#FIX%*"
-	else
-		let status.="┆BUF"
-	endif
-	let status.="┆%M"
-	let status.="┆%R"
-	let status.="┆%f"
-	let status.="┆%S"
-	let status.="┆%="
-	let status.="┆%H"
-	let status.="┆%W"
-	let status.="┆%Y"
-	let status.="┆%q"
-	let status.="┆%k"
-	let status.="┆%p%%"
-	" let status.="%b"
-	" let status.="┆"
-	let status.="┆%l,%v"
-	let status.="┆"
-	" let status.="%L"
-	" let status.="┆"
-	return status
-endfunc
+" func! Fix() abort
+" 	let status="┆%n"
+" 	if &winfixbuf
+" 		let status.="┆%#Directory#FIX%*"
+" 	else
+" 		let status.="┆BUF"
+" 	endif
+" 	let status.="┆%M"
+" 	let status.="┆%R"
+" 	let status.="┆%f"
+" 	let status.="┆%S"
+" 	let status.="┆%="
+" 	let status.="┆%H"
+" 	let status.="┆%W"
+" 	let status.="┆%Y"
+" 	let status.="┆%q"
+" 	let status.="┆%k"
+" 	let status.="┆%p%%"
+" 	" let status.="%b"
+" 	" let status.="┆"
+" 	let status.="┆%l,%v"
+" 	let status.="┆"
+" 	" let status.="%L"
+" 	" let status.="┆"
+" 	return status
+" endfunc
 
 set showcmd
 set showcmdloc=statusline
-set statusline=%{%Fix()%}
+" set statusline=%{%Fix()%}
 set nowrap
 set autochdir
+let g:deoplete#enable_at_startup = 1

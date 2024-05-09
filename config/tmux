@@ -5,7 +5,7 @@ set-window-option -g xterm-keys on
 if-shell "uname | grep -q 'Darwin'" "set-option -g default-shell /opt/homebrew/bin/bash"
 # set -g remain-on-exit on
 if-shell "test -f ~/script/custom_tmux.conf"  "source ~/script/custom_tmux.conf"
-set -g mouse off
+set -g mouse on
 set -g pane-border-lines heavy
 set -g status-position top
 set -g status-right '#{prefix_highlight}'
@@ -15,7 +15,7 @@ set-option -g prefix C-Space
 set-option -sg escape-time 10
 setw -g mode-keys vi
 set -g pane-active-border-style fg=cyan\ bold,bg=black
-set -g pane-border-status top
+# set -g pane-border-status top
 set -g window-status-current-style bg=black,fg=cyan\ bold
 set -g window-status-separator |
 set-hook -g after-split-window "selectl tiled"
@@ -48,4 +48,7 @@ bind-key R respawn-pane -k \; send-keys C-p C-m
 bind-key S-Left swap-window -t -1\; select-window -t -1
 bind-key S-Right swap-window -t +1\; select-window -t +1
 bind-key X respawn-window -k
-bind-key c new-window -c "#{pane_current_path}" \; command-prompt -p "Enter name for this new window: " -I "rename-window "
+# bind-key c new-window -c "#{pane_current_path}" \; command-prompt -p "Enter name for this new window: " -I "rename-window "
+bind-key c new-window -c "#{pane_current_path}"
+set-option status on
+
