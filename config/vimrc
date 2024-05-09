@@ -208,3 +208,6 @@ set showcmdloc=statusline
 set nowrap
 set autochdir
 let g:deoplete#enable_at_startup = 1
+
+" Repeat previous command
+nmap <unique> <leader>\ :<UP><CR>

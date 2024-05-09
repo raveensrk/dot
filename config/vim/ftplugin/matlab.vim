@@ -1,2 +1,1 @@
-set makeprg=octave-cli\ %
-set nu
+setlocal makeprg=octave-cli\ %

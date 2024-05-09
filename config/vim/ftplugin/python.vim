@@ -1,7 +1,8 @@
-function! Format(line1,line2) abort
+function! s:Format(line1,line2) abort
 	let save_cursor = getcurpos()
 	execute a:line1 . ',' . a:line2 . '!black -q -'
 	call setpos('.', save_cursor)
 endfunction
 
-command! -range=% Format call Format(<line1>,<line2>)
+command! -buffer -range=% Format call s:Format(<line1>,<line2>)
+command! -buffer Lint !pylint --logging-format-style=new %

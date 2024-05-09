@@ -81,8 +81,6 @@ git clone "git@github.com:rafi/awesome-vim-colorschemes.git" &
 git clone "https://github.com/ledger/vim-ledger" &
 git clone "https://github.com/skywind3000/asyncrun.vim" &
 git clone "https://tpope.io/vim/scriptease.git" &
-git clone  'Shougo/deoplete.nvim' &
-git clone  'roxma/nvim-yarp' &
-git clone  'roxma/vim-hug-neovim-rpc' &
-pip install pynvim
+git clone "git@github.com:davidhalter/jedi-vim.git" &
+pip install jedi
 wait

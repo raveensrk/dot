@@ -23,6 +23,8 @@ web:*.{html,css,js}*
 --glob=!*.vRefine
 --glob=!*.out
 --glob=!*.o
+--glob=!*.svcf
+--glob=!*.log
 
 # or
 --glob
@@ -46,3 +48,4 @@ web:*.{html,css,js}*
 
 # Dont ignore .gitignore files
 --no-ignore
+--max-count=1

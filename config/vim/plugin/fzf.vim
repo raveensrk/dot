@@ -87,6 +87,24 @@ function! FindFiles () abort
 endfunction
 command! FindFiles call FindFiles()
 " nmap <leader>ff :FindFiles<cr>
-nmap <leader>fr :History!<CR>
+function! FR () abort
+	" Find recent files
+	cd $HOME
+	execute 'History!'
+endfunction
+command! FR call FR()
+
+
+nmap <leader>fr :FR<CR>
 nmap <leader>fl :Lines<CR>
 nmap <leader>fh :Helptags<CR>
+function! FFF () abort
+	cd $HOME
+	call fzf#run({'source': 'ffl', 
+				\ 'sink': 'e', 
+				\ 'options': '--prompt "FFF: "'})
+	redraw! 
+endfunction
+
+command! FFF call FFF()
+" nmap <leader>ff :FFF<CR>

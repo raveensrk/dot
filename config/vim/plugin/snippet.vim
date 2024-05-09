@@ -1,5 +1,3 @@
-command! SnippetRead call fzf#run({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'sink': 'read'})
-inoremap <expr> <c-x>s fzf#vim#complete({'dir': '~/dot/config/vim/snippet', 'source': 'find . -type f', 'reducer': { lines -> join(readfile(lines[0]))}})
 function! SnippetCreate (start,end)
 	let name=input("Enter name of snippet: ")
 	let filetype=input("Enter filetype of snippet: ")
@@ -16,3 +14,15 @@ command! SnippetList Files $DOT/config/vim/snippet
 nmap ,sr :SnippetRead<CR>
 nmap ,sc :SnippetCreate<CR>
 xmap ,sc :SnippetCreate<CR>
+
+function! SnippetRead ()
+	let filetype=&filetype
+	let dir = $DOT .. "/config/vim/snippet/" .. filetype
+	let name=input("Enter name of snippet: ", dir, "file")
+	let cmd = "read "..name
+	call histadd("cmd", cmd)
+    echowindow cmd
+	execute cmd
+endfunction
+
+command! SnippetRead call SnippetRead()

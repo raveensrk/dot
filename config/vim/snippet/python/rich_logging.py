@@ -13,7 +13,7 @@ install(show_locals=False)
 logging.basicConfig(
     level=logging.DEBUG,
     # handlers=[RichHandler(), logging.FileHandler("/tmp/myapp.log2")],
-    format="%(message)s",
+    format="%(filename)s: %(message)s",
     handlers=[RichHandler()],
     # format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
     # datefmt="%m-%d %H:%M",
@@ -21,6 +21,12 @@ logging.basicConfig(
 
 log = logging.getLogger("rich")
 # log.addHandler(RichHandler())
+
+info= log.info
+debug=log.debug
+warning=   log.warning
+error= log.error
+critical=log.critical
 
 if __name__ == "__main__":
     log.info("Jackdaws love my big sphinx of quartz.")
