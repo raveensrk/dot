@@ -121,7 +121,7 @@ endfunction
 set wildoptions=pum
 set completeopt+=popup,menu,preview
 set makeef=/tmp/errorfile
-set foldclose="all"
+" set foldclose="all"
 set showfulltag
 set maxcombine=6
 set verbosefile=/tmp/verbosefile
@@ -156,7 +156,7 @@ set showcmd
 set showmode
 " autocmd! BufWritePre
 " autocmd BufWritePre *.txt s/ \+$//e
-let g:ft_man_folding_enable = 1
+" let g:ft_man_folding_enable = 1
 " autocmd FileType man setlocal foldmethod=indent foldenable
 let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
