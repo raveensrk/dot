@@ -35,6 +35,12 @@ bind-key  % split-window -h -c "#{pane_current_path}"
 bind-key '"' split-window -v -c "#{pane_current_path}"
 bind-key -T copy-mode-vi y send-keys -X copy-selection
 bind-key C-Space send-prefix
+bind-key -T root C-Right next-window
+bind-key -T root C-Left previous-window
+bind-key -T root S-Down select-pane -D 
+bind-key -T root S-Left select-pane -L
+bind-key -T root S-Right select-pane -R 
+bind-key -T root S-Up select-pane -U
 bind-key E respawn-window -k \; send-keys "vl" C-m 
 bind-key N prev
 bind-key P respawn-pane -k
