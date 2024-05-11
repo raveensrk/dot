@@ -7,6 +7,8 @@ import sys
 import os
 import subprocess
 import shutil
+import filecmp
+import ndiff
 from rich.traceback import install
 from rich.console import Console
 
@@ -18,7 +20,7 @@ def main(file):
     """
     Run tests
     """
-    os.chdir(os.path.dirname(__file__))
+    os.chdir(os.path.dirname(file))
     path = shutil.which("xrun")
     if path is None:
         print("Executable xrun not found. Trying verilator...")
@@ -51,6 +53,8 @@ def simulate_file(executable, args, file):
     """
     This takes 3 arguments, executable, args, and file as string and tries to simulate
     """
+    os.makedirs("./expected", exist_ok=True)
+    os.makedirs("./observed", exist_ok=True)
     cmd = executable + " " + args + " " + file
     print(f"{cmd = }")
     name, _ = os.path.splitext(os.path.basename(file))
@@ -59,7 +63,8 @@ def simulate_file(executable, args, file):
     print(f"{cmd2 = }")
     result, out = subprocess.getstatusoutput(cmd)
     print(f"{result = }")
-    print(f"{out = }")
+    for line in out:
+        print(line)
 
     if result != 0:
         print("Test failed: " + f"{cmd = }")
@@ -68,19 +73,16 @@ def simulate_file(executable, args, file):
     if "verilator" in executable:
         result2, out2 = subprocess.getstatusoutput(cmd2)
         print(f"{result2 = }")
-        print(f"{out2 = }")
+        for line in out2:
+            print(line)
         if result2 != 0:
             print("Test failed: " + cmd2)
             sys.exit(2)
 
-        log = f"./expected/verilator/{name}.log"
-        log_dir = "./expected/verilator"
-        os.makedirs(log_dir, exist_ok=True)
-        with open(log, "w", encoding="UTF-8") as f:
-            f.write(f"{out2}")
+    fcompare(f"./expected/{name}.log", f"./observed/{name}.log")
 
 
 if __name__ == "__main__":
     print(f"Running {__file__ = }")
-    file=os.path.abspath(sys.argv[1])
-    main(file)
+    source_file = os.path.abspath(sys.argv[1])
+    main(source_file)
