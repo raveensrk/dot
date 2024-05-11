@@ -1,4 +1,3 @@
-nmap <leader>h :FuzzyHelps<cr>
 let g:fzf_vim = {}
 let g:fzf_layout = { 'down': '40%' }
 " let g:fzf_preview_window = ['hidden', 'right,50%', 'ctrl-/']
@@ -14,7 +13,6 @@ imap <expr> <c-x>f fzf#vim#complete#path('rg --hidden --files')
 imap <c-x>k <plug>(fzf-complete-word)
 imap <c-x>l <plug>(fzf-complete-line)
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word()
-nmap <leader>f. :DOT<CR>
 command! -bang DOT call fzf#vim#files('$HOME/dot', <bang>0)
 command! -bang -nargs=? -complete=dir Files 
             \ call fzf#vim#files(<q-args>, {'options': ['--exact', '--layout=reverse', '--info=inline']}, <bang>0)
@@ -94,10 +92,7 @@ function! FR () abort
 endfunction
 command! FR call FR()
 
-
-nmap <leader>fr :FR<CR>
-nmap <leader>fl :Lines<CR>
-nmap <leader>fh :Helptags<CR>
+" nmap <leader>fr :FR<CR>
 function! FFF () abort
 	cd $HOME
 	call fzf#run({'source': 'ffl', 

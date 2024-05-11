@@ -49,7 +49,6 @@ else
 	fi
 fi
 
-
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &
 git clone "git@github.com:easymotion/vim-easymotion" &
 git clone "git@github.com:junegunn/vim-easy-align" &
@@ -82,5 +81,18 @@ git clone "https://github.com/ledger/vim-ledger" &
 git clone "https://github.com/skywind3000/asyncrun.vim" &
 git clone "https://tpope.io/vim/scriptease.git" &
 git clone "git@github.com:davidhalter/jedi-vim.git" &
+git clone "https://github.com/mhinz/vim-startify" &
+git clone "git@github.com:tpope/vim-characterize.git" &
 pip install jedi
+git clone "git@github.com:tpope/vim-obsession.git" &
+git clone https://github.com/ap/vim-buftabline &
+git clone https://github.com/qpkorr/vim-bufkill ~/.vim/bundle/vim-bufkill &
+git clone https://github.com/moll/vim-bbye &
+git clone git@github.com:vim-scripts/bufexplorer.zip.git &
+# https://vimawesome.com/plugin/vim-interestingwords-safe-and-sound
+# git clone https://github.com/kshenoy/vim-signature &
+git clone https://github.com/mattesgroeger/vim-bookmarks &
+# https://github.com/Shougo/unite.vim
+# Digraph: https://www.vim.org/scripts/script.php?script_id=5724
+git clone https://github.com/kyuhi/vim-emoji-complete &
 wait

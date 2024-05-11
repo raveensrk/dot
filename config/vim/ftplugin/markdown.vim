@@ -5,7 +5,7 @@ let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_auto_insert_bullets = 0
 let g:vim_markdown_new_list_item_indent = 0
 setlocal conceallevel=2
-setlocal formatprg=prettier\ --parser\ markdown
+setlocal formatprg=prettier\ --parser\ markdown\ --prose-wrap\ always
 setlocal wrap
 setlocal spell
 
@@ -15,12 +15,15 @@ function! s:Format(line1,line2) abort
 	call setpos('.', save_cursor)
 endfunction
 silent command! -buffer -bar -range=% Format call s:Format(<line1>,<line2>)
-" autocmd BufWritePre *.md silent Format
 " silent autocmd BufRead resume*.md let b:vim_markdown_folding_disabled=0
 let b:surround_49 = "```\r```" " Number 1 Key
+
+
 autocmd BufEnter *.md ALEDisableBuffer
 autocmd BufEnter *.md syntax match SpecialKey   /^-\ \[x\].*/
 autocmd BufEnter *.md syntax match Removed   /^-\ \[o\].*/
+autocmd BufWritePre *.md silent Format
+highlight! link htmlBold htmlH1
 
 function! s:Msg(msg)
 	call popup_create(a:msg, #{

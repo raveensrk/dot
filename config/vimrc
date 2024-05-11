@@ -56,6 +56,7 @@ set smarttab
 " }}}
 " FOLDING AND WRAPPING {{{
 set foldmethod=marker
+set nofoldenable
 " }}}
 " {{{ NUMBERING
 set number 
@@ -150,10 +151,6 @@ set tags+=./tags,../tags
 " set path+=./;~/
 set path+=~/script
 set path+=~/dot/**
-set showtabline=2
-set showcmdloc="last"
-set showcmd
-set showmode
 " autocmd! BufWritePre
 " autocmd BufWritePre *.txt s/ \+$//e
 " let g:ft_man_folding_enable = 1
