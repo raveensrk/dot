@@ -8,7 +8,7 @@ import os
 import subprocess
 import shutil
 import filecmp
-import ndiff
+from ndiff import main as show_diff
 from rich.traceback import install
 from rich.console import Console
 
@@ -63,8 +63,7 @@ def simulate_file(executable, args, file):
     print(f"{cmd2 = }")
     result, out = subprocess.getstatusoutput(cmd)
     print(f"{result = }")
-    for line in out:
-        print(line)
+    print(out)
 
     if result != 0:
         print("Test failed: " + f"{cmd = }")
@@ -73,16 +72,20 @@ def simulate_file(executable, args, file):
     if "verilator" in executable:
         result2, out2 = subprocess.getstatusoutput(cmd2)
         print(f"{result2 = }")
-        for line in out2:
-            print(line)
+        print(out2)
         if result2 != 0:
             print("Test failed: " + cmd2)
             sys.exit(2)
-
-    fcompare(f"./expected/{name}.log", f"./observed/{name}.log")
 
 
 if __name__ == "__main__":
     print(f"Running {__file__ = }")
     source_file = os.path.abspath(sys.argv[1])
     main(source_file)
+    name, _ = os.path.splitext(os.path.basename(source_file))
+    if not filecmp.cmp(f"./expected/{name}.log", f"./observed/{name}.log"):
+        show_diff([f"./expected/{name}.log", f"./observed/{name}.log"])
+        print(f"Expected and observed differ for {source_file =}")
+        sys.exit(2)
+    else:
+        print(f"Expected and observed are same for {source_file =}")
