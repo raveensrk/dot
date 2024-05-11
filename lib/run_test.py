@@ -82,4 +82,5 @@ def simulate_file(executable, args, file):
 
 if __name__ == "__main__":
     print(f"Running {__file__ = }")
-    main(sys.argv[1])
+    file=os.path.abspath(sys.argv[1])
+    main(file)
