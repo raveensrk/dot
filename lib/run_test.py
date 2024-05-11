@@ -42,7 +42,7 @@ def main(file):
             )
     else:
         executable = shutil.which("xrun")
-        args = " "
+        args = " -define TEST -define DEBUG "
 
     simulate_file(executable, args, file)
 
