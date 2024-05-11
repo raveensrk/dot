@@ -15,6 +15,9 @@ unit_test/tar/observed
 lib/__pycache__
 config/vim/snippet/python/__pycache__
 history
-lib/expected/verilator
-lib/obj_dir
-lib/waveform.vcd
+**/expected/verilator
+**/obj_dir
+**/waveform.vcd
+**/xcelium.d
+**/xrun.history
+**/xrun.log
