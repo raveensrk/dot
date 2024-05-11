@@ -40,6 +40,13 @@ change_to_script_dir() {
 }
 declare -xf change_to_script_dir
 
+mkdirf() {
+	dir="$(dirname "$1")"
+	echoy "Making directory: $dir"
+	command mkdir -p "$dir"
+}
+declare -xf mkdirf
+
 mkdir2() {
 	declare dir="$1"
 	if [[ ! -d "$dir" ]]; then

@@ -6,6 +6,9 @@ This is a module for logging messages
 import logging
 from rich.logging import RichHandler
 from rich.traceback import install
+from rich.console import Console
+
+console = Console()
 
 install(show_locals=False)
 
@@ -22,11 +25,19 @@ logging.basicConfig(
 log = logging.getLogger("rich")
 # log.addHandler(RichHandler())
 
-info= log.info
-debug=log.debug
-warning=   log.warning
-error= log.error
-critical=log.critical
+info = log.info
+debug = log.debug
+warning = log.warning
+error = log.error
+critical = log.critical
+
+
+def infog(msg: str):
+    """
+    Print the pass message in green
+    """
+    console.print("[green]PASS[/green]: " + msg)
+
 
 if __name__ == "__main__":
     log.info("Jackdaws love my big sphinx of quartz.")
@@ -34,3 +45,4 @@ if __name__ == "__main__":
     log.info("How quickly daft jumping zebras vex.")
     log.warning("Jail zesty vixen who grabbed pay from quack.")
     log.error("The five boxing wizards jump quickly.")
+    infog("Hello world")
