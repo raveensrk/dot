@@ -5,6 +5,11 @@ source "$LIB/require.sh"
 source "$LIB/box.sh"
 
 pushd2() {
+	if [[ ! -d "$1" ]]; then
+		echor "Not a directory: $1"
+		return 2
+	fi
+
 	if command pushd "$1" >/dev/null; then
 		echoy "Changing to directory: $1"
 	else

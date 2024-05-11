@@ -41,19 +41,19 @@ declare -x underline="\e[4m"
 declare -x yellow="\e[38;5;11m"
 
 echog() {
-	echo -ne "PASS: \e[38;5;2m$*\e[0m\n"
+	echo -ne "${green}PASS${nocolor}: $*\n"
 }
 echob() {
-	echo -ne "INFO: $blue$*$nocolor\n"
+	echo -ne "${blue}INFO${nocolor}: $*\n"
 }
 echor() {
-	echo -ne "FAIL: $red$*$nocolor\n"
+	echo -ne "${red}FAIL${nocolor}: $*\n"
 }
 echoy() {
-	echo -ne "VERBOSE: $dim$yellow$*$nocolor\n"
+	echo -ne "${dim}${yellow}VERBOSE${nocolor}: $*\n"
 }
 echod () { 
-	echo -ne "DEBUG: \e[3m\e[2m\e[38;5;108m$*$nocolor\n"
+	echo -ne "\e[3m\e[2m\e[38;5;108mDEBUG${nocolor}: $*\n"
 }
 
 declare -xf echog echob echor echoy echod
