@@ -5,4 +5,4 @@ set -PCaeuo pipefail
 IFS=$'\n\t'
 
 
-gfind . -type f | gxargs -I{} -n1 du -h "{}" | sort -h
+find . -type f | xargs -I{} -n1 du -h "{}" | sort -h
