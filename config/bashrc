@@ -218,6 +218,8 @@ d() {
 	fi
 }
 export PYTHONPATH+=":$DOT/lib:$HOME/python_venv/lib/python3.12/site-packages:$DOT/config/vim/snippet/python"
+export PYTHONSTARTUP="$DOT/lib/quit_like_vim.py"
+
 export PATH="$DOT/config/vim/plugin:$PATH"
 export PATH="$DOT/config/vim/snippet/python:$PATH"
 # shellcheck disable=1091
@@ -226,31 +228,27 @@ alias tmux="tmux attach || tmux"
 alias t="tmux"
 ffd() {
 	# shellcheck disable=2046
-	cmd="pushd2 '$(find $(envsubst < "$HOME/script/fff_list.txt") -type d | fzf +s)'"
-	history -s "$cmd"
-	eval "$cmd"
+	dir=$(python3 "$DOT/script/fff.py" --dirs)
+	history -s "cd $dir"
+	if ! cd "$dir"; then
+		echor "Unable to cd into the directory $dir"
+		return 2
+	fi
 }
 declare -fx ffd
 
-ffL() {
-	history -s " find \$(envsubst < '$HOME/script/fff_list.txt') -type f | fzf +s"
-	# shellcheck disable=2046
-	find $(envsubst < "$HOME/script/fff_list.txt") -type f | fzf +s
-}
-declare -fx ffL
 
 ffl() {
-	history -s " find \$(envsubst < '$HOME/script/fff_list.txt') -type f | grep -v -e '.*\.git.*'"
-	# shellcheck disable=2046
-	find $(envsubst < "$HOME/script/fff_list.txt") -type f | grep -v -e '.*\.git.*'
+	# This function will list the matches
+	true
 }
 declare -fx ffl
 
 
 fff() {
+	cmd="fff.py"
 	# shellcheck disable=2046
-	history -s "vim -c FFF"
-	vim -c FFF
+	eval "$cmd"
 }
 declare -fx fff
 

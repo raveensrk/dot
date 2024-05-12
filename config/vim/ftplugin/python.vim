@@ -6,3 +6,4 @@ endfunction
 
 command! -buffer -range=% Format call s:Format(<line1>,<line2>)
 command! -buffer Lint !pylint --logging-format-style=new %
+command! CommentInspect call CommentAllMatchingLines('^\s\+inspect')

@@ -46,3 +46,7 @@ command! SplitDownLine norm Do<Esc>p
 nmap ,su :SplitUpLine<CR>
 nmap ,sU :SplitDownLine<CR>
 
+function! CommentAllMatchingLines (pattern) abort
+	execute 'g/'..a:pattern..'/norm gcc'
+endfunction
+command! -nargs=1 CommentAllMatchingLines call CommentAllMatchingLines(<f-args>)

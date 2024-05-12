@@ -24,6 +24,10 @@ autocmd BufEnter *.md syntax match SpecialKey   /^-\ \[x\].*/
 autocmd BufEnter *.md syntax match Removed   /^-\ \[o\].*/
 autocmd BufWritePre *.md silent Format
 highlight! link htmlBold htmlH1
+highlight! link htmlItalic Question
+
+
+" syntax match vimNumber /.*Medication.*/
 
 function! s:Msg(msg)
 	call popup_create(a:msg, #{
@@ -119,3 +123,20 @@ endfunction
 command! SortThisParagraph call SortThisParagraph()
 nnoremap <buffer> g<CR> :SortThisParagraph<CR>
 nmap <buffer> gX yi`:"<CR>
+
+function! s:QuoteThis()
+	try
+		s/^> //
+		call s:Msg("Unquoted the line")
+	catch
+		try
+			s/^/> /
+			call s:Msg("Quoted the line")
+		catch
+			call s:MsgFail("Unable to quote line")
+		endtry
+	endtry
+endfunction
+
+command! QuoteThis call s:QuoteThis()
+nnoremap <buffer> g> :QuoteThis<CR>
