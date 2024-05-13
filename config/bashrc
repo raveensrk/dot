@@ -228,10 +228,11 @@ alias tmux="tmux attach || tmux"
 alias t="tmux"
 ffd() {
 	# shellcheck disable=2046
-	dir=$(python3 "$DOT/script/fff.py" --dirs --interactive)
-	history -s "cd $dir"
-	if ! cd "$dir"; then
-		echor "Unable to cd into the directory $dir"
+	if python3 "$DOT/script/fff.py" --dirs --interactive; then
+		cmd="$(< /tmp/ffd.txt)"
+		history -s "cd $dir"
+		eval "$cmd"
+	else
 		return 2
 	fi
 }

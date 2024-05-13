@@ -97,10 +97,12 @@ def open_with_cd(dirs: str):
     """
     Print a cd command with selection
     """
-    # cd_cmd = "cd " + dirs
-    cd_cmd = dirs
+    cd_cmd = "cd " + dirs
+    file="/tmp/ffd.txt"
+    with open(file, "w", encoding="UTF-8") as f:
+        f.write(cd_cmd)
     # inspect(cd_cmd)
-    print(cd_cmd)
+    # print(cd_cmd)
 
 
 def test_me():

@@ -11,6 +11,8 @@ import filecmp
 from ndiff import main as show_diff
 from rich.traceback import install
 from rich.console import Console
+from lazy import expand
+from rich import inspect
 
 console = Console()
 install(show_locals=False)
@@ -56,13 +58,13 @@ def simulate_file(executable, args, file):
     os.makedirs("./expected", exist_ok=True)
     os.makedirs("./observed", exist_ok=True)
     cmd = executable + " " + args + " " + file
-    print(f"{cmd = }")
+    inspect(cmd)
     name, _ = os.path.splitext(os.path.basename(file))
-    print(f"{name = }")
+    inspect(name)
     cmd2 = f"./obj_dir/V{name}"
-    print(f"{cmd2 = }")
+    inspect(cmd2)
     result, out = subprocess.getstatusoutput(cmd)
-    print(f"{result = }")
+    inspect(result)
     print(out)
 
     if result != 0:
@@ -71,21 +73,62 @@ def simulate_file(executable, args, file):
 
     if "verilator" in executable:
         result2, out2 = subprocess.getstatusoutput(cmd2)
-        print(f"{result2 = }")
+        inspect(result2)
         print(out2)
         if result2 != 0:
             print("Test failed: " + cmd2)
             sys.exit(2)
 
 
-if __name__ == "__main__":
-    print(f"Running {__file__ = }")
-    source_file = os.path.abspath(sys.argv[1])
-    main(source_file)
-    name, _ = os.path.splitext(os.path.basename(source_file))
-    if not filecmp.cmp(f"./expected/{name}.log", f"./observed/{name}.log"):
-        show_diff([f"./expected/{name}.log", f"./observed/{name}.log"])
-        print(f"Expected and observed differ for {source_file =}")
+def copy_file_if_not_exists(path1: str, path2: str):
+    path1 = expand(path1)
+    path2 = expand(path2)
+    if not os.path.exists(path2):
+        print(
+            f"{path2} does not exist. Do you want to copy {path1} to {path2}? Y/n:"
+        )
+        choice = input()
+        if choice == "Y":
+            shutil.copy(path1, path2)
+        else:
+            sys.exit(2)
+
+
+def compare_2_files(path1: str, path2: str):
+    path1 = expand(path1) # observed
+    path2 = expand(path2) # expected
+    copy_file_if_not_exists(path1, path2)
+    if not filecmp.cmp(path1, path2):
+        show_diff([path1, path2])
+        print("Expected and observed differ")
+        print(f"Do you want to copy {path1} to {path2}? Y/n: ")
+        choice=input()
+        if choice == "Y":
+            shutil.copy(path1, path2)
         sys.exit(2)
     else:
-        print(f"Expected and observed are same for {source_file =}")
+        print("Expected and observed are same")
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        "Run a test using xrun or verilator and compare the results."
+    )
+    parser.add_argument(
+        "--source-file",
+        type=str,
+        required=True,
+        help="Source file. Usually .sv",
+    )
+    args = parser.parse_args()
+    source_file: str = args.source_file
+    print(f"Running {__file__ = }")
+    source_file = os.path.abspath(source_file)
+    main(source_file)
+    name, _ = os.path.splitext(os.path.basename(source_file))
+    expected = f"./expected/{name}.log"
+    observed = f"./observed/{name}.log"
+    if os.path.exists(observed):
+        compare_2_files(observed, expected)

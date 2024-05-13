@@ -1,1 +1,0 @@
-fd = $fopen("file.txt", "r");
