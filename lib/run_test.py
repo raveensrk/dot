@@ -8,13 +8,14 @@ import os
 import subprocess
 import shutil
 import filecmp
-from ndiff import main as show_diff
 from rich.traceback import install
 from rich.console import Console
 from lazy import expand
 from rich import inspect
 
 console = Console()
+from ndiff import main as show_diff
+
 install(show_locals=False)
 
 
@@ -46,14 +47,15 @@ def main(file):
             )
     else:
         executable = shutil.which("xrun")
-        args = " -define TEST -define DEBUG "
+        args = " -define TEST -define DEBUG +access+r "
 
     simulate_file(executable, args, file)
 
 
 def simulate_file(executable, args, file):
     """
-    This takes 3 arguments, executable, args, and file as string and tries to simulate
+    This takes 3 arguments, executable, args, and file
+    as string and tries to simulate
     """
     os.makedirs("./expected", exist_ok=True)
     os.makedirs("./observed", exist_ok=True)

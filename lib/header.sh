@@ -10,7 +10,7 @@ pushd2() {
 		return 2
 	fi
 
-	if command pushd "$1" >/dev/null; then
+	if command pushd "$1" > /dev/null; then
 		echoy "Changing to directory: $1"
 	else
 		echor "Cannot push directory: $1"
@@ -48,7 +48,7 @@ mkdirf() {
 declare -xf mkdirf
 
 mkdir2() {
-	declare dir="$1"
+	dir="$1"
 	if [[ ! -d "$dir" ]]; then
 		echoy "Making directory: $dir"
 		command mkdir -p "$dir"

@@ -3,7 +3,6 @@
 # echo "${BASH_VERSINFO[@]}"
 
 check_bash_version () {
-	echoy "Checking if bash version is greater than or equal to 5"
 	if [[ "${BASH_VERSINFO[0]}" -ge 5 ]]; then
 		echog "Bash version = ${BASH_VERSINFO[0]} supported"
 	else
@@ -16,12 +15,9 @@ declare -xf check_bash_version
 
 
 require_var() {
-	echoy "Checking if var $1 exists"
 	if grep -q "^${1}=.*" <(env); then
 		echor "Exists: ${!1}"
 		return 2
-	else
-		echog "no"
 	fi
 }
 declare -xf require_var
