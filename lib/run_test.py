@@ -60,13 +60,13 @@ def simulate_file(executable, args, file):
     os.makedirs("./expected", exist_ok=True)
     os.makedirs("./observed", exist_ok=True)
     cmd = executable + " " + args + " " + file
-    inspect(cmd)
+    # inspect(cmd)
     name, _ = os.path.splitext(os.path.basename(file))
-    inspect(name)
+    # inspect(name)
     cmd2 = f"./obj_dir/V{name}"
-    inspect(cmd2)
+    # inspect(cmd2)
     result, out = subprocess.getstatusoutput(cmd)
-    inspect(result)
+    # inspect(result)
     print(out)
 
     if result != 0:
@@ -75,7 +75,7 @@ def simulate_file(executable, args, file):
 
     if "verilator" in executable:
         result2, out2 = subprocess.getstatusoutput(cmd2)
-        inspect(result2)
+        # inspect(result2)
         print(out2)
         if result2 != 0:
             print("Test failed: " + cmd2)

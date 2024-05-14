@@ -16,7 +16,8 @@ install(show_locals=False)
 logging.basicConfig(
     level=logging.DEBUG,
     # handlers=[RichHandler(), logging.FileHandler("/tmp/myapp.log2")],
-    format="%(filename)s: %(message)s",
+    # format="%(filename)s: %(message)s",
+    format="%(message)s",
     handlers=[RichHandler()],
     # format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
     # datefmt="%m-%d %H:%M",
