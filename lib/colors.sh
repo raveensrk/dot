@@ -50,7 +50,9 @@ echor() {
 	echo -ne "${red}FAIL${nocolor}: $*\n"
 }
 echoy() {
-	echo -ne "${dim}${yellow}VERBOSE${nocolor}: $*\n"
+	if false; then
+		echo -ne "${dim}${yellow}VERBOSE${nocolor}: $*\n"
+	fi
 }
 echod () { 
 	echo -ne "\e[3m\e[2m\e[38;5;108mDEBUG${nocolor}: $*\n"

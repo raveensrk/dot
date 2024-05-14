@@ -47,7 +47,7 @@ def main(file):
             )
     else:
         executable = shutil.which("xrun")
-        args = " -define TEST -define DEBUG +access+r "
+        args = " -define TEST -define DEBUG +access+r -errormax 2"
 
     simulate_file(executable, args, file)
 
