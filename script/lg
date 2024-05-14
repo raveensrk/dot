@@ -4,7 +4,7 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-[[ -f ~/script/before_lg.py ]] && ~/script/before_lg.py
+# [[ -f ~/script/before_lg.py ]] && ~/script/before_lg.py
 
 while read -u 10 -re line; do
 	# gitui -d "${line/\~/$HOME}"
