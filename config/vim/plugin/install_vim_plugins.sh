@@ -78,13 +78,13 @@ git clone "https://github.com/preservim/vim-markdown.git" &
 # git clone "git@github.com:chrisbra/csv.vim.git" &
 # git clone "https://github.com/SidOfc/mkdx" &
 git clone "git@github.com:rafi/awesome-vim-colorschemes.git" &
-git clone "https://github.com/ledger/vim-ledger" &
+# git clone "https://github.com/ledger/vim-ledger" &
 git clone "https://github.com/skywind3000/asyncrun.vim" &
 git clone "https://tpope.io/vim/scriptease.git" &
-git clone "git@github.com:davidhalter/jedi-vim.git" &
+# git clone "git@github.com:davidhalter/jedi-vim.git" &
 git clone "https://github.com/mhinz/vim-startify" &
 git clone "git@github.com:tpope/vim-characterize.git" &
-pip install jedi
+# pip install jedi
 git clone "git@github.com:tpope/vim-obsession.git" &
 git clone https://github.com/ap/vim-buftabline &
 git clone https://github.com/qpkorr/vim-bufkill ~/.vim/bundle/vim-bufkill &
