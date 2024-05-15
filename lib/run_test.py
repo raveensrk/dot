@@ -112,6 +112,19 @@ def compare_2_files(path1: str, path2: str):
         print("Expected and observed are same")
 
 
+def run_sim(file: str):
+    file=expand(file)
+    with console.status("Running sim"):
+        file = os.path.abspath(file)
+        print(file)
+        main(file)
+        name, _ = os.path.splitext(os.path.basename(file))
+        expected = f"./expected/{name}.log"
+        observed = f"./observed/{name}.log"
+        if os.path.exists(observed):
+            compare_2_files(observed, expected)
+
+
 if __name__ == "__main__":
     import argparse
 
@@ -126,11 +139,4 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     source_file: str = args.source_file
-    print(f"Running {__file__ = }")
-    source_file = os.path.abspath(source_file)
-    main(source_file)
-    name, _ = os.path.splitext(os.path.basename(source_file))
-    expected = f"./expected/{name}.log"
-    observed = f"./observed/{name}.log"
-    if os.path.exists(observed):
-        compare_2_files(observed, expected)
+    run_sim(source_file)

@@ -26,3 +26,13 @@ def expand(path: str) -> str:
     return os.path.expanduser(os.path.expandvars(path))
 
 
+def execute_cmd(cmd) -> int:
+    if sys.platform == 'darwin':
+        cmd="echo '"+ cmd+"'"
+    info(cmd)
+    result, output = subprocess.getstatusoutput(cmd)
+    info(result)
+    info(output)
+    if result != 0:
+        critical("Command Failed")
+    return result
