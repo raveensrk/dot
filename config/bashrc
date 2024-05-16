@@ -217,8 +217,6 @@ d() {
 		return 2
 	fi
 }
-export PYTHONPATH+=":$DOT/lib:$HOME/python_venv/lib/python3.12/site-packages:$DOT/config/vim/snippet/python"
-export PYTHONSTARTUP="$DOT/lib/quit_like_vim.py"
 
 export PATH="$DOT/config/vim/plugin:$PATH"
 export PATH="$DOT/config/vim/snippet/python:$PATH"
@@ -255,11 +253,11 @@ declare -fx fff
 
 export HOWDOI_COLORIZE=1
 alias howdoi="howdoi -a"
-if [[ -f "$HOME/python_venv/bin/activate" ]]; then
-	# shellcheck disable=1091
-	source "$HOME/python_venv/bin/activate"
-fi
+# if [[ -f "$HOME/python_venv/bin/activate" ]]; then
+# 	# shellcheck disable=1091
+# 	source "$HOME/python_venv/bin/activate"
+# fi
 
-if command -v starship >/dev/null; then
-	eval "$(starship init bash)"
-fi
+# if command -v starship >/dev/null; then
+# 	eval "$(starship init bash)"
+# fi
