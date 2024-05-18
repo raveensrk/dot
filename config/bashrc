@@ -261,3 +261,4 @@ alias howdoi="howdoi -a"
 # if command -v starship >/dev/null; then
 # 	eval "$(starship init bash)"
 # fi
+export PYTHONPATH+=":$DOT/lib"

@@ -136,7 +136,7 @@ set isfname-=,
 packadd cfilter
 set switchbuf=uselast
 autocmd! BufEnter *.log setlocal readonly 
-autocmd! BufEnter *.log setlocal nowrap
+" autocmd! BufEnter *.log setlocal nowrap
 " autocmd QuickFixCmdPost make set wrap
 " autocmd QuickFixCmdPost make set nowinfixheight nowinfixwidth
 set viminfo+=r/opt/homebrew/
