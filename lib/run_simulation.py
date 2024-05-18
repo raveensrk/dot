@@ -28,18 +28,20 @@ def main(file):
         else:
             executable = shutil.which("verilator")
             args1 = [
-                    "--binary",
-                    "--trace",
-                    "--trace-params",
-                    "--trace-structs",
-                    "--trace-depth",
-                    "1",
-                    "--timing",
-                    "-DTEST",
-                ]
+                "--binary",
+                "--trace",
+                "--trace-params",
+                "--trace-structs",
+                "--trace-depth",
+                "1",
+                "--timing",
+                "-DTEST",
+                "--error-limit",
+                "1",
+            ]
     else:
         executable = shutil.which("xrun")
-        args1 = [ "-define", "TEST", "-define", "DEBUG", "+access+r",  "-errormax", "2" ]
+        args1 = ["-define", "TEST", "-define", "DEBUG", "+access+r", "-errormax", "2"]
 
     simulate_file(executable, args1, file)
 
@@ -51,7 +53,7 @@ def simulate_file(executable, args1, file):
     """
     os.makedirs("./expected", exist_ok=True)
     os.makedirs("./observed", exist_ok=True)
-    cmd: list = flatten_list([executable,  args1, file])
+    cmd: list = flatten_list([executable, args1, file])
     print(cmd)
     result = subprocess.run(cmd, check=False, capture_output=True)
     print(result.stdout.decode())
@@ -105,6 +107,7 @@ def compare_2_files(path1: str, path2: str):
             shutil.copy(path1, path2)
         sys.exit(2)
 
+
 def run_sim(file: str):
     """
     Run simulation
@@ -119,6 +122,7 @@ def run_sim(file: str):
     observed = f"./observed/{name}.log"
     if os.path.exists(observed):
         compare_2_files(observed, expected)
+
 
 if __name__ == "__main__":
     import argparse
