@@ -15,12 +15,12 @@ set-option -g prefix C-Space
 set-option -sg escape-time 10
 setw -g mode-keys vi
 set -g pane-active-border-style fg=cyan\ bold,bg=black
-# set -g pane-border-status top
+set -g pane-border-status top
 set -g window-status-current-style bg=black,fg=cyan\ bold
 set -g window-status-separator |
 set-hook -g after-split-window "selectl tiled"
-set -g window-style 'bg=black'
-set -g window-active-style 'bg=color234'
+# set -g window-style 'bg=black'
+# set -g window-active-style 'bg=color234'
 unbind [
 unbind p
 unbind-key C-b
