@@ -97,4 +97,5 @@ git clone https://github.com/mattesgroeger/vim-bookmarks &
 # Digraph: https://www.vim.org/scripts/script.php?script_id=5724
 git clone https://github.com/kyuhi/vim-emoji-complete &
 git clone https://github.com/AndrewRadev/splitjoin.vim &
+git clone https://github.com/pixelneo/vim-python-docstring &
 wait

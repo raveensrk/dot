@@ -10,13 +10,14 @@ import shutil
 import filecmp
 from lazy import expand
 from ndiff import main as show_diff
+from flatten_list import flatten_list
 
 
 def main(file):
     """
     Run tests
     """
-    os.chdir(os.path.dirname(file))
+    os.chdir(os.path.dirname(expand(file)))
     path = shutil.which("xrun")
     if path is None:
         # print("Executable xrun not found. Trying verilator...")
@@ -26,21 +27,19 @@ def main(file):
             sys.exit(2)
         else:
             executable = shutil.which("verilator")
-            args1 = " " + " ".join(
-                [
+            args1 = [
                     "--binary",
                     "--trace",
                     "--trace-params",
                     "--trace-structs",
                     "--trace-depth",
                     "1",
-                    "--timing ",
+                    "--timing",
                     "-DTEST",
                 ]
-            )
     else:
         executable = shutil.which("xrun")
-        args1 = " -define TEST -define DEBUG +access+r -errormax 2"
+        args1 = [ "-define", "TEST", "-define", "DEBUG", "+access+r",  "-errormax", "2" ]
 
     simulate_file(executable, args1, file)
 
@@ -52,28 +51,26 @@ def simulate_file(executable, args1, file):
     """
     os.makedirs("./expected", exist_ok=True)
     os.makedirs("./observed", exist_ok=True)
-    cmd = executable + " " + args1 + " " + file
-    # inspect(cmd)
-    name, _ = os.path.splitext(os.path.basename(file))
-    # inspect(name)
-    cmd2 = f"./obj_dir/V{name}"
-    # inspect(cmd2)
-    result, out = subprocess.getstatusoutput(cmd)
-    _ = out
-    # inspect(result)
-    # print(out)
-
-    if result != 0:
+    cmd: list = flatten_list([executable,  args1, file])
+    print(cmd)
+    result = subprocess.run(cmd, check=False, capture_output=True)
+    print(result.stdout.decode())
+    print(result.stderr.decode())
+    print("Return code = ", result.returncode)
+    if result.returncode != 0:
         print("Test failed: " + f"{cmd = }")
         sys.exit(2)
 
+    name, _ = os.path.splitext(os.path.basename(file))
+    cmd2 = f"./obj_dir/V{name}"
+
     if "verilator" in executable:
-        result2, out2 = subprocess.getstatusoutput(cmd2)
-        _ = out2
-        # inspect(result2)
-        # print(out2)
-        if result2 != 0:
-            print("Test failed: " + cmd2)
+        result = subprocess.run(cmd2, check=False, capture_output=True)
+        print(result.stdout.decode())
+        print(result.stderr.decode())
+        print("Return code = ", result.returncode)
+        if result.returncode != 0:
+            print("Test failed: ", cmd2)
             sys.exit(2)
 
 

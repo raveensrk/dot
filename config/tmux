@@ -51,4 +51,5 @@ bind-key X respawn-window -k
 # bind-key c new-window -c "#{pane_current_path}" \; command-prompt -p "Enter name for this new window: " -I "rename-window "
 bind-key c new-window -c "#{pane_current_path}"
 set-option status on
+set history-limit 102400
 
