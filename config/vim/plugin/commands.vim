@@ -23,6 +23,7 @@ command! DiffFold :set diffopt=filler,context:0
 command! FindReferences call FindReferences()
 command! LS  !pwd; ls -l
 command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
-command! RemoveDoubleSpaces :%s/  / /gc
 command! Scratch  split /tmp/scratch.vim
 command! SplitArguments :s/ --/ \\\r--/g
+
+command! -range RemoveDoubleSpaces <line1>,<line2>s/  / /g
