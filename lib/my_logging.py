@@ -6,7 +6,7 @@ This is a module for logging messages
 import logging
 import os
 
-def create_logger():
+def create_logger(logname: str = "my_logging.log"):
     """
     Create a logger
     Returns: logger object
@@ -20,7 +20,6 @@ def create_logger():
     )
 
     formatter = logging.Formatter(format_string)
-    logname = os.path.basename(__file__).rstrip(".py") + ".log"
     if os.path.exists(logname):
         os.remove(logname)
     file_handler = logging.FileHandler(logname)
@@ -28,8 +27,10 @@ def create_logger():
     logger.addHandler(file_handler)
     return logger
 
+
+log = create_logger()
+
 if __name__ == "__main__":
-    log = create_logger()
     log.debug("This message should go to the log file")
     log.info("So should this")
     log.warning("And this, too")

@@ -11,19 +11,22 @@ import filecmp
 from lazy import expand
 from ndiff import main as show_diff
 from flatten_list import flatten_list
+from my_logging import create_logger
+
+log = create_logger()
 
 
-def main(file):
+def main(file: str, args2: list) -> bool:
     """
     Run tests
     """
     os.chdir(os.path.dirname(expand(file)))
     path = shutil.which("xrun")
     if path is None:
-        # print("Executable xrun not found. Trying verilator...")
+        # log.info("Executable xrun not found. Trying verilator...")
         path = shutil.which("verilator")
         if path is None:
-            print("Executable verilator and xrun not found.")
+            log.critical("Executable verilator and xrun not found.")
             sys.exit(2)
         else:
             executable = shutil.which("verilator")
@@ -38,29 +41,32 @@ def main(file):
                 "-DTEST",
                 "--error-limit",
                 "1",
+                "--assert"
             ]
     else:
         executable = shutil.which("xrun")
         args1 = ["-define", "TEST", "-define", "DEBUG", "+access+r", "-errormax", "1"]
 
-    simulate_file(executable, args1, file)
+    simulate_file(executable, args1, file, args2)
+
+    return True
 
 
-def simulate_file(executable, args1, file):
+def simulate_file(executable: str, args1: list, file: str, args2: list):
     """
     This takes 3 arguments, executable, args, and file
     as string and tries to simulate
     """
     os.makedirs("./expected", exist_ok=True)
     os.makedirs("./observed", exist_ok=True)
-    cmd: list = flatten_list([executable, args1, file])
-    print(cmd)
+    cmd: list = flatten_list([executable, args1, file, args2])
+    log.info(cmd)
     result = subprocess.run(cmd, check=False, capture_output=True)
     print(result.stdout.decode())
     print(result.stderr.decode())
-    print("Return code = ", result.returncode)
+    log.info("Return code = %0d", result.returncode)
     if result.returncode != 0:
-        print("Test failed: " + f"{cmd = }")
+        log.critical(f"Test failed: {cmd = }")
         sys.exit(2)
 
     name, _ = os.path.splitext(os.path.basename(file))
@@ -72,7 +78,7 @@ def simulate_file(executable, args1, file):
         print(result.stderr.decode())
         print("Return code = ", result.returncode)
         if result.returncode != 0:
-            print("Test failed: ", cmd2)
+            log.critical("Test failed: %0s", cmd2)
             sys.exit(2)
 
 
@@ -83,7 +89,7 @@ def copy_file_if_not_exists(path1: str, path2: str):
     path1 = expand(path1)
     path2 = expand(path2)
     if not os.path.exists(path2):
-        print(f"{path2} does not exist. Do you want to copy {path1} to {path2}? Y/n:")
+        log.info(f"{path2} does not exist. Do you want to copy {path1} to {path2}? Y/n:")
         choice = input()
         if choice == "Y":
             shutil.copy(path1, path2)
@@ -100,28 +106,32 @@ def compare_2_files(path1: str, path2: str):
     copy_file_if_not_exists(path1, path2)
     if not filecmp.cmp(path1, path2):
         show_diff([path1, path2])
-        print("Expected and observed differ")
-        print(f"Do you want to copy {path1} to {path2}? Y/n: ")
+        log.info("Expected and observed differ")
+        log.info(f"Do you want to copy {path1} to {path2}? Y/n: ")
         choice = input()
         if choice == "Y":
             shutil.copy(path1, path2)
         sys.exit(2)
 
 
-def run_sim(file: str):
+def run_sim(file: str, args4: list = None) -> bool:
     """
     Run simulation
     """
+    args2 = []
+    if args4 is not None:
+        args2.extend(args4)
     file = expand(file)
-    print("Running sim:")
+    log.info("Running sim:")
     file = os.path.abspath(file)
-    print(file)
-    main(file)
+    log.info(file)
+    main(file, args2)
     name, _ = os.path.splitext(os.path.basename(file))
     expected = f"./expected/{name}.log"
     observed = f"./observed/{name}.log"
     if os.path.exists(observed):
         compare_2_files(observed, expected)
+    return True
 
 
 if __name__ == "__main__":
@@ -134,6 +144,13 @@ if __name__ == "__main__":
         required=True,
         help="Source file. Usually .sv",
     )
+    parser.add_argument(
+        "--args",
+        nargs="+",
+        required=False,
+        help="Arguments to the simulator, each argument quoted and seperated by space",
+    )
     args = parser.parse_args()
     source_file: str = args.source_file
-    run_sim(source_file)
+    args3: list[str] = args.args
+    run_sim(source_file, args3)
