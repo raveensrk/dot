@@ -28,6 +28,16 @@ def create_logger(logname: str = "my_logging.log"):
     return logger
 
 
+
+def header(text: str = "HEADER"):
+    """
+    Print a header in log file
+    """
+    length = len(text)
+    log.info("="*(length+5))
+    log.info("%0s", text)
+    log.info("="*(length+5))
+
 log = create_logger()
 
 if __name__ == "__main__":

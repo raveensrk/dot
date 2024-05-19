@@ -6,9 +6,8 @@ Some shortcuts and functions since I am lazy
 import sys
 import os
 import subprocess
-from my_logging import create_logger
-
-log = create_logger()
+from my_logging import log, header
+from flatten_list import flatten_list
 
 
 def expand(path: str) -> str:
@@ -41,4 +40,33 @@ def execute_cmd(cmd) -> int:
         log.critical("FAIL: %0s", cmd)
         sys.exit(2)
     log.info("=================")
+    return result
+
+
+def execute_cmd2(cmd: list[str]) -> int:
+    """
+    Execute the command and return the results
+    """
+    cmd = flatten_list(cmd)
+    cmd_as_string: str = " ".join(cmd)
+    log.info("================================")
+    log.info("CMD: %0s", cmd_as_string)
+    log.info("================================")
+    result = subprocess.run(cmd, check=False, capture_output=True)
+    log.info("Return code = %0d", result.returncode)
+    log.info("================================")
+    log.info("STDOUT")
+    log.info("================================")
+    log.info(result.stdout.decode())
+    log.info("================================")
+    log.info("STDERR")
+    log.info("================================")
+    log.info(result.stderr.decode())
+    log.info("================================")
+    if result.returncode == 0:
+        log.info("PASS: %0s", cmd_as_string)
+    else:
+        log.critical("FAIL: %0s", cmd_as_string)
+        sys.exit(2)
+    log.info("================================")
     return result
