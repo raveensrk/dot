@@ -22,3 +22,5 @@ history
 **/xrun.history
 **/xrun.log
 **/Session.vim
+lib/my_logging.log
+lib/my_logging2.log
