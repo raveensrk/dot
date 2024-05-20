@@ -8,6 +8,7 @@ import os
 import subprocess
 from my_logging import log, log_plain, header
 from flatten_list import flatten_list
+import hashlib
 
 
 def expand(path: str) -> str:
@@ -70,3 +71,22 @@ def execute_cmd2(cmd: list[str]) -> int:
         sys.exit(2)
     log.info("================================")
     return result
+
+
+def check_hash(filename: str | list[str]) -> str:
+    """
+    Input: Filename or a list of filnames
+    Output: sha256 hash
+    """
+    h = hashlib.sha256()
+    if isinstance(filename, list[str]):
+        for file in filename:
+            file = expand(file)
+            with open(file, "rb") as f:
+                for line in f.readlines():
+                    h.update(line)
+    else:
+        with open(file, "rb") as f:
+            for line in f.readlines():
+                h.update(line)
+    return h.hexdigest()
