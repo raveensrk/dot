@@ -26,6 +26,12 @@ def create_logger(logname: str = "my_logging.log"):
     file_handler = logging.FileHandler(logname)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
+
+    # Add a stream handler
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+
     return logger
 
 
@@ -40,9 +46,13 @@ def create_plain_logger(logname: str = "my_logging2.log"):
     if os.path.exists(logname):
         os.remove(logname)
     file_handler = logging.FileHandler(logname)
-    logger_plain.propagate = False 
+    logger_plain.propagate = False
     file_handler.setFormatter(formatter)
     logger_plain.addHandler(file_handler)
+    # Add a stream handler
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+    logger_plain.addHandler(stream_handler)
     return logger_plain
 
 
