@@ -6,7 +6,7 @@ Some shortcuts and functions since I am lazy
 import sys
 import os
 import subprocess
-from my_logging import log, header
+from my_logging import log, log_plain, header
 from flatten_list import flatten_list
 
 
@@ -32,7 +32,7 @@ def execute_cmd(cmd) -> int:
     log.info("=================")
     log.info("Output")
     log.info("=================")
-    log.info(output)
+    log_plain.info(output)
     log.info("=================")
     if result == 0:
         log.info("PASS: %0s", cmd)
@@ -57,11 +57,11 @@ def execute_cmd2(cmd: list[str]) -> int:
     log.info("================================")
     log.info("STDOUT")
     log.info("================================")
-    log.info(result.stdout.decode())
+    log_plain.info(result.stdout.decode())
     log.info("================================")
     log.info("STDERR")
     log.info("================================")
-    log.info(result.stderr.decode())
+    log_plain.info(result.stderr.decode())
     log.info("================================")
     if result.returncode == 0:
         log.info("PASS: %0s", cmd_as_string)

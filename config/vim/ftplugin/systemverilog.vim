@@ -29,3 +29,5 @@ command! -buffer Lint call s:Lint()
 
 command! -bar -buffer Compile AsyncRun verilator.sh --file % 
 let g:ale_verilog_verilator_options="-sv --timing --trace --trace-params --trace-structs --trace-depth 1 --timing -DTEST"
+autocmd QuickFixCmdPost *.sv clast
+autocmd QuickFixCmdPost make clast
