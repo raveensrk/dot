@@ -24,3 +24,6 @@ history
 **/Session.vim
 lib/my_logging.log
 lib/my_logging2.log
+lib/log.log
+lib/log_my_logging.log
+lib/log_plain.log

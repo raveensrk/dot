@@ -6,7 +6,7 @@ IFS=$'\n\t'
 
 
 # shellcheck disable=2046
-vim $(fzf -m)
+vim -c "find $1"
 
 exit 0
 

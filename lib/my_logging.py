@@ -5,76 +5,56 @@ This is a module for logging messages
 
 import logging
 import os
+from rich.logging import RichHandler
+from rich.traceback import install
+from rich.console import Console
+
+install()
+
+console = Console()
 
 
-def create_logger(logname: str = "my_logging.log"):
-    """
-    Create a logger
-    Returns: logger object
-    """
-    format_string = "%(levelname)8s: %(module)12s: %(funcName)10s: %(message)s"
-    logger = logging.getLogger(__name__)
-    logging.basicConfig(
-        encoding="utf-8",
-        format=format_string,
-        level=logging.DEBUG,
-    )
-
-    formatter = logging.Formatter(format_string)
-    if os.path.exists(logname):
-        os.remove(logname)
-    file_handler = logging.FileHandler(logname)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-
-    # # Add a stream handler
-    # stream_handler = logging.StreamHandler()
-    # stream_handler.setFormatter(formatter)
-    # logger.addHandler(stream_handler)
-
-    return logger
+if os.path.exists("run.log"):
+    os.remove("run.log")
 
 
-def create_plain_logger(logname: str = "my_logging2.log"):
-    """
-    Create a plain logger
-    Returns: logger object
-    """
-    format_string = "%(message)s"
-    logger_plain = logging.getLogger(__name__)
-    formatter = logging.Formatter(format_string)
-    if os.path.exists(logname):
-        os.remove(logname)
-    file_handler = logging.FileHandler(logname)
-    logger_plain.propagate = False
-    file_handler.setFormatter(formatter)
-    logger_plain.addHandler(file_handler)
-    # Add a stream handler
-    stream_handler = logging.StreamHandler()
-    stream_handler.setFormatter(formatter)
-    logger_plain.addHandler(stream_handler)
-    return logger_plain
-
-
-def header(text: str = "HEADER"):
+def header(self, text: str) -> str:
     """
     Print a header in log file
     """
-    length = len(text)
-    log.info("=" * (length + 5))
+    console.rule(text)
     log.info("%0s", text)
-    log.info("=" * (length + 5))
 
 
-log = create_logger()
-log_plain = create_plain_logger()
+FORMAT_STRING = "%(message)s"
+# FORMAT_STRING2 = "%(asctime)s: %(levelname)s: %(module)s: %(funcName)s: %(lineno)d: %(message)s"
+FORMAT_STRING2 = (
+    "%(asctime)s: %(levelname)s: %(pathname)s:%(lineno)d: %(message)s"
+)
+logging.RootLogger.header = header
+logging.basicConfig(
+    encoding="utf-8",
+    format=FORMAT_STRING,
+    level=logging.INFO,
+    # level=logging.DEBUG,
+    handlers=[RichHandler(show_time=False, rich_tracebacks=True)],
+)
+log = logging.getLogger()
+formatter = logging.Formatter(FORMAT_STRING2)
+file_handler = logging.FileHandler("run.log", "a", encoding="UTF-8")
+file_handler.setFormatter(formatter)
+log.addHandler(file_handler)
+# Add a stream handler
+# stream_handler = logging.StreamHandler()
+# stream_handler.setFormatter(formatter)
+# log.addHandler(stream_handler)
+
 
 if __name__ == "__main__":
     log.debug("This message should go to the log file")
     log.info("So should this")
     log.warning("And this, too")
     log.error("And non-ASCII stuff, too, like resund and Malm")
-    log_plain.debug("This message should go to the log file")
-    log_plain.info("So should this")
-    log_plain.warning("And this, too")
-    log_plain.error("And non-ASCII stuff, too, like resund and Malm")
+    log.debug("This message should go to the log file")
+    log.header("1Header")
+    log.header("2Header Plain")

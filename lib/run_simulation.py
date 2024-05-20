@@ -11,9 +11,7 @@ import filecmp
 from lazy import expand, execute_cmd2
 from ndiff import main as show_diff
 from flatten_list import flatten_list
-from my_logging import create_logger
-
-log = create_logger()
+from my_logging import log
 
 
 def main(file: str, args2: list) -> int:
@@ -120,9 +118,8 @@ def run_sim(file: str, args4: list = None) -> int:
     if args4 is not None:
         args2.extend(args4)
     file = expand(file)
-    log.info("Running sim:")
     file = os.path.abspath(file)
-    log.info(file)
+    log.info(f"Running sim: {file}")
     _ = main(file, args2)
     name, _ = os.path.splitext(os.path.basename(file))
     expected = f"./expected/{name}.log"
