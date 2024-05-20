@@ -6,7 +6,7 @@ Changes permissions of a directory and its subdirectories recursively.
 import os
 
 
-def change_permissions_recursive(path, mode=0o750):
+def change_permissions_recursive(path, mode=0o777):
     """
     Changes permissions of a directory and its subdirectories recursively.
 
@@ -26,5 +26,5 @@ def change_permissions_recursive(path, mode=0o750):
 if __name__ == "__main__":
     # Example usage
     TARGET_DIR = "/Users/raveenkumarwork/tmp/"
-    NEW_PERMISSIONS = 0o700  # Change to your desired permissions
+    NEW_PERMISSIONS = 0o777  # Change to your desired permissions
     change_permissions_recursive(TARGET_DIR, NEW_PERMISSIONS)
