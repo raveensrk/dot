@@ -35,8 +35,8 @@ logging.RootLogger.header = header
 logging.basicConfig(
     encoding="utf-8",
     format=FORMAT_STRING,
-    level=logging.INFO,
-    # level=logging.DEBUG,
+    # level=logging.INFO,
+    level=logging.DEBUG,
     handlers=[RichHandler(show_time=False, rich_tracebacks=True)],
 )
 log = logging.getLogger()
