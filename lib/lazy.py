@@ -16,7 +16,7 @@ def expand(path: str) -> str:
     """
     Expand paths
     """
-    return os.path.expanduser(os.path.expandvars(path))
+    return os.path.abspath(os.path.expanduser(os.path.expandvars(path)))
 
 
 def execute_cmd2(cmd: list[str]) -> int:
