@@ -25,14 +25,15 @@ def execute_cmd2(cmd: list[str]) -> int:
     """
     cmd = flatten_list(cmd)
     cmd_as_string: str = " ".join(cmd)
-    
+
     log.info(f"COMMAND: {cmd_as_string}")
     result = subprocess.run(cmd, check=False, capture_output=True)
     log.info(f"RETURN CODE: {result.returncode}")
     log.info("STDOUT:")
     log.info(result.stdout.decode())
-    log.info("STDERR:")
-    log.info(result.stderr.decode())
+    if len(result.stderr.decode()) != 0:
+        log.info("STDERR:")
+        log.info(result.stderr.decode())
     if result.returncode == 0:
         log.info("RESULT: PASS: %0s", cmd_as_string)
     else:
@@ -58,4 +59,3 @@ def check_hash(filename: Union[str, list[str]]) -> str:
             for line in f.readlines():
                 h.update(line)
     return h.hexdigest()
-
