@@ -27,3 +27,6 @@ lib/my_logging2.log
 lib/log.log
 lib/log_my_logging.log
 lib/log_plain.log
+lib/fail.log
+lib/pass.log
+lib/run.log
