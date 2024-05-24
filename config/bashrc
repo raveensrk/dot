@@ -25,7 +25,7 @@ export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 # {{{ BASH SHOPTS
 # This will exit bash shell after pressing control d 2 times
 export IGNOREEOF=1
-# set -o vi
+set -o emacs
 # shopt -s direxpand
 # shopt -s dotglob
 # shopt -s histappend

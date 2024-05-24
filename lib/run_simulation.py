@@ -51,7 +51,8 @@ def simulate_file(
     This takes 3 arguments, executable, args, and file
     as string and tries to simulate
     """
-    cmd: list = flatten_list([executable, args1, file, args2])
+    cmd=[]
+    cmd.extend([executable, args1, file, args2])
     name, _ = os.path.splitext(os.path.basename(file))
 
     if "verilator" in executable:
@@ -112,4 +113,4 @@ if __name__ == "__main__":
     source_file: str = args.source_file
     args3: list[str] = args.args
     simulation_name1: str = args.simulation_name
-    _ = run_simulation(source_file, args3, simulation_name1)
+    run_simulation(source_file, args3, simulation_name1)

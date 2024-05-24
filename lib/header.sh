@@ -57,6 +57,10 @@ mkdir2() {
 declare -xf mkdir2
 
 rm_mkdir() {
+	echo "Following command will deleted the following directory: $1"
+	echo "Press any key twice to approve..."
+	read -r
+	read -r
 	if [[ -d "$1" ]]; then
 		chmod -R 777 "$1"
 		command rm -rf "$1"

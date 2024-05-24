@@ -11,7 +11,6 @@ filetype plugin indent on
 
 " BASICS {{{
 set autoread
-set mouse=""
 set nocompatible
 " set hidden
 set backspace=indent,eol,start
@@ -209,4 +208,4 @@ let g:deoplete#enable_at_startup = 1
 " Repeat previous command
 nmap <unique> <leader>\ :<UP><CR>
 
-set mouse=a
+set mouse=

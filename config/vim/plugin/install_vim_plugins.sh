@@ -31,12 +31,12 @@ while [ "$#" -ne 0 ]; do
 	shift
 done
 
-mkdir2 ~/.vim/autoload
+mkdir2 "$HOME/.vim/autoload"
 # [ -d ~/.vim/bundle ] && rm -rf ~/.vim/bundle
 
 if [[ "$clean" -eq 1 ]]; then
-	rm_mkdir ~/.vim/bundle
-	pushd2 ~/.vim/bundle
+	rm_mkdir "$HOME/.vim/bundle"
+	pushd2 "$HOME/.vim/bundle"
 else
 	mkdir2 ~/.vim/bundle
 	pushd2 ~/.vim/bundle
