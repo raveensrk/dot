@@ -4,6 +4,8 @@ ab vaild valid
 ab teh the
 ab fro for
 ab dispaly display
+ab outupt output
+ab pythom python
 
 function! Eatchar(pat)
     let c = nr2char(getchar(0))
@@ -13,4 +15,3 @@ endfunction
 iab lr <C-R>=printf("<leader")<CR><C-R>=Eatchar('\s')<CR>><C-R>=Eatchar('\s')<CR>
 iab --- ------------------------------------------------------------------------------  
 iab #! #!/usr/bin/env bash<CR>
-ab pythom python

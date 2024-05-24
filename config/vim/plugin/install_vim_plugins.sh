@@ -61,13 +61,13 @@ git clone "git@github.com:tpope/vim-eunuch" &
 git clone "git@github.com:tpope/vim-fugitive" &
 git clone "git@github.com:tpope/vim-repeat" &
 git clone "git@github.com:tpope/vim-sensible" &
-git clone "git@github.com:tpope/vim-commentary" &
+# git clone "git@github.com:tpope/vim-commentary" &
 git clone "git@github.com:tpope/vim-speeddating.git" &
 git clone "git@github.com:tpope/vim-surround" &
 git clone "git@github.com:tpope/vim-unimpaired" &
 git clone "git@github.com:tpope/vim-dispatch" &
 git clone "git@github.com:tpope/vim-vinegar" &
-git clone "git@github.com:yegappan/taglist.git" &
+# git clone "git@github.com:yegappan/taglist.git" &
 git clone "https://github.com/dense-analysis/ale" &
 git clone "https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup" &
 git clone "https://github.com/MarcWeber/vim-addon-qf-layout.git" &
@@ -86,7 +86,7 @@ git clone "https://github.com/mhinz/vim-startify" &
 git clone "git@github.com:tpope/vim-characterize.git" &
 # pip install jedi
 git clone "git@github.com:tpope/vim-obsession.git" &
-git clone https://github.com/ap/vim-buftabline &
+# git clone https://github.com/ap/vim-buftabline &
 git clone https://github.com/qpkorr/vim-bufkill ~/.vim/bundle/vim-bufkill &
 git clone https://github.com/moll/vim-bbye &
 git clone git@github.com:vim-scripts/bufexplorer.zip.git &

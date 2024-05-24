@@ -56,7 +56,7 @@ set smarttab
 " }}}
 " FOLDING AND WRAPPING {{{
 set foldmethod=marker
-set nofoldenable
+set foldenable
 " }}}
 " {{{ NUMBERING
 set number 

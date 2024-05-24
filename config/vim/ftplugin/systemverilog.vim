@@ -4,10 +4,10 @@ setlocal isfname-==
 setlocal shiftwidth=4
 setlocal smartindent
 setlocal tabstop=4 softtabstop=4
-setlocal formatprg=verible-verilog-format\ --indentation_spaces\ 4\ --over_column_limit_penalty\ 80\ -
+setlocal formatprg=verible-verilog-format\ --indentation_spaces\ 4\ --over_column_limit_penalty\ 100\ -
 function! s:Format(line1,line2) abort
 	let save_cursor = getcurpos()
-	execute a:line1 . ',' . a:line2 . "!verible-verilog-format --indentation_spaces 4 --over_column_limit_penalty 80 -"
+	execute a:line1 . ',' . a:line2 . "!verible-verilog-format --indentation_spaces 4 --over_column_limit_penalty 100 -"
 	call setpos('.', save_cursor)
 endfunction
 
@@ -31,3 +31,15 @@ command! -bar -buffer Compile AsyncRun verilator.sh --file %
 let g:ale_verilog_verilator_options="-sv --timing --trace --trace-params --trace-structs --trace-depth 1 --timing -DTEST"
 autocmd QuickFixCmdPost *.sv clast
 autocmd QuickFixCmdPost make clast
+
+set errorformat=%.%#xmvlog:\ %\\%#E\\,%o\ (%f\\,%l\|%c):\ %m
+set errorformat+=%.%#xmelab:\ %\\%#E\\,%o\ (%f\\,%l\|%c):\ %m
+set errorformat+=%EUVM_FATAL\ %f(%l)\ %m
+set errorformat+=%E%.%#xmsim:\ %\\%#E\\,%o:\ %m,%C%.%#File:\ %f\\,\ line\ =\ %l\\,\ pos\ =\ %c,%Z
+set errorformat+=%EUVM_FATAL\ @\ %.%#:\ %o
+set errorformat+=%EUVM_ERROR\ %f(%l)\ @\ %.%#:\ %m
+set errorformat+=%EUVM_ERROR\ %f(%l)\ @\ %c:\ %m%.%#
+set errorformat+=xmsim:\ %\\%#W\\,%o\ (%f\\,%l\|%c):\ %m%.%#
+set errorformat+=xmsim:\ %\\%#F\\,%o\ (%f\\,%l):\ %m%.%#
+set errorformat+=xmvlog:\ %\\%#W\\,%o\ (%f\\,%l\|%c):\ %m%.%#
+" set errorformat+=%IUVM_INFO\ %f(%l)\ @\%m%.%#

@@ -23,11 +23,10 @@ def execute_cmd2(cmd: list[str], name: str, strict: bool = True) -> int:
     Execute the command and return the results
     """
     cmd = flatten_list(cmd)
-    log.info("COMMAND: %s", cmd)
+    # log.info("COMMAND: %s", cmd)
     cmd_as_string: str = " ".join(cmd)
     log.info("COMMAND: %s", cmd_as_string)
     result = subprocess.run(cmd, check=False, capture_output=True)
-    log.info("RETURN CODE: %d", result.returncode)
     log.info("STDOUT:")
     log.info(result.stdout.decode())
     if len(result.stderr.decode()) != 0:
@@ -64,5 +63,3 @@ def check_hash(filename: Union[str, list[str]]) -> str:
 
 if __name__ == "__main__":
     log.info("Testing lazy.py...")
-    execute_cmd2(["echo", "hello"], "Hello")
-    execute_cmd2(["grep", "abc", "./box.sh"], "Hello")
