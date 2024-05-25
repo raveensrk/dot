@@ -6,22 +6,22 @@ This script runs the give system verilog file
 import os
 import shutil
 from lazy import expand, execute_cmd2
-from flatten_list import flatten_list
 from my_logging import log
+
 
 
 def run_simulation(file: str, args2: list, simulation_name: str) -> int:
     """
     Run tests
     """
-    os.chdir(os.path.dirname(expand(file)))
-    path = shutil.which("xrun")
+    file: str = expand(file)
+    path: str = shutil.which("xrun")
     if path is None:
         # log.info("Executable xrun not found. Trying verilator...")
         path = shutil.which("verilator")
         assert path is not None, "Executable verilator and xrun not found."
-        executable = path
-        args1 = [
+        executable: str = path
+        args1: list[str] = [
             "--binary",
             "--trace",
             "--trace-params",
@@ -32,10 +32,11 @@ def run_simulation(file: str, args2: list, simulation_name: str) -> int:
             "--error-limit",
             "1",
             "--assert",
+            "--relative-includes",
         ]
     else:
-        executable = path
-        args1 = [
+        executable: str = path
+        args1: list[str] = [
             "+access+r",
             "-errormax",
             "1",
@@ -51,16 +52,27 @@ def simulate_file(
     This takes 3 arguments, executable, args, and file
     as string and tries to simulate
     """
-    cmd=[]
-    cmd.extend([executable, args1, file, args2])
+
+    # print(type(executable),
+    #       type(args1),
+    #       type(file),
+    #       type(args2),
+    #       type(simulation_name))
+
+    cmd: list[str] = []
+    cmd.append(executable)
+    cmd.extend(args1)
+    cmd.append(file)
+    cmd.extend(args2)
+
     name, _ = os.path.splitext(os.path.basename(file))
 
     if "verilator" in executable:
-        cmd2 = f"./obj_dir/V{name}"
-        execute_cmd2([cmd], f"SIMULATION: {simulation_name}")
-        execute_cmd2([cmd2], f"SIMULATION: {simulation_name}")
+        cmd2 = [f"./obj_dir/V{name}"]
+        execute_cmd2(cmd, f"SIMULATION: {simulation_name}")
+        execute_cmd2(cmd2, f"SIMULATION: {simulation_name}")
     else:
-        execute_cmd2([cmd], f"SIMULATION: {simulation_name}")
+        execute_cmd2(cmd, f"SIMULATION: {simulation_name}")
 
 
 def copy_file_if_not_exists(path1: str, path2: str):
@@ -82,6 +94,7 @@ def copy_file_if_not_exists(path1: str, path2: str):
             log.info("Copying...")
             shutil.copy(path1, path2)
         log.info("Not Copying...")
+
 
 if __name__ == "__main__":
     import argparse

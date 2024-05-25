@@ -20,12 +20,9 @@ def execute_cmd2(cmd: list[str], name: str) -> int:
     """
     Execute the command and return the results
     """
-    print("COMMAND: ", cmd)
-    try:
-        subprocess.run(cmd, check=True)
-        print(f"PASS: {name}")
-    except:
-        print(f"FAIL: Unable to run {name}")
+    print("COMMAND: ", " ".join(cmd))
+    subprocess.run(cmd, check=True)
+    print(f"PASS: {name}")
 
 
 def check_hash(filename: Union[str, list[str]]) -> str:
