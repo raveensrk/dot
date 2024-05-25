@@ -14,6 +14,7 @@ nmap <leader>Y ggVGy2<C-o>
 nmap <leader>t :set nowrap!<cr>
 nmap <leader><leader>r :registers<CR>
 vmap <leader>dd "_d
+nmap <leader>0 "_dd
 set nolist
 nnoremap v <C-v>
 nnoremap <C-v> v
