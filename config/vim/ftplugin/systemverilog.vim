@@ -13,7 +13,6 @@ endfunction
 
 command! -buffer -range=% Format call s:Format(<line1>,<line2>)
 
-
 function! s:Lint() abort
 	let save_cursor = getcurpos()
 	let file=expand("%:p")
@@ -49,3 +48,5 @@ set errorformat+=xmsim:\ %\\%#W\\,%o\ (%f\\,%l\|%c):\ %m%.%#
 set errorformat+=xmsim:\ %\\%#F\\,%o\ (%f\\,%l):\ %m%.%#
 set errorformat+=xmvlog:\ %\\%#W\\,%o\ (%f\\,%l\|%c):\ %m%.%#
 " set errorformat+=%IUVM_INFO\ %f(%l)\ @\%m%.%#
+
+command! -buffer ConvertDeclarationToDisplay s/.*\w\+ \(\w\+\);/$display("%20s = %0d", "\1", \1);/
