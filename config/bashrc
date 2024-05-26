@@ -262,3 +262,19 @@ alias howdoi="howdoi -a"
 # 	eval "$(starship init bash)"
 # fi
 export PYTHONPATH+=":$DOT/lib"
+
+pytest2 () {
+	pytest
+	if command -v open > /dev/null; then
+		open ./tui_files/html_report.html
+	elif command -v xdg-open > /dev/null; then
+		xdg-open ./tui_files/html_report.html
+	else
+		# Anyother command
+		true
+	fi
+}
+
+if ! command -v universal-ctags > /dev/null; then
+	alias ctags="universal-ctags"
+fi
