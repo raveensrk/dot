@@ -26,5 +26,6 @@ export PATH="/opt/local/bin:$PATH"
 }
 alias killsafari="osascript -e 'quit app \"safari.app\"'"
 alias mail="open -a mail.app"
+eval "$(/usr/libexec/path_helper)"
 
 fortune

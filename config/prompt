@@ -4,6 +4,6 @@ update_prompt() {
 	PS1="[\$?|\j|\W]:$ "
 	export PS1
 }
-export -f update_prompt
+# export -f update_prompt
 
 export PROMPT_COMMAND="update_prompt && history -a"

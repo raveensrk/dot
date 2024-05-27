@@ -2,13 +2,14 @@
 # bashrc
 
 # {{{ ENVIRONMENT VARIABLES
+export EDITOR="vim"
+export VISUAL="vim"
 export DOT=$HOME/dot
 export INPUTRC=$DOT/config/inputrc
 export MYVIMRC=$DOT/config/vimrc
 export VIMINIT=":source $MYVIMRC"
-export EDITOR="vim"
-export VISUAL="vim"
 export TERM=xterm-256color
+export COLORTERM="Yes"
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
@@ -20,7 +21,6 @@ source "$DOT/lib/header.sh"
 # shellcheck disable=1091
 source "$DOT/config/prompt"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
-[ -d "$HOME/.cargo/bin" ] && export PATH="$HOME/.cargo/bin:$PATH"
 # }}}
 # {{{ BASH SHOPTS
 # This will exit bash shell after pressing control d 2 times
@@ -74,6 +74,18 @@ alias rm="rm -vi"
 alias tree2="tree -C"
 alias tree3="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias rsync="rsync -CazhPvu"                                         # -C
+alias path="echo \$PATH | tr ':' '\n' | tac"
+alias bashrc="vim \$DOT/config/bashrc"
+alias q="exit"
+alias git_diff='git diff --minimal -w -b -M --word-diff'
+alias git_pickaxe="git log -p -S"
+alias grep="grep --color"
+alias tmux="tmux attach || tmux"
+alias t="tmux"
+export HOWDOI_COLORIZE=1
+alias howdoi="howdoi -a"
+alias hexdump="hexdump -Cv"
+alias compress="tar -cvza -f "
 
 # }}}
 # {{{ PAGERS
@@ -134,11 +146,16 @@ alias r="ranger_cd"
 
 [ -n "$RANGER_LEVEL" ] && PS1="$PS1"'(in ranger) '
 # }}}
-# {{{ BUG FIXES
-# MACOS Specific {{{
-
-if [ "$(uname -a | awk '{print $1}')" = "Darwin" ]; then
+# {{{ OS SPECIFIC
+os=$(uname -a | cut -d ' ' -f 1)
+export os
+if [[ $os == "Darwin" ]]; then
+	# shellcheck disable=1091
 	eval "$(/opt/homebrew/bin/brew shellenv)"
+	source "$DOT/config/macos"
+	alias ls="gls -X --group-directories-first  --color"
+	alias l="gls -X --group-directories-first  --color -lAh"
+	alias ctags="/opt/homebrew/bin/ctags"
 	# https://github.com/platformio/platformio-atom-ide-terminal/issues/196
 	update_terminal_cwd() {
 		# Identify the directory using a "file:" scheme URL,
@@ -149,41 +166,17 @@ if [ "$(uname -a | awk '{print $1}')" = "Darwin" ]; then
 		local PWD_URL="file://$HOSTNAME${PWD//$SEARCH/$REPLACE}"
 		printf '\e]7;%s\a' "$PWD_URL"
 	}
-fi
-
-# }}}
-# }}}
-# {{{ GREP
-find-grep() {
-	echo '''
-    find -L . -type f -exec grep --color=auto -nHi --null -e string {} \;
-    '''
-}
-# }}}
-# Convenience{{{
-alias hexdump="hexdump -Cv"
-alias compress="tar -cvza -f "
-github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
-git_pickaxe() { git log -p -S "$@"; }
-# }}}
-os=$(uname -a | cut -d ' ' -f 1)
-export os
-if [[ $os == "Darwin" ]]; then
-	# shellcheck disable=1091
-	source "$DOT/config/macos"
 else
+	alias ls="ls -X --group-directories-first  --color"
+	alias l="ls -X --group-directories-first  --color -lAh"
 	export PATH="$DOT/bin/linux:$PATH"
+	if command -v universal-ctags >/dev/null; then
+		alias ctags='universal-ctags'
+	fi
 fi
-# shellcheck disable=1091
-source "$DOT/config/fzf.sh"
-# shellcheck disable=1091
-source "$DOT/config/cd2.sh"
-# shellcheck disable=1091
-[[ -f "$HOME/script/custom/custom.sh" ]] && source "$HOME/script/custom/custom.sh"
-alias path="echo \$PATH | tr ':' '\n' | tac"
-alias ls="ls -X --group-directories-first  --color"
-alias l="ls -X --group-directories-first  --color -lAh"
-alias bashrc="vim \$DOT/config/bashrc"
+# }}}
+# FUNCTIONS {{{
+github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
 resetbash() {
 	clear
 	echo Resetting...
@@ -191,20 +184,17 @@ resetbash() {
 	# shellcheck disable=1091
 	source "$DOT/config/bashrc"
 }
-alias git_diff='git diff --minimal -w -b -M --word-diff'
-eval "$(direnv hook bash)"
-export COLORTERM="Yes"
+# }}}
+# PATH {{{
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/script:$PATH"
-export EDITOR="vim"
-export VISUAL="vim"
-alias q="exit"
-alias grep="grep --color"
-# shellcheck disable=1091
-source "$DOT/script/fd2.sh"
-# shellcheck disable=1091
-source "$DOT/script/recursively_add_to_path.sh"
-recursively_add_to_path "$HOME/script"
+export PATH="$DOT/config/vim/plugin:$PATH"
+export PATH="$DOT/config/vim/snippet/python:$PATH"
+export PATH+=":$HOME/script"
+export PYTHONPATH+=":$DOT/lib"
+[ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
+# }}}
+# FIND FILES AND DIRECTORIES FUNCTIONS{{{
 d() {
 	dir="$(which "$1" | xargs dirname)"
 	if [[ -d "$dir" ]]; then
@@ -218,12 +208,8 @@ d() {
 	fi
 }
 
-export PATH="$DOT/config/vim/plugin:$PATH"
-export PATH="$DOT/config/vim/snippet/python:$PATH"
 # shellcheck disable=1091
 source "$DOT/config/gitconfig"
-alias tmux="tmux attach || tmux"
-alias t="tmux"
 ffd() {
 	# shellcheck disable=2046
 	if python3 "$DOT/script/fff.py" --dirs --interactive; then
@@ -234,33 +220,20 @@ ffd() {
 		return 2
 	fi
 }
-declare -fx ffd
 
 ffl() {
 	# This function will list the matches
+	# TODO
 	true
 }
-declare -fx ffl
 
 fff() {
 	cmd="fff.py --interactive"
 	# shellcheck disable=2046
 	eval "$cmd"
 }
-declare -fx fff
-
-export HOWDOI_COLORIZE=1
-alias howdoi="howdoi -a"
-# if [[ -f "$HOME/python_venv/bin/activate" ]]; then
-# 	# shellcheck disable=1091
-# 	source "$HOME/python_venv/bin/activate"
-# fi
-
-# if command -v starship >/dev/null; then
-# 	eval "$(starship init bash)"
-# fi
-export PYTHONPATH+=":$DOT/lib"
-
+# }}}
+# PYTHON{{{
 pytest2() {
 	pytest
 	if command -v open >/dev/null; then
@@ -272,7 +245,9 @@ pytest2() {
 		true
 	fi
 }
+# }}}
+# ARCHIVE{{{
+eval "$(direnv hook bash)"
+# }}}
 
-if ! command -v universal-ctags >/dev/null; then
-	alias ctags="universal-ctags"
-fi
+[[ -f "$HOME/script/custom/custom.sh" ]] && source "$HOME/script/custom/custom.sh"

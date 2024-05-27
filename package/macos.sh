@@ -6,11 +6,12 @@ if ! command -v brew; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# brew update
+export HOMEBREW_NO_AUTO_UPDATE=1
 
-packages=(
-	# basictex
-	# vim
+brew update
+brew upgrade
+
+brew install <<-HERE
 	autoconf
 	automake
 	bat
@@ -31,22 +32,18 @@ packages=(
 	ispell
 	jq
 	lazygit
-	# gitui
 	lesspipe
 	lolcat
 	mactex
 	mediainfo
 	neofetch
-	neomutt
 	newsboat
 	pandoc
 	pkg-config
-	poppler
 	python
 	ranger
 	ripgrep
 	rsync
-	ruby
 	shellcheck
 	shfmt
 	sqlite
@@ -59,20 +56,26 @@ packages=(
 	dict
 	direnv
 	entr
-	hstr
 	mpv
-)
-
-export HOMEBREW_NO_AUTO_UPDATE=1
-
-brew install ${packages[@]}
+HERE
 
 macport_packages=(
-	"gtkwave"
-	"gtk2"
-	"sqlite3-tcl"
 )
 
-sudo port install ${macport_packages[@]}
+sudo port install <<-HERE
+	gtkwave
+	gtk2
+	sqlite3-tcl
+HERE
 
 sudo port select --set pygments py312-pygments
+
+# basictex
+# vim
+# gitui
+brew uninstall <<-HERE
+	neomutt
+	ruby
+	poppler
+	hstr
+HERE

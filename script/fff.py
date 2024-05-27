@@ -9,6 +9,7 @@ import glob
 import subprocess
 import argparse
 import re
+from typing import Union
 from simple_term_menu import TerminalMenu
 from rich import inspect
 
@@ -55,7 +56,7 @@ def find_matching(file: str, pattern1: str) -> tuple[list, list]:
     return files, found_dirs
 
 
-def menu(options: list[str], multi_select: bool) -> str | list[str]:
+def menu(options: list[str], multi_select: bool) -> Union[str, list[str]]:
     """
     Display the list as menu
     """
@@ -83,7 +84,7 @@ def menu(options: list[str], multi_select: bool) -> str | list[str]:
     return selected_list
 
 
-def open_in_vim(files: list[str] | str):
+def open_in_vim(files: Union[list[str], str]):
     """
     Open the files in vim
     """
