@@ -210,5 +210,3 @@ let g:deoplete#enable_at_startup = 1
 
 set mouse=
 set guifont=Monaco:h24
-colo focuspoint
-" colo abstract
