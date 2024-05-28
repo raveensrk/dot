@@ -206,6 +206,9 @@ set autochdir
 let g:deoplete#enable_at_startup = 1
 
 " Repeat previous command
-nmap <unique> <leader>\ :<UP><CR>
+" nmap <leader>\ :<UP><CR>
 
 set mouse=
+set guifont=Monaco:h24
+colo focuspoint
+" colo abstract
