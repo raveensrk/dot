@@ -55,9 +55,7 @@ export HISTFILE=~/.bash_history
 
 # }}}
 # {{{ ALIASES
-if command -v bat >/dev/null; then
-	alias cat=bat
-fi
+if command -v bat >/dev/null; then alias cat=bat; fi
 alias chop="tr -d '\n'" # Remove newline
 alias untar="tar xvf"
 alias hcat="paste -s" # To concatenate the contents of a vertical file horizontally
@@ -208,30 +206,7 @@ d() {
 	fi
 }
 
-# shellcheck disable=1091
-source "$DOT/config/gitconfig"
-ffd() {
-	# shellcheck disable=2046
-	if python3 "$DOT/script/fff.py" --dirs --interactive; then
-		cmd="$(</tmp/ffd.txt)"
-		history -s "cd $dir"
-		eval "$cmd"
-	else
-		return 2
-	fi
-}
 
-ffl() {
-	# This function will list the matches
-	# TODO
-	true
-}
-
-fff() {
-	cmd="fff.py --interactive"
-	# shellcheck disable=2046
-	eval "$cmd"
-}
 # }}}
 # PYTHON{{{
 pytest2() {
@@ -245,6 +220,10 @@ pytest2() {
 		true
 	fi
 }
+# }}}
+# GIT{{{
+# shellcheck disable=1091
+source "$DOT/config/gitconfig"
 # }}}
 # ARCHIVE{{{
 eval "$(direnv hook bash)"
