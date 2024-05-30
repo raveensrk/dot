@@ -10,7 +10,7 @@ set completion-ignore-case On
 set completion-map-case On
 set completion-prefix-display-length 1
 set completion-query-items 50
-set editing-mode vi
+# set editing-mode vi
 # set expand-tilde On
 set history-preserve-point On
 set history-size 1000
@@ -22,22 +22,22 @@ set show-all-if-ambiguous On
 set show-all-if-unmodified On
 set show-mode-in-prompt Off
 set skip-completed-text On
-set vi-cmd-mode-string (:)
-set vi-ins-mode-string (+)
+# set vi-cmd-mode-string (:)
+# set vi-ins-mode-string (+)
 set match-hidden-files Off
 
 "TAB": menu-complete               
 # "\C-a": vi-yank-arg
-"\C-a": beginning-of-line
-"\C-e": end-of-line
-"\C-p": previous-history
-"\C-n": next-history
-# "\C-r": reverse-search-history
-"\C-xa": yank-last-arg
-"\C-k": kill-line
-"\C-y": yank
-"\M-y": yank-pop
-"\C-s": forward-search-history
-"\C-i": menu-complete               
-"\e[Z": menu-complete-backward
-"\C-l": clear-screen
+# "\C-a": beginning-of-line
+# "\C-e": end-of-line
+# "\C-p": previous-history
+# "\C-n": next-history
+# # "\C-r": reverse-search-history
+# "\C-xa": yank-last-arg
+# "\C-k": kill-line
+# "\C-y": yank
+# "\M-y": yank-pop
+# "\C-s": forward-search-history
+# "\C-i": menu-complete               
+# "\e[Z": menu-complete-backward
+# "\C-l": clear-screen
