@@ -1,4 +1,4 @@
-if $SHLVL > 2
+if $SHLVL > 4
 	if $VIM != ""
 		echo "Nested vim detected. Won't Open nested vim."
 		quit
