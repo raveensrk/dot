@@ -209,6 +209,7 @@ d() {
 
 # }}}
 # PYTHON{{{
+export PYTHONSTARTUP="$DOT/config/pythonrc"
 pytest2() {
 	pytest
 	if command -v open >/dev/null; then

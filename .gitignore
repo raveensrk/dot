@@ -30,3 +30,4 @@ lib/log_plain.log
 lib/fail.log
 lib/pass.log
 lib/run.log
+script/log.log

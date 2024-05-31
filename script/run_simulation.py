@@ -5,9 +5,8 @@ This script runs the give system verilog file
 
 import os
 import shutil
-from lazy import expand, execute_cmd2
-from my_logging import log
-
+import logging as log
+from fcu2.scripts.lazy import expand, execute_cmd2
 
 
 def run_simulation(file: str, args2: list, simulation_name: str) -> int:

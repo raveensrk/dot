@@ -1,3 +1,10 @@
+if $SHLVL > 2
+	if $VIM != ""
+		echo "Nested vim detected. Won't Open nested vim."
+		quit
+	endif
+endif
+
 source $VIMRUNTIME/vimrc_example.vim
 set runtimepath^=~/dot/config/vim
 let g:pathogen_blacklist = ['Damian-Conway-s-Vim-Setup']
@@ -211,3 +218,5 @@ let g:deoplete#enable_at_startup = 1
 set mouse=
 set guifont=Monaco:h24
 autocmd QuickFixCmdPost * execute 'norm G'
+command! Test Dispatch pytest %
+command! Run Dispatch python %

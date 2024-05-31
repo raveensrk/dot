@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 DOCSTRING
+Run command:
+Dispatch pytest %
 """
 
 import inspect
