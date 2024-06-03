@@ -23,7 +23,7 @@ def delete_junk_files(paths: list[str]):
         # glob_path=os.path.expanduser(path)+"/"+pattern
         # print(glob_path)
         found = glob.glob(
-            os.path.expanduser(glob_path), recursive=True, include_hidden=True
+            os.path.expanduser(glob_path), recursive=True, # include_hidden=True
         )
         if len(found) != 0:
             print(f"{found = }")
@@ -47,7 +47,7 @@ def delete_empty_directories(paths: list):
         found = glob.glob(
             os.path.abspath(os.path.expanduser(root) + "/**/*"),
             recursive=True,
-            include_hidden=True,
+            # include_hidden=True,
         )
         for path in found:
             present = False
