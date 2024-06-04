@@ -14,10 +14,8 @@ export COLORTERM="Yes"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/script:$PATH"
 export PATH="$DOT/script:$PATH"
-export LIB="$DOT/lib"
-export PATH="$LIB:$PATH"
 # shellcheck disable=1091
-source "$DOT/lib/header.sh"
+source "$DOT/script/header.sh"
 # shellcheck disable=1091
 source "$DOT/config/prompt"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
@@ -189,7 +187,7 @@ export PATH="$DOT/script:$PATH"
 export PATH="$DOT/config/vim/plugin:$PATH"
 export PATH="$DOT/config/vim/snippet/python:$PATH"
 export PATH+=":$HOME/script"
-export PYTHONPATH+=":$DOT/lib"
+export PYTHONPATH+=":$DOT/script"
 [ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
