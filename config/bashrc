@@ -119,7 +119,6 @@ man() {
 }
 # }}}
 # {{{ VIM
-# shellcheck disable=1091
 alias vimrc="vim \$DOT/config/vimrc"
 alias v="vim"
 # }}}
@@ -227,5 +226,12 @@ source "$DOT/config/gitconfig"
 # ARCHIVE{{{
 eval "$(direnv hook bash)"
 # }}}
-
+# CUSTOM{{{
+# shellcheck source=../../script/custom/custom.sh
 [[ -f "$HOME/script/custom/custom.sh" ]] && source "$HOME/script/custom/custom.sh"
+# }}}
+# TRASH CAN{{{
+alias rm="trash -v"
+eval "$(shtab --print-own-completion bash)"
+eval "$(trash --print-completion bash)"
+# }}}

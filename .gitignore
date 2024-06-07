@@ -31,3 +31,4 @@ lib/fail.log
 lib/pass.log
 lib/run.log
 script/log.log
+script/__pycache__

@@ -7,6 +7,9 @@ import os
 import glob
 import itertools
 import shutil
+from color_codes import Color
+
+color = Color()
 
 
 def delete_junk_files(paths: list[str]):
@@ -23,7 +26,8 @@ def delete_junk_files(paths: list[str]):
         # glob_path=os.path.expanduser(path)+"/"+pattern
         # print(glob_path)
         found = glob.glob(
-            os.path.expanduser(glob_path), recursive=True, # include_hidden=True
+            os.path.expanduser(glob_path),
+            recursive=True,  # include_hidden=True
         )
         if len(found) != 0:
             print(f"{found = }")
@@ -80,4 +84,4 @@ if __name__ == "__main__":
     ]
     delete_junk_files(paths1)
     delete_empty_directories(paths1)
-# find_broken_symlinks "$HOME" TODO
+    # find_broken_symlinks "$HOME" TODO

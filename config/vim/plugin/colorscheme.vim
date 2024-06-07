@@ -1,6 +1,2 @@
-" colo abstract
-colo enfocado
-" colo focuspoint
-" set background=dark
-" colo meta5
+colo slate
 set background=dark
