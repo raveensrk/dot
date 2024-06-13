@@ -70,7 +70,7 @@ set number
 " }}}
 " {{{ INTERFACE
 set pumheight=10
-set wrap
+" set wrap
 set nolinebreak
 set hlsearch
 set incsearch
@@ -208,7 +208,7 @@ set nu
 set showcmd
 set showcmdloc=statusline
 " set statusline=%{%Fix()%}
-set nowrap
+" set nowrap
 set autochdir
 let g:deoplete#enable_at_startup = 1
 

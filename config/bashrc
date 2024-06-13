@@ -165,9 +165,9 @@ else
 	alias ls="ls -X --group-directories-first  --color"
 	alias l="ls -X --group-directories-first  --color -lAh"
 	export PATH="$DOT/bin/linux:$PATH"
-	if command -v universal-ctags >/dev/null; then
-		alias ctags='universal-ctags'
-	fi
+	# if command -v universal-ctags >/dev/null; then
+	# 	alias ctags='universal-ctags'
+	# fi
 fi
 # }}}
 # FUNCTIONS {{{
