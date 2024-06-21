@@ -1,2 +1,2 @@
-colo slate
+colo desert
 set background=dark

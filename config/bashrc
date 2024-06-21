@@ -191,14 +191,14 @@ export PYTHONPATH+=":$DOT/script"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
 d() {
-	dir="$(which "$1" | xargs dirname)"
-	if [[ -d "$dir" ]]; then
-		if ! cd "$dir"; then
-			echor "Unable to change directory = $dir"
-			return 2
-		fi
+	if [ -f "$1" ]; then
+		dir="$(which "$1" | xargs dirname)"
 	else
-		echor "Not a directory = $dir"
+		dir="$1"
+	fi
+
+	if ! pushd "$dir"; then
+		echor "Unable to change directory = $dir"
 		return 2
 	fi
 }
