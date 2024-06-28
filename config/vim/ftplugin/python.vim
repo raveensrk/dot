@@ -5,6 +5,8 @@ function! s:Format(line1,line2) abort
 endfunction
 
 command! -buffer -range=% Format call s:Format(<line1>,<line2>)
-command! -buffer Lint Dispatch pylint --max-line-length 9999 --logging-format-style=new %   
+command! -buffer Lint Dispatch pylint --max-line-length 300 --logging-format-style=new %   
 command! CommentInspect call CommentAllMatchingLines('^\s\+inspect')
-let g:ale_python_pylint_options= '--max-line-length 9999'
+let b:ale_linters = ['pylint']
+let b:ale_python_pylint_options= '--max-line-length 300'
+

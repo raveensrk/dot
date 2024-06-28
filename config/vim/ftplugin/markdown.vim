@@ -5,13 +5,13 @@ let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_auto_insert_bullets = 0
 let g:vim_markdown_new_list_item_indent = 0
 setlocal conceallevel=2
-setlocal formatprg=prettier\ --parser\ markdown\ --prose-wrap\ always
+setlocal formatprg=mdformat\ -
 setlocal wrap
 setlocal spell
 
 function! s:Format(line1,line2) abort
 	let save_cursor = getcurpos()
-	execute a:line1 . ',' . a:line2 . '!prettier --parser markdown --prose-wrap always'
+	execute a:line1 . ',' . a:line2 . '!mdformat -'
 	call setpos('.', save_cursor)
 endfunction
 silent command! -buffer -bar -range=% Format call s:Format(<line1>,<line2>)
