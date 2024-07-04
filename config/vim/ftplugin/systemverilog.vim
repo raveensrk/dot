@@ -17,8 +17,8 @@ function! s:Lint() abort
 	let save_cursor = getcurpos()
 	let file=expand("%:p")
 	" execute 'silent! term verible-verilog-lint '..file
-	execute '!verilator.sh --file '..file..' --lint'
-	execute '!verible-verilog-lint '..file
+	" execute '!verilator.sh --file '..file..' --lint'
+	execute 'Dispatch verible-verilog-lint '..file
 	call setpos('.', save_cursor)
 endfunction
 
