@@ -31,3 +31,4 @@ function! SkeletonCreate ()
 	execute "tabnew ".autocmdfile
 endfunction
 command! SkeletonCreate call SkeletonCreate()
+autocmd BufNewFile *.pl 0read $DOT/config/vim/skeleton/perl/skeleton.pl
