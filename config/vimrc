@@ -217,6 +217,6 @@ let g:deoplete#enable_at_startup = 1
 
 set mouse=
 set guifont=Monaco:h24
-autocmd QuickFixCmdPost * execute 'norm G'
+" autocmd QuickFixCmdPost * execute 'norm G'
 command! Test Dispatch pytest %
 command! Run Dispatch python %

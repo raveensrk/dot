@@ -33,7 +33,9 @@ class Color:
         self.info = self.cyan
         self.warning = self.yellow
         self.error = self.red
+        self.fail = self.red
         self.fatal = self.error
+        self.success = self.green
 
 
 if __name__ == "__main__":
