@@ -28,7 +28,6 @@ class Color:
     yellow = "\033[38;5;11m"
 
     def __init__(self):
-        print("Initialized Color class object")
         self.nocolor = self.reset
         self.info = self.cyan
         self.warning = self.yellow

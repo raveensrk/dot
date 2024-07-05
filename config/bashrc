@@ -187,6 +187,7 @@ export PATH="$DOT/config/vim/plugin:$PATH"
 export PATH="$DOT/config/vim/snippet/python:$PATH"
 export PATH+=":$HOME/script"
 export PYTHONPATH+=":$DOT/script"
+export PYTHONPATH+=":$HOME/work/practice/python"
 [ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
