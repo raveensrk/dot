@@ -4,8 +4,21 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-read -p "Enter Password: " -re pass
+select document in stored other; do
+	case "$document" in
+	stored)
+		select word in $(cat ~/icloud/Passwords/pdf-passwords); do
+			pass="$word"
+			break
+		done
+		;;
+	other)
+		read -p "Enter Password: " -re pass
+		;;
+	esac
+	break
+done
+
 out="$(basename "$1" ".pdf")"
 out="${out}_unlocked"
 qpdf --password="$pass" --decrypt "$1" "$out.pdf"
-
