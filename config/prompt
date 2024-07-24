@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
 
+
+source $DOT/script/colors.sh
+
+
 update_prompt() {
-	PS1="[\$?|\j|\W]:$ "
+	return_code="$?"
+
+	if [ "$return_code" -eq 0 ]; then
+		prompt="[${green}$return_code${reset}]"
+	else
+		prompt="[${red}$return_code${reset}]"
+	fi
+
+	path="[${yellow}\w${reset}]"
+
+	PS1="${prompt} [\j] ${path}:\n$ "
 	export PS1
 }
 # export -f update_prompt
