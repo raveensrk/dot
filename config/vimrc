@@ -1,9 +1,9 @@
-if $SHLVL > 4
-	if $VIM != ""
-		echo "Nested vim detected. Won't Open nested vim."
-		quit
-	endif
-endif
+" if $SHLVL > 4
+" 	if $VIM != ""
+" 		echo "Nested vim detected. Won't Open nested vim."
+" 		quit
+" 	endif
+" endif
 
 source $VIMRUNTIME/vimrc_example.vim
 set runtimepath^=~/dot/config/vim
