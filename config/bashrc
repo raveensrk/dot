@@ -236,3 +236,8 @@ alias rm="trash -v"
 eval "$(shtab --print-own-completion bash)"
 eval "$(trash --print-completion bash)"
 # }}}
+# FZF{{{
+# shellcheck disable=1091
+. "$DOT/config/fzf.sh"
+eval "$(zoxide  init bash --cmd cd)"
+#}}}
