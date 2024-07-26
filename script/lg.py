@@ -11,8 +11,6 @@ list_of_repositories = os.path.expanduser("~/script/list_of_repositories.txt")
 with open(list_of_repositories, "r", encoding="UTF-8") as file_pointer:
     repos = file_pointer.readlines()
 
-print(repos)
-
 for repo in repos:
     repo = os.path.expanduser(repo.rstrip())
     os.chdir(repo)
