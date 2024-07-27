@@ -1,3 +1,4 @@
 set background=dark
 " colo desert
-colo enfocado
+colo gruvbox
+let g:gruvbox_contrast_dark="hard"

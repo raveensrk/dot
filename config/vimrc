@@ -71,7 +71,7 @@ set number
 " }}}
 " {{{ INTERFACE
 set pumheight=10
-" set wrap
+set nowrap
 set nolinebreak
 set hlsearch
 set incsearch
