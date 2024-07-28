@@ -49,3 +49,4 @@ web:*.{html,css,js}*
 # Dont ignore .gitignore files
 --no-ignore
 # --max-count=1
+--follow
