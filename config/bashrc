@@ -241,3 +241,5 @@ eval "$(trash --print-completion bash)"
 . "$DOT/config/fzf.sh"
 eval "$(zoxide  init bash --cmd cd)"
 #}}}
+alias srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
+

@@ -1,5 +1,5 @@
 let g:fzf_vim = {}
-let g:fzf_layout = { 'down': '40%' }
+" let g:fzf_layout = { 'down': '40%' }
 " let g:fzf_preview_window = ['hidden', 'right,50%', 'ctrl-/']
 let g:fzf_preview_window = []
 let g:fzf_buffers_jump = 1
@@ -84,7 +84,7 @@ function! FindFiles () abort
     " set wildoptions=fuzzy,tagfile
 endfunction
 command! FindFiles call FindFiles()
-" nmap <leader>ff :FindFiles<cr>
+nmap <leader>ff :FindFiles<cr>
 function! FR () abort
 	" Find recent files
 	cd $HOME
@@ -92,7 +92,7 @@ function! FR () abort
 endfunction
 command! FR call FR()
 
-" nmap <leader>fr :FR<CR>
+nmap <leader>fr :FR<CR>
 function! FFF () abort
 	cd $HOME
 	call fzf#run({'source': 'ffl', 
@@ -102,4 +102,4 @@ function! FFF () abort
 endfunction
 
 command! FFF call FFF()
-" nmap <leader>ff :FFF<CR>
+nmap <leader>ff :FFF<CR>
