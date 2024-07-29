@@ -10,14 +10,15 @@ def parse_resolution(resolution_str):
         '5k': (5120, 2880),
         '6k': (6144, 3456),
         '7k': (7680, 4320),
-        '8k': (8192, 4320)
+        '8k': (8192, 4320),
+        'qhd': (3440, 1440),
     }
     
     # Lookup resolution based on the provided string
     if resolution_str.lower() in resolutions:
         return resolutions[resolution_str.lower()]
     else:
-        raise ValueError(f"Unsupported resolution '{resolution_str}'. Supported resolutions are: 4k, 5k, 6k, 7k, 8k.")
+        raise ValueError(f"Unsupported resolution '{resolution_str}'. Supported resolutions are: 4k, 5k, 6k, 7k, 8k, QHD.")
 
 def parse_aspect_ratio(aspect_ratio_str):
     try:
@@ -36,7 +37,7 @@ def calculate_ppi_display(width_pixels, height_pixels, diagonal_size):
 
 def main():
     parser = argparse.ArgumentParser(description="Calculate the PPI of a display.")
-    parser.add_argument('--resolution', type=str, required=True, help="Resolution of the display (4k, 5k, 6k, 7k, 8k).")
+    parser.add_argument('--resolution', type=str, required=True, help="Resolution of the display (4k, 5k, 6k, 7k, 8k, QHD).")
     parser.add_argument('--aspect-ratio', type=str, default='16:9', help="Aspect ratio of the display (width:height). Default is 16:9.")
     parser.add_argument('--diagonal', type=float, required=True, help="Diagonal size of the display in inches.")
     
@@ -44,6 +45,7 @@ def main():
 
     # Parse resolution and aspect ratio
     width_pixels, height_pixels = parse_resolution(args.resolution)
+    print(f"\nThe total number of pixels is: {width_pixels*height_pixels:,}")
     aspect_width, aspect_height = parse_aspect_ratio(args.aspect_ratio)
     
     # Adjust resolution according to the aspect ratio
