@@ -13,6 +13,7 @@ with open(list_of_repositories, "r", encoding="UTF-8") as file_pointer:
 
 for repo in repos:
     repo = os.path.expanduser(repo.rstrip())
+    print("Repo: %s" % repo)
     os.chdir(repo)
     subprocess.run(["git", "fetch"], check=True)
     subprocess.run(["lazygit"], check=True)
