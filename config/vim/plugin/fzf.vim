@@ -71,7 +71,8 @@ let g:fzf_vim.listproc = { list -> fzf#vim#listproc#location(list) }
 
 " set autochdir
 command! FDot Files ~/dot 
-" nmap <leader>fb :Buffers<cr>
+nmap <leader>fb :Buffers<cr>
+" Find files{{{
 function! FindFiles () abort
     " set wildoptions=pum,fuzzy,tagfile
     let dir=expand("%:p:h:~:.")
@@ -85,21 +86,25 @@ function! FindFiles () abort
 endfunction
 command! FindFiles call FindFiles()
 nmap <leader>ff :FindFiles<cr>
+"}}}
+" Find recent files{{{
 function! FR () abort
-	" Find recent files
 	cd $HOME
 	execute 'History!'
 endfunction
 command! FR call FR()
 
 nmap <leader>fr :FR<CR>
-function! FFF () abort
+"}}}
+" Find files from list of directories{{{
+function! FFL () abort
 	cd $HOME
-	call fzf#run({'source': 'ffl', 
+	call fzf#run({'source': 'ffl.py --config ~/script/ffl.json', 
 				\ 'sink': 'e', 
-				\ 'options': '--prompt "FFF: "'})
+				\ 'options': '--prompt "Find Files List: "'})
 	redraw! 
 endfunction
 
-command! FFF call FFF()
-nmap <leader>ff :FFF<CR>
+command! FFL call FFL()
+nmap <leader>ffl :FFL<CR>
+"}}}

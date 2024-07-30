@@ -26,6 +26,7 @@ nmap <unique> <leader>fh :FuzzyHelps<cr>
 nmap <unique> <leader>q :q<CR>
 nmap <unique> <leader>r :RangerChooser<cr>
 nmap <unique> <leader>w :w<CR>
+
 set path+=$HOME/dot/**
 set path+=$HOME/script/**
 set path+=$HOME/work/**

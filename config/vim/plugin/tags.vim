@@ -1,0 +1,1 @@
+set tags+=~/script/tags
