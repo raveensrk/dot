@@ -8,4 +8,4 @@ command! RefactorVariable :norm mzviwxOvar="<esc>pa"<esc>`zi"$var"<esc>
 command! Scratch  split /tmp/scratch.vim
 command! SplitArguments :s/ --/ \\\r--/g
 command! -range RemoveDoubleSpaces <line1>,<line2>s/  / /g
-
+command! ShellCheckDisable s/\(.*\)/# shellcheck disable=0000,0000\r\1/g

@@ -6,6 +6,7 @@ import math
 def parse_resolution(resolution_str):
     # Define the resolution mappings
     resolutions = {
+        'fhd': (1920, 1080),
         '4k': (3840, 2160),
         '5k': (5120, 2880),
         '6k': (6144, 3456),

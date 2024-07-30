@@ -1,8 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
+"""
+Python code to ask for directory and start vim FZF inside it
+"""
 
-set -euo pipefail
-# set -x
-IFS=$'\n\t'
-
-cd "$1"
-vim -c FZF
+import os
+import sys
+path = sys.argv[1]
+os.chdir(os.path.expandvars(os.path.expanduser(path)))
+os.system("vim -c FZF")
