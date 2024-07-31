@@ -1,6 +1,6 @@
 function! s:Format(line1,line2) abort
 	let save_cursor = getcurpos()
-	execute a:line1 . ',' . a:line2 . '!black -q  -l 200 -'
+	execute a:line1 . ',' . a:line2 . '!black -q  -l 80 -'
 	call setpos('.', save_cursor)
 endfunction
 

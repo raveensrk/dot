@@ -208,6 +208,8 @@ d() {
 # }}}
 # PYTHON{{{
 export PYTHONSTARTUP="$DOT/config/pythonrc"
+export PYTHONIOENCODING=utf8
+
 pytest2() {
 	pytest
 	if command -v open >/dev/null; then
