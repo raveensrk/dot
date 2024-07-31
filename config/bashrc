@@ -241,7 +241,18 @@ eval "$(trash --print-completion bash)"
 . "$DOT/config/fzf.sh"
 eval "$(zoxide  init bash --cmd cd)"
 #}}}
+# Slurm{{{
+# https://slurm.schedmd.com/squeue.html
+
+# Combile the blow commands with watch command to get a dashboard like thing
 
 alias srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
 alias srun2="srun --partition ondemand-queue --export=ALL --job-name job1 "
 
+
+
+alias squeue2='squeue -u rkumar -o "%.5i %.10P %.30j %.8u %.2t %.10M %.20V %.20e %.6D %.30R %.20B %r %R"'
+
+alias sacct2='sacct -u rkumar --allocations --format=jobid,partition,jobname,workdir,user,start,elapsed,timelimit,end,state,exitcode,comment'
+
+# }}}
