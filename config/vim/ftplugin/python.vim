@@ -9,4 +9,4 @@ command! -buffer Lint Dispatch pylint --max-line-length 300 --logging-format-sty
 command! CommentInspect call CommentAllMatchingLines('^\s\+inspect')
 let b:ale_linters = ['pylint']
 let b:ale_python_pylint_options= '--max-line-length 300'
-
+setlocal foldmethod=indent
