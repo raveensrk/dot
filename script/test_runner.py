@@ -7,6 +7,7 @@ by one. Run asynchronously when possible. Test file must be a json file.
 import json
 import subprocess
 import argparse
+import os
 
 parser = argparse.ArgumentParser("Simple test runner")
 parser.add_argument("--tests", type=str, required=True, help="tests.json file")
@@ -16,4 +17,4 @@ with open(args.tests, "r", encoding="UTF-8") as file_pointer:
     tests = json.load(file_pointer)
 
 for obj in tests:
-    subprocess.run(obj["cmd"].split(), check=True)
+    subprocess.run(os.path.expanduser(os.path.expandvars(obj["cmd"])).split(), check=True)
