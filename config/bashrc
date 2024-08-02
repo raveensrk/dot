@@ -229,9 +229,18 @@ source "$DOT/config/gitconfig"
 # ARCHIVE{{{
 eval "$(direnv hook bash)"
 # }}}
-# CUSTOM{{{
-# shellcheck source=../../script/custom/custom.sh
-[[ -f "$HOME/script/custom/custom.sh" ]] && source "$HOME/script/custom/custom.sh"
+# Slurm{{{
+# https://slurm.schedmd.com/squeue.html
+
+# Combile the blow commands with watch command to get a dashboard like thing
+
+alias srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
+export srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
+alias srun2="srun --partition ondemand-queue --export=ALL --job-name job1 "
+alias squeue2='squeue -u rkumar -o "%.5i %.10P %.60j %.8u %.2t %.10M %.20V %.20e %.6D %.30R %.20B %r %R"'
+alias sacct2='sacct -u rkumar --allocations --format=jobid,partition,jobname%60,workdir,user,start,elapsed,timelimit,end,state,exitcode,comment'
+alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start,elapsed,timelimit,end,state,exitcode'
+
 # }}}
 # TRASH CAN{{{
 alias rm="trash -v"
@@ -243,15 +252,9 @@ eval "$(trash --print-completion bash)"
 . "$DOT/config/fzf.sh"
 eval "$(zoxide  init bash --cmd cd)"
 #}}}
-# Slurm{{{
-# https://slurm.schedmd.com/squeue.html
-
-# Combile the blow commands with watch command to get a dashboard like thing
-
-alias srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
-alias srun2="srun --partition ondemand-queue --export=ALL --job-name job1 "
-alias squeue2='squeue -u rkumar -o "%.5i %.10P %.60j %.8u %.2t %.10M %.20V %.20e %.6D %.30R %.20B %r %R"'
-alias sacct2='sacct -u rkumar --allocations --format=jobid,partition,jobname%60,workdir,user,start,elapsed,timelimit,end,state,exitcode,comment'
-alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start,elapsed,timelimit,end,state,exitcode'
-
+# FINAL CUSTOM{{{
+# shellcheck source=../../script/custom/custom.sh
+if [[ -f "$HOME/script/custom/custom.sh" ]]; then
+	source "$HOME/script/custom/custom.sh"
+fi
 # }}}

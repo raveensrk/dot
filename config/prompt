@@ -5,17 +5,20 @@ source $DOT/script/colors.sh
 
 
 update_prompt() {
-	return_code="$?"
+	local return_code="$?"
 
 	if [ "$return_code" -eq 0 ]; then
-		prompt="[${green}$return_code${reset}]"
+		local return_code2="${green}$return_code${reset}|"
 	else
-		prompt="[${red}$return_code${reset}]"
+		local return_code2="${red}$return_code${reset}|"
 	fi
 
-	path="[${yellow}\w${reset}]"
+	local path="${yellow}\w${reset}|"
+	local host="${green}\h${reset}|"
+	local user="${blue}\u${reset}"
+	local num_jobs="${magenta}\j${reset}|"
 
-	PS1="${prompt} [\j] ${path}:\n$ "
+	PS1="|${return_code2}${num_jobs}${user}@${host}${path}:\n$ "
 	export PS1
 }
 # export -f update_prompt
