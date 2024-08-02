@@ -250,11 +250,8 @@ eval "$(zoxide  init bash --cmd cd)"
 
 alias srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
 alias srun2="srun --partition ondemand-queue --export=ALL --job-name job1 "
-
-
-
-alias squeue2='squeue -u rkumar -o "%.5i %.10P %.30j %.8u %.2t %.10M %.20V %.20e %.6D %.30R %.20B %r %R"'
-
-alias sacct2='sacct -u rkumar --allocations --format=jobid,partition,jobname,workdir,user,start,elapsed,timelimit,end,state,exitcode,comment'
+alias squeue2='squeue -u rkumar -o "%.5i %.10P %.60j %.8u %.2t %.10M %.20V %.20e %.6D %.30R %.20B %r %R"'
+alias sacct2='sacct -u rkumar --allocations --format=jobid,partition,jobname%60,workdir,user,start,elapsed,timelimit,end,state,exitcode,comment'
+alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start,elapsed,timelimit,end,state,exitcode'
 
 # }}}
