@@ -98,4 +98,5 @@ git clone https://github.com/mattesgroeger/vim-bookmarks &
 git clone https://github.com/kyuhi/vim-emoji-complete &
 git clone https://github.com/AndrewRadev/splitjoin.vim &
 git clone https://github.com/pixelneo/vim-python-docstring &
+git clone https://github.com/907th/vim-auto-save &
 wait
