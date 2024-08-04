@@ -228,6 +228,7 @@ source "$DOT/config/gitconfig"
 # }}}
 # ARCHIVE{{{
 eval "$(direnv hook bash)"
+eval "$(pandoc --bash-completion)"
 # }}}
 # Slurm{{{
 # https://slurm.schedmd.com/squeue.html
