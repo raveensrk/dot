@@ -221,6 +221,9 @@ pytest2() {
 		true
 	fi
 }
+
+alias pip_upgrade='pip install --upgrade pip'
+
 # }}}
 # GIT{{{
 # shellcheck disable=1091
