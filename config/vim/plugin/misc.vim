@@ -44,3 +44,4 @@ nmap <C-w>- <C-w>-<C-w>
 nmap <C-w>> <C-w>><C-w>
 nmap <C-w>< <C-w><<C-w>
 autocmd ShellCmdPost * redraw!
+nmap  <leader>F :Format<cr>
