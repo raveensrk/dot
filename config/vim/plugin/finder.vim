@@ -7,19 +7,13 @@ else
 endif
 
 nmap <unique> <leader>cd :cd %:h<CR>
-nmap <unique> <leader>/ :BLines<CR>
-nmap <unique> <leader>? :Lines<CR>
 nmap <unique> <leader>a <C-6><CR>
 nmap <unique> <leader>e :e ./
-" nmap <unique> <leader>fb :b 
-noremap <unique> <leader>fb :BufExplorer<CR>
 nmap <unique> <leader>fc :e ~/.vimrc<CR>
-nmap <unique> <leader>ff :find 
 nmap <unique> <leader>fH :Helptags<CR>
 nmap <unique> <leader>fi :echo expand("%:p")<cr>
 nmap <unique> <leader>fl :Lines<CR>
 nmap <unique> <leader>fp :let @+ = expand("%:p")<cr>
-" nmap <unique> <leader>fr :browse oldfiles<CR>
 nmap <unique> <leader>gf :e <cfile><CR>
 nmap <unique> <leader>h :help 
 nmap <unique> <leader>fh :FuzzyHelps<cr>

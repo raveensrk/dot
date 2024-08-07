@@ -108,3 +108,7 @@ endfunction
 command! FFL call FFL()
 nmap <leader>ffl :FFL<CR>
 "}}}
+nmap <leader>fb :Buffers<CR>
+nmap <leader>ft :Tags<CR>
+nmap <leader>/ :BLines<CR>
+nmap <leader>? :Lines<CR>
