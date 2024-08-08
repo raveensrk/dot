@@ -13,12 +13,12 @@ update_prompt() {
 		local return_code2="${red}$return_code${reset}|"
 	fi
 
-	local path="${yellow}\w${reset}|"
+	local path="${yellow}\W${reset}|"
 	local host="${green}\h${reset}|"
 	local user="${blue}\u${reset}"
 	local num_jobs="${magenta}\j${reset}|"
 
-	PS1="|${return_code2}${num_jobs}${user}@${host}${path}:\n$ "
+	PS1="|\d \@|\s:\v|${return_code2}${num_jobs}${user}@${host}${path}:\n$ "
 	export PS1
 }
 # export -f update_prompt
