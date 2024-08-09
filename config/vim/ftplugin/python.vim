@@ -10,3 +10,4 @@ command! CommentInspect call CommentAllMatchingLines('^\s\+inspect')
 let b:ale_linters = ['pylint']
 let b:ale_python_pylint_options= '--max-line-length 300'
 setlocal foldmethod=marker
+let g:ale_python_flake8_options = '--ignore=L001'
