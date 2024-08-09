@@ -12,6 +12,4 @@ set showcmd
 set showmode
 set showtabline=1
 set hidden
-nnoremap <C-N> :bnext<CR>
-nnoremap <C-P> :bprev<CR>
 let g:loaded_appearance=1

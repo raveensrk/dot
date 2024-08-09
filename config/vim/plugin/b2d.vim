@@ -12,4 +12,4 @@ endfunction
 
 command! B2D call B2D()
 command! Binary2Decimal call B2D()
-
+1111

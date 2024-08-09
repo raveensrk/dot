@@ -248,8 +248,8 @@ alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start
 # }}}
 # TRASH CAN{{{
 alias rm="trash -v"
-eval "$(shtab --print-own-completion bash)"
-eval "$(trash --print-completion bash)"
+# eval "$(shtab --print-own-completion bash)"
+# eval "$(trash --print-completion bash)"
 # }}}
 # FZF{{{
 # shellcheck disable=1091
