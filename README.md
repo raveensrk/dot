@@ -47,3 +47,23 @@ Add paths to list of all git repositories to this file. This is for `lg.py` scri
 ```sh
 /Users/raveen_kumar_work/script/list_of_repositories.txt
 ```
+
+## Change bash to homebrew bash
+
+Change the default shell to the homebrew shell
+
+```sh
+sudo vim /etc/shells
+```
+
+add this line
+
+```txt
+/opt/homebrew/bin/bash
+```
+
+Then change the shell
+
+```sh
+chsh -s /opt/homebrew/bin/bash
+```
