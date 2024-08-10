@@ -6,12 +6,12 @@ if ! command -v brew; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-export HOMEBREW_NO_AUTO_UPDATE=1
+# export HOMEBREW_NO_AUTO_UPDATE=1
 
-brew update
-brew upgrade
+# brew update
+# brew upgrade
 
-brew install <<-HERE
+packages=(
 	autoconf
 	automake
 	bat
@@ -34,8 +34,9 @@ brew install <<-HERE
 	lazygit
 	lesspipe
 	lolcat
-	mactex
+	# mactex
 	mediainfo
+	mdformat
 	neofetch
 	newsboat
 	pandoc
@@ -57,25 +58,13 @@ brew install <<-HERE
 	direnv
 	entr
 	mpv
-HERE
-
-macport_packages=(
 )
 
-sudo port install <<-HERE
-	gtkwave
-	gtk2
-	sqlite3-tcl
-HERE
+brew install ${packages[*]}
 
+# https://www.macports.org/install.php
+
+sudo port install gtkwave gtk2 sqlite3-tcl
 sudo port select --set pygments py312-pygments
 
-# basictex
-# vim
-# gitui
-brew uninstall <<-HERE
-	neomutt
-	ruby
-	poppler
-	hstr
-HERE
+

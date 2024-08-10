@@ -14,6 +14,7 @@ if ($is_linux != "Darwin")
 endif
 
 execute pathogen#infect()
+call pathogen#helptags()
 syntax on
 filetype plugin indent on
 
@@ -142,7 +143,7 @@ set viminfo+=r~/.vim/plugged
 let mapleader = " "
 
 " set path+=**;~/ " This is awesome but find search takes too long
-set tags+=./tags,../tags
+set tags+=./tags,../tags,~/script/tags
 " set path+=*
 " set path+=.*
 " set path+=./;~/
@@ -156,6 +157,7 @@ let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
 set hidden
 let g:netrw_hide=1
+let g:netrw_keepdir=1
 
 if filereadable(expand('~/script/custom/custom.vim'))
     execute 'source ' . expand('~/script/custom/custom.vim')

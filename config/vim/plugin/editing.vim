@@ -19,25 +19,15 @@ set nolist
 nnoremap v <C-v>
 nnoremap <C-v> v
 set virtualedit=block
-" start of line
 cnoremap <C-A>		<Home>
-" back one character
 cnoremap <C-B>		<Left>
-" delete character under cursor
 cnoremap <C-D>		<Del>
-" end of line
 cnoremap <C-E>		<End>
-" forward one character
 cnoremap <C-F>		<Right>
-" recall newer command-line
 cnoremap <C-N>		<Down>
-" recall previous (older) command-line
 cnoremap <C-P>		<Up>
-" back one word
 cnoremap <Esc><C-B>	<S-Left>
-" forward one word
 cnoremap <Esc><C-F>	<S-Right>
-" set laststatus=0
 nnoremap <S-UP> :move -2<cr>
 nnoremap <S-DOWN> :move +1<cr>
 nmap <leader>H :helpgrep 
@@ -51,3 +41,13 @@ function! CommentAllMatchingLines (pattern) abort
 	execute 'g/'..a:pattern..'/norm gcc'
 endfunction
 command! -nargs=1 CommentAllMatchingLines call CommentAllMatchingLines(<f-args>)
+source ~/.vim/bundle/Damian-Conway-s-Vim-Setup/plugin/dragvisuals.vim
+let g:DVB_TrimWS = 1
+vmap  <expr>  <S-LEFT>   DVB_Drag('left')
+vmap  <expr>  <S-RIGHT>  DVB_Drag('right')
+vmap  <expr>  <S-DOWN>   DVB_Drag('down')
+vmap  <expr>  <S-UP>     DVB_Drag('up')
+vmap  <expr>  D        DVB_Duplicate()
+
+" source ~/.vim/bundle/Damian-Conway-s-Vim-Setup/plugin/hlnext.vim
+command AlignCSV %EasyAlign */,/

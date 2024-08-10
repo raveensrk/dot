@@ -19,7 +19,6 @@ silent command! -buffer -bar -range=% Format call s:Format(<line1>,<line2>)
 let b:surround_49 = "```\r```" " Number 1 Key
 
 
-autocmd BufEnter *.md ALEDisableBuffer
 autocmd BufEnter *.md syntax match SpecialKey   /^-\ \[x\].*/
 autocmd BufEnter *.md syntax match Removed   /^-\ \[o\].*/
 autocmd BufWritePre *.md silent Format

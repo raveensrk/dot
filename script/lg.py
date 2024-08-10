@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Read a file containing list of git repositories and run lazygit in that
 """
