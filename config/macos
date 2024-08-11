@@ -26,6 +26,7 @@ export PATH="/opt/local/bin:$PATH"
 }
 alias killsafari="osascript -e 'quit app \"safari.app\"'"
 alias mail="open -a mail.app"
+alias books="open \"\$(find $HOME/icloud/Documents/Shared_Documents/Books -iname '*.pdf' | fzf)\""
 eval "$(/usr/libexec/path_helper)"
 
 fortune
