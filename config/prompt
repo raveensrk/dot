@@ -18,7 +18,7 @@ update_prompt() {
 	local user="${blue}\u${reset}"
 	local num_jobs="${magenta}\j${reset}|"
 
-	PS1="|\d \@|\s:\v|${return_code2}${num_jobs}${user}@${host}${path}:\n$ "
+	PS1="|\d \@|\s:\v|CODE:${return_code2}JOBS:${num_jobs}${user}@${host}${path}:\n$ "
 	export PS1
 }
 # export -f update_prompt
