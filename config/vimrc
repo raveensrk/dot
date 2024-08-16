@@ -208,7 +208,7 @@ let g:deoplete#enable_at_startup = 1
 " Repeat previous command
 " nmap <leader>\ :<UP><CR>
 
-set mouse=
+set mouse=a
 set guifont=Monaco:h24
 " autocmd QuickFixCmdPost * execute 'norm G'
 command! Test Dispatch pytest %
