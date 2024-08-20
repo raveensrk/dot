@@ -100,13 +100,17 @@ set writebackup
 set undofile
 " }}}
 " {{{ NETRW
-let g:netrw_liststyle = 1
+let g:netrw_liststyle = 0
+let g:netrw_banner = 1
+let g:netrw_hide=0
+let g:netrw_keepdir=0
+set browsedir="current"
 "}}}
-" ↓ TESTING ↓
 
 
+" {{{1 APPEARANCE
 set previewpopup=height:10,width:60
-set browsedir="buffer"
+" {{{1 ↓ TESTING ↓
 set title
 set titlestring=%f
 set titleold="Terminal"
@@ -156,8 +160,6 @@ set path+=~/dot/**
 let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
 set hidden
-let g:netrw_hide=1
-let g:netrw_keepdir=1
 
 if filereadable(expand('~/script/custom/custom.vim'))
     execute 'source ' . expand('~/script/custom/custom.vim')
@@ -203,7 +205,7 @@ set showcmdloc=statusline
 " set statusline=%{%Fix()%}
 " set nowrap
 set autochdir
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 
 " Repeat previous command
 " nmap <leader>\ :<UP><CR>
@@ -211,5 +213,3 @@ let g:deoplete#enable_at_startup = 1
 set mouse=a
 set guifont=Monaco:h24
 " autocmd QuickFixCmdPost * execute 'norm G'
-command! Test Dispatch pytest %
-command! Run Dispatch python %
