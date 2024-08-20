@@ -204,6 +204,8 @@ d() {
 	fi
 }
 
+# Grep for a specific line in a file and go to it
+alias goto="vim -c 'RG'"
 
 # }}}
 # PYTHON{{{
