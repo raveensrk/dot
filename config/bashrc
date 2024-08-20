@@ -206,6 +206,8 @@ d() {
 
 # Grep for a specific line in a file and go to it
 alias goto="vim -c 'RG'"
+alias todo="vim -c 'RG todo'"
+alias fixme="vim -c 'RG fixme'"
 
 # }}}
 # PYTHON{{{

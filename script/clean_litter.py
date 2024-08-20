@@ -84,4 +84,3 @@ if __name__ == "__main__":
     ]
     delete_junk_files(paths1)
     delete_empty_directories(paths1)
-    # find_broken_symlinks "$HOME" TODO

@@ -15,10 +15,5 @@ for repo in repos:
     repo = os.path.expanduser(repo.rstrip())
     print("Repo: %s" % repo)
     os.chdir(repo)
-    # TODO:
-    # If git fetch is clean and If git pull is clean
-    # continue
-    # Else
-    # open lazy igt
     subprocess.run(["git", "fetch"], check=True)
     subprocess.run(["lazygit"], check=True)
