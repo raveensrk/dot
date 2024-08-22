@@ -4,38 +4,16 @@ set -PCeuo pipefail
 # set -x
 IFS=$'\n\t'
 
-current_file=$(realpath "$0")
+git clone https://github.com/github/copilot.vim.git ~/.vim/pack/github/start/copilot.vim
 
-help() {
-	cat <<-HERE
-		Usage
-		-----------------
-	HERE
-	exit 0
-}
+# installs nvm (Node Version Manager)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
 
-while [ "$#" -ne 0 ]; do
-	case "$1" in
-	--help | -h)
-		help
-		;;
-	--input | -i)
-		shift
-		input="$1"
-		;;
-	--output | -o)
-		shift
-		output="$1"
-		;;
-	*)
-		echor "Unknown Argument: $1 while running $current_file!"
-		exit 2
-		;;
-	esac
-	shift
-done
+# download and install Node.js (you may need to restart the terminal)
+nvm install 20
 
+# verifies the right Node.js version is in the environment
+node -v # should print `v20.17.0`
 
-git clone https://github.com/github/copilot.vim.git \
-  ~/.vim/pack/github/start/copilot.vim
-
+# verifies the right npm version is in the environment
+npm -v # should print `10.8.2`
