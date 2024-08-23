@@ -66,7 +66,7 @@ alias date2_long_long='date -Iseconds | sed "s/:/-/g"'
 alias mkdir="mkdir -v"
 alias cp="cp -vi"
 alias mv="mv -vi"
-# alias rm="rm -vi"
+alias rm="rm -vi"
 alias tree2="tree -C"
 alias tree3="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias rsync="rsync -CazhPvu"                                         # -C
@@ -251,7 +251,7 @@ alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start
 
 # }}}
 # TRASH CAN{{{
-alias rm="trash -v"
+# alias rm="trash -v"
 # eval "$(shtab --print-own-completion bash)"
 # eval "$(trash --print-completion bash)"
 # }}}
