@@ -6,13 +6,6 @@ This is a module for logging messages
 import logging
 import os
 
-if os.path.exists("run.log"):
-    os.remove("run.log")
-if os.path.exists("pass.log"):
-    os.remove("pass.log")
-if os.path.exists("fail.log"):
-    os.remove("fail.log")
-
 
 FORMAT_STRING = "%(message)s"
 FORMAT_STRING2 = "%(levelname)s: %(message)s"
@@ -27,19 +20,19 @@ logging.basicConfig(
 
 log = logging.getLogger("root")
 formatter = logging.Formatter(FORMAT_STRING2)
-file_handler = logging.FileHandler("run.log", "a", encoding="UTF-8")
+file_handler = logging.FileHandler("/tmp/run.log", "w", encoding="UTF-8")
 file_handler.setFormatter(formatter)
 log.addHandler(file_handler)
 
 log_pass = logging.getLogger("pass")
 formatter = logging.Formatter(FORMAT_STRING)
-file_handler = logging.FileHandler("pass.log", "a", encoding="UTF-8")
+file_handler = logging.FileHandler("/tmp/pass.log", "w", encoding="UTF-8")
 file_handler.setFormatter(formatter)
 log_pass.addHandler(file_handler)
 
 log_fail = logging.getLogger("fail")
 formatter = logging.Formatter(FORMAT_STRING)
-file_handler = logging.FileHandler("fail.log", "a", encoding="UTF-8")
+file_handler = logging.FileHandler("/tmp/fail.log", "w", encoding="UTF-8")
 file_handler.setFormatter(formatter)
 log_fail.addHandler(file_handler)
 

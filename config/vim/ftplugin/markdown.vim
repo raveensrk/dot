@@ -11,7 +11,7 @@ setlocal spell
 
 function! s:Format(line1,line2) abort
 	let save_cursor = getcurpos()
-	execute a:line1 . ',' . a:line2 . '!mdformat -'
+	execute a:line1 . ',' . a:line2 . '!mdformat --wrap 80 -'
 	call setpos('.', save_cursor)
 endfunction
 silent command! -buffer -bar -range=% Format call s:Format(<line1>,<line2>)
