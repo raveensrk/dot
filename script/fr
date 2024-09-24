@@ -4,4 +4,4 @@ set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-vim -c "History!" 
+vim -c "History" 

@@ -90,7 +90,7 @@ nmap <leader>ff :FindFiles<cr>
 " Find recent files{{{
 function! FR () abort
 	cd $HOME
-	execute 'History!'
+	execute 'History'
 endfunction
 command! FR call FR()
 
