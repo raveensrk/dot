@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-# bashrc
-echo "DOT BASHRC: User Config..."
+echo "INFO:BASHRC: Sourcing my bashrc..."
 # {{{ ENVIRONMENT VARIABLES
 export EDITOR="vim"
 export VISUAL="vim"
 export DOT=$HOME/dot
-echo "DOT_BASHRC: HOME = $HOME"
+# echo "INFO:BASHRC: HOME = $HOME"
 export INPUTRC=$DOT/config/inputrc
 export MYVIMRC=$DOT/config/vimrc
 export VIMINIT=":source $MYVIMRC"
@@ -182,7 +181,7 @@ resetbash() {
 }
 # }}}
 # PATH {{{
-echo "DOT_BASHRC: Setting up paths..."
+echo "INFO:BASHRC: Setting up paths..."
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/script:$PATH"
 export PATH="$DOT/config/vim/plugin:$PATH"
@@ -260,8 +259,8 @@ alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start
 # FZF{{{
 # shellcheck disable=1091
 
-echo "DOT_BASHRC: Setting up FZF..."
-echo "DOT_BASHRC: FZF PATH = $(which fzf)"
+echo "INFO:BASHRC: Setting up FZF..."
+echo "INFO:BASHRC: FZF PATH = $(which fzf)"
 . "$DOT/config/fzf.sh"
 eval "$(zoxide  init bash --cmd cd)"
 #}}}
