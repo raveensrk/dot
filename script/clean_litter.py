@@ -17,10 +17,9 @@ def delete_junk_files(paths: list[str]):
     Some main function
     """
 
-    files = ["*#*", "*~*", "*.dcv", ".DS_Store", "*.SVM"]
+    files = ["*#*", "*~*", "*.dcv", ".DS_Store", "*.SVM", ".*~"]
 
     found = []
-    print("Deleting junk files...")
     for path, pattern in list(itertools.product(paths, files)):
         glob_path = os.path.expanduser(path) + "/**/" + pattern
         # glob_path=os.path.expanduser(path)+"/"+pattern
@@ -30,7 +29,10 @@ def delete_junk_files(paths: list[str]):
             recursive=True,  # include_hidden=True
         )
         if len(found) != 0:
-            print(f"{found = }")
+            print(f"Found junk files: {found = }")
+            print("Press any key twice to delete junk files...")
+            input()
+            input()
             for file in found:
                 if os.path.isdir(file):
                     shutil.rmtree(os.path.abspath(file))
@@ -43,8 +45,6 @@ def delete_empty_directories(paths: list):
     This function will find and delete_empty_directories
     in a given path recursive
     """
-    print("Deleting empty directories...")
-
     ignore = [".git"]
 
     for root in paths:
@@ -53,6 +53,7 @@ def delete_empty_directories(paths: list):
             recursive=True,
             # include_hidden=True,
         )
+        
         for path in found:
             present = False
             for i in ignore:
@@ -61,7 +62,9 @@ def delete_empty_directories(paths: list):
             if not present:
                 if os.path.isdir(os.path.abspath(path)):
                     if not os.listdir(path):
-                        print(f"Removing {path = }")
+                        print(f"Press any key twice to remove empty directory {path = }")
+                        input()
+                        input()
                         os.removedirs(path)
 
 
@@ -73,7 +76,6 @@ if __name__ == "__main__":
         "~/Mail",
         "~/bin",
         "~/dot",
-        "~/fcu2",
         "~/icloud",
         "~/personal_repo",
         "~/project",
@@ -81,6 +83,7 @@ if __name__ == "__main__":
         "~/script",
         "~/tmp",
         "~/work",
+        "~/Notes",
     ]
     delete_junk_files(paths1)
     delete_empty_directories(paths1)
