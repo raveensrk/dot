@@ -253,8 +253,8 @@ eval "$(pandoc --bash-completion)"
 # Slurm{{{
 # https://slurm.schedmd.com/squeue.html
 
-# Combile the blow commands with watch command to get a dashboard like thing
-
+# Combile the below commands with watch command to get a dashboard like thing
+# TODO: Put this into a seperate file
 alias srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
 export srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
 alias srun2="srun --partition ondemand-queue --export=ALL --job-name job1 "
@@ -270,7 +270,6 @@ alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start
 # }}}
 # FZF{{{
 # shellcheck disable=1091
-
 . "$DOT/config/fzf.sh"
 eval "$(zoxide  init bash --cmd cd)"
 #}}}
