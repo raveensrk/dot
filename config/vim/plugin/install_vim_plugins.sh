@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+
+"""
+If any bug is observed. Install with --clean.
+"""
+
+
 set -euo pipefail
 set -x
 IFS=$'\n\t'
@@ -50,7 +56,7 @@ else
 fi
 
 
-wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim  &
+wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim
 
 # Digraph: https://www.vim.org/scripts/script.php?script_id=5724
 # git clone "git@github.com:chrisbra/csv.vim.git" 
@@ -77,31 +83,31 @@ wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim  &
 # https://vimawesome.com/plugin/vim-interestingwords-safe-and-sound
 # pip install jedi
 
-git clone "git@github.com:Donaldttt/fuzzyy.git"                        &
-git clone "git@github.com:easymotion/vim-easymotion"                   &
-git clone "git@github.com:junegunn/fzf"                                &
-git clone "git@github.com:junegunn/fzf.vim"                            &
-git clone "git@github.com:junegunn/vim-easy-align"                     &
-git clone "git@github.com:mhinz/vim-signify"                           &
-git clone "git@github.com:nathanaelkane/vim-indent-guides"             &
-git clone "git@github.com:tomtom/tcomment_vim"                         &
-git clone "git@github.com:tpope/vim-characterize.git"                  &
-git clone "git@github.com:tpope/vim-dispatch"                          &
-git clone "git@github.com:tpope/vim-eunuch"                            &
-git clone "git@github.com:tpope/vim-fugitive"                          &
-git clone "git@github.com:tpope/vim-repeat"                            &
-git clone "git@github.com:tpope/vim-sensible"                          &
-git clone "git@github.com:tpope/vim-speeddating.git"                   &
-git clone "git@github.com:tpope/vim-surround"                          &
-git clone "git@github.com:tpope/vim-unimpaired"                        &
-git clone "git@github.com:tpope/vim-vinegar"                           &
-git clone "https://github.com/chrisbra/unicode.vim.git"                &
-git clone "https://github.com/mhinz/vim-startify"                      &
-git clone "https://github.com/preservim/vim-markdown.git"              &
-git clone "https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup" &
-git clone "https://github.com/wuelnerdotexe/vim-enfocado"              &
-git clone "https://tpope.io/vim/scriptease.git"                        &
-git clone "https://github.com/morhetz/gruvbox"                         &
-git clone "https://github.com/907th/vim-auto-save"					   &
+git clone "git@github.com:Donaldttt/fuzzyy.git"                        || true # &
+git clone "git@github.com:easymotion/vim-easymotion"                   || true # &
+git clone "git@github.com:junegunn/fzf"                                || true # &
+git clone "git@github.com:junegunn/fzf.vim"                            || true # &
+git clone "git@github.com:junegunn/vim-easy-align"                     || true # &
+git clone "git@github.com:mhinz/vim-signify"                           || true # &
+git clone "git@github.com:nathanaelkane/vim-indent-guides"             || true # &
+git clone "git@github.com:tomtom/tcomment_vim"                         || true # &
+git clone "git@github.com:tpope/vim-characterize.git"                  || true # &
+git clone "git@github.com:tpope/vim-dispatch"                          || true # &
+git clone "git@github.com:tpope/vim-eunuch"                            || true # &
+git clone "git@github.com:tpope/vim-fugitive"                          || true # &
+git clone "git@github.com:tpope/vim-repeat"                            || true # &
+git clone "git@github.com:tpope/vim-sensible"                          || true # &
+git clone "git@github.com:tpope/vim-speeddating.git"                   || true # &
+git clone "git@github.com:tpope/vim-surround"                          || true # &
+git clone "git@github.com:tpope/vim-unimpaired"                        || true # &
+git clone "git@github.com:tpope/vim-vinegar"                           || true # &
+git clone "https://github.com/chrisbra/unicode.vim.git"                || true # &
+git clone "https://github.com/mhinz/vim-startify"                      || true # &
+git clone "https://github.com/preservim/vim-markdown.git"              || true # &
+git clone "https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup" || true # &
+# git clone "https://github.com/wuelnerdotexe/vim-enfocado"            # & # FIXME: Too slow to clone
+git clone "https://tpope.io/vim/scriptease.git"                        || true # &
+git clone "https://github.com/morhetz/gruvbox"                         || true # &
+git clone "https://github.com/907th/vim-auto-save"					   || true # &
 
-wait
+# wait
