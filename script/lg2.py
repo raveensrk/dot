@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Read a file containing list of git repositories and run lazygit in that
 """
@@ -13,7 +13,7 @@ with open(list_of_repositories, "r", encoding="UTF-8") as file_pointer:
 
 
 for repo in repos:
-    repo = os.path.expanduser(repo.rstrip())
+    repo = os.path.expandvars(os.path.expanduser(repo.rstrip()))
     print(f"Repo: {repo}")
     os.chdir(repo)
     result = subprocess.run(
