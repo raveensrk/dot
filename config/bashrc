@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-echo "INFO:BASHRC: Sourcing my bashrc..."
 # {{{ ENVIRONMENT VARIABLES
 export EDITOR="vim"
 export VISUAL="vim"
 export DOT=$HOME/dot
-# echo "INFO:BASHRC: HOME = $HOME"
 export INPUTRC=$DOT/config/inputrc
 export MYVIMRC=$DOT/config/vimrc
 export VIMINIT=":source $MYVIMRC"
@@ -70,7 +68,12 @@ alias rm="rm -vi"
 alias tree2="tree -C"
 alias tree3="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias rsync="rsync -CazhPvu"                                         # -C
-alias path="echo \$PATH | tr ':' '\n' | tac"
+path () {
+	echo \$PATH | tr ':' '\n' | tac
+	echo "-------------------------------"
+	echo "Reverse sorted. Bottom is the first/left most directory in the path. Bottom has the highest priority."
+	echo "-------------------------------"
+}
 alias bashrc="vim \$DOT/config/bashrc"
 alias q="exit"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
@@ -162,9 +165,19 @@ if [[ $os == "Darwin" ]]; then
 		printf '\e]7;%s\a' "$PWD_URL"
 	}
 else
-	alias ls="ls -X --group-directories-first  --color"
-	alias l="ls -X --group-directories-first  --color -lAh"
-	export PATH="$DOT/bin/linux:$PATH"
+	if [[ $(uname -m) == "aarch64" ]]; then
+		export PATH="$DOT/bin/linux_aarch64:$PATH"
+	else
+		export PATH="$DOT/bin/linux:$PATH"
+	fi
+	if command -v eza > /dev/null; then
+		alias ls="eza -X --group-directories-first  --color"
+		alias l="eza -X --group-directories-first  --color -lAh"
+	else
+		alias ls="ls -X --group-directories-first  --color"
+		alias l="ls -X --group-directories-first  --color -lAh"
+	fi
+	export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 	# if command -v universal-ctags >/dev/null; then
 	# 	alias ctags='universal-ctags'
 	# fi
@@ -181,7 +194,6 @@ resetbash() {
 }
 # }}}
 # PATH {{{
-echo "INFO:BASHRC: Setting up paths..."
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/script:$PATH"
 export PATH="$DOT/config/vim/plugin:$PATH"
@@ -259,8 +271,6 @@ alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start
 # FZF{{{
 # shellcheck disable=1091
 
-echo "INFO:BASHRC: Setting up FZF..."
-echo "INFO:BASHRC: FZF PATH = $(which fzf)"
 . "$DOT/config/fzf.sh"
 eval "$(zoxide  init bash --cmd cd)"
 #}}}

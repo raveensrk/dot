@@ -6,7 +6,7 @@
 chsh -s /bin/bash
 ```
 
-## Install brew
+## Install brew in macos
 
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -32,6 +32,14 @@ Install all other packages
 
 ```sh
 bash ~/dot/packages/macos.sh
+```
+
+## If you use ubuntu install this
+
+This script is for arm64/aarch64 only
+
+```sh
+bash ~/dot/packages/ubuntu.sh
 ```
 
 ## Install vim plugins
