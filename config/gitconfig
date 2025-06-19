@@ -1,4 +1,4 @@
 git config --global user.name "Raveen Kumar"
-git config --global user.email "raveen.srk.kumar@gmail.com"
+# git config --global user.email "user@mail"
 git config --global pull.rebase true
 # git config --global pull.rebase false
