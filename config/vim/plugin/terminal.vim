@@ -1,3 +1,3 @@
-nnoremap ; :
-nnoremap : :
+" nnoremap ; :
+" nnoremap : :
 nnoremap <leader>; :term 
