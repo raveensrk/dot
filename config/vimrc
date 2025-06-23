@@ -208,3 +208,18 @@ set autochdir
 set mouse=a
 set guifont=Monaco:h24
 " autocmd QuickFixCmdPost * execute 'norm G'
+" BUG FIXES AND WORKAROUNDS {{{1
+" Vim cant remember last cursor position in macOS
+" https://github.com/vim/vim/blob/3c01c4a02897163996639f6f2604c68eab2bd18b/runtime/defaults.vim#L109-L123
+
+if has("macunix")
+	augroup vimStartup
+	au!
+
+	autocmd BufReadPost *
+		\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+	  	\ |   exe "normal! g`\""
+	  	\ | endif
+
+	augroup END
+endif
