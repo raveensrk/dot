@@ -50,13 +50,16 @@ bash ~/dot/config/vim/plugin/install_vim_plugins.sh
 
 ## Other
 
-Add paths to list of all git repositories to this file. This is for `lg.py` script
+Add paths to list of all git repositories to this file. This is for `lg.py`
+script
 
 ```sh
 /Users/raveen_kumar_work/script/list_of_repositories.txt
 ```
 
-## Change bash to homebrew bash
+## MacOS: Basic setup
+
+### Change bash to homebrew bash
 
 Change the default shell to the homebrew shell
 
@@ -75,3 +78,13 @@ Then change the shell
 ```sh
 chsh -s /opt/homebrew/bin/bash
 ```
+
+### Settings
+
+> Settings -> Keyboard -> Key Repeat Rate = Fast
+
+> Settings -> Keyboard -> Delay Until Repeat = Short
+
+### Terminal
+
+> Settings -> Profiles -> Keyboard -> Enable "Use Option as Meta Key"
