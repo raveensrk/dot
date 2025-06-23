@@ -1,10 +1,10 @@
 " hi CurSearch ctermbg=black ctermfg=1
 " hi Search ctermbg=black ctermfg=154
-set cursorline
+" set cursorline
 " set cursorlineopt=screenline,number
 " set columns=80
 " set colorcolumn=+1
-set cursorcolumn
+" set cursorcolumn
 " autocmd BufEnter,WinEnter * highlight clear CursorLine
 " autocmd BufEnter,WinEnter * highlight clear CursorLineNr
 " autocmd BufEnter,WinEnter * highlight clear CursorColumn
