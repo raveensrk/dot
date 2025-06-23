@@ -139,3 +139,4 @@ endfunction
 
 command! QuoteThis call s:QuoteThis()
 nnoremap <buffer> g> :QuoteThis<CR>
+" autocmd FileType markdown set foldexpr=NestedMarkdownFolds()

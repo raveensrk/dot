@@ -30,6 +30,7 @@ packages=(
 	jq
 	zoxide
 	pipx
+	yq
 )
 
 for package in ${packages[@]}; do
@@ -44,3 +45,5 @@ pipx install mdformat
 bash ./lazygit_ubuntu.sh
 
 # brew install ${packages[*]}
+
+curl https://fx.wtf/install.sh | sh
