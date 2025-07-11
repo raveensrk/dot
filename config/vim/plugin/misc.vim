@@ -15,8 +15,6 @@ command! LG !lazygit
 " command! LazyGit !gitui
 " command! LG !gitui
 
-nmap <C-w>> <C-w>><C-w>
-nmap <C-w>< <C-w><<C-w>
 
 command! GB Git add . | Git commit -m "Bug fix" | Git push
 " command! -range Align <line1>,<line2>EasyAlign * / \|["]\+\|[\|\]\|,\|(\|)\|=\|;/<l1r1
@@ -40,7 +38,7 @@ command! -range Align call Align(<line1>, <line2>)
 
 nmap <C-w>+ <C-w>+<C-w>
 nmap <C-w>- <C-w>-<C-w>
-nmap <C-w>> <C-w>><C-w>
 nmap <C-w>< <C-w><<C-w>
+nmap <C-w>> <C-w>><C-w>
 autocmd ShellCmdPost * redraw!
 nmap  <leader>F :Format<cr>

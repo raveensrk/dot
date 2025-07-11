@@ -15,3 +15,8 @@ vmap <leader>R. y:s+"++gc<Left><Left><Left>
 vmap <leader>Rw y:%s+\<"\>++gc<Left><Left><Left>
 xmap <leader>X  :!bash<CR>:redraw!<CR>
 xmap <leader>x  :so<CR>
+
+" Simple Auto Completions
+" imap <TAB>        <C-n>
+" imap <S-TAB>      <C-p>
+" imap <TAB><TAB>    <C-x><C-l>
