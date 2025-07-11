@@ -21,7 +21,7 @@ let b:surround_49 = "```\r```" " Number 1 Key
 
 autocmd BufEnter *.md syntax match SpecialKey   /^-\ \[x\].*/
 autocmd BufEnter *.md syntax match Removed   /^-\ \[o\].*/
-autocmd BufWritePre *.md silent Format
+" autocmd BufWritePre *.md silent Format
 highlight! link htmlBold htmlH1
 highlight! link htmlItalic Question
 
