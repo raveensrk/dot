@@ -197,7 +197,7 @@ set shortmess+=I
 set showcmd
 set showcmdloc=statusline
 " set statusline=%{%Fix()%}
-" set statusline=\|PWD:%{getcwd()}\|FILE:%{expand('%:p')}\|
+set statusline=%<\|\ %{getcwd()}\ \|\ %{expand('%:p')}\ \|\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 " set nowrap
 set autochdir
 " let g:deoplete#enable_at_startup = 1
