@@ -258,6 +258,6 @@ if [[ -f "$HOME/script/custom/custom.sh" ]]; then
 	source "$HOME/script/custom/custom.sh"
 fi
 
-[ -d source /opt/homebrew/etc/bash_completion.d/ ] && source /opt/homebrew/etc/bash_completion.d/*
+[ -d /opt/homebrew/etc/bash_completion.d/ ] && source /opt/homebrew/etc/bash_completion.d/*
 
 # }}}
