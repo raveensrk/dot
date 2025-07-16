@@ -20,3 +20,25 @@ xmap <leader>x  :so<CR>
 " imap <TAB>        <C-n>
 " imap <S-TAB>      <C-p>
 " imap <TAB><TAB>    <C-x><C-l>
+
+" Move up and down based on display lines by default
+nnoremap gj j
+nnoremap gk k
+nnoremap j gj
+nnoremap k gk
+
+nnoremap <up> g<up>
+nnoremap <down> g<down>
+nnoremap g<up> <up>
+nnoremap g<down> <down>
+
+vnoremap gj j
+vnoremap gk k
+vnoremap j gj
+vnoremap k gk
+
+vnoremap <up> g<up>
+vnoremap <down> g<down>
+vnoremap g<up> <up>
+vnoremap g<down> <down>
+

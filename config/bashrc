@@ -183,16 +183,6 @@ else
 	# fi
 fi
 # }}}
-# FUNCTIONS {{{
-github() { open "$(echo "https://github.com/search?q=$*&type=repositories&s=stars&o=desc" | tr ' ' '+')"; }
-resetbash() {
-	clear
-	echo Resetting...
-	sleep 1
-	# shellcheck disable=1091
-	source "$DOT/config/bashrc"
-}
-# }}}
 # PATH {{{
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$DOT/script:$PATH"
@@ -205,6 +195,7 @@ export PYTHONPATH+=":$HOME/work/practice/python"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
 d() {
+	# Change directory to the given path of file
 	if [ -f "$1" ]; then
 		dir="$(which "$1" | xargs dirname)"
 	else
@@ -218,9 +209,9 @@ d() {
 }
 
 # Grep for a specific line in a file and go to it
-alias goto="vim -c 'RG'"
-alias todo="vim -c 'RG todo'"
-alias fixme="vim -c 'RG fixme'"
+alias goto="vim -c 'Rg'"
+alias todo="vim -c 'Rg todo'"
+alias fixme="vim -c 'Rg fixme'"
 
 # }}}
 # PYTHON{{{
@@ -247,22 +238,9 @@ alias pip_upgrade='pip install --upgrade pip'
 source "$DOT/config/gitconfig"
 # }}}
 # PROGRAMS{{{
-eval "$(direnv hook bash)"
-eval "$(pandoc --bash-completion)"
-source <(fx --comp bash)
-# }}}
-# Slurm{{{
-# https://slurm.schedmd.com/squeue.html
-
-# Combile the below commands with watch command to get a dashboard like thing
-# TODO: Put this into a seperate file
-alias srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
-export srun2_pty="srun --partition ondemand-queue --export ALL --pty --job-name BASH -- bash --login"
-alias srun2="srun --partition ondemand-queue --export=ALL --job-name job1 "
-alias squeue2='squeue -u rkumar -o "%.5i %.10P %.60j %.8u %.2t %.10M %.20V %.20e %.6D %.30R %.20B %r %R"'
-alias sacct2='sacct -u rkumar --allocations --format=jobid,partition,jobname%60,workdir,user,start,elapsed,timelimit,end,state,exitcode,comment'
-alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start,elapsed,timelimit,end,state,exitcode'
-
+[ -x direnv ] && eval "$(direnv hook bash)"
+[ -x pandoc ] && eval "$(pandoc --bash-completion)"
+[ -x fx ] && source <(fx --comp bash)
 # }}}
 # TRASH CAN{{{
 # alias rm="trash -v"
@@ -272,11 +250,14 @@ alias sacct3='sacct -u rkumar --allocations --format=jobid,jobname%60,user,start
 # FZF{{{
 # shellcheck disable=1091
 . "$DOT/config/fzf.sh"
-eval "$(zoxide  init bash --cmd cd)"
+[ -x zoxide ] && eval "$(zoxide  init bash --cmd cd)"
 #}}}
 # FINAL CUSTOM{{{
 # shellcheck source=../../script/custom/custom.sh
 if [[ -f "$HOME/script/custom/custom.sh" ]]; then
 	source "$HOME/script/custom/custom.sh"
 fi
+
+[ -d source /opt/homebrew/etc/bash_completion.d/ ] && source /opt/homebrew/etc/bash_completion.d/*
+
 # }}}

@@ -196,12 +196,13 @@ set shortmess+=I
 
 set showcmd
 set showcmdloc=statusline
+" set statusline=\|PWD:%{getcwd()}\|FILE:%{expand('%:p')}\|
+set statusline=%<%F\ %h%m%r%=%-14.(%l\/%L,%c%V%)\ %P
 " set statusline=%{%Fix()%}
-set statusline=%<\|\ %{getcwd()}\ \|\ %{expand('%:p')}\ \|\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 " set nowrap
 set autochdir
 " let g:deoplete#enable_at_startup = 1
-
+			
 " Repeat previous command
 " nmap <leader>\ :<UP><CR>
 
@@ -223,3 +224,6 @@ if has("macunix")
 
 	augroup END
 endif
+
+set rtp+=/opt/homebrew/opt/fzf
+

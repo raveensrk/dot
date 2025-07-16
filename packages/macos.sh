@@ -58,6 +58,8 @@ packages=(
 	direnv
 	entr
 	mpv
+	task
+	taskopen
 )
 
 brew install ${packages[*]}
