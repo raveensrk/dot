@@ -3,22 +3,22 @@
 
 source $DOT/script/colors.sh
 
-
 update_prompt() {
 	local return_code="$?"
 
 	if [ "$return_code" -eq 0 ]; then
-		local return_code2="${green}$return_code${reset}|"
+		local return_code2="${green}$return_code${reset}"
 	else
-		local return_code2="${red}$return_code${reset}|"
+		local return_code2="${red}$return_code${reset}"
 	fi
 
-	local path="${yellow}\W${reset}|"
-	local host="${green}\h${reset}|"
+	local path="${yellow}\W${reset}"
+	local host="${green}\h${reset}"
 	local user="${blue}\u${reset}"
-	local num_jobs="${magenta}\j${reset}|"
+	local num_jobs="${magenta}\j${reset}"
 
-	PS1="|\d \@|\s:\v|C:${return_code2}J:${num_jobs}${user}@${host}${path} $ "
+	# PS1="[${user}@${host}|${path}|J:${num_jobs}|L:$SHLVL|H:\!|C:${return_code2}] $ "
+	PS1="[\u@$\h|\W|J:\j|L:$SHLVL|H:\!|C:$return_code] $ "
 	export PS1
 }
 # export -f update_prompt
