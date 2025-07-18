@@ -194,7 +194,7 @@ export PYTHONPATH+=":$HOME/work/practice/python"
 [ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
-d() {
+,goto_file_directory() {
 	# Change directory to the given path of file
 	if [ -f "$1" ]; then
 		dir="$(which "$1" | xargs dirname)"
