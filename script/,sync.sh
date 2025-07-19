@@ -5,14 +5,4 @@ set -PCeuo pipefail
 IFS=$'\n\t'
 
 
-
-while read line; do
-	echo "
-	------------------------------------------------------------------------------
-	Opening lazygit for $line
-	------------------------------------------------------------------------------   
-	"
-	lazygit -p "$line" 
-
-done < "$HOME/dot_common/list_of_repositories.txt"
-
+fd . $HOME --exact-depth 1 -p | grep dot | xargs -n 1 lazygit -p
