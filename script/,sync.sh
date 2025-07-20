@@ -5,4 +5,10 @@ set -PCeuo pipefail
 IFS=$'\n\t'
 
 
-fd . $HOME --exact-depth 1 -p | grep dot | xargs -n 1 lazygit -p
+
+cat ~/dot_personal/list_of_repos.txt | while read -r repo; do
+	lazygit -p "$repo" || {
+		echo "Failed to open lazygit for $repo"
+		continue
+	}
+done
