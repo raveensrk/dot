@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 source $DOT/script/colors.sh
 
 update_prompt() {
@@ -17,8 +16,9 @@ update_prompt() {
 	local user="${blue}\u${reset}"
 	local num_jobs="${magenta}\j${reset}"
 
-	# PS1="[${user}@${host}|${path}|J:${num_jobs}|L:$SHLVL|H:\!|C:${return_code2}] $ "
-	PS1="[\u@$\h|\W|J:\j|L:$SHLVL|H:\!|C:$return_code] $ "
+	PS1="[${user}@${host}|${path}|J:${num_jobs}|L:$SHLVL|H:\!|C:${return_code2}]\n$ "
+	# Fallback to a simpler prompt if the above fails
+	# PS1="[\u@$\h|\W|J:\j|L:$SHLVL|H:\!|C:$return_code] $ "
 	export PS1
 }
 # export -f update_prompt

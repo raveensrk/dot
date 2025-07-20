@@ -68,7 +68,6 @@ wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim
 # git clone "https://github.com/MarcWeber/vim-addon-qf-layout.git" 
 # git clone "https://github.com/SidOfc/mkdx" 
 # git clone "https://github.com/dense-analysis/ale" 
-# git clone "https://github.com/ledger/vim-ledger" 
 # git clone "https://github.com/skywind3000/asyncrun.vim" 
 # git clone git@github.com:vim-scripts/bufexplorer.zip.git 
 # git clone https://github.com/AndrewRadev/splitjoin.vim 
@@ -110,6 +109,7 @@ git clone "https://tpope.io/vim/scriptease.git"                        || true #
 git clone "https://github.com/morhetz/gruvbox"                         || true # &
 git clone "https://github.com/907th/vim-auto-save"					   || true # &
 git clone --depth=1 https://github.com/github/copilot.vim.git ~/.vim/pack/github/start/copilot.vim || true
+# git clone https://github.com/ledger/vim-ledger || true # & # This is giving me errors, not important
 # TODO: Try this https://github.com/girishji/vimcomplete
 # git clone https://github.com/nelstrom/vim-markdown-folding || true
 # wait
