@@ -104,7 +104,7 @@ git clone "https://github.com/chrisbra/unicode.vim.git"                || true #
 git clone "https://github.com/mhinz/vim-startify"                      || true # &
 git clone "https://github.com/preservim/vim-markdown.git"              || true # &
 git clone "https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup" || true # &
-# git clone "https://github.com/wuelnerdotexe/vim-enfocado"            # & # FIXME: Too slow to clone
+git clone "https://github.com/wuelnerdotexe/vim-enfocado"			|| true # &
 git clone "https://tpope.io/vim/scriptease.git"                        || true # &
 git clone "https://github.com/morhetz/gruvbox"                         || true # &
 git clone "https://github.com/907th/vim-auto-save"					   || true # &
