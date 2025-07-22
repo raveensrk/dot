@@ -42,3 +42,5 @@ vnoremap <down> g<down>
 vnoremap g<up> <up>
 vnoremap g<down> <down>
 
+" Finding word under cursor
+nmap <leader>fw :vim /\C\<\>/ $PWD/**/*<left><left><left><left>

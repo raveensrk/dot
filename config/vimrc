@@ -23,6 +23,7 @@ set belloff=all
 set novb t_vb=
 " set vb t_vb=[?5h$<100>[?5l
 
+" https://nickjanetakis.com/blog/change-your-vim-cursor-from-a-block-to-line-in-normal-and-insert-mode
 " Use a line cursor within insert mode and a block cursor everywhere else.
 "
 " Reference chart of values:
@@ -33,11 +34,21 @@ set novb t_vb=
 "   Ps = 4  -> steady underline.
 "   Ps = 5  -> blinking bar (xterm).
 "   Ps = 6  -> steady bar (xterm).
-" let &t_SI = "\e[6 q"
-" let &t_EI = "\e[2 q"
+" let &t_SI = "\e[5 q"
+" let &t_EI = "\e[1 q"
+" let &t_SR = "\e[3 q"
+if &term =~ 'xterm' || &term == 'win32'
+	" Use DECSCUSR escape sequences
+	let &t_SI = "\e[5 q"    " blink bar
+	let &t_SR = "\e[3 q"    " blink underline
+	let &t_EI = "\e[1 q"    " blink block
+	let &t_ti ..= "\e[1 q"  " blink block
+	let &t_te ..= "\e[0 q"  " default (depends on terminal, normally blink
+	" block)
+endif
 " }}}
 " NAVIGATION {{{
-" set splitbelow splitright
+set splitbelow splitright
 " }}}
 " GRAMMAR AND SEARCHING {{{
 " set spell spelllang=en_us
