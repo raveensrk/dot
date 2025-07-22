@@ -1,0 +1,50 @@
+# [Created by task 3.4.1 6/22/2025 12:11:22]
+# data.location=<path to task sqlite directory>/task
+# TODO: Maybe dot_local?
+news.version=3.4.1
+
+# To use the default location of the XDG directories,
+# move this configuration file from ~/.taskrc to ~/.config/task/taskrc and update location config as follows:
+
+#data.location=~/.local/share/task
+#hooks.location=~/.config/task/hooks
+
+# Color theme (uncomment one to use)
+#include light-16.theme
+#include light-256.theme
+#include bubblegum-256.theme
+# include dark-16.theme
+include dark-256.theme
+#include dark-red-256.theme
+#include dark-green-256.theme
+#include dark-blue-256.theme
+#include dark-violets-256.theme
+#include dark-yellow-green.theme
+#include dark-gray-256.theme
+#include dark-gray-blue-256.theme
+# include solarized-dark-256.theme
+#include solarized-light-256.theme
+# include no-color.theme
+
+
+recurrence.limit=1
+# urgency.due.coefficient=6.0
+
+color.due=red
+color.today=yellow on black
+color.project.Routine=cyan on black
+color.overdue=white on red
+# color.urgency.9=green
+# color.urgency.8=red
+# color.urgency.7=yellow
+# color.urgency.6=blue
+# color.urgency.5=cyan
+# color.urgency.5=green
+# color.urgency.1=blue on white
+# color.recurring=cyan on white
+rule.precedence.color=deleted,completed,active,keyword.,tag.,overdue,project.,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
+report.list.sort=due+,priority-
+report.next.sort=due+,priority-
+# default.command=next +TODAY or due.none:
+default.command=next +TODAY or due.none: or +OVERDUE
+

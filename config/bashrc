@@ -265,3 +265,6 @@ fi
 [ -d /opt/homebrew/etc/bash_completion.d/ ] && source /opt/homebrew/etc/bash_completion.d/*
 
 # }}}
+
+source "$DOT/config/bash/hledger_aliases.sh"
+export TASKRC=$HOME/dot/config/taskrc
