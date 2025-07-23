@@ -1,5 +1,6 @@
 source $VIMRUNTIME/vimrc_example.vim
 set runtimepath^=~/dot/config/vim
+set runtimepath^=~/dot_local/config/vim
 set runtimepath+=~/dot/config/vim/after
 let g:pathogen_blacklist = ['Damian-Conway-s-Vim-Setup']
 if ($is_linux != "Darwin") 
