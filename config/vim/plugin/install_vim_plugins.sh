@@ -110,6 +110,6 @@ git clone "https://github.com/morhetz/gruvbox"                         || true #
 git clone "https://github.com/907th/vim-auto-save"					   || true # &
 git clone --depth=1 https://github.com/github/copilot.vim.git ~/.vim/pack/github/start/copilot.vim || true
 # git clone https://github.com/ledger/vim-ledger || true # & # This is giving me errors, not important
-# TODO: Try this https://github.com/girishji/vimcomplete
+# LATER: Try this https://github.com/girishji/vimcomplete
 # git clone https://github.com/nelstrom/vim-markdown-folding || true
 # wait

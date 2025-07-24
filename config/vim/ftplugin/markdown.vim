@@ -109,8 +109,8 @@ nnoremap <buffer> g<left> :DecrementHeading<CR>
 
 
 let _ =<< trim eval END
-	- [ ] Test 1
-	- [ ] Test 2
+	- [X] Test 1
+	- [X] Test 2
 	-  ] Test 3
 	# Heading
 	### Heading 2

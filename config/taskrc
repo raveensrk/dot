@@ -1,6 +1,5 @@
 # [Created by task 3.4.1 6/22/2025 12:11:22]
 # data.location=<path to task sqlite directory>/task
-# TODO: Maybe dot_local?
 news.version=3.4.1
 
 # To use the default location of the XDG directories,

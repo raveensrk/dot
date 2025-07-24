@@ -16,14 +16,14 @@ packages=(
 	fzf
 	direnv
 	fortune
-	# lesspipe # TODO: Needed?
+	# lesspipe # LATER: Needed?
 	pandoc
 	ranger
 	ripgrep
 	shellcheck
 	shfmt
 	universal-ctags
-	# up # TODO: Ultimate plumber needed?
+	# up # LATER: Ultimate plumber needed?
 	direnv
 	entr
 	eza
