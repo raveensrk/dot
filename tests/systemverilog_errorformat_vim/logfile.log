@@ -8,10 +8,17 @@ xmvlog: *W,EXPENP (logfile.log,6|29): This is a sample warning message...
 xmvlog: *I,EXPENP (logfile.log,7|29): This is a sample warning message...
 -allowredefinition
 xmsim: *E,TRNULLID: NULL pointer dereference.
-          File: /fsxn_data/vcad_unpack/projects/sabine/asimov/work/rkumar/fcu_tb/asimov/verif/projects_links/sim/asimov/fcu2/sv/env/fcu2_rsu2_monitor.sv, line = 141, pos = 22
+          File: /path/to/file.sv, line = 141, pos = 22
 UVM_FATAL @ 300000000: reporter [PH_TIMEOUT] Explicit timeout of 300000000 hit, indicating a probable testbench issue
-UVM_ERROR logfile.log(25) @ 0: uvm_test_top.fcu2_env.reset_agent_inst.reset_driver [NOVIF] virtual interface must be set for: uvm_test_top.fcu2_env.reset_agent_inst.reset_driver.vif
-line5
-UVM_ERROR logfile.log(25) @ 0: uvm_test_top.fcu2_env.reset_agent_i.reset_driver [NOVIF] virtual interface must be set for: uvm_test_top.fcu2_env.reset_agent_i.reset_driver.vif
-UVM_INFO /Users/raveenkumarwork/.1my_repos/dotfiles-main/testing/logfile.log(50) @ 2087500: reporter@@rsu2_fcu2_sequence [data_sequence] rsu2_fcu2_item.rsu2_fcu2_rx_q_e[7] = 8
+UVM_ERROR logfile.log(4) @ 0: top.inst1.inst2 [NOVIF] virtual interface must be set for: top.inst1.inst2.inst3
+UVM_INFO ./logfile.log(5) @ 10000: reporter@@some_sequence [some_data_sequence] some_item.signal[1] = 10
 
+Error-[ABCD] Error Message
+/some/file/path.sv, 10
+  Error line 1
+  Error line 2
+
+Warning-[SV-SELS] Smaller enum label size
+/some/file/path.sv, 5
+  Warning line 1
+  Warning line 2

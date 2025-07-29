@@ -10,5 +10,9 @@ set errorformat+=%E%.%#xmsim:\ %\\%#E\\,%o:\ %m,%C%.%#File:\ %f\\,\ line\ =\ %l\
 set errorformat+=%EUVM_FATAL\ @\ %.%#:\ %o
 " set errorformat+=%E%o\ %f(%l)\ @\ %c:\ %m%.%#
 set errorformat+=%IUVM_INFO\ %f(%l)\ @\ %c:\ %m%.%#
+set errorformat+=%EError-%m 
+set errorformat+=%WWarning-\[%m\] %m 
+
+
 w
 tabnew +lmake | lopen
