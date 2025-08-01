@@ -4,7 +4,8 @@ let g:vim_markdown_borderless_table = 0
 let g:vim_markdown_conceal_code_blocks = 0
 let g:vim_markdown_auto_insert_bullets = 0
 let g:vim_markdown_new_list_item_indent = 0
-setlocal conceallevel=2
+setlocal conceallevel=0
+" setlocal conceallevel=2
 setlocal formatprg=mdformat\ -
 setlocal wrap
 setlocal spell
