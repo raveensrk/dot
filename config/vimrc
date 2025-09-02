@@ -96,6 +96,24 @@ set wildoptions=pum
 " set sidescrolloff=1
 " set sidescroll=1
 set scrollopt=ver,jump,hor
+
+
+
+function! CenterCursor()
+	set scrolloff=999
+	set sidescrolloff=999
+endfunction
+
+function! NoCenterCursor()
+	set scrolloff=5
+	set sidescrolloff=0
+endfunction
+
+
+command! CenterCursor call CenterCursor()
+command! NoCenterCursor call NoCenterCursor()
+
+
 "  }}}
 " {{{ BACKUPS AND UNDO
 if ! isdirectory(expand("~/.vim/undo"))   | call mkdir(expand("~/.vim/undo"),   'p') | endif
