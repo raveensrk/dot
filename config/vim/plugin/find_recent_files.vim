@@ -5,7 +5,8 @@ func! QfOldFiles(info)
     let l = []
     for idx in range(a:info.start_idx - 1, a:info.end_idx - 1)
         " use the simplified file name
-        call add(l, fnamemodify(bufname(items[idx].bufnr), ':p:t'))
+        " call add(l, fnamemodify(bufname(items[idx].bufnr), ':p:t'))
+        call add(l, fnamemodify(bufname(items[idx].bufnr), ':p'))
     endfor
     return l
 endfunc
