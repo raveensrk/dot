@@ -48,9 +48,12 @@ else
 	pushd2 ~/.vim/bundle
 	if [[ "$(command ls | wc -l)" -ne 0 ]]; then
 		for dir in ./*; do
+			[[ ! -d "$dir" ]] && continue
+			echo "Entering $dir..."
 			pushd2 "$dir"
 			git pull  &
 			popd2
+			echo "Exited $dir..."
 		done
 	fi
 fi
@@ -104,10 +107,11 @@ git clone "https://github.com/chrisbra/unicode.vim.git"                || true #
 git clone "https://github.com/mhinz/vim-startify"                      || true # &
 git clone "https://github.com/preservim/vim-markdown.git"              || true # &
 git clone "https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup" || true # &
-git clone "https://github.com/wuelnerdotexe/vim-enfocado"			|| true # &
+git clone "https://github.com/wuelnerdotexe/vim-enfocado"			   || true # &
 git clone "https://tpope.io/vim/scriptease.git"                        || true # &
 git clone "https://github.com/morhetz/gruvbox"                         || true # &
 git clone "https://github.com/907th/vim-auto-save"					   || true # &
+git clone "git@github.com:ledger/vim-ledger.git"					   || true # &
 # git clone --depth=1 https://github.com/github/copilot.vim.git ~/.vim/pack/github/start/copilot.vim || true
 # git clone https://github.com/ledger/vim-ledger || true # & # This is giving me errors, not important
 # LATER: Try this https://github.com/girishji/vimcomplete
