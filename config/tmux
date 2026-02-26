@@ -53,3 +53,5 @@ bind-key c new-window -c "#{pane_current_path}"
 set-option -g status on
 set -g history-limit 102400
 
+# Prefix + m → interactively move current pane using arrow-key menu
+bind m choose-tree -w -Zw "move-pane -t '%%'"
