@@ -22,5 +22,5 @@ nnoremap <leader>g* g*<C-o>
 vnoremap <leader>g* g*<C-o>
 
 " Search for word under cursor in all windows
-nnoremap <leader>w* :windo /<C-r><C-w>/<CR>
+nnoremap <leader><leader>w* :windo /<C-r><C-w>/<CR>
 
