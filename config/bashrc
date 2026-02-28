@@ -69,10 +69,10 @@ alias tree2="tree -C"
 alias tree3="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
 alias rsync="rsync -CazhPvu"                                         # -C
 path () {
-	echo \$PATH | tr ':' '\n' | tac
-	echo "-------------------------------"
-	echo "Reverse sorted. Bottom is the first/left most directory in the path. Bottom has the highest priority."
-	echo "-------------------------------"
+	echo "----"
+	echo "PATH"
+	echo "----"
+	echo $PATH | tr ':' '\n'
 }
 alias bashrc="vim \$DOT/config/bashrc"
 alias q="exit"

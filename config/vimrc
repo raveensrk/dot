@@ -74,7 +74,7 @@ set foldmethod=marker
 set foldenable
 " }}}
 " {{{ NUMBERING
-" set number 
+set number 
 " set relativenumber
 set nonu nornu
 " }}}
