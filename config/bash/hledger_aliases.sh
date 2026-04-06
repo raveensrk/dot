@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO Forecast
-
 alias ,hledger_bal_assets="hledger bal --depth 3 assets --tree"
 alias ,hledger_bal_assets_savings="hledger bal --depth 3 assets:savings --tree"
 alias ,hledger_bal_daily_4days="hledger bal expenses --daily -b -4days"
