@@ -11,6 +11,8 @@ check_bash_version () {
 	fi
 }
 
+declare -xf check_bash_version
+
 
 require_var() {
 	if grep -q "^${1}=.*" <(env); then
@@ -18,6 +20,7 @@ require_var() {
 		return 2
 	fi
 }
+declare -xf require_var
 
 require_file() {
 	echoy "Checking if file $1 exists"
@@ -28,6 +31,7 @@ require_file() {
 		echog "yes"
 	fi
 }
+declare -xf require_file
 
 require_dir() {
 	echoy "Checking if directory $1 exists"
@@ -38,6 +42,7 @@ require_dir() {
 		echog "yes"
 	fi
 }
+declare -xf require_dir
 
 require_cmd() {
 	echoy "Checking if command $1 exists"
@@ -48,6 +53,7 @@ require_cmd() {
 		echog "yes"
 	fi
 }
+declare -xf require_cmd
 
 source_if_exists(){
 	if [[ -f "$1" ]]; then
@@ -55,3 +61,5 @@ source_if_exists(){
 		source "$1"
 	fi
 }
+declare -xf source_if_exists
+

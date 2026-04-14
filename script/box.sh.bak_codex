@@ -26,3 +26,4 @@ box() {
 	fi
 	echo -e "${magenta}PART${nocolor}: $text"
 }
+declare -xf box

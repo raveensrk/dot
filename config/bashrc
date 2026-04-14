@@ -271,5 +271,4 @@ fi
 
 # }}}
 
-source "$DOT/config/bash/hledger_aliases.sh"
 export TASKRC=$HOME/dot/config/taskrc

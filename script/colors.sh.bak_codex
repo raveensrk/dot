@@ -3,21 +3,26 @@
 green() {
 	echo -ne "\e[38;5;2m"
 }
+declare -xf green
 
 red() {
 	echo -ne "\e[38;5;1m"
 }
+declare -xf red
 
 yellow() {
 	echo -ne "\e[38;5;11m"
 }
+declare -xf yellow
 blue() {
 	echo -ne "\e[38;5;75m"
 }
+declare -xf blue
 
 nocolor() {
 	echo -ne "\e[0m"
 }
+declare -xf nocolor
 
 declare -x blink="\e[5m"
 declare -x blue="\e[38;5;75m"
@@ -53,3 +58,5 @@ echoy() {
 echod () { 
 	echo -ne "\e[3m\e[2m\e[38;5;108mDEBUG${nocolor}: $*\n"
 }
+
+declare -xf echog echob echor echoy echod
