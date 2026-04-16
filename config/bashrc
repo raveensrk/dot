@@ -255,7 +255,7 @@ source "$DOT/config/gitconfig"
 # FZF{{{
 # shellcheck disable=1091
 . "$DOT/config/fzf.sh"
-[ -x zoxide ] && eval "$(zoxide  init bash --cmd cd)"
+command -v zoxide >/dev/null && eval "$(zoxide init bash --cmd cd)"
 #}}}
 # FINAL CUSTOM{{{
 # shellcheck source=../../script/custom/custom.sh

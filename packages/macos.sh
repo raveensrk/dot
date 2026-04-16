@@ -60,6 +60,7 @@ packages=(
 	mpv
 	task
 	taskopen
+	zoxide
 )
 
 brew install ${packages[*]}
