@@ -259,3 +259,5 @@ endif
 
 set rtp+=/opt/homebrew/opt/fzf
 
+autocmd BufReadPost */diet.yaml normal! G
+

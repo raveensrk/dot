@@ -105,8 +105,16 @@ bind  index         <Esc>a  alias-dialog
 bind  generic,pager        t  noop
 bind  index,pager          s  noop
 macro index,pager          d "<delete-message><sync-mailbox>" "Move message to trash"
+macro index,pager          ,a "<save-message>=[Gmail]/All Mail<Enter>y<sync-mailbox>" "Archive message"
+macro index                ,A "<tag-prefix><save-message>=[Gmail]/All Mail<Enter>y<sync-mailbox>" "Archive tagged messages"
+macro index                ,m "<clear-flag>N<sync-mailbox>" "Mark as read"
+macro index                ,u "<limit>~N<Enter>" "Show only unread"
+macro index                ,U "<limit>.<Enter>" "Show all messages"
+macro index,pager          ,w "<save-message>~/tmp/<Enter>" "Save email to ~/tmp"
+macro index                ,ss "<sort-mailbox>from<Enter>" "Sort by sender"
+macro index                ,sd "<sort-mailbox>reverse-date<Enter>" "Sort by date"
 macro pager          X "<pipe-message>addtospamrc<Enter>"
-macro index          \Cs ":source ~/dot/config/muttrc<Enter>"
+macro index          ,r ":source ~/dot/config/muttrc<Enter>:echo 'Config reloaded'<Enter>"
 macro index,pager          o "<pipe-message>urlview<Enter>" "call urlview to extract URLs out of a message"
 # macro pager,attach,compose x "<pipe-entry>urlview<Enter>"   "call urlview to extract URLs out of a message"
 bind  index                g first-entry
@@ -134,7 +142,7 @@ bind index,pager         A         create-alias
 bind index,pager         N         search-opposite
 bind index,pager         \CN       sidebar-next
 bind index,pager         \CP       sidebar-prev
-bind index,pager         \Co       sidebar-open
+bind index,pager         ,o        sidebar-open
 bind index,pager         a         group-reply
 bind pager               <Down>    next-line
 bind pager               <Up>      previous-line
@@ -156,7 +164,8 @@ set sidebar_width=30
 set sidebar_component_depth = 2
 # }}}
 # Testing
-source $HOME/script/mail/spamrc
+source $HOME/iCloud/dot/config/mutt/spamrc
+source $HOME/iCloud/dot/config/mutt/gmail.rc
 set count_alternatives = yes
 set attach_save_dir = "~/tmp"
 # auto_view text/plain
