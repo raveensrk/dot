@@ -75,6 +75,7 @@ path () {
 	echo $PATH | tr ':' '\n'
 }
 alias bashrc="vim \$DOT/config/bashrc"
+alias ,source_bash_profile="source ~/.bash_profile"
 alias q="exit"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 alias git_pickaxe="git log -p -S"
@@ -197,6 +198,7 @@ export PATH+=":$HOME/dot_local/script"
 export PYTHONPATH+=":$DOT/script"
 export PYTHONPATH+=":$HOME/work/practice/python"
 [ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
+export PATH+=":$HOME/project/work/wallpapers"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
 ,goto_file_directory() {
@@ -272,3 +274,5 @@ fi
 # }}}
 
 export TASKRC=$HOME/dot/config/taskrc
+# Fortune for login shells only
+[[ $- == *i* ]] && shopt -q login_shell && fortune
