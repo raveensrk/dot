@@ -34,4 +34,5 @@ export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/curl/lib $LDFLAGS"
 export CPPFLAGS="-I/opt/homebrew/opt/curl/include $CPPFLAGS"
 
-fortune
+# Fortune generates unnecessary prints that make it difficult for llm to debug
+# fortune
