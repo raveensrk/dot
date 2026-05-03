@@ -274,5 +274,7 @@ fi
 # }}}
 
 export TASKRC=$HOME/dot/config/taskrc
-# Fortune for login shells only
-[[ $- == *i* ]] && shopt -q login_shell && fortune
+
+if [[ $os == "Darwin" ]]; then
+	export PATH="/opt/homebrew/bin:$PATH"
+fi
