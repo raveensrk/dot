@@ -108,3 +108,7 @@ chsh -s /opt/homebrew/bin/bash
 ### Terminal
 
 > Settings -> Profiles -> Keyboard -> Enable "Use Option as Meta Key"
+
+## Test
+
+Some text for testing.
