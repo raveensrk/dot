@@ -10,12 +10,11 @@ REPO_LIST="$HOME/dot_local/list_of_repos.txt"
 sync_repo() {
 	local repo="$1"
 
-	box "$repo"
-
 	if [[ ! -d "$repo/.git" ]]; then
-		echor "Not a git repo: $repo"
 		return 0
 	fi
+
+	box "$repo"
 
 	local branch
 	branch=$(git -C "$repo" branch --show-current)
