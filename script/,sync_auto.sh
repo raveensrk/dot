@@ -7,17 +7,14 @@ source "$DOT/script/header.sh"
 
 REPO_LIST="$HOME/dot_local/list_of_repos.txt"
 
-require_file "$REPO_LIST"
-
 sync_repo() {
 	local repo="$1"
 
-	box "$repo"
-
 	if [[ ! -d "$repo/.git" ]]; then
-		echor "Not a git repo: $repo"
 		return 0
 	fi
+
+	box "$repo"
 
 	local branch
 	branch=$(git -C "$repo" branch --show-current)
@@ -82,10 +79,72 @@ sync_repo() {
 	fi
 }
 
-while IFS= read -r repo || [[ -n "$repo" ]]; do
-	# Skip blank lines and comments
-	[[ -z "$repo" || "$repo" == \#* ]] && continue
+use_default=true
+target_dirs=()
+list_files=()
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		-d|--dir)
+			target_dirs+=("$2")
+			use_default=false
+			shift 2
+			;;
+		-f|--file)
+			list_files+=("$2")
+			use_default=false
+			shift 2
+			;;
+		-h|--help)
+			echo "Usage: $(basename "$0") [-d|--dir <dir>] [-f|--file <file>]"
+			exit 0
+			;;
+		*)
+			echor "Unknown option: $1"
+			exit 1
+			;;
+	esac
+done
+
+if [[ "$use_default" == true ]]; then
+	list_files+=("$REPO_LIST")
+fi
+
+repos_to_sync=()
+
+for lf in "${list_files[@]}"; do
+	if [[ ! -f "$lf" ]]; then
+		echor "List file not found: $lf"
+		continue
+	fi
+	while IFS= read -r repo || [[ -n "$repo" ]]; do
+		[[ -z "$repo" || "$repo" == \#* ]] && continue
+		repos_to_sync+=("$repo")
+	done < "$lf"
+done
+
+for td in "${target_dirs[@]}"; do
+	if [[ ! -d "$td" ]]; then
+		echor "Directory not found: $td"
+		continue
+	fi
+	echob "Scanning directory: $td"
+	while IFS= read -r git_dir; do
+		repos_to_sync+=("$(dirname "$git_dir")")
+	done < <(find "$td" -name ".git" -type d -prune)
+done
+
+processed_repos=$'\n'
+for repo in "${repos_to_sync[@]}"; do
+	# Resolve absolute path to ensure accurate deduplication
+	repo_path=$(cd "$repo" 2>/dev/null && pwd) || repo_path="$repo"
+	
+	if [[ "$processed_repos" == *$'\n'"$repo_path"$'\n'* ]]; then
+		continue
+	fi
+	processed_repos="${processed_repos}${repo_path}"$'\n'
+	
 	sync_repo "$repo" || true
-done < "$REPO_LIST"
+done
 
 echog "All repos processed."
