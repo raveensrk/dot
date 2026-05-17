@@ -6,6 +6,7 @@ IFS=$'\n\t'
 source "$DOT/script/header.sh"
 
 REPO_LIST="$HOME/dot_local/list_of_repos.txt"
+DEFAULT_REPO_DIR="$HOME/repos"
 
 sync_repo() {
 	local repo="$1"
@@ -97,6 +98,7 @@ while [[ $# -gt 0 ]]; do
 			;;
 		-h|--help)
 			echo "Usage: $(basename "$0") [-d|--dir <dir>] [-f|--file <file>]"
+			echo "Default: sync repos from $REPO_LIST and scan $DEFAULT_REPO_DIR"
 			exit 0
 			;;
 		*)
@@ -108,6 +110,7 @@ done
 
 if [[ "$use_default" == true ]]; then
 	list_files+=("$REPO_LIST")
+	target_dirs+=("$DEFAULT_REPO_DIR")
 fi
 
 repos_to_sync=()
