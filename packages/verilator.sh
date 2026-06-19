@@ -7,21 +7,25 @@
 #sudo apt-get install libfl-dev  # Ubuntu only (ignore if gives error)
 #sudo apt-get install zlibc zlib1g zlib1g-dev  # Ubuntu only (ignore if gives error)
 
-cd $HOME
+cd "$HOME" || exit 2
 
-git clone https://github.com/verilator/verilator   # Only first time
+git clone https://github.com/verilator/verilator  || echo "Verilator already present"
+
+# mkdir ~/tmp/verilator
+# wget https://github.com/verilator/verilator/archive/refs/tags/v5.046.tar.gz
 
 # Every time you need to build:
 # unsetenv VERILATOR_ROOT  # For csh; ignore error if on bash
 unset VERILATOR_ROOT  # For bash
-cd verilator
+cd verilator || exit 2
 git pull         # Make sure git repository is up-to-date
-git tag          # See what versions exist
+# git tag          # See what versions exist
 #git checkout master      # Use development branch (e.g. recent bug fixes)
-git checkout stable      # Use most recent stable release
+#git checkout stable      # Use most recent stable release
 #git checkout v{version}  # Switch to specified release version
+git checkout v5.046
 
 autoconf         # Create ./configure script
 ./configure      # Configure and create Makefile
-make -j `nproc`  # Build Verilator itself (if error, try just 'make')
+make -j "$(nproc)"  # Build Verilator itself (if error, try just 'make')
 sudo make install
