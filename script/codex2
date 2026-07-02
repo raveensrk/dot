@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+tmpdir="$(mktemp -d "${TMPDIR:-/tmp}/codex-output.XXXXXX")"
+out="$tmpdir/final.txt"
+log="$tmpdir/codex.log"
+
+cleanup() {
+  rm -rf "$tmpdir"
+}
+trap cleanup EXIT HUP INT TERM
+
+if codex exec --skip-git-repo-check --color never "$@" -o "$out" - >"$log" 2>&1; then
+  if [[ -f "$out" ]]; then
+    cat "$out"
+  fi
+else
+  status=$?
+  cat "$log" >&2
+  exit "$status"
+fi

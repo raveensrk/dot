@@ -87,6 +87,7 @@ export HOWDOI_COLORIZE=1
 alias howdoi="howdoi -a"
 alias hexdump="hexdump -Cv"
 alias compress="tar -cvza -f "
+alias newsboat2='newsboat -C "$DOT/config/newsboat/config" -u "$DOT/config/newsboat/urls"'
 alias ls=eza
 alias l="eza -lAh"
 # }}}
