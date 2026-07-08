@@ -2,6 +2,10 @@
 
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
+## Common rules
+
+~/repos/ai/docs/common.md
+
 ## What This Repo Is
 
 This is a personal dotfiles repository (`~/dot`) for macOS and Ubuntu. It manages shell configuration, editor setup, and a collection of utility scripts.
