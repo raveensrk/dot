@@ -65,6 +65,7 @@ Scripts that source `$DOT/script/header.sh` get access to:
 
 ### Script Conventions
 
+- Keep the file extension in script names (e.g. `.py`, `.sh`) and use `_` instead of `-` as the word separator (e.g. `yt_rss.py`, not `yt-rss`).
 - Scripts use `#!/usr/bin/env bash` and require Bash 5+
 - Exit with code `2` (not `1`) for failures — `check_bash_version` and guards use `return 2`
 - Use `echor`/`echog`/`echoy` instead of raw `echo` for status messages
