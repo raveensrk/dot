@@ -174,6 +174,9 @@ def collect_repos(list_files, target_dirs):
             line = raw.strip()
             if not line or line.startswith("#"):
                 continue
+            if line.startswith("dir:"):
+                target_dirs.append(line[4:].strip())
+                continue
             repos.append(line)
 
     for td in target_dirs:
@@ -189,18 +192,13 @@ def collect_repos(list_files, target_dirs):
 
 
 def dedup(repos):
-    seen = set()
-    ordered = []
+    resolved = []
     for repo in repos:
         try:
-            resolved = str(Path(repo).resolve())
+            resolved.append(str(Path(repo).resolve()))
         except OSError:
-            resolved = repo
-        if resolved in seen:
-            continue
-        seen.add(resolved)
-        ordered.append(repo)
-    return ordered
+            resolved.append(repo)
+    return sorted(set(resolved))
 
 
 def print_summary():
@@ -224,7 +222,8 @@ def main():
     parser.add_argument("-d", "--dir", action="append", default=[], metavar="DIR",
                         help="directory to scan for repos (repeatable)")
     parser.add_argument("-f", "--file", action="append", default=[], metavar="FILE",
-                        help="file listing repo paths, one per line (repeatable)")
+                        help="file listing repo paths, one per line; "
+                             "prefix a line with 'dir:' to scan a directory recursively (repeatable)")
     args = parser.parse_args()
 
     list_files = list(args.file)
