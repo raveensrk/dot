@@ -12,4 +12,4 @@ default_dirs=("$HOME/dot" "$HOME/iCloud/notes" "$HOME/work" "$HOME/repos")
 # glob patterns to ignore (passed to rg as --glob '!<pattern>').
 # Slash-free globs match basenames anywhere ('node_modules', '*.min.md');
 # globs with a slash are matched at any depth ('archive/**' means '**/archive/**').
-ignore=()
+ignore=('node_modules', 'odysseus')
