@@ -275,7 +275,6 @@ fi
 # }}}
 
 export TASKRC=$HOME/dot/config/taskrc
-export TODORC=$DOT/config/todorc
 
 if [[ $os == "Darwin" ]]; then
 	export PATH="/opt/homebrew/bin:$PATH"

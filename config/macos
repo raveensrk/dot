@@ -29,6 +29,7 @@ alias killsafari="osascript -e 'quit app \"safari.app\"'"
 alias mail="open -a mail.app"
 alias books="open \"\$(find $HOME/icloud/Documents/Shared_Documents/Books -iname '*.pdf' | fzf)\""
 eval "$(/usr/libexec/path_helper)"
+export PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"
 
 # curl is keg-only, which means it was not symlinked into /opt/homebrew, because macOS already provides this software and installing another version in parallel can cause all kinds of trouble.
 export PATH="/opt/homebrew/opt/curl/bin:$PATH"
