@@ -1,0 +1,21 @@
+# Keywords matched as "- KEYWORD: content" or after a source comment prefix.
+patterns = ["TODO", "IN_PROGRESS", "FIXME", "BUG", "LATER"]
+
+# Patterns matched as "- [ ] content" in Markdown files.
+checkbox_patterns = ['\[ \]']
+
+# Markdown file extensions.
+extensions = ["md"]
+
+# Source extensions scanned only when --all-extensions is present.
+# An empty array disables source scanning.
+source_extensions = ["py", "sh", "bash", "sv", "svh", "v", "vim"]
+
+# Comment prefixes accepted in non-Markdown files (ripgrep regex).
+comment_prefix_pattern = '//+|#|--|;|/\*+|\*+|<!--|%'
+
+# Paths scanned when no positional paths are supplied.
+default_dirs = ["~/dot", "~/repos"]
+
+# Additional ignores applied alongside ripgrep's normal ignore behavior.
+ignore = ["node_modules", "odysseus", "uvm-1.2-master"]
