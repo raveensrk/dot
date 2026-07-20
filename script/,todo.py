@@ -8,6 +8,7 @@ import argparse
 import base64
 import json
 import os
+import re
 import shlex
 import shutil
 import subprocess
@@ -34,34 +35,81 @@ class TodoConfig:
     source_extensions: list[str] = field(default_factory=list)
     default_dirs: list[str] = field(default_factory=lambda: ["."])
     ignore: list[str] = field(default_factory=list)
+    owner_mentions: list[str] = field(
+        default_factory=lambda: [
+            "raveen",
+            "raveensrk",
+            "raveenkumar",
+            "raveen_kumar",
+            "raveen-kumar",
+        ]
+    )
+    flow_order: list[str] = field(
+        default_factory=lambda: [
+            "IN_PROGRESS",
+            "TODO",
+            "[ ]",
+            "FIXME",
+            "BUG",
+            "LATER",
+        ]
+    )
     comment_prefix_pattern: str = r'//+|#|--|;|/\*+|\*+|<!--|%'
 
-    @classmethod
-    def load(cls, path: Path | None) -> TodoConfig:
-        config = cls()
-        if path is None or not path.is_file():
-            return config
+    KNOWN_FIELDS = {
+        "patterns",
+        "checkbox_patterns",
+        "extensions",
+        "source_extensions",
+        "default_dirs",
+        "ignore",
+        "owner_mentions",
+        "flow_order",
+        "comment_prefix_pattern",
+    }
 
+    @staticmethod
+    def _read(path: Path | None) -> dict:
+        """Read a TOML file into a dict, or {} when absent."""
+        if path is None or not path.is_file():
+            return {}
         try:
             with path.open("rb") as stream:
-                values = tomllib.load(stream)
+                return tomllib.load(stream)
         except (OSError, tomllib.TOMLDecodeError) as error:
             raise TodoError(f"cannot read configuration {path}: {error}") from error
 
-        known_fields = {
-            "patterns",
-            "checkbox_patterns",
-            "extensions",
-            "source_extensions",
-            "default_dirs",
-            "ignore",
-            "comment_prefix_pattern",
-        }
-        unknown = sorted(set(values) - known_fields)
+    @staticmethod
+    def _merge(base: dict, overlay: dict) -> dict:
+        """Overlay `overlay` onto `base`; `ignore` is appended, others replaced."""
+        merged = dict(base)
+        for key, value in overlay.items():
+            if (
+                key == "ignore"
+                and isinstance(value, list)
+                and isinstance(merged.get(key), list)
+            ):
+                combined = list(merged[key])
+                for item in value:
+                    if item not in combined:
+                        combined.append(item)
+                merged[key] = combined
+            else:
+                merged[key] = value
+        return merged
+
+    @classmethod
+    def load(cls, path: Path | None, local_path: Path | None = None) -> TodoConfig:
+        config = cls()
+        values = cls._read(path)
+        if local_path is not None:
+            values = cls._merge(values, cls._read(local_path))
+
+        unknown = sorted(set(values) - cls.KNOWN_FIELDS)
         if unknown:
             raise TodoError(f"unknown configuration keys: {', '.join(unknown)}")
 
-        for name in known_fields - {"comment_prefix_pattern"}:
+        for name in cls.KNOWN_FIELDS - {"comment_prefix_pattern"}:
             if name not in values:
                 continue
             value = values[name]
@@ -140,6 +188,22 @@ def config_path() -> Path:
         return repository_config
     config_home = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
     return config_home / "todo" / "config.toml"
+
+
+def local_config_path() -> Path | None:
+    """Machine-local overlay config, merged over the committed one.
+
+    Holds computer-specific settings (e.g. private `ignore` paths) that must not
+    be committed. Skipped entirely when TODO_CONFIG pins an explicit config, so
+    that path stays authoritative (and tests stay hermetic).
+    """
+    configured = os.environ.get("TODO_CONFIG_LOCAL")
+    if configured:
+        return Path(configured).expanduser()
+    if os.environ.get("TODO_CONFIG"):
+        return None
+    local = Path.home() / "dot_local" / "config" / "todo.toml"
+    return local if local.is_file() else None
 
 
 def expand_path(value: str) -> Path:
@@ -233,6 +297,116 @@ def rg_data_text(value: dict[str, str]) -> str:
     return base64.b64decode(encoded).decode("utf-8", errors="replace")
 
 
+def fenced_line_numbers(path: str) -> set[int]:
+    """Return the 1-based line numbers inside fenced code blocks of a file.
+
+    Fences are delimited by runs of at least three backticks or tildes. The
+    fence delimiters themselves are treated as inside the block.
+    """
+    try:
+        text = Path(path).read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return set()
+
+    inside: set[int] = set()
+    fence: str | None = None
+    for number, raw in enumerate(text.splitlines(), start=1):
+        stripped = raw.lstrip()
+        marker = None
+        for char in ("`", "~"):
+            if stripped.startswith(char * 3):
+                run = len(stripped) - len(stripped.lstrip(char))
+                marker = char * run
+                break
+        if fence is None:
+            if marker is not None:
+                fence = marker
+                inside.add(number)
+        else:
+            inside.add(number)
+            # A closing fence uses the same character and is at least as long,
+            # with nothing but the fence characters on the line.
+            if (
+                marker is not None
+                and marker[0] == fence[0]
+                and len(marker) >= len(fence)
+                and stripped.rstrip() == marker
+            ):
+                fence = None
+    return inside
+
+
+def drop_fenced(matches: list[TodoMatch]) -> list[TodoMatch]:
+    """Remove Markdown matches that fall inside fenced code blocks."""
+    fenced: dict[str, set[int]] = {}
+    kept: list[TodoMatch] = []
+    for match in matches:
+        lines = fenced.get(match.file)
+        if lines is None:
+            lines = fenced_line_numbers(match.file)
+            fenced[match.file] = lines
+        if match.line not in lines:
+            kept.append(match)
+    return kept
+
+
+_MENTION_RE = re.compile(r"@([A-Za-z0-9_-]+)")
+
+
+def drop_foreign_mentions(
+    matches: list[TodoMatch], owner_mentions: list[str]
+) -> list[TodoMatch]:
+    """Drop matches whose text @mentions anyone who is not the owner.
+
+    Matches without any @mention are kept.
+    """
+    owners = {name.lower() for name in owner_mentions}
+    kept: list[TodoMatch] = []
+    for match in matches:
+        mentions = _MENTION_RE.findall(match.text)
+        if any(mention.lower() not in owners for mention in mentions):
+            continue
+        kept.append(match)
+    return kept
+
+
+def flow_ranker(config: TodoConfig):
+    """Return a function ranking a match by its status in the kanban flow order.
+
+    Each flow entry is a keyword (e.g. ``TODO``) or the checkbox token (``[ ]``).
+    A match is ranked by whichever status token appears leftmost in its text, so
+    the line's leading marker wins even when another keyword appears later.
+    """
+    checkbox_alt = (
+        alternation(config.checkbox_patterns) if config.checkbox_patterns else None
+    )
+    keywords = set(config.patterns)
+    specs: list[tuple[int, re.Pattern[str]]] = []
+    for rank, entry in enumerate(config.flow_order):
+        if entry in keywords:
+            regex = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(entry)}:")
+        else:
+            regex = re.compile(checkbox_alt if checkbox_alt else re.escape(entry))
+        specs.append((rank, regex))
+
+    last = len(config.flow_order)
+
+    def rank_of(match: TodoMatch) -> int:
+        best_rank = last
+        best_pos: int | None = None
+        for rank, regex in specs:
+            found = regex.search(match.text)
+            if found is None:
+                continue
+            position = found.start()
+            if best_pos is None or position < best_pos:
+                best_pos = position
+                best_rank = rank
+        return best_rank
+
+    return rank_of
+
+
 def scan(
     config: TodoConfig, paths: list[Path], *, all_extensions: bool = False
 ) -> list[TodoMatch]:
@@ -245,7 +419,7 @@ def scan(
     for extension in config.extensions:
         markdown_globs.extend(("--glob", f"*.{extension}"))
 
-    matches = rg_json(markdown_pattern, markdown_globs, paths)
+    matches = drop_fenced(rg_json(markdown_pattern, markdown_globs, paths))
     source_extensions = [
         extension
         for extension in config.source_extensions
@@ -256,7 +430,9 @@ def scan(
         for extension in source_extensions:
             source_globs.extend(("--glob", f"*.{extension}"))
         matches.extend(rg_json(source_pattern, source_globs, paths))
-    return sorted(set(matches))
+    matches = drop_foreign_mentions(matches, config.owner_mentions)
+    rank_of = flow_ranker(config)
+    return sorted(set(matches), key=lambda match: (rank_of(match), match))
 
 
 def render_plain(matches: list[TodoMatch]) -> str:
@@ -332,7 +508,7 @@ def output(matches: list[TodoMatch], output_format: str, paths: list[Path]) -> N
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
     try:
-        config = TodoConfig.load(config_path())
+        config = TodoConfig.load(config_path(), local_config_path())
         paths = existing_paths(args.paths or config.default_dirs)
         matches = scan(config, paths, all_extensions=args.all_extensions)
         output(matches, args.format, paths)

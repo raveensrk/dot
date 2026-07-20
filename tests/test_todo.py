@@ -83,6 +83,8 @@ class TodoScannerTest(unittest.TestCase):
         checkbox_patterns: list[str] | None = None,
         source_extensions: list[str] | None = None,
         ignore: list[str] | None = None,
+        owner_mentions: list[str] | None = None,
+        flow_order: list[str] | None = None,
     ) -> Path:
         values = {
             "patterns": patterns,
@@ -93,6 +95,16 @@ class TodoScannerTest(unittest.TestCase):
             "source_extensions": source_extensions or [],
             "default_dirs": [str(self.fixture)],
             "ignore": ignore or ["ignored"],
+            "owner_mentions": (
+                ["raveen", "raveensrk", "raveenkumar", "raveen_kumar", "raveen-kumar"]
+                if owner_mentions is None
+                else owner_mentions
+            ),
+            "flow_order": (
+                ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]
+                if flow_order is None
+                else flow_order
+            ),
         }
         lines = [f"{key} = {json.dumps(value)}" for key, value in values.items()]
         lines.append("comment_prefix_pattern = '//+|#|--|;|/\\*+|\\*+|<!--|%'")
@@ -205,6 +217,144 @@ class TodoScannerTest(unittest.TestCase):
         self.assertIn("- TODO: Markdown task", result.stdout)
         self.assertNotIn("- [ ] Checkbox task", result.stdout)
 
+    def test_fenced_code_blocks_are_ignored(self) -> None:
+        self.write(
+            "fenced.md",
+            """\
+            - TODO: real task before fence
+            ```
+            - TODO: fenced task ignored
+            ```
+            ~~~md
+            - [ ] fenced checkbox ignored
+            ~~~
+            - FIXME: real task after fence
+            """,
+        )
+        result = self.run_scanner(
+            "--format", "plain", str(self.fixture / "fenced.md")
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("- TODO: real task before fence", result.stdout)
+        self.assertIn("- FIXME: real task after fence", result.stdout)
+        self.assertNotIn("fenced task ignored", result.stdout)
+        self.assertNotIn("fenced checkbox ignored", result.stdout)
+
+    def test_foreign_mentions_are_ignored(self) -> None:
+        self.write(
+            "mentions.md",
+            """\
+            - TODO: assigned to someone else @Sakthi
+            - TODO: mine lowercase @raveen
+            - TODO: mine mixed case @Raveen_Kumar
+            - TODO: mine hyphen @raveen-kumar
+            - TODO: unassigned task with no mention
+            """,
+        )
+        result = self.run_scanner(
+            "--format", "plain", str(self.fixture / "mentions.md")
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("@Sakthi", result.stdout)
+        self.assertIn("mine lowercase @raveen", result.stdout)
+        self.assertIn("mine mixed case @Raveen_Kumar", result.stdout)
+        self.assertIn("mine hyphen @raveen-kumar", result.stdout)
+        self.assertIn("unassigned task with no mention", result.stdout)
+
+    def test_owner_mentions_are_configurable(self) -> None:
+        config = self.write_config(
+            "custom-owner.toml", patterns=["TODO"], owner_mentions=["alice"]
+        )
+        self.write(
+            "custom.md",
+            """\
+            - TODO: for alice @alice
+            - TODO: for raveen @raveen
+            """,
+        )
+        result = self.run_scanner(
+            "--format", "plain", str(self.fixture / "custom.md"), config=config
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("for alice @alice", result.stdout)
+        self.assertNotIn("@raveen", result.stdout)
+
+    def test_local_overlay_appends_ignore_and_overrides_keys(self) -> None:
+        base = self.write_config("base.toml", patterns=["TODO"], ignore=["ignored"])
+        self.write("local.toml", 'ignore = ["private"]\npatterns = ["TODO", "BUG"]\n')
+        self.write("ignored/skip.md", "- TODO: base-ignored task\n")
+        self.write("private/skip.md", "- TODO: locally ignored task\n")
+        self.write("keep.md", "- TODO: kept task\n- BUG: local-only keyword\n")
+        result = self.run_scanner(
+            "--format",
+            "plain",
+            str(self.fixture),
+            config=base,
+            environment={"TODO_CONFIG_LOCAL": str(self.fixture / "local.toml")},
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        # Overlay `ignore` is appended to the base one: both dirs excluded.
+        self.assertNotIn("base-ignored task", result.stdout)
+        self.assertNotIn("locally ignored task", result.stdout)
+        self.assertIn("- TODO: kept task", result.stdout)
+        # Overlay replaces `patterns`, so the local-only BUG keyword is matched.
+        self.assertIn("- BUG: local-only keyword", result.stdout)
+
+    def test_flow_order_sorts_by_status(self) -> None:
+        self.write(
+            "flow.md",
+            """\
+            - LATER: do later thing
+            - [ ] checkbox thing
+            - IN_PROGRESS: doing now
+            - TODO: to do thing
+            - FIXME: fix this
+            """,
+        )
+        result = self.run_scanner(
+            "--format", "plain", str(self.fixture / "flow.md")
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        texts = [line.split(":", 3)[3] for line in result.stdout.splitlines()]
+        self.assertEqual(
+            texts,
+            [
+                "- IN_PROGRESS: doing now",
+                "- TODO: to do thing",
+                "- [ ] checkbox thing",
+                "- FIXME: fix this",
+                "- LATER: do later thing",
+            ],
+        )
+
+    def test_empty_flow_order_falls_back_to_file_sort(self) -> None:
+        config = self.write_config(
+            "no-flow.toml",
+            patterns=["TODO", "IN_PROGRESS", "FIXME", "LATER"],
+            flow_order=[],
+        )
+        self.write(
+            "flow2.md",
+            """\
+            - LATER: do later thing
+            - IN_PROGRESS: doing now
+            - TODO: to do thing
+            """,
+        )
+        result = self.run_scanner(
+            "--format", "plain", str(self.fixture / "flow2.md"), config=config
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        texts = [line.split(":", 3)[3] for line in result.stdout.splitlines()]
+        self.assertEqual(
+            texts,
+            [
+                "- LATER: do later thing",
+                "- IN_PROGRESS: doing now",
+                "- TODO: to do thing",
+            ],
+        )
+
     def test_source_extensions_can_be_restricted(self) -> None:
         config = self.write_config(
             "python-only.toml",
@@ -305,7 +455,8 @@ class TodoScannerTest(unittest.TestCase):
         )
         self.assertEqual(fzf_result.returncode, 0, fzf_result.stderr)
         editor_arguments = json.loads(editor_log.read_text(encoding="utf-8"))
-        self.assertEqual(editor_arguments[0], "+1")
+        # Flow order puts IN_PROGRESS (notes.md line 2) first in the list.
+        self.assertEqual(editor_arguments[0], "+2")
         self.assertIn("--", editor_arguments)
         self.assertTrue(editor_arguments[-1].endswith("notes.md"))
 

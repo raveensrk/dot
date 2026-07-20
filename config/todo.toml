@@ -18,4 +18,16 @@ comment_prefix_pattern = '//+|#|--|;|/\*+|\*+|<!--|%'
 default_dirs = ["~/dot", "~/repos"]
 
 # Additional ignores applied alongside ripgrep's normal ignore behavior.
-ignore = ["node_modules", "odysseus", "uvm-1.2-master"]
+# Keep only generic, non-sensitive entries here. Computer-specific
+# paths belong in the machine-local overlay ~/dot_local/config/todo.toml, whose
+# `ignore` array is appended to this one.
+ignore = ["node_modules"]
+
+# A todo that @mentions someone NOT in this list is dropped (case-insensitive).
+# Todos with no @mention, or that only mention these names, are kept.
+owner_mentions = ["raveen", "raveensrk", "raveenkumar", "raveen_kumar", "raveen-kumar"]
+
+# Kanban flow order: results are sorted by status in this order (file:line breaks
+# ties within a status). "[ ]" is the checkbox token; anything not listed sorts
+# last. An empty array falls back to plain file-path ordering.
+flow_order = ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]

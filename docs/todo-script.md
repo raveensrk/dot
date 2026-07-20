@@ -107,6 +107,24 @@ Set `TODO_CONFIG` to select another TOML file. When it is unset, the scanner use
 the repository's `config/todo.toml`, followed by
 `$XDG_CONFIG_HOME/todo/config.toml` as the external installation fallback.
 
+### Machine-local overlay
+
+Computer--specific settings that must not be committed live in a local
+overlay, `~/dot_local/config/todo.toml` (or a path given by `TODO_CONFIG_LOCAL`).
+It is merged over the committed config: the `ignore` array is **appended** to the
+committed one, while any other key present replaces the committed value. This keeps
+private `ignore` paths (internal project directories, client repos) out of the
+public dotfiles repo — put generic entries like `node_modules` in the committed
+config and everything sensitive in the overlay:
+
+```bash
+# ~/dot_local/config/todo.toml
+ignore = ["efuse2", "examples/apb_reg", "project_management"]
+```
+
+The default overlay is skipped when `TODO_CONFIG` pins an explicit config, so that
+file stays authoritative; set `TODO_CONFIG_LOCAL` to opt back into an overlay.
+
 `source_extensions` is consulted only with `--all-extensions`. An empty array
 disables source scanning entirely:
 
@@ -119,3 +137,26 @@ accidentally repeated in `source_extensions`.
 
 Ripgrep's normal ignore behavior applies, including `.gitignore` files. The
 additional `ignore` array can exclude paths across all configured roots.
+
+Todos inside fenced code blocks (delimited by ``` ``` ``` or `~~~`) in Markdown
+files are ignored.
+
+`owner_mentions` lists the owner's names. A todo whose text `@mentions` anyone not
+in this list is dropped (comparison is case-insensitive). Todos with no `@mention`,
+or that only mention the owner, are kept. For example, with the default list a task
+ending in `@Sakthi` is dropped while one ending in `@raveen` is kept:
+
+```bash
+owner_mentions = ["raveen", "raveensrk", "raveenkumar", "raveen_kumar", "raveen-kumar"]
+```
+
+`flow_order` sorts results by kanban status rather than by file path, so the most
+actionable work surfaces first (useful when the output feeds a Vim quickfix list).
+Each entry is a keyword or the checkbox token `[ ]`; a match is ranked by whichever
+status token appears leftmost on its line. Any status not listed sorts last, and
+ties within a status keep the file-then-line order. An empty array restores plain
+file-path ordering.
+
+```bash
+flow_order = ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]
+```
