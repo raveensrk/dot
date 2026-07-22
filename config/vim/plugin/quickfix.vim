@@ -8,6 +8,9 @@ nmap ,n :cnext<cr>,
 nmap ,p :cprevious<cr>,
 nmap ,c :copen<cr>
 nmap ,C :cclose<cr>
+
+" Never wrap lines in the quickfix/location-list window.
+autocmd FileType qf setlocal nowrap
 " Disabled: vim-addon-qf-layout plugin configuration.
 " let g:vim_addon_qf_layout = {}
 " let g:vim_addon_qf_layout.quickfix_formatters = [ 'vim_addon_qf_layout#DefaultFormatter',  'NOP','vim_addon_qf_layout#FormatterNoFilename', 'vim_addon_qf_layout#Reset' ]
