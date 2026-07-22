@@ -15,9 +15,11 @@ Replaces the older sync scripts. Behaviour per repo:
   - ahead only                -> push
   - behind only               -> fast-forward only (failure -> lazygit)
   - up to date                -> INFO ✅
+  - ignored (via --ignore or 'ignore:' list lines) -> skipped silently
 """
 
 import argparse
+import fnmatch
 import os
 import subprocess
 import sys
@@ -226,7 +228,19 @@ def _fetch_reason(stderr):
     return "unknown error"
 
 
-def collect_repos(list_files, target_dirs):
+def is_ignored(path, ignore_patterns):
+    """True if path matches an ignore pattern (glob) or lies under an ignored path."""
+    for pat in ignore_patterns:
+        if fnmatch.fnmatch(path, pat):
+            return True
+        if not any(ch in pat for ch in "*?[") and (
+            path == pat or path.startswith(pat.rstrip("/") + "/")
+        ):
+            return True
+    return False
+
+
+def collect_repos(list_files, target_dirs, ignore_patterns):
     repos = []
     for lf in list_files:
         lf = _expand_path(lf)
@@ -247,6 +261,9 @@ def collect_repos(list_files, target_dirs):
             if line.startswith("dir:"):
                 target_dirs.append(_expand_path(line[4:].strip(), base=lf.parent))
                 continue
+            if line.startswith("ignore:"):
+                ignore_patterns.append(_expand_ignore(line[7:].strip(), base=lf.parent))
+                continue
             repos.append(str(_expand_path(line, base=lf.parent)))
 
     for td in target_dirs:
@@ -264,6 +281,14 @@ def collect_repos(list_files, target_dirs):
             counts["failed"] += 1
             error(str(td), f"Repository scan failed — {exc}")
     return repos
+
+
+def _expand_ignore(value, base=None):
+    """Expand an ignore entry; glob patterns are kept relative-friendly, plain paths expanded."""
+    value = os.path.expandvars(os.path.expanduser(str(value)))
+    if any(ch in value for ch in "*?["):
+        return value
+    return str(_expand_path(value, base=base))
 
 
 def _expand_path(value, base=None):
@@ -307,7 +332,11 @@ def main():
                         help="directory to scan for repos (repeatable)")
     parser.add_argument("-f", "--file", action="append", default=[], metavar="FILE",
                         help="file listing repo paths, one per line; "
-                             "prefix a line with 'dir:' to scan a directory recursively (repeatable)")
+                             "prefix a line with 'dir:' to scan a directory recursively, "
+                             "or 'ignore:' to skip a path or glob pattern (repeatable)")
+    parser.add_argument("-i", "--ignore", action="append", default=[], metavar="PATTERN",
+                        help="path or glob pattern to skip; repos under a plain path are "
+                             "also skipped (repeatable; also 'ignore:' lines in list files)")
     parser.add_argument("-m", "--manual", action="store_true",
                         help="open every repository in lazygit; do not fetch, merge, or push")
     args = parser.parse_args()
@@ -318,7 +347,9 @@ def main():
         list_files.append(str(REPO_LIST))
         target_dirs.append(str(DEFAULT_REPO_DIR))
 
-    repos = dedup(collect_repos(list_files, target_dirs))
+    ignore_patterns = [_expand_ignore(p) for p in args.ignore]
+    repos = dedup(collect_repos(list_files, target_dirs, ignore_patterns))
+    repos = [r for r in repos if not is_ignored(r, ignore_patterns)]
     for repo in repos:
         try:
             sync_repo(repo, manual=args.manual)
