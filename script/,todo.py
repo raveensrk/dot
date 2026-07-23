@@ -413,11 +413,15 @@ def scan(
     if shutil.which("rg") is None:
         raise TodoError("ripgrep (rg) is required")
     markdown_pattern, source_pattern = build_patterns(config)
-    common_globs = ignore_globs(config)
+    # Ignore globs must come after the extension whitelist: ripgrep applies
+    # globs last-match-wins, so a trailing "*.md" would otherwise re-include
+    # everything the "!..." ignore globs excluded.
+    ignores = ignore_globs(config)
 
-    markdown_globs = list(common_globs)
+    markdown_globs: list[str] = []
     for extension in config.extensions:
         markdown_globs.extend(("--glob", f"*.{extension}"))
+    markdown_globs.extend(ignores)
 
     matches = drop_fenced(rg_json(markdown_pattern, markdown_globs, paths))
     source_extensions = [
@@ -426,9 +430,10 @@ def scan(
         if extension not in config.extensions
     ]
     if all_extensions and source_extensions:
-        source_globs = list(common_globs)
+        source_globs: list[str] = []
         for extension in source_extensions:
             source_globs.extend(("--glob", f"*.{extension}"))
+        source_globs.extend(ignores)
         matches.extend(rg_json(source_pattern, source_globs, paths))
     matches = drop_foreign_mentions(matches, config.owner_mentions)
     rank_of = flow_ranker(config)
