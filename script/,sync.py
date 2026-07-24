@@ -41,6 +41,8 @@ SCAN = "🔍"
 
 REPO_LIST = Path.home() / "dot_local" / "list_of_repos.txt"
 DEFAULT_REPO_DIR = Path.home() / "repos"
+# Personal, untracked skip list. Always applied, regardless of --file/--dir.
+LOCAL_IGNORE_LIST = Path.home() / "dot_local" / "list_of_ignores.txt"
 
 # --- tally ----------------------------------------------------------------
 counts = {"ok": 0, "pushed": 0, "synced": 0, "manual": 0, "attention": 0, "failed": 0}
@@ -240,7 +242,32 @@ def is_ignored(path, ignore_patterns):
     return False
 
 
-def collect_repos(list_files, target_dirs, ignore_patterns):
+def read_ignore_file(path):
+    """Read ignore patterns from a file, one per line.
+
+    Blank lines and '#' comments are skipped. Returns [] if the file is
+    absent (a missing local ignore list is normal, not an error).
+    """
+    path = _expand_path(path)
+    if not path.is_file():
+        return []
+    try:
+        lines = path.read_text().splitlines()
+    except (OSError, UnicodeError) as exc:
+        error(str(path), f"Could not read ignore file — {exc}")
+        return []
+    patterns = []
+    for raw in lines:
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        patterns.append(_expand_ignore(line, base=path.parent))
+    return patterns
+
+
+def collect_repos(list_files, target_dirs, ignore_patterns=None):
+    if ignore_patterns is None:
+        ignore_patterns = []
     repos = []
     for lf in list_files:
         lf = _expand_path(lf)
@@ -336,7 +363,8 @@ def main():
                              "or 'ignore:' to skip a path or glob pattern (repeatable)")
     parser.add_argument("-i", "--ignore", action="append", default=[], metavar="PATTERN",
                         help="path or glob pattern to skip; repos under a plain path are "
-                             "also skipped (repeatable; also 'ignore:' lines in list files)")
+                             "also skipped (repeatable; also 'ignore:' lines in list files "
+                             "and one-per-line entries in ~/dot_local/list_of_ignores.txt)")
     parser.add_argument("-m", "--manual", action="store_true",
                         help="open every repository in lazygit; do not fetch, merge, or push")
     args = parser.parse_args()
@@ -348,6 +376,7 @@ def main():
         target_dirs.append(str(DEFAULT_REPO_DIR))
 
     ignore_patterns = [_expand_ignore(p) for p in args.ignore]
+    ignore_patterns.extend(read_ignore_file(LOCAL_IGNORE_LIST))
     repos = dedup(collect_repos(list_files, target_dirs, ignore_patterns))
     repos = [r for r in repos if not is_ignored(r, ignore_patterns)]
     for repo in repos:

@@ -48,3 +48,19 @@ Repository sources can also be selected with repeatable `--file` and `--dir`
 arguments. Supplying either argument disables the default sources. Paths from
 list files support `~` and environment variables; relative paths are resolved
 from the list file's directory.
+
+## Ignoring repositories
+
+Repositories can be skipped in three ways:
+
+- `--ignore PATTERN` (or `-i`), a repeatable path or glob pattern.
+- `ignore:` lines inside any `--file` list file.
+- `~/dot_local/list_of_ignores.txt`, a personal, untracked skip list with one
+  path or glob pattern per line (`#` comments and blank lines are ignored).
+  This local list is **always** applied, even when `--file` or `--dir` overrides
+  the default sources.
+
+A plain path skips that repository and anything beneath it, so a single entry
+such as `~/repos/felis-block-diagram/block_diagram/build/_deps` silences every
+vendored build dependency under it. Glob patterns like `*/build/_deps/*` match
+by shell-style wildcard.

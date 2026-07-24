@@ -279,6 +279,32 @@ class RepositoryCollectionTest(unittest.TestCase):
 
         self.assertEqual(sync.counts["failed"], 2)
 
+    def test_missing_local_ignore_file_returns_no_patterns(self):
+        with tempfile.TemporaryDirectory() as directory:
+            missing = Path(directory) / "list_of_ignores.txt"
+            self.assertEqual(sync.read_ignore_file(missing), [])
+
+    def test_local_ignore_file_reads_patterns_and_skips_comments(self):
+        with tempfile.TemporaryDirectory() as directory:
+            ignore_file = Path(directory) / "list_of_ignores.txt"
+            ignore_file.write_text(
+                "# comment\n"
+                "\n"
+                "*/build/_deps/*\n"
+                "~/repos/felis-block-diagram\n"
+            )
+            patterns = sync.read_ignore_file(ignore_file)
+
+        self.assertEqual(
+            patterns,
+            ["*/build/_deps/*", str(Path.home() / "repos" / "felis-block-diagram")],
+        )
+
+    def test_local_ignore_file_prunes_matching_repos(self):
+        repo = "/Users/example/repos/felis-block-diagram/build/_deps/yaml-cpp-src"
+        self.assertTrue(sync.is_ignored(repo, ["*/build/_deps/*"]))
+        self.assertFalse(sync.is_ignored("/Users/example/repos/keep", ["*/build/_deps/*"]))
+
 
 @unittest.skipUnless(shutil.which("git"), "Git is required for integration tests")
 class LocalGitIntegrationTest(unittest.TestCase):
