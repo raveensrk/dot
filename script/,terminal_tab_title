@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# ,terminal_tab_title - rename the current Terminal.app tab, optionally with a colored profile.
+#
+# Usage:
+#   ,terminal_tab_title "my tab name"              # rename current tab
+#   ,terminal_tab_title -p Prod "prod - careful"   # rename AND switch to the "Prod" profile
+#   ,terminal_tab_title -p Dev                     # just switch profile, keep name
+#
+# Notes:
+#   * Terminal.app cannot color individual tab titles. "Color" is achieved by
+#     switching the tab to a Terminal *profile* that has its own background/text
+#     colors. Create profiles in Terminal > Settings > Profiles first, e.g.
+#     "Prod" (red bg) and "Dev" (green bg), then pass their names with -p.
+#   * Emoji in the title (e.g. "🔴 prod") is the other lightweight color cue.
+#   * To stop Terminal overwriting the name, uncheck the dynamic title
+#     components in Settings > Profiles > <profile> > Tab.
+
+set -euo pipefail
+
+profile=""
+while getopts ":p:h" opt; do
+  case "$opt" in
+    p) profile="$OPTARG" ;;
+    h) grep '^#' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    \?) echo ",terminal_tab_title: unknown option -$OPTARG" >&2; exit 2 ;;
+    :)  echo ",terminal_tab_title: -$OPTARG needs an argument" >&2; exit 2 ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+name="${*:-}"
+
+# Set the tab/window title via OSC escape (only if a name was given).
+if [ -n "$name" ]; then
+  printf '\033]0;%s\007' "$name"
+fi
+
+# Switch the current tab to a colored profile via AppleScript.
+if [ -n "$profile" ]; then
+  osascript -e "tell application \"Terminal\" to set current settings of selected tab of front window to settings set \"$profile\"" \
+    || { echo ",terminal_tab_title: no Terminal profile named '$profile' (create it in Settings > Profiles)" >&2; exit 1; }
+fi

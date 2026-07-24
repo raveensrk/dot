@@ -55,6 +55,9 @@ Install all other packages:
 bash ~/dot/packages/macos.sh
 ```
 
+The macOS shell configuration prepends Homebrew's GNU `coreutils` and `gawk`
+command directories to `PATH`.
+
 ## If you use Ubuntu, install this
 
 This script is for arm64/aarch64 only.

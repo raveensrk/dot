@@ -1,0 +1,33 @@
+# Keywords matched as "- KEYWORD: content" or after a source comment prefix.
+patterns = ["TODO", "IN_PROGRESS", "FIXME", "BUG", "LATER"]
+
+# Patterns matched as "- [ ] content" in Markdown files.
+checkbox_patterns = ['\[ \]']
+
+# Markdown file extensions.
+extensions = ["md"]
+
+# Source extensions scanned only when --all-extensions is present.
+# An empty array disables source scanning.
+source_extensions = ["py", "sh", "bash", "sv", "svh", "v", "vim"]
+
+# Comment prefixes accepted in non-Markdown files (ripgrep regex).
+comment_prefix_pattern = '//+|#|--|;|/\*+|\*+|<!--|%'
+
+# Paths scanned when no positional paths are supplied.
+default_dirs = ["~/dot", "~/repos"]
+
+# Additional ignores applied alongside ripgrep's normal ignore behavior.
+# Keep only generic, non-sensitive entries here. Computer-specific
+# paths belong in the machine-local overlay ~/dot_local/config/todo.toml, whose
+# `ignore` array is appended to this one.
+ignore = ["node_modules"]
+
+# A todo that @mentions someone NOT in this list is dropped (case-insensitive).
+# Todos with no @mention, or that only mention these names, are kept.
+owner_mentions = ["raveen", "raveensrk", "raveenkumar", "raveen_kumar", "raveen-kumar"]
+
+# Kanban flow order: results are sorted by status in this order (file:line breaks
+# ties within a status). "[ ]" is the checkbox token; anything not listed sorts
+# last. An empty array falls back to plain file-path ordering.
+flow_order = ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]

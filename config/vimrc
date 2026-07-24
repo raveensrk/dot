@@ -113,6 +113,32 @@ endfunction
 command! CenterCursor call CenterCursor()
 command! NoCenterCursor call NoCenterCursor()
 
+" Scan outstanding tasks into the quickfix list (see ~/dot/script/,todo.py).
+"   :Todo            scan the configured default_dirs
+"   :Todo path ...   scan the given paths instead
+function! Todo(...) abort
+    let l:cmd = 'python3 ' . shellescape(expand('~/dot/script/,todo.py')) . ' -f plain'
+    for l:path in a:000
+        let l:cmd .= ' ' . shellescape(l:path)
+    endfor
+    let l:lines = systemlist(l:cmd)
+    " rg exits 1 on "no matches"; the script maps its own errors to 2.
+    if v:shell_error > 1
+        echohl ErrorMsg | echom join(l:lines, "\n") | echohl None
+        return
+    endif
+    let l:save_efm = &errorformat
+    set errorformat=%f:%l:%c:%m
+    cgetexpr l:lines
+    let &errorformat = l:save_efm
+    if empty(l:lines)
+        echom 'Todo: no outstanding tasks'
+    else
+        copen
+    endif
+endfunction
+command! -nargs=* -complete=file Todo call Todo(<f-args>)
+
 
 "  }}}
 " {{{ BACKUPS AND UNDO
@@ -195,6 +221,23 @@ endif
 "
 
 command! Format :norm mmggVGgq`m
+
+" Scan outstanding tasks into quickfix (sits with the ,c/,n/,p quickfix cluster).
+nnoremap ,t :Todo<CR>
+
+" On a bare `vim` (no file args, no piped stdin), show the todo quickfix list
+" alongside the Startify dashboard. Deferred via timer so it runs after Startify
+" has drawn; focus is returned to the dashboard window afterwards.
+function! TodoStartup() abort
+    let l:dashboard = win_getid()
+    call Todo()
+    if win_id2win(l:dashboard)
+        call win_gotoid(l:dashboard)
+    endif
+endfunction
+autocmd StdinReadPre * let s:std_in = 1
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in')
+            \ | call timer_start(0, {-> TodoStartup()}) | endif
 set showmode
 set showcmd
 set shortmess+=I
