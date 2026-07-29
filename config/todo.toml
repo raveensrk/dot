@@ -1,6 +1,11 @@
 # Keywords matched as "- KEYWORD: content" or after a source comment prefix.
 patterns = ["TODO", "IN_PROGRESS", "FIXME", "BUG", "LATER"]
 
+# Keywords whose items are hidden by default (they are still matched; show them
+# with --include-excluded). Compared against the line's leading status token, so
+# "- TODO: ... revisit LATER" is still reported. An empty array hides nothing.
+exclude_patterns = ["LATER"]
+
 # Patterns matched as "- [ ] content" in Markdown files.
 checkbox_patterns = ['\[ \]']
 

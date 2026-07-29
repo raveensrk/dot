@@ -31,6 +31,7 @@ class TodoConfig:
         default_factory=lambda: ["TODO", "IN_PROGRESS", "FIXME", "BUG", "LATER"]
     )
     checkbox_patterns: list[str] = field(default_factory=lambda: [r"\[ \]"])
+    exclude_patterns: list[str] = field(default_factory=lambda: ["LATER"])
     extensions: list[str] = field(default_factory=lambda: ["md"])
     source_extensions: list[str] = field(default_factory=list)
     default_dirs: list[str] = field(default_factory=lambda: ["."])
@@ -59,6 +60,7 @@ class TodoConfig:
     KNOWN_FIELDS = {
         "patterns",
         "checkbox_patterns",
+        "exclude_patterns",
         "extensions",
         "source_extensions",
         "default_dirs",
@@ -169,6 +171,12 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--all-extensions",
         action="store_true",
         help="also scan source_extensions for comment-style tasks",
+    )
+    parser.add_argument(
+        "-e",
+        "--include-excluded",
+        action="store_true",
+        help="also report statuses hidden by exclude_patterns (e.g. LATER)",
     )
     parser.add_argument(
         "paths",
@@ -370,45 +378,74 @@ def drop_foreign_mentions(
     return kept
 
 
-def flow_ranker(config: TodoConfig):
-    """Return a function ranking a match by its status in the kanban flow order.
+def status_regex(config: TodoConfig, entry: str) -> re.Pattern[str]:
+    """Compile the regex recognising one status token.
 
-    Each flow entry is a keyword (e.g. ``TODO``) or the checkbox token (``[ ]``).
-    A match is ranked by whichever status token appears leftmost in its text, so
-    the line's leading marker wins even when another keyword appears later.
+    An entry naming a configured keyword (e.g. ``TODO``) matches ``TODO:`` on a
+    word boundary; anything else is treated as the checkbox token.
     """
-    checkbox_alt = (
-        alternation(config.checkbox_patterns) if config.checkbox_patterns else None
-    )
-    keywords = set(config.patterns)
-    specs: list[tuple[int, re.Pattern[str]]] = []
-    for rank, entry in enumerate(config.flow_order):
-        if entry in keywords:
-            regex = re.compile(rf"(?<![A-Za-z0-9_]){re.escape(entry)}:")
-        else:
-            regex = re.compile(checkbox_alt if checkbox_alt else re.escape(entry))
-        specs.append((rank, regex))
+    if entry in set(config.patterns):
+        return re.compile(rf"(?<![A-Za-z0-9_]){re.escape(entry)}:")
+    if config.checkbox_patterns:
+        return re.compile(alternation(config.checkbox_patterns))
+    return re.compile(re.escape(entry))
 
-    last = len(config.flow_order)
 
-    def rank_of(match: TodoMatch) -> int:
-        best_rank = last
+def leading_status(config: TodoConfig, entries: list[str]):
+    """Return a function giving the leftmost of `entries` present in a match.
+
+    This is the line's own marker: a ``- TODO: ... see LATER`` line reports
+    ``TODO``. Returns None when the text carries none of the entries.
+    """
+    specs = [(entry, status_regex(config, entry)) for entry in entries]
+
+    def status_of(match: TodoMatch) -> str | None:
+        best: str | None = None
         best_pos: int | None = None
-        for rank, regex in specs:
+        for entry, regex in specs:
             found = regex.search(match.text)
             if found is None:
                 continue
             position = found.start()
             if best_pos is None or position < best_pos:
                 best_pos = position
-                best_rank = rank
-        return best_rank
+                best = entry
+        return best
+
+    return status_of
+
+
+def flow_ranker(config: TodoConfig):
+    """Return a function ranking a match by its status in the kanban flow order.
+
+    A match is ranked by its leading status token, so anything not listed in
+    `flow_order` sorts last.
+    """
+    status_of = leading_status(config, config.flow_order)
+    ranks = {entry: rank for rank, entry in enumerate(config.flow_order)}
+    last = len(config.flow_order)
+
+    def rank_of(match: TodoMatch) -> int:
+        return ranks.get(status_of(match), last)
 
     return rank_of
 
 
+def drop_excluded(matches: list[TodoMatch], config: TodoConfig) -> list[TodoMatch]:
+    """Drop matches whose leading status token is excluded by configuration."""
+    if not config.exclude_patterns:
+        return matches
+    status_of = leading_status(config, config.patterns + config.checkbox_patterns)
+    excluded = set(config.exclude_patterns)
+    return [match for match in matches if status_of(match) not in excluded]
+
+
 def scan(
-    config: TodoConfig, paths: list[Path], *, all_extensions: bool = False
+    config: TodoConfig,
+    paths: list[Path],
+    *,
+    all_extensions: bool = False,
+    include_excluded: bool = False,
 ) -> list[TodoMatch]:
     if shutil.which("rg") is None:
         raise TodoError("ripgrep (rg) is required")
@@ -436,6 +473,8 @@ def scan(
         source_globs.extend(ignores)
         matches.extend(rg_json(source_pattern, source_globs, paths))
     matches = drop_foreign_mentions(matches, config.owner_mentions)
+    if not include_excluded:
+        matches = drop_excluded(matches, config)
     rank_of = flow_ranker(config)
     return sorted(set(matches), key=lambda match: (rank_of(match), match))
 
@@ -515,7 +554,12 @@ def main(argv: list[str] | None = None) -> int:
     try:
         config = TodoConfig.load(config_path(), local_config_path())
         paths = existing_paths(args.paths or config.default_dirs)
-        matches = scan(config, paths, all_extensions=args.all_extensions)
+        matches = scan(
+            config,
+            paths,
+            all_extensions=args.all_extensions,
+            include_excluded=args.include_excluded,
+        )
         output(matches, args.format, paths)
     except TodoError as error:
         print(f"todo: {error}", file=sys.stderr)

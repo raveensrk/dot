@@ -81,6 +81,7 @@ class TodoScannerTest(unittest.TestCase):
         *,
         patterns: list[str],
         checkbox_patterns: list[str] | None = None,
+        exclude_patterns: list[str] | None = None,
         source_extensions: list[str] | None = None,
         ignore: list[str] | None = None,
         owner_mentions: list[str] | None = None,
@@ -91,6 +92,7 @@ class TodoScannerTest(unittest.TestCase):
             "checkbox_patterns": (
                 [r"\[ \]"] if checkbox_patterns is None else checkbox_patterns
             ),
+            "exclude_patterns": exclude_patterns or [],
             "extensions": ["md"],
             "source_extensions": source_extensions or [],
             "default_dirs": [str(self.fixture)],
@@ -468,6 +470,59 @@ class TodoScannerTest(unittest.TestCase):
         vim_arguments = json.loads(vim_log.read_text(encoding="utf-8"))
         self.assertEqual(vim_arguments[0], "-q")
         self.assertEqual(vim_arguments[-2:], ["-c", "copen"])
+
+    def test_exclude_patterns_hide_matching_statuses(self) -> None:
+        config = self.write_config(
+            "excluded.toml",
+            patterns=["TODO", "FIXME", "BUG", "LATER"],
+            exclude_patterns=["LATER"],
+            source_extensions=["py", "sv"],
+        )
+        result = self.run_scanner(
+            "--all-extensions", "--format", "plain", config=config
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("design.sv:1:1:// BUG: SystemVerilog task", result.stdout)
+        self.assertNotIn("LATER", result.stdout)
+
+        included = self.run_scanner(
+            "--all-extensions", "--include-excluded", "--format", "plain", config=config
+        )
+        self.assertEqual(included.returncode, 0, included.stderr)
+        self.assertIn(
+            "design.sv:2:1:/* LATER: Refactor testbench task */", included.stdout
+        )
+
+    def test_exclusion_uses_the_leading_status_token(self) -> None:
+        self.write(
+            "mixed.md",
+            """\
+            - TODO: revisit this LATER: maybe
+            - LATER: deferred but mentions TODO: here
+            """,
+        )
+        config = self.write_config(
+            "mixed.toml", patterns=["TODO", "LATER"], exclude_patterns=["LATER"]
+        )
+        result = self.run_scanner("--format", "plain", config=config)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("mixed.md:1:1:- TODO: revisit this LATER: maybe", result.stdout)
+        self.assertNotIn("mixed.md:2:", result.stdout)
+
+    def test_local_overlay_overrides_exclude_patterns(self) -> None:
+        base = self.write_config(
+            "base.toml", patterns=["TODO", "LATER"], exclude_patterns=["LATER"]
+        )
+        self.write("local-exclude.toml", "exclude_patterns = []\n")
+        self.write("deferred.md", "- LATER: deferred task\n")
+        result = self.run_scanner(
+            "--format",
+            "plain",
+            config=base,
+            environment={"TODO_CONFIG_LOCAL": str(self.fixture / "local-exclude.toml")},
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("deferred.md:1:1:- LATER: deferred task", result.stdout)
 
     def test_invalid_configuration_is_rejected(self) -> None:
         invalid = self.write("invalid.toml", "unknown = true\n")
