@@ -31,7 +31,12 @@ function! s:HideHighlight() abort
 	if empty(l:gui) && empty(l:cterm)
 		highlight! link TodoHideMeta Ignore
 	else
-		execute l:cmd
+		try
+			execute l:cmd
+		catch /\<E254\>\|\<E421\>/
+			" Terminal can't allocate / recognize the color.
+			highlight! link TodoHideMeta Ignore
+		endtry
 	endif
 endfunction
 
