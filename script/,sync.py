@@ -5,24 +5,32 @@ Output format:  <LEVEL>: <emoji>: <repo path>: <message/reason>
   LEVEL  INFO (green) / WARNING (yellow) / ERROR (red)
   emoji  ✅ pass · ❌ fail · ⚠️ warning · 🔍 scanning
 
-Replaces the older sync scripts. Behaviour per repo:
+Repos are synced in parallel (-j/--jobs, default 8). Nothing interactive
+happens during the scan: repos needing a human are only recorded. Afterwards
+the synced repos are reported first, then the ones needing attention, and each
+of those is prompted: y = open lazygit, n = leave it, i = ignore it now and on
+future runs (appended to ~/dot_local/list_of_ignores.txt), q = stop prompting.
+
+Behaviour per repo:
   - --manual                  -> open lazygit; do not fetch, merge, or push
   - not a git repo            -> skip silently
-  - detached HEAD / no branch -> WARNING, open lazygit
+  - detached HEAD / no branch -> needs attention
   - fetch fails               -> ERROR, skip (reason shown)
-  - dirty working tree        -> WARNING, open lazygit
-  - diverged (ahead & behind) -> WARNING, open lazygit
+  - dirty working tree        -> needs attention
+  - diverged (ahead & behind) -> needs attention
   - ahead only                -> push
-  - behind only               -> fast-forward only (failure -> lazygit)
+  - behind only               -> fast-forward only (failure -> needs attention)
   - up to date                -> INFO ✅
   - ignored (via --ignore or 'ignore:' list lines) -> skipped silently
 """
 
 import argparse
+import concurrent.futures
 import fnmatch
 import os
 import subprocess
 import sys
+from collections import namedtuple
 from pathlib import Path
 
 GIT_TIMEOUT_SECONDS = 60
@@ -46,6 +54,11 @@ LOCAL_IGNORE_LIST = Path.home() / "dot_local" / "list_of_ignores.txt"
 
 # --- tally ----------------------------------------------------------------
 counts = {"ok": 0, "pushed": 0, "synced": 0, "manual": 0, "attention": 0, "failed": 0}
+
+# One repo's outcome. `status` is a key of `counts`, or "skip" for paths that
+# turned out not to be git repositories.
+Result = namedtuple("Result", "repo status message")
+SYNCED_STATUSES = ("ok", "pushed", "synced")
 
 
 def reset_counts():
@@ -96,122 +109,82 @@ def open_lazygit(repo):
         return 127
 
 
-def open_for_attention(repo, message):
-    warning(repo, f"{message} — opening lazygit")
-    if open_lazygit(repo) == 0:
-        counts["attention"] += 1
-    else:
-        counts["failed"] += 1
-        error(repo, "lazygit exited unsuccessfully")
+def sync_repo(repo):
+    """Inspect and sync one repo. Pure worker: no printing, no lazygit.
 
-
-def sync_repo(repo, manual=False):
+    Returns a Result whose status is one of the `counts` keys, or "skip" for
+    paths that are not git repositories.
+    """
     repo = str(repo)
     rc, inside, err = git(repo, "rev-parse", "--is-inside-work-tree")
     if rc in (124, 127):
-        counts["failed"] += 1
-        error(repo, f"Git repository check failed — {err or 'unknown error'}")
-        return
+        return Result(repo, "failed", f"Git repository check failed — {err or 'unknown error'}")
     if rc != 0 or inside != "true":
-        return
-
-    if manual:
-        info(SCAN, repo, "Opening lazygit for manual handling")
-        if open_lazygit(repo) == 0:
-            counts["manual"] += 1
-        else:
-            counts["failed"] += 1
-            error(repo, "lazygit exited unsuccessfully")
-        return
+        return Result(repo, "skip", "Not a git repository")
 
     rc, branch, err = git(repo, "branch", "--show-current")
     if rc != 0:
-        counts["failed"] += 1
-        error(repo, f"Branch check failed — {err or 'unknown error'}")
-        return
+        return Result(repo, "failed", f"Branch check failed — {err or 'unknown error'}")
     if not branch:
-        open_for_attention(repo, "Detached HEAD or no branch")
-        return
+        return Result(repo, "attention", "Detached HEAD or no branch")
 
     rc, remote, remote_err = git(repo, "config", "--get", f"branch.{branch}.remote")
     merge_rc, merge_ref, merge_err = git(repo, "config", "--get", f"branch.{branch}.merge")
     if rc not in (0, 1) or merge_rc not in (0, 1):
-        counts["failed"] += 1
         reason = remote_err or merge_err or "unknown error"
-        error(repo, f"Upstream configuration check failed — {reason}")
-        return
+        return Result(repo, "failed", f"Upstream configuration check failed — {reason}")
     if rc != 0 or merge_rc != 0 or not remote or not merge_ref:
-        open_for_attention(repo, "No upstream branch configured")
-        return
+        return Result(repo, "attention", "No upstream branch configured")
     if remote == ".":
-        open_for_attention(repo, "Local upstream remotes are not supported")
-        return
+        return Result(repo, "attention", "Local upstream remotes are not supported")
 
     # Fetch the configured upstream remote.
     rc, _, err = git(repo, "fetch", remote)
     if rc != 0:
-        counts["failed"] += 1
-        reason = _fetch_reason(err)
-        error(repo, f"Fetch failed — {reason}")
-        return
+        return Result(repo, "failed", f"Fetch failed — {_fetch_reason(err)}")
 
     rc, upstream, err = git(
         repo, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"
     )
     if rc != 0 or not upstream:
-        counts["failed"] += 1
-        error(repo, f"Could not resolve upstream branch — {err or 'unknown error'}")
-        return
+        return Result(repo, "failed", f"Could not resolve upstream branch — {err or 'unknown error'}")
 
     # Dirty working tree
     rc, status, err = git(repo, "status", "--porcelain")
     if rc != 0:
-        counts["failed"] += 1
-        error(repo, f"Status check failed — {err or 'unknown error'}")
-        return
+        return Result(repo, "failed", f"Status check failed — {err or 'unknown error'}")
     if status:
         n = len(status.splitlines())
-        open_for_attention(repo, f"Uncommitted changes ({n} file(s))")
-        return
+        return Result(repo, "attention", f"Uncommitted changes ({n} file(s))")
 
     # Ahead / behind
     rc, comparison, err = git(repo, "rev-list", "--left-right", "--count", f"HEAD...{upstream}")
     parts = comparison.split()
     if rc != 0 or len(parts) != 2 or not all(part.isdigit() for part in parts):
-        counts["failed"] += 1
-        error(repo, f"Upstream comparison failed — {err or comparison or 'invalid Git output'}")
-        return
+        reason = err or comparison or "invalid Git output"
+        return Result(repo, "failed", f"Upstream comparison failed — {reason}")
     ahead, behind = map(int, parts)
 
     # Diverged
     if ahead > 0 and behind > 0:
-        open_for_attention(repo, f"Diverged (ahead {ahead}, behind {behind})")
-        return
+        return Result(repo, "attention", f"Diverged (ahead {ahead}, behind {behind})")
 
     # Ahead only -> push
     if ahead > 0:
         rc, _, err = git(repo, "push", remote, f"HEAD:{merge_ref}")
         if rc == 0:
-            counts["pushed"] += 1
-            info(PASS, repo, f"Pushed {ahead} local commit(s)")
-        else:
-            counts["failed"] += 1
-            error(repo, f"Push failed — {err or 'see git output'}")
-        return
+            return Result(repo, "pushed", f"Pushed {ahead} local commit(s)")
+        return Result(repo, "failed", f"Push failed — {err or 'see git output'}")
 
     # Up to date
     if behind == 0:
-        counts["ok"] += 1
-        info(PASS, repo, "Already up to date")
-        return
+        return Result(repo, "ok", "Already up to date")
 
     # Behind only -> fast-forward to the already-fetched upstream. No push is needed.
     rc, _, err = git(repo, "merge", "--ff-only", upstream)
     if rc == 0:
-        counts["synced"] += 1
-        info(PASS, repo, f"Fast-forwarded by {behind} remote commit(s)")
-    else:
-        open_for_attention(repo, f"Fast-forward failed — {err or 'upstream changed'}")
+        return Result(repo, "synced", f"Fast-forwarded by {behind} remote commit(s)")
+    return Result(repo, "attention", f"Fast-forward failed — {err or 'upstream changed'}")
 
 
 def _fetch_reason(stderr):
@@ -263,6 +236,31 @@ def read_ignore_file(path):
             continue
         patterns.append(_expand_ignore(line, base=path.parent))
     return patterns
+
+
+def add_to_ignore_list(repo):
+    """Append repo to the local ignore list so future runs skip it.
+
+    Returns True if the repo is ignored from now on (already listed counts as
+    success), False if the file could not be written.
+    """
+    path = _expand_path(LOCAL_IGNORE_LIST)
+    if is_ignored(str(repo), read_ignore_file(path)):
+        return True
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        # Don't glue the new entry onto an unterminated last line.
+        prefix = ""
+        if path.is_file():
+            existing = path.read_text()
+            if existing and not existing.endswith("\n"):
+                prefix = "\n"
+        with path.open("a") as handle:
+            handle.write(f"{prefix}{repo}\n")
+    except (OSError, UnicodeError) as exc:
+        error(str(path), f"Could not update ignore list — {exc}")
+        return False
+    return True
 
 
 def collect_repos(list_files, target_dirs, ignore_patterns=None):
@@ -335,6 +333,91 @@ def dedup(repos):
     return sorted(set(resolved))
 
 
+def run_parallel(repos, jobs):
+    """Sync every repo concurrently, printing progress as futures land."""
+    results = []
+    total = len(repos)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=jobs) as pool:
+        futures = {pool.submit(sync_repo, repo): repo for repo in repos}
+        for done, future in enumerate(concurrent.futures.as_completed(futures), start=1):
+            repo = futures[future]
+            try:
+                results.append(future.result())
+            except Exception as exc:  # keep going on unexpected failure
+                results.append(Result(repo, "failed", f"Unexpected error — {exc}"))
+            _line("INFO", GREEN, SCAN, f"{done}/{total}", repo)
+    return sorted(results, key=lambda r: r.repo)
+
+
+def report(results):
+    """Print synced repos first, then the ones needing a human."""
+    synced = [r for r in results if r.status in SYNCED_STATUSES]
+    attention = [r for r in results if r.status == "attention"]
+    failed = [r for r in results if r.status == "failed"]
+
+    if synced:
+        print()
+        print("Synced:")
+        for r in synced:
+            info(PASS, r.repo, r.message)
+    if attention or failed:
+        print()
+        print("Needs attention:")
+        for r in attention:
+            warning(r.repo, r.message)
+        for r in failed:
+            error(r.repo, r.message)
+
+
+def prompt_for_attention(results):
+    """Ask, per repo needing attention, whether to open lazygit.
+
+    Returns the number of repos whose lazygit exited unsuccessfully; those are
+    counted as failures.
+    """
+    failures = 0
+    attention = [r for r in results if r.status == "attention"]
+    if not attention:
+        return 0
+    print()
+    for r in attention:
+        try:
+            answer = input(f"Open lazygit for {r.repo}? [y/N/i/q] ").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+        if answer in ("q", "quit"):
+            break
+        if answer in ("i", "ignore"):
+            if add_to_ignore_list(r.repo):
+                info(PASS, r.repo, f"Ignored — added to {LOCAL_IGNORE_LIST}")
+            continue
+        if answer not in ("y", "yes"):
+            continue
+        if open_lazygit(r.repo) != 0:
+            error(r.repo, "lazygit exited unsuccessfully")
+            failures += 1
+    return failures
+
+
+def run_manual(repos):
+    """Open every repo in lazygit, one at a time. Inherently serial."""
+    for repo in repos:
+        rc, inside, err = git(repo, "rev-parse", "--is-inside-work-tree")
+        if rc in (124, 127):
+            counts["failed"] += 1
+            error(repo, f"Git repository check failed — {err or 'unknown error'}")
+            continue
+        if rc != 0 or inside != "true":
+            continue
+        info(SCAN, repo, "Opening lazygit for manual handling")
+        if open_lazygit(repo) == 0:
+            counts["manual"] += 1
+        else:
+            counts["failed"] += 1
+            error(repo, "lazygit exited unsuccessfully")
+
+
 def print_summary():
     total = sum(counts.values())
     parts = [
@@ -364,10 +447,17 @@ def main():
     parser.add_argument("-i", "--ignore", action="append", default=[], metavar="PATTERN",
                         help="path or glob pattern to skip; repos under a plain path are "
                              "also skipped (repeatable; also 'ignore:' lines in list files "
-                             "and one-per-line entries in ~/dot_local/list_of_ignores.txt)")
+                             "and one-per-line entries in ~/dot_local/list_of_ignores.txt, "
+                             "which answering 'i' at the attention prompt appends to)")
     parser.add_argument("-m", "--manual", action="store_true",
                         help="open every repository in lazygit; do not fetch, merge, or push")
+    parser.add_argument("-j", "--jobs", type=int, default=8, metavar="N",
+                        help="number of repositories to sync concurrently (default: 8)")
+    parser.add_argument("-y", "--no-prompt", action="store_true",
+                        help="report only; never prompt to open or ignore a repository")
     args = parser.parse_args()
+    if args.jobs < 1:
+        parser.error("--jobs must be at least 1")
 
     list_files = list(args.file)
     target_dirs = list(args.dir)
@@ -379,12 +469,18 @@ def main():
     ignore_patterns.extend(read_ignore_file(LOCAL_IGNORE_LIST))
     repos = dedup(collect_repos(list_files, target_dirs, ignore_patterns))
     repos = [r for r in repos if not is_ignored(r, ignore_patterns)]
-    for repo in repos:
-        try:
-            sync_repo(repo, manual=args.manual)
-        except Exception as exc:  # keep going on unexpected failure
-            counts["failed"] += 1
-            error(repo, f"Unexpected error — {exc}")
+    if args.manual:
+        run_manual(repos)
+    else:
+        results = run_parallel(repos, args.jobs)
+        for r in results:
+            if r.status in counts:
+                counts[r.status] += 1
+        report(results)
+        if not args.no_prompt and sys.stdin.isatty():
+            failures = prompt_for_attention(results)
+            counts["attention"] -= failures
+            counts["failed"] += failures
 
     print()
     print_summary()
