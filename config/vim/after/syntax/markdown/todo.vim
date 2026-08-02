@@ -11,7 +11,7 @@
 syntax match todoItem /^\s*[-*] \(TODO\|IN_PROGRESS\|DONE\|OBSOLETE\): .*$/
 	\ containedin=ALL contains=todoStateTodo,todoStateInProgress,
 	\todoStateDone,todoStateObsolete,todoProjectTag,todoContextTag,
-	\todoDate,todoRecurring,todoPriorityA,todoPriorityBC
+	\todoDate,todoDueDate,todoRecurring,todoPriorityA,todoPriorityBC
 
 syntax match todoStateTodo       /\%(^\s*[-*] \)\@<=TODO:/        contained
 syntax match todoStateInProgress /\%(^\s*[-*] \)\@<=IN_PROGRESS:/ contained
@@ -20,7 +20,8 @@ syntax match todoStateObsolete   /\%(^\s*[-*] \)\@<=OBSOLETE:/    contained
 
 syntax match todoProjectTag /\s\zs+\w\+/  contained
 syntax match todoContextTag /\s\zs@\w\+/  contained
-syntax match todoDate       /\<\(created\|completed\|due\):\d\{4}-\d\{2}-\d\{2}\>/ contained
+syntax match todoDate       /\<\(created\|completed\):\d\{4}-\d\{2}-\d\{2}\>/ contained
+syntax match todoDueDate    /\<due:\d\{4}-\d\{2}-\d\{2}\>/ contained
 syntax match todoRecurring  /\<recurring:\S\+/ contained
 syntax match todoPriorityA  /(A)$/    contained
 syntax match todoPriorityBC /([BC])$/ contained
@@ -35,6 +36,7 @@ function! s:TodoHighlights() abort
 		\ 'todoProjectTag':      ['#ff66cc', 206, 'NONE'],
 		\ 'todoContextTag':      ['#00cccc',  44, 'NONE'],
 		\ 'todoDate':            ['#af87ff', 141, 'NONE'],
+		\ 'todoDueDate':         ['#ff8c00', 208, 'bold'],
 		\ 'todoRecurring':       ['#af87ff', 141, 'NONE'],
 		\ 'todoPriorityA':       ['#ff5555', 203, 'bold'],
 		\ 'todoPriorityBC':      ['#ff8c00', 208, 'NONE'],
