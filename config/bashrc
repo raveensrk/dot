@@ -67,7 +67,10 @@ alias mv="mv -vi"
 alias rm="rm -vi"
 alias tree2="tree -C"
 alias tree3="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://github.com/you-dont-need/You-Dont-Need-GUI
-alias rsync="rsync -CazhPvu"                                         # -C
+# -C (--cvs-exclude) removed: it silently skips .git/, *.o, *~, tags, *.bak
+# and more, with no warning and exit 0 — a backup can look fine while missing
+# your git history. Add it explicitly when you actually want that filter.
+alias rsync="rsync -azhPvu"
 path () {
 	echo "----"
 	echo "PATH"
@@ -188,6 +191,26 @@ else
 	alias l="ls -X --group-directories-first  --color -lAh"
 fi
 
+# Non-interactive shells (scripts, editors, agent tooling) get predictable
+# commands. Interactive shells keep the nicer, safer ones.
+#
+# Why this is needed at all: non-interactive bash normally ignores aliases,
+# but some callers set `shopt -s expand_aliases`, so these leak into tooling.
+#
+#   cat/ls        bat and eza format differently; anything parsing output
+#                 breaks.
+#   cp/mv/rm      -i prompts with no tty, so the command hangs or silently
+#                 no-ops. The prompt is a real safety net when you type it,
+#                 so it stays interactive-only rather than being removed.
+#   -v everywhere writes to stdout, which pollutes output a caller parses.
+#   find/xargs    GNU variants differ from the BSD ones a macOS script expects.
+#   hexdump       -Cv changes the output format.
+#
+# This runs after every alias above, so it clears whichever definition won.
+if [[ $- != *i* ]]; then
+	unalias cat ls l mkdir cp mv rm find xargs hexdump 2>/dev/null
+fi
+
 # }}}
 # PATH {{{
 export PATH="$HOME/.local/bin:$PATH"
@@ -258,7 +281,13 @@ source "$DOT/config/gitconfig"
 # FZF{{{
 # shellcheck disable=1091
 . "$DOT/config/fzf.sh"
-command -v zoxide >/dev/null && eval "$(zoxide init bash --cmd cd)"
+# Interactive only. `--cmd cd` replaces cd with a fuzzy jump: `cd foo` when
+# ./foo does not exist silently lands in some other remembered directory and
+# returns 0, instead of failing. In a script that means the next command runs
+# somewhere unintended. Interactively that behaviour is the whole point.
+if [[ $- == *i* ]]; then
+	command -v zoxide >/dev/null && eval "$(zoxide init bash --cmd cd)"
+fi
 #}}}
 # FINAL CUSTOM{{{
 # shellcheck source=../../script/custom/custom.sh
