@@ -33,12 +33,12 @@ function! s:TodoHighlights() abort
 		\ 'todoStateInProgress': ['#4d88ff',  69, 'bold'],
 		\ 'todoStateDone':       ['#33cc33',  70, 'bold'],
 		\ 'todoStateObsolete':   ['#808080', 244, 'NONE'],
-		\ 'todoProjectTag':      ['#ff66cc', 206, 'NONE'],
-		\ 'todoContextTag':      ['#00cccc',  44, 'NONE'],
-		\ 'todoDate':            ['#af87ff', 141, 'NONE'],
-		\ 'todoRecurring':       ['#af87ff', 141, 'NONE'],
-		\ 'todoPriorityA':       ['#ff5555', 203, 'bold'],
-		\ 'todoPriorityBC':      ['#ff8c00', 208, 'NONE'],
+		\ 'todoProjectTag':      ['#3a3a3a', 237, 'NONE'],
+		\ 'todoContextTag':      ['#3a3a3a', 237, 'NONE'],
+		\ 'todoDate':            ['#3a3a3a', 237, 'NONE'],
+		\ 'todoRecurring':       ['#3a3a3a', 237, 'NONE'],
+		\ 'todoPriorityA':       ['#3a3a3a', 237, 'NONE'],
+		\ 'todoPriorityBC':      ['#3a3a3a', 237, 'NONE'],
 		\ }
 	for [l:group, l:spec] in items(l:colors)
 		let [l:gui, l:cterm, l:attr] = l:spec
