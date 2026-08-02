@@ -46,7 +46,9 @@ if empty(prop_type_get('todoVirtMeta'))
 	call prop_type_add('todoVirtMeta', {'highlight': 'TodoVirtMeta'})
 endif
 if empty(prop_type_get('todoHideMeta'))
-	call prop_type_add('todoHideMeta', {'highlight': 'TodoHideMeta'})
+	" 'override' keeps the hide color on top of 'hlsearch' and Visual
+	" highlighting, which would otherwise reveal the hidden text.
+	call prop_type_add('todoHideMeta', {'highlight': 'TodoHideMeta', 'override': v:true})
 endif
 
 let s:todo_line = '^\s*[-*] \(TODO\|IN_PROGRESS\|DONE\|OBSOLETE\): '
