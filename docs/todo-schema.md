@@ -33,10 +33,11 @@ But it is slightly adapted to my needs.
 |-------|---------|
 | `TODO` | Not started |
 | `IN_PROGRESS` | Actively being worked |
+| `OPTIONAL` | Nice to have - do it if time permits |
 | `DONE` | Completed |
 | `OBSOLETE` | Dropped / no longer relevant (kept for history) |
 
-Life cycle: `TODO → IN_PROGRESS → DONE`; any state can move to `OBSOLETE`.
+Life cycle: `TODO → IN_PROGRESS → DONE`; any state can move to `OBSOLETE`. `OPTIONAL` items can be promoted to `TODO`/`IN_PROGRESS` or dropped to `OBSOLETE`.
 
 ## Reporting
 

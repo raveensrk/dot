@@ -8,13 +8,14 @@
 
 " The whole todo line; contains the pieces below. containedin=ALL so it
 " wins even inside markdown list-item groups.
-syntax match todoItem /^\s*[-*] \(TODO\|IN_PROGRESS\|DONE\|OBSOLETE\): .*$/
+syntax match todoItem /^\s*[-*] \(TODO\|IN_PROGRESS\|OPTIONAL\|DONE\|OBSOLETE\): .*$/
 	\ containedin=ALL contains=todoStateTodo,todoStateInProgress,
-	\todoStateDone,todoStateObsolete,todoProjectTag,todoContextTag,
+	\todoStateOptional,todoStateDone,todoStateObsolete,todoProjectTag,todoContextTag,
 	\todoDate,todoRecurring,todoPriorityA,todoPriorityBC
 
 syntax match todoStateTodo       /\%(^\s*[-*] \)\@<=TODO:/        contained
 syntax match todoStateInProgress /\%(^\s*[-*] \)\@<=IN_PROGRESS:/ contained
+syntax match todoStateOptional   /\%(^\s*[-*] \)\@<=OPTIONAL:/    contained
 syntax match todoStateDone       /\%(^\s*[-*] \)\@<=DONE:/        contained
 syntax match todoStateObsolete   /\%(^\s*[-*] \)\@<=OBSOLETE:/    contained
 
@@ -31,6 +32,7 @@ function! s:TodoHighlights() abort
 	let l:colors = {
 		\ 'todoStateTodo':       ['#ffd700', 220, 'bold'],
 		\ 'todoStateInProgress': ['#4d88ff',  69, 'bold'],
+		\ 'todoStateOptional':   ['#87afaf', 109, 'bold'],
 		\ 'todoStateDone':       ['#33cc33',  70, 'bold'],
 		\ 'todoStateObsolete':   ['#808080', 244, 'NONE'],
 		\ 'todoProjectTag':      ['#3a3a3a', 237, 'NONE'],
