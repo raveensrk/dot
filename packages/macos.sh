@@ -14,6 +14,7 @@ fi
 packages=(
 	autoconf
 	automake
+	bash-completion@2
 	bat
 	cscope
 	curl

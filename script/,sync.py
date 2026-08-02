@@ -66,6 +66,15 @@ def reset_counts():
         counts[key] = 0
 
 
+def _short(path):
+    """Abbreviate the home directory to '~' for readability in prompts."""
+    home = str(Path.home())
+    path = str(path)
+    if path == home or path.startswith(home + "/"):
+        return "~" + path[len(home):]
+    return path
+
+
 def _line(level, color, emoji, repo, message):
     print(f"{color}{level}{NOCOLOR}: {emoji}: {repo}: {message}")
 
@@ -380,9 +389,13 @@ def prompt_for_attention(results):
     if not attention:
         return 0
     print()
+    print("  y = open in lazygit    n = leave it for now (default)")
+    print("  i = ignore this repo from now on    q = quit, leave the rest alone")
     for r in attention:
+        print()
+        print(f"{_short(r.repo)} — {r.message}")
         try:
-            answer = input(f"Open lazygit for {r.repo}? [y/N/i/q] ").strip().lower()
+            answer = input("  Action? [y/N/i/q] ").strip().lower()
         except (EOFError, KeyboardInterrupt):
             print()
             break
@@ -390,7 +403,8 @@ def prompt_for_attention(results):
             break
         if answer in ("i", "ignore"):
             if add_to_ignore_list(r.repo):
-                info(PASS, r.repo, f"Ignored — added to {LOCAL_IGNORE_LIST}")
+                info(PASS, r.repo,
+                     f"Ignored on future runs — added to {_short(LOCAL_IGNORE_LIST)}")
             continue
         if answer not in ("y", "yes"):
             continue
