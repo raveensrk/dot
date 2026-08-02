@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """Sync multiple git repositories with automatic and manual modes.
 
-Output format:  <LEVEL>: <emoji>: <repo path>: <message/reason>
-  LEVEL  INFO (green) / WARNING (yellow) / ERROR (red)
-  emoji  ✅ pass · ❌ fail · ⚠️ warning · 🔍 scanning
+Output is plain ASCII, three aligned columns:
+
+    [TAG]  <repo path>  <message/reason>
+
+  TAG   OK (green) / WARN (yellow) / FAIL (red) / SCAN (green), all 4 columns
+  path  '~'-shortened, padded to the longest path in the run
 
 Repos are synced in parallel (-j/--jobs, default 8). Nothing interactive
 happens during the scan: repos needing a human are only recorded. Afterwards
@@ -20,7 +23,7 @@ Behaviour per repo:
   - diverged (ahead & behind) -> needs attention
   - ahead only                -> push
   - behind only               -> fast-forward only (failure -> needs attention)
-  - up to date                -> INFO ✅
+  - up to date                -> OK
   - ignored (via --ignore or 'ignore:' list lines) -> skipped silently
 """
 
@@ -42,10 +45,11 @@ RED = "\033[0;31m" if _USE_COLOR else ""
 YELLOW = "\033[0;33m" if _USE_COLOR else ""
 NOCOLOR = "\033[0m" if _USE_COLOR else ""
 
-PASS = "✅"
-FAIL = "❌"
-WARN = "⚠️"
-SCAN = "🔍"
+# Status tags. All the same width so every column below them lines up.
+OK = " OK "
+FAIL = "FAIL"
+WARN = "WARN"
+SCAN = "SCAN"
 
 REPO_LIST = Path.home() / "dot_local" / "list_of_repos.txt"
 DEFAULT_REPO_DIR = Path.home() / "repos"
@@ -67,7 +71,7 @@ def reset_counts():
 
 
 def _short(path):
-    """Abbreviate the home directory to '~' for readability in prompts."""
+    """Abbreviate the home directory to '~' to keep paths narrow."""
     home = str(Path.home())
     path = str(path)
     if path == home or path.startswith(home + "/"):
@@ -75,20 +79,29 @@ def _short(path):
     return path
 
 
-def _line(level, color, emoji, repo, message):
-    print(f"{color}{level}{NOCOLOR}: {emoji}: {repo}: {message}")
+def column_width(repos):
+    """Width of the path column: the longest '~'-shortened path given."""
+    return max((len(_short(r)) for r in repos), default=0)
 
 
-def info(emoji, repo, message):
-    _line("INFO", GREEN, emoji, repo, message)
+def _line(tag, color, subject, message, width=0):
+    print(f"{color}[{tag}]{NOCOLOR}  {_short(subject):<{width}}  {message}".rstrip())
 
 
-def warning(repo, message):
-    _line("WARNING", YELLOW, WARN, repo, message)
+def info(repo, message, width=0):
+    _line(OK, GREEN, repo, message, width)
 
 
-def error(repo, message):
-    _line("ERROR", RED, FAIL, repo, message)
+def scanning(repo, message, width=0):
+    _line(SCAN, GREEN, repo, message, width)
+
+
+def warning(repo, message, width=0):
+    _line(WARN, YELLOW, repo, message, width)
+
+
+def error(repo, message, width=0):
+    _line(FAIL, RED, repo, message, width)
 
 
 def git(repo, *args, capture=True):
@@ -114,7 +127,7 @@ def open_lazygit(repo):
     try:
         return subprocess.run(["lazygit", "-p", str(repo)]).returncode
     except OSError as exc:
-        error(repo, f"Could not open lazygit — {exc}")
+        error(repo, f"Could not open lazygit - {exc}")
         return 127
 
 
@@ -127,13 +140,13 @@ def sync_repo(repo):
     repo = str(repo)
     rc, inside, err = git(repo, "rev-parse", "--is-inside-work-tree")
     if rc in (124, 127):
-        return Result(repo, "failed", f"Git repository check failed — {err or 'unknown error'}")
+        return Result(repo, "failed", f"Git repository check failed - {err or 'unknown error'}")
     if rc != 0 or inside != "true":
         return Result(repo, "skip", "Not a git repository")
 
     rc, branch, err = git(repo, "branch", "--show-current")
     if rc != 0:
-        return Result(repo, "failed", f"Branch check failed — {err or 'unknown error'}")
+        return Result(repo, "failed", f"Branch check failed - {err or 'unknown error'}")
     if not branch:
         return Result(repo, "attention", "Detached HEAD or no branch")
 
@@ -141,7 +154,7 @@ def sync_repo(repo):
     merge_rc, merge_ref, merge_err = git(repo, "config", "--get", f"branch.{branch}.merge")
     if rc not in (0, 1) or merge_rc not in (0, 1):
         reason = remote_err or merge_err or "unknown error"
-        return Result(repo, "failed", f"Upstream configuration check failed — {reason}")
+        return Result(repo, "failed", f"Upstream configuration check failed - {reason}")
     if rc != 0 or merge_rc != 0 or not remote or not merge_ref:
         return Result(repo, "attention", "No upstream branch configured")
     if remote == ".":
@@ -150,18 +163,18 @@ def sync_repo(repo):
     # Fetch the configured upstream remote.
     rc, _, err = git(repo, "fetch", remote)
     if rc != 0:
-        return Result(repo, "failed", f"Fetch failed — {_fetch_reason(err)}")
+        return Result(repo, "failed", f"Fetch failed - {_fetch_reason(err)}")
 
     rc, upstream, err = git(
         repo, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"
     )
     if rc != 0 or not upstream:
-        return Result(repo, "failed", f"Could not resolve upstream branch — {err or 'unknown error'}")
+        return Result(repo, "failed", f"Could not resolve upstream branch - {err or 'unknown error'}")
 
     # Dirty working tree
     rc, status, err = git(repo, "status", "--porcelain")
     if rc != 0:
-        return Result(repo, "failed", f"Status check failed — {err or 'unknown error'}")
+        return Result(repo, "failed", f"Status check failed - {err or 'unknown error'}")
     if status:
         n = len(status.splitlines())
         return Result(repo, "attention", f"Uncommitted changes ({n} file(s))")
@@ -171,7 +184,7 @@ def sync_repo(repo):
     parts = comparison.split()
     if rc != 0 or len(parts) != 2 or not all(part.isdigit() for part in parts):
         reason = err or comparison or "invalid Git output"
-        return Result(repo, "failed", f"Upstream comparison failed — {reason}")
+        return Result(repo, "failed", f"Upstream comparison failed - {reason}")
     ahead, behind = map(int, parts)
 
     # Diverged
@@ -183,7 +196,7 @@ def sync_repo(repo):
         rc, _, err = git(repo, "push", remote, f"HEAD:{merge_ref}")
         if rc == 0:
             return Result(repo, "pushed", f"Pushed {ahead} local commit(s)")
-        return Result(repo, "failed", f"Push failed — {err or 'see git output'}")
+        return Result(repo, "failed", f"Push failed - {err or 'see git output'}")
 
     # Up to date
     if behind == 0:
@@ -193,7 +206,7 @@ def sync_repo(repo):
     rc, _, err = git(repo, "merge", "--ff-only", upstream)
     if rc == 0:
         return Result(repo, "synced", f"Fast-forwarded by {behind} remote commit(s)")
-    return Result(repo, "attention", f"Fast-forward failed — {err or 'upstream changed'}")
+    return Result(repo, "attention", f"Fast-forward failed - {err or 'upstream changed'}")
 
 
 def _fetch_reason(stderr):
@@ -236,7 +249,7 @@ def read_ignore_file(path):
     try:
         lines = path.read_text().splitlines()
     except (OSError, UnicodeError) as exc:
-        error(str(path), f"Could not read ignore file — {exc}")
+        error(str(path), f"Could not read ignore file - {exc}")
         return []
     patterns = []
     for raw in lines:
@@ -267,7 +280,7 @@ def add_to_ignore_list(repo):
         with path.open("a") as handle:
             handle.write(f"{prefix}{repo}\n")
     except (OSError, UnicodeError) as exc:
-        error(str(path), f"Could not update ignore list — {exc}")
+        error(str(path), f"Could not update ignore list - {exc}")
         return False
     return True
 
@@ -286,7 +299,7 @@ def collect_repos(list_files, target_dirs, ignore_patterns=None):
             lines = lf.read_text().splitlines()
         except (OSError, UnicodeError) as exc:
             counts["failed"] += 1
-            error(str(lf), f"Could not read list file — {exc}")
+            error(str(lf), f"Could not read list file - {exc}")
             continue
         for raw in lines:
             line = raw.strip()
@@ -306,14 +319,14 @@ def collect_repos(list_files, target_dirs, ignore_patterns=None):
             counts["failed"] += 1
             error(str(td), "Directory not found")
             continue
-        info(SCAN, str(td), "Scanning for repositories")
+        scanning(str(td), "Scanning for repositories")
         try:
             for git_dir in td.rglob(".git"):
                 if git_dir.exists():
                     repos.append(str(git_dir.parent))
         except OSError as exc:
             counts["failed"] += 1
-            error(str(td), f"Repository scan failed — {exc}")
+            error(str(td), f"Repository scan failed - {exc}")
     return repos
 
 
@@ -346,6 +359,7 @@ def run_parallel(repos, jobs):
     """Sync every repo concurrently, printing progress as futures land."""
     results = []
     total = len(repos)
+    counter_width = len(f"{total}/{total}")
     with concurrent.futures.ThreadPoolExecutor(max_workers=jobs) as pool:
         futures = {pool.submit(sync_repo, repo): repo for repo in repos}
         for done, future in enumerate(concurrent.futures.as_completed(futures), start=1):
@@ -353,8 +367,8 @@ def run_parallel(repos, jobs):
             try:
                 results.append(future.result())
             except Exception as exc:  # keep going on unexpected failure
-                results.append(Result(repo, "failed", f"Unexpected error — {exc}"))
-            _line("INFO", GREEN, SCAN, f"{done}/{total}", repo)
+                results.append(Result(repo, "failed", f"Unexpected error - {exc}"))
+            scanning(f"{done}/{total}".rjust(counter_width), _short(repo))
     return sorted(results, key=lambda r: r.repo)
 
 
@@ -364,18 +378,21 @@ def report(results):
     attention = [r for r in results if r.status == "attention"]
     failed = [r for r in results if r.status == "failed"]
 
+    # One width across both sections so every reason starts in the same column.
+    width = column_width([r.repo for r in synced + attention + failed])
+
     if synced:
         print()
         print("Synced:")
         for r in synced:
-            info(PASS, r.repo, r.message)
+            info(r.repo, r.message, width)
     if attention or failed:
         print()
         print("Needs attention:")
         for r in attention:
-            warning(r.repo, r.message)
+            warning(r.repo, r.message, width)
         for r in failed:
-            error(r.repo, r.message)
+            error(r.repo, r.message, width)
 
 
 def prompt_for_attention(results):
@@ -388,14 +405,17 @@ def prompt_for_attention(results):
     attention = [r for r in results if r.status == "attention"]
     if not attention:
         return 0
+    # Indent continuation lines to the path column, past the "[WARN]  " tag.
+    pad = " " * (len(WARN) + 4)
+    width = column_width([r.repo for r in attention])
     print()
-    print("  y = open in lazygit    n = leave it for now (default)")
-    print("  i = ignore this repo from now on    q = quit, leave the rest alone")
+    print(f"{pad}y = open in lazygit    n = leave it for now (default)")
+    print(f"{pad}i = ignore this repo from now on    q = quit, leave the rest alone")
     for r in attention:
         print()
-        print(f"{_short(r.repo)} — {r.message}")
+        warning(r.repo, r.message, width)
         try:
-            answer = input("  Action? [y/N/i/q] ").strip().lower()
+            answer = input(f"{pad}Action? [y/N/i/q] ").strip().lower()
         except (EOFError, KeyboardInterrupt):
             print()
             break
@@ -403,8 +423,8 @@ def prompt_for_attention(results):
             break
         if answer in ("i", "ignore"):
             if add_to_ignore_list(r.repo):
-                info(PASS, r.repo,
-                     f"Ignored on future runs — added to {_short(LOCAL_IGNORE_LIST)}")
+                info(r.repo,
+                     f"Ignored on future runs - added to {_short(LOCAL_IGNORE_LIST)}")
             continue
         if answer not in ("y", "yes"):
             continue
@@ -420,11 +440,11 @@ def run_manual(repos):
         rc, inside, err = git(repo, "rev-parse", "--is-inside-work-tree")
         if rc in (124, 127):
             counts["failed"] += 1
-            error(repo, f"Git repository check failed — {err or 'unknown error'}")
+            error(repo, f"Git repository check failed - {err or 'unknown error'}")
             continue
         if rc != 0 or inside != "true":
             continue
-        info(SCAN, repo, "Opening lazygit for manual handling")
+        scanning(repo, "Opening lazygit for manual handling")
         if open_lazygit(repo) == 0:
             counts["manual"] += 1
         else:
@@ -442,9 +462,9 @@ def print_summary():
         f"{counts['attention']} need attention",
         f"{counts['failed']} failed",
     ]
-    emoji = FAIL if counts["failed"] else (WARN if counts["attention"] else PASS)
+    tag = FAIL if counts["failed"] else (WARN if counts["attention"] else OK)
     color = RED if counts["failed"] else (YELLOW if counts["attention"] else GREEN)
-    _line("INFO", color, emoji, f"{total} item(s) processed", ", ".join(parts))
+    _line(tag, color, f"{total} item(s) processed", ", ".join(parts))
 
 
 def main():
