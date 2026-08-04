@@ -302,6 +302,47 @@ class TodoScannerTest(unittest.TestCase):
         # Overlay replaces `patterns`, so the local-only BUG keyword is matched.
         self.assertIn("- BUG: local-only keyword", result.stdout)
 
+    def test_ignore_applies_when_the_ignored_directory_is_the_search_root(
+        self,
+    ) -> None:
+        # A bare "!dir" glob only prunes directories met during the walk, never
+        # the search root itself.
+        self.write("ignored/skip.md", "- TODO: ignored task\n")
+        result = self.run_scanner(
+            "--format", "plain", str(self.fixture / "ignored")
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("ignored task", result.stdout)
+
+    def test_absolute_and_home_relative_ignore_entries_apply(self) -> None:
+        nested = self.fixture / "outside"
+        self.write("outside/skip.md", "- TODO: absolutely ignored task\n")
+        self.write("outside/keep.md", "- TODO: kept task\n")
+        config = self.write_config(
+            "absolute.toml",
+            patterns=["TODO"],
+            ignore=[str(nested / "skip.md")],
+        )
+        for cwd in (Path("/"), self.fixture, Path(__file__).parent):
+            with self.subTest(cwd=cwd):
+                result = subprocess.run(
+                    [
+                        sys.executable,
+                        str(SCRIPT),
+                        "--format",
+                        "plain",
+                        str(nested),
+                    ],
+                    capture_output=True,
+                    check=False,
+                    cwd=cwd,
+                    env={**os.environ, "TODO_CONFIG": str(config)},
+                    text=True,
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertNotIn("absolutely ignored task", result.stdout)
+                self.assertIn("kept task", result.stdout)
+
     def test_flow_order_sorts_by_status(self) -> None:
         self.write(
             "flow.md",

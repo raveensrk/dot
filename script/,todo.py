@@ -223,7 +223,9 @@ def existing_paths(values: list[str]) -> list[Path]:
     for value in values:
         path = expand_path(value)
         if path.exists():
-            paths.append(path)
+            # Absolute, so ripgrep prints absolute paths and absolute `ignore`
+            # entries match; see ignore_patterns().
+            paths.append(path.absolute())
         else:
             print(f"todo: skipping missing path: {path}", file=sys.stderr)
     if not paths:
@@ -251,12 +253,38 @@ def build_patterns(config: TodoConfig) -> tuple[str, str]:
     return markdown, source
 
 
+def ignore_patterns(pattern: str) -> list[str]:
+    """Translate one `ignore` entry into ripgrep glob patterns.
+
+    Two ripgrep behaviours have to be worked around:
+
+    * A bare "!dir" glob prunes a directory found *during* the walk, but never
+      the search root itself -- scanning an ignored directory directly still
+      reports every file under it. Excluding the contents too ("!dir/**")
+      covers that case.
+    * Globs are matched against each path as ripgrep renders it, which depends
+      on the current working directory, so a leading "/" anchors to the cwd
+      rather than to the filesystem root. An absolute entry (written as such,
+      or produced by expanding "~" / "$VAR") therefore only matches when run
+      from "/". Prefixing it with "**/" makes it cwd-independent.
+    """
+    pattern = os.path.expandvars(pattern).rstrip("/")
+    if not pattern:
+        return []
+    if pattern.startswith("~"):
+        pattern = str(Path(pattern).expanduser())
+    if pattern.startswith("/"):
+        pattern = f"**{pattern}"
+    elif not pattern.startswith("**"):
+        pattern = f"**/{pattern}"
+    return [pattern, f"{pattern}/**"]
+
+
 def ignore_globs(config: TodoConfig) -> list[str]:
     globs: list[str] = []
     for pattern in config.ignore:
-        if "/" in pattern and not pattern.startswith(("/", "**")):
-            pattern = f"**/{pattern}"
-        globs.extend(("--glob", f"!{pattern}"))
+        for glob in ignore_patterns(pattern):
+            globs.extend(("--glob", f"!{glob}"))
     return globs
 
 

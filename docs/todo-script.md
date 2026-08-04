@@ -138,6 +138,13 @@ accidentally repeated in `source_extensions`.
 Ripgrep's normal ignore behavior applies, including `.gitignore` files. The
 additional `ignore` array can exclude paths across all configured roots.
 
+Each `ignore` entry names a directory or file and excludes both it and
+everything under it, so an ignored directory stays ignored even when it is
+passed as the search path itself. A bare name (`node_modules`) matches at any
+depth; a multi-segment entry (`examples/apb_reg`) matches that sequence at any
+depth; an absolute entry matches only that exact path. `~` and `$VAR` are
+expanded, and a trailing `/` is optional.
+
 Todos inside fenced code blocks (delimited by ``` ``` ``` or `~~~`) in Markdown
 files are ignored.
 
