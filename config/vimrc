@@ -116,6 +116,20 @@ command! NoCenterCursor call NoCenterCursor()
 " Scan outstanding tasks into the quickfix list (see ~/dot/script/,todo.py).
 "   :Todo            scan the configured default_dirs
 "   :Todo path ...   scan the given paths instead
+" Render quickfix entries with the full path. Vim otherwise displays a buffer's
+" shortened name, so an entry under the current directory loses its path.
+function! TodoQuickfixText(info) abort
+    let l:items = getqflist({'id': a:info.id, 'items': 1}).items
+    let l:lines = []
+    for l:index in range(a:info.start_idx - 1, a:info.end_idx - 1)
+        let l:item = l:items[l:index]
+        let l:name = l:item.bufnr ? fnamemodify(bufname(l:item.bufnr), ':p') : ''
+        call add(l:lines, printf('%s|%d col %d|%s',
+                    \ l:name, l:item.lnum, l:item.col, l:item.text))
+    endfor
+    return l:lines
+endfunction
+
 function! Todo(...) abort
     let l:cmd = 'python3 ' . shellescape(expand('~/dot/script/,todo.py')) . ' -f plain'
     for l:path in a:000
@@ -131,6 +145,9 @@ function! Todo(...) abort
     set errorformat=%f:%l:%c:%m
     cgetexpr l:lines
     let &errorformat = l:save_efm
+    if exists('*getqflist') && has('patch-8.2.0655')
+        call setqflist([], 'a', {'quickfixtextfunc': 'TodoQuickfixText'})
+    endif
     if empty(l:lines)
         echom 'Todo: no outstanding tasks'
     else
