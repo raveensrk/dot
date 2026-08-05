@@ -7,6 +7,9 @@ if ($is_linux != "Darwin")
     let g:pathogen_blacklist += ['vim-ai.git']
 endif
 
+" Linting is run on demand via :Lint / :Compile, not automatically by ALE.
+let g:ale_enabled = 0
+
 execute pathogen#infect()
 call pathogen#helptags()
 syntax on
