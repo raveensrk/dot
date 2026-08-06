@@ -5,8 +5,36 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+name="${0##*/}"
+
+# printf is a builtin, so help still works on a stripped-down PATH.
+usage() {
+	printf '%s\n' \
+		"Usage: $name <url>" \
+		"" \
+		"Open a URL in the platform's default browser." \
+		"" \
+		"Resolution order:" \
+		"  1. \$BROWSER, if set" \
+		"  2. open       (macOS)" \
+		"  3. xdg-open   (Linux)" \
+		"" \
+		"Options:" \
+		"  -h, --help  Show this help and exit" \
+		"" \
+		"Exit codes:" \
+		"  0    browser launched" \
+		"  2    wrong number of arguments" \
+		"  127  no browser found"
+}
+
+if [ "$#" -eq 1 ] && { [ "$1" = "-h" ] || [ "$1" = "--help" ]; }; then
+	usage
+	exit 0
+fi
+
 if [ "$#" -ne 1 ]; then
-	echo "usage: ${0##*/} <url>" >&2
+	usage >&2
 	exit 2
 fi
 
@@ -14,11 +42,15 @@ url="$1"
 
 if [ -n "${BROWSER:-}" ]; then
 	exec "$BROWSER" "$url"
-elif command -v open >/dev/null; then
-	exec open "$url"
-elif command -v xdg-open >/dev/null; then
-	exec xdg-open "$url"
-else
-	echo "${0##*/}: no way to open a browser (tried \$BROWSER, open, xdg-open)" >&2
-	exit 127
 fi
+
+if command -v open >/dev/null; then
+	exec open "$url"
+fi
+
+if command -v xdg-open >/dev/null; then
+	exec xdg-open "$url"
+fi
+
+echo "$name: no browser found (tried \$BROWSER, open, xdg-open)" >&2
+exit 127

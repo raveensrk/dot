@@ -2,12 +2,12 @@ refresh-on-startup yes
 save-path "/Users/raveenkumarwork/repos/work/reading_list/to_read"
 
 # ═══════════════════════════════════════════════════════════════════════
-# Theme: "Chrome Teal" — cyberpunk, dark, low eye strain
+# Theme: "Chrome Teal" - cyberpunk, dark, low eye strain
 #
 # Design rules this theme follows:
-#   1. Neon is an accent, never a surface. Body text is soft off-white
-#      (color252); saturated teal/magenta appear only on the selection
-#      bar, info bar, unread markers and inline accents.
+#   1. Neon is an accent, never a surface. Article body text is soft
+#      off-white (color252); saturated teal/magenta appear only on the
+#      selection bar, the info bar, unread rows and inline accents.
 #   2. The selection bar is a DARK saturated block (color23), not a bright
 #      one. Bright inverted bars are the largest strain source in TUIs.
 #   3. No pure black, no pure white. Backgrounds inherit the terminal,
@@ -17,12 +17,12 @@ save-path "/Users/raveenkumarwork/repos/work/reading_list/to_read"
 #   5. Mid-luminance neons (80/117/176/213), never color51/color201.
 #
 # Palette
-#   color252  body text          color245  metadata / dim
-#   color240  separators         color80   primary teal
-#   color117  bright teal        color195  pale teal (selection fg)
-#   color176  magenta            color213  bright pink
-#   color23   deep teal (sel bg) color150  acid green
-#   color215  amber
+#   color252  article body       color245  header labels / dim
+#   color240  read rows          color80   primary teal (header values)
+#   color117  unread rows (cyan) color195  pale teal (selection fg)
+#   color176  magenta (links)    color213  bright pink (titles, keys)
+#   color23   deep teal (sel bg) color150  acid green (quotes, code)
+#   color215  amber (ALL-CAPS)
 # ═══════════════════════════════════════════════════════════════════════
 
 # ── Base surfaces ──────────────────────────────────────────────────────
@@ -33,7 +33,7 @@ color article               color252  default
 color end-of-text-marker    color240  default  dim
 
 # ── Lists ──────────────────────────────────────────────────────────────
-# Read vs unread is signalled ONLY by color — there is no N marker and no
+# Read vs unread is signalled ONLY by color - there is no N marker and no
 # unread count in the list formats. Read rows recede to dark gray; unread
 # rows are cyan and bold, so unread is what the eye lands on first.
 color listnormal            color240  default
@@ -59,12 +59,13 @@ color hint-description      color195  color23
 # Layout & format strings
 # ═══════════════════════════════════════════════════════════════════════
 
-# Box-drawing separators are single-width, so columns stay aligned.
-# Nerd Font glyphs live only in the title bars, where a double-width
-# glyph cannot push a column out of alignment.
-# No `N` marker and no (unread/total) counts — read vs unread is carried
+# No `N` marker and no (unread/total) counts. Read vs unread is carried
 # entirely by color: cyan for unread, dark gray for read (see the list
-# colors above). Nothing else competes for attention.
+# colors above), so nothing else competes for attention.
+#
+# Separators are box-drawing `│`, which is single-width and keeps the
+# date column aligned. Nerd Font glyphs are confined to the title bars,
+# where a double-width glyph cannot push a column out of alignment.
 feedlist-format             "%t"
 articlelist-format          "%-12D │ %t"
 
@@ -82,13 +83,11 @@ filebrowser-title-format    "%N %V │ %?O?Open file&Save file? │ %f"
 dirbrowser-title-format     "%N %V │ Select directory │ %f"
 
 # ── Readability ────────────────────────────────────────────────────────
+# Only settings that actually differ from the newsboat defaults. Options
+# set to their own default value were removed as no-ops.
 text-width 92               # cap measure; long lines are the real strain source
-wrap-scroll no              # don't wrap around at the end of a list
 scrolloff 3                 # keep context above/below the cursor
 datetime-format "%b %d %H:%M"
-display-article-progress yes
-mark-as-read-on-hover no    # only mark read on an explicit open
-swap-title-and-hints no
 
 # Feeds appear in the same order as the urls file. `none` is the default,
 # but it is set explicitly so a future sort option isn't added by accident.
@@ -126,5 +125,5 @@ highlight article "\\b[A-Z][A-Z0-9_]{3,}\\b"                     color215  defau
 # elements already distinguish read from unread AND respect focus, so
 # they do this job correctly. Do not add list highlight rules here.
 #
-# `highlight article` (below/above, for the article BODY) is unaffected —
+# `highlight article` (below/above, for the article BODY) is unaffected -
 # the body has no focus bar to clobber.
