@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Open a URL in the platform's default browser.
+# Newsboat's config format has no OS conditionals, so the branching lives
+# here and the config just calls `open_url %u`.
+set -euo pipefail
+IFS=$'\n\t'
+
+if [ "$#" -ne 1 ]; then
+	echo "usage: ${0##*/} <url>" >&2
+	exit 2
+fi
+
+url="$1"
+
+if [ -n "${BROWSER:-}" ]; then
+	exec "$BROWSER" "$url"
+elif command -v open >/dev/null; then
+	exec open "$url"
+elif command -v xdg-open >/dev/null; then
+	exec xdg-open "$url"
+else
+	echo "${0##*/}: no way to open a browser (tried \$BROWSER, open, xdg-open)" >&2
+	exit 127
+fi
