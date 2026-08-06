@@ -11,7 +11,7 @@ update_prompt() {
 		local return_code2="${red}$return_code${reset}"
 	fi
 
-	local path="${yellow}\W${reset}"
+	local path="${yellow}\w${reset}"
 	local host="${green}\h${reset}"
 	local user="${blue}\u${reset}"
 	local num_jobs="${magenta}\j${reset}"
