@@ -4,6 +4,8 @@ export EDITOR="vim"
 export VISUAL="vim"
 export DOT=$HOME/dot
 export INPUTRC=$DOT/config/inputrc
+# Must be set before bash_completion loads task.sh, which runs `task` at load time
+export TASKRC=$DOT/config/taskrc
 export MYVIMRC=$DOT/config/vimrc
 export VIMINIT=":source $MYVIMRC"
 export TERM=xterm-256color
@@ -94,6 +96,7 @@ alias newsboat2='newsboat -C "$DOT/config/newsboat/config" -u "$DOT/config/newsb
 alias newsboat3='newsboat -C "$DOT/config/newsboat/config" -u "$HOME/dot_local/config/newsboat/urls"'
 alias ls=eza
 alias l="eza -lAh"
+alias claude2="claude --permission-mode bypassPermissions"
 # }}}
 # {{{ PAGERS
 alias less='less -s -R -wi -S --ignore-case'
@@ -303,8 +306,6 @@ fi
 [ -r /opt/homebrew/etc/profile.d/bash_completion.sh ] && source /opt/homebrew/etc/profile.d/bash_completion.sh
 
 # }}}
-
-export TASKRC=$HOME/dot/config/taskrc
 
 if [[ $os == "Darwin" ]]; then
 	export PATH="/opt/homebrew/bin:$PATH"
