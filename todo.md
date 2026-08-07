@@ -13,4 +13,4 @@
     - Make the colors subtle. Text must be legible.
 - TODO: Add keybind for markdown file
     - a keybing to go no next overdue item
-- TODO: newsboat3 url to newsboat2
+- TODO: newsboat3 url to newsboat2. I have some local rss feed that i need to filter.
