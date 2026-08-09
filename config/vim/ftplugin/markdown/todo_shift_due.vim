@@ -86,5 +86,7 @@ function! s:ShiftDue(dir) abort
 	echo printf('due: %s -> %s (%s)', l:date, l:new, l:why)
 endfunction
 
-nnoremap <buffer> <silent> <S-Right> :<C-u>call <SID>ShiftDue(1)<CR>
-nnoremap <buffer> <silent> <S-Left>  :<C-u>call <SID>ShiftDue(-1)<CR>
+command! -buffer TodoShiftDue     call s:ShiftDue(1)
+command! -buffer TodoShiftDueBack call s:ShiftDue(-1)
+nnoremap <buffer> <silent> <S-Right> :<C-u>TodoShiftDue<CR>
+nnoremap <buffer> <silent> <S-Left>  :<C-u>TodoShiftDueBack<CR>

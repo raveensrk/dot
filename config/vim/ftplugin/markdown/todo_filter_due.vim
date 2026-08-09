@@ -51,4 +51,5 @@ function! s:Toggle() abort
 	endif
 endfunction
 
-nnoremap <buffer> <silent> ,D :<C-u>call <SID>Toggle()<CR>
+command! -buffer TodoFilterDue call s:Toggle()
+nnoremap <buffer> <silent> ,D :<C-u>TodoFilterDue<CR>
