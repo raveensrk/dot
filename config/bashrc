@@ -135,6 +135,16 @@ man() {
 # {{{ VIM
 alias vimrc="vim \$DOT/config/vimrc"
 alias v="vim"
+# Relaunch vim whenever it exits via :Restart (defined in config/vimrc),
+# restoring the session it saved on the way out.
+vim() {
+	while :; do
+		command vim "$@"
+		[ -e ~/.vim/restart ] || break
+		rm -f ~/.vim/restart
+		set -- -S ~/.vim/restart_session.vim
+	done
+}
 # }}}
 # RANGER {{{
 export RANGER="ranger -r $DOT/config/ranger"

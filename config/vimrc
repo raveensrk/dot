@@ -159,6 +159,28 @@ function! Todo(...) abort
 endfunction
 command! -nargs=* -complete=file Todo call Todo(<f-args>)
 
+" Restart vim in place. Terminal vim: drop a marker and a session, then quit;
+" the vim() wrapper in ~/dot/config/bashrc sees the marker and relaunches with
+" the session, so this only works for vims started from an interactive shell.
+" MacVim GUI: no wrapper is watching, so spawn a detached relaunch instead
+" (no marker, or the next wrapped terminal vim would steal the session).
+function! Restart() abort
+    " Bail before queuing the relaunch: qall below would abort on unsaved
+    " changes, but by then the marker/spawn is already committed.
+    if !empty(filter(getbufinfo({'buflisted': 1}), 'v:val.changed'))
+        echohl ErrorMsg | echom 'Restart: unsaved changes' | echohl None
+        return
+    endif
+    mksession! ~/.vim/restart_session.vim
+    if has('gui_running')
+        call system('(sleep 0.3; open -n -a MacVim --args -S ~/.vim/restart_session.vim) &')
+    else
+        call writefile([], expand('~/.vim/restart'))
+    endif
+    qall
+endfunction
+command! Restart call Restart()
+
 
 "  }}}
 " {{{ BACKUPS AND UNDO
