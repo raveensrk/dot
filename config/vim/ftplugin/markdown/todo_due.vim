@@ -1,7 +1,8 @@
 " Subtle background tint for todo lines (~/dot/docs/todo-schema.md) whose
 " due: date is overdue, today, or tomorrow. Syntax patterns cannot compare
 " dates, so an autocmd rescans the buffer and applies text properties.
-" DONE/OBSOLETE items are ignored. The properties use 'combine' so the
+" DONE/OBSOLETE items are ignored, and recurring tasks skip the tomorrow
+" tint. The properties use 'combine' so the
 " normal foreground highlighting (state colors, dim metadata) shows through.
 
 if !has('textprop') || !has('patch-9.0.0067')
@@ -51,6 +52,11 @@ function! s:Sync() abort
 		elseif l:due ==# l:today
 			let l:type = 'todoDueToday'
 		elseif l:due ==# l:tomorrow
+			" Recurring tasks are always due again soon; a tomorrow tint
+			" for them is just noise.
+			if l:line =~# '\<recurring:'
+				continue
+			endif
 			let l:type = 'todoDueTomorrow'
 		else
 			continue

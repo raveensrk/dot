@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import datetime
 import json
 import os
 import re
@@ -177,6 +178,12 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--include-excluded",
         action="store_true",
         help="also report statuses hidden by exclude_patterns (e.g. LATER)",
+    )
+    parser.add_argument(
+        "-d",
+        "--due",
+        action="store_true",
+        help="only tasks whose due: date is today or earlier",
     )
     parser.add_argument(
         "paths",
@@ -468,12 +475,29 @@ def drop_excluded(matches: list[TodoMatch], config: TodoConfig) -> list[TodoMatc
     return [match for match in matches if status_of(match) not in excluded]
 
 
+DUE_DATE = re.compile(r"\bdue:(\d{4}-\d{2}-\d{2})")
+
+
+def drop_not_due(matches: list[TodoMatch], today: str | None = None) -> list[TodoMatch]:
+    """Keep only matches whose due: date is today or earlier."""
+    if today is None:
+        today = datetime.date.today().isoformat()
+
+    def is_due(match: TodoMatch) -> bool:
+        found = DUE_DATE.search(match.text)
+        # ISO dates compare correctly as strings.
+        return found is not None and found.group(1) <= today
+
+    return [match for match in matches if is_due(match)]
+
+
 def scan(
     config: TodoConfig,
     paths: list[Path],
     *,
     all_extensions: bool = False,
     include_excluded: bool = False,
+    due_only: bool = False,
 ) -> list[TodoMatch]:
     if shutil.which("rg") is None:
         raise TodoError("ripgrep (rg) is required")
@@ -503,6 +527,8 @@ def scan(
     matches = drop_foreign_mentions(matches, config.owner_mentions)
     if not include_excluded:
         matches = drop_excluded(matches, config)
+    if due_only:
+        matches = drop_not_due(matches)
     rank_of = flow_ranker(config)
     return sorted(set(matches), key=lambda match: (rank_of(match), match))
 
@@ -587,6 +613,7 @@ def main(argv: list[str] | None = None) -> int:
             paths,
             all_extensions=args.all_extensions,
             include_excluded=args.include_excluded,
+            due_only=args.due,
         )
         output(matches, args.format, paths)
     except TodoError as error:

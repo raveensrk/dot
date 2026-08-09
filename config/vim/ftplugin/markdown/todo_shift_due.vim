@@ -2,7 +2,10 @@
 " recurrence interval: <S-Right> forward, <S-Left> backward. The interval
 " comes from the line's recurring: field (daily/weekly/monthly/yearly or
 " compact 2d/3w/6m); without one it defaults to 1 day. A THH:MM time
-" suffix on the due date is preserved.
+" suffix on the due date is preserved. Shifting an overdue date forward
+" advances it by whole intervals until it lands after today (daily ->
+" tomorrow, weekly -> next occurrence of that weekday, ...), so recurring
+" tasks keep their anchor instead of stepping through the past.
 
 let s:todo_line = '^\s*[-*] \(TODO\|IN_PROGRESS\|OPTIONAL\|DONE\|OBSOLETE\): '
 
@@ -63,11 +66,24 @@ function! s:ShiftDue(dir) abort
 		echo 'todo-shift: no due: date on this line'
 		return
 	endif
+	let l:today = strftime('%Y-%m-%d')
 	let [l:n, l:unit] = s:ParseInterval(l:line)
-	let l:new = s:AddInterval(l:date, a:dir * l:n, l:unit)
+	" ISO dates compare correctly as strings.
+	if a:dir > 0 && l:date <# l:today
+		" Overdue: advance by whole intervals until strictly after today,
+		" keeping the recurrence anchor (weekday, day-of-month, ...).
+		let l:new = l:date
+		while l:new <=# l:today
+			let l:new = s:AddInterval(l:new, l:n, l:unit)
+		endwhile
+		let l:why = printf('overdue -> next %d%s', l:n, l:unit)
+	else
+		let l:new = s:AddInterval(l:date, a:dir * l:n, l:unit)
+		let l:why = printf('%d%s', l:n, l:unit)
+	endif
 	call setline('.', substitute(l:line,
 		\ '\<due:\zs\d\{4}-\d\{2}-\d\{2}', l:new, ''))
-	echo printf('due: %s -> %s (%d%s)', l:date, l:new, l:n, l:unit)
+	echo printf('due: %s -> %s (%s)', l:date, l:new, l:why)
 endfunction
 
 nnoremap <buffer> <silent> <S-Right> :<C-u>call <SID>ShiftDue(1)<CR>

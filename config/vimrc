@@ -119,6 +119,7 @@ command! NoCenterCursor call NoCenterCursor()
 " Scan outstanding tasks into the quickfix list (see ~/dot/script/,todo.py).
 "   :Todo            scan the configured default_dirs
 "   :Todo path ...   scan the given paths instead
+"   :Todo!           only tasks with a due: date of today or earlier
 " Render quickfix entries with the full path. Vim otherwise displays a buffer's
 " shortened name, so an entry under the current directory loses its path.
 function! TodoQuickfixText(info) abort
@@ -133,8 +134,11 @@ function! TodoQuickfixText(info) abort
     return l:lines
 endfunction
 
-function! Todo(...) abort
+function! Todo(due, ...) abort
     let l:cmd = 'python3 ' . shellescape(expand('~/dot/script/,todo.py')) . ' -f plain'
+    if a:due
+        let l:cmd .= ' --due'
+    endif
     for l:path in a:000
         let l:cmd .= ' ' . shellescape(l:path)
     endfor
@@ -157,7 +161,7 @@ function! Todo(...) abort
         copen
     endif
 endfunction
-command! -nargs=* -complete=file Todo call Todo(<f-args>)
+command! -bang -nargs=* -complete=file Todo call Todo(<bang>0, <f-args>)
 
 " Restart vim in place. Terminal vim: drop a marker and a session, then quit;
 " the vim() wrapper in ~/dot/config/bashrc sees the marker and relaunches with
@@ -266,20 +270,19 @@ command! Format :norm mmggVGgq`m
 
 " Scan outstanding tasks into quickfix (sits with the ,c/,n/,p quickfix cluster).
 nnoremap ,t :Todo<CR>
+" Only tasks due today or overdue.
+nnoremap ,d :Todo!<CR>
 
-" On a bare `vim` (no file args, no piped stdin), show the todo quickfix list
-" alongside the Startify dashboard. Deferred via timer so it runs after Startify
-" has drawn; focus is returned to the dashboard window afterwards.
-function! TodoStartup() abort
-    let l:dashboard = win_getid()
-    call Todo()
-    if win_id2win(l:dashboard)
-        call win_gotoid(l:dashboard)
-    endif
-endfunction
-autocmd StdinReadPre * let s:std_in = 1
-autocmd VimEnter * if argc() == 0 && !exists('s:std_in')
-            \ | call timer_start(0, {-> TodoStartup()}) | endif
+" Move current line / visual selection up and down with Shift-Up/Down.
+" MacVim only: Terminal.app keeps shift-arrows for scrollback and never
+" delivers them to vim, so terminal vim gets no move-line bindings.
+if has('gui_running')
+	nnoremap <silent> <S-Down> :m .+1<CR>==
+	nnoremap <silent> <S-Up>   :m .-2<CR>==
+	vnoremap <silent> <S-Down> :m '>+1<CR>gv=gv
+	vnoremap <silent> <S-Up>   :m '<-2<CR>gv=gv
+endif
+
 set showmode
 set showcmd
 set shortmess+=I

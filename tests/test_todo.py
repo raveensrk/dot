@@ -209,6 +209,30 @@ class TodoScannerTest(unittest.TestCase):
         self.assertIn("- TODO: Markdown task", result.stdout)
         self.assertIn("skipping missing path", result.stderr)
 
+    def test_due_filter_keeps_only_today_and_overdue(self) -> None:
+        import datetime
+
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        tomorrow = today + datetime.timedelta(days=1)
+        self.write(
+            "due.md",
+            f"""\
+            - TODO: Overdue task due:{yesterday}
+            - TODO: Due today task due:{today}
+            - TODO: Due today with time due:{today}T09:00
+            - TODO: Future task due:{tomorrow}
+            - TODO: No due date task
+            """,
+        )
+        result = self.run_scanner("--format", "plain", "--due", str(self.fixture / "due.md"))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Overdue task", result.stdout)
+        self.assertIn("Due today task", result.stdout)
+        self.assertIn("Due today with time", result.stdout)
+        self.assertNotIn("Future task", result.stdout)
+        self.assertNotIn("No due date task", result.stdout)
+
     def test_checkboxes_can_be_disabled(self) -> None:
         config = self.write_config(
             "no-checkboxes.toml", patterns=["TODO"], checkbox_patterns=[]
