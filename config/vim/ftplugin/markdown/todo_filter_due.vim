@@ -1,18 +1,48 @@
 " Toggle a filtered view showing only active todo lines
-" (~/dot/docs/todo-schema.md) whose due: date is today or earlier;
-" everything else collapses into folds. ,D toggles the view. The global
-" ,d (:Todo!) is the cross-file quickfix equivalent.
+" (~/dot/docs/todo-schema.md) whose due: date is today or earlier, plus
+" their indented sub-items; everything else collapses into folds. ,D
+" toggles the view. The global ,d (:Todo!) is the cross-file quickfix
+" equivalent.
 
 let s:active_line = '^\s*[-*] \(TODO\|IN_PROGRESS\): '
+let s:todo_line = '^\s*[-*] \(TODO\|IN_PROGRESS\|OPTIONAL\|DONE\|OBSOLETE\): '
+
+function! s:IsDueLine(line) abort
+	if a:line !~# s:active_line
+		return 0
+	endif
+	let l:due = matchstr(a:line, '\<due:\zs\d\{4}-\d\{2}-\d\{2}')
+	" ISO dates compare correctly as strings.
+	return !empty(l:due) && l:due <=# strftime('%Y-%m-%d')
+endfunction
 
 function! TodoDueFoldExpr(lnum) abort
 	let l:line = getline(a:lnum)
-	if l:line !~# s:active_line
+	if s:IsDueLine(l:line)
+		return 0
+	endif
+	if l:line =~# '^\s*$'
 		return 1
 	endif
-	let l:due = matchstr(l:line, '\<due:\zs\d\{4}-\d\{2}-\d\{2}')
-	" ISO dates compare correctly as strings.
-	return !empty(l:due) && l:due <=# strftime('%Y-%m-%d') ? 0 : 1
+	" Sub-items inherit visibility from the task they hang under: walk up
+	" the indent chain and show the line if the first task ancestor is
+	" due. Non-task ancestors (plain bullets, prose) are stepped through.
+	let l:indent = indent(a:lnum)
+	let l:above = a:lnum - 1
+	while l:above >= 1 && l:indent > 0
+		let l:above_line = getline(l:above)
+		if l:above_line !~# '^\s*$' && indent(l:above) < l:indent
+			if s:IsDueLine(l:above_line)
+				return 0
+			endif
+			if l:above_line =~# s:todo_line
+				return 1
+			endif
+			let l:indent = indent(l:above)
+		endif
+		let l:above -= 1
+	endwhile
+	return 1
 endfunction
 
 function! s:Toggle() abort
