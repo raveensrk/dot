@@ -10,6 +10,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
 | [Todo schema](todo-schema.md) | Canonical todo item format used across projects |
 | [Todo script](todo-script.md) | `script/,todo.py`, the Markdown task scanner |
+| [Vim colorscheme](vim-colorscheme.md) | Current scheme, eye-comfort research, and how pathogen plugins are installed |
 | [WireGuard VPN on Vultr](how-to-set-up-wireguard-vpn-in-vultr-instance.md) | Personal VPN setup with iOS and macOS clients |
 
 ## Where things live
