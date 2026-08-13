@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Sync multiple git repositories with automatic and manual modes.
 
-Output is plain ASCII, three aligned columns:
+Output is plain ASCII, four aligned columns:
 
-    [TAG]  <repo path>  <message/reason>
+    [TAG]  <repo path>  <state>  <message/reason>
 
-  TAG   OK (green) / WARN (yellow) / FAIL (red) / SCAN (green), all 4 columns
-  path  '~'-shortened, padded to the longest path in the run
+  TAG    OK (green) / WARN (yellow) / FAIL (red) / SCAN (green), all 4 columns
+  path   '~'-shortened, padded to the longest path in the run
+  state  working tree: 'clean', 'dirty', or '-' when it could not be inspected
 
 Repos are synced in parallel (-j/--jobs, default 8). Nothing interactive
 happens during the scan: repos needing a human are only recorded. Afterwards
@@ -51,6 +52,12 @@ FAIL = "FAIL"
 WARN = "WARN"
 SCAN = "SCAN"
 
+# Working-tree state column.
+CLEAN = "clean"
+DIRTY = "dirty"
+UNKNOWN = "-"
+STATE_WIDTH = max(len(CLEAN), len(DIRTY), len(UNKNOWN))
+
 REPO_LIST = Path.home() / "dot_local" / "list_of_repos.txt"
 DEFAULT_REPO_DIR = Path.home() / "repos"
 # Personal, untracked skip list. Always applied, regardless of --file/--dir.
@@ -60,8 +67,9 @@ LOCAL_IGNORE_LIST = Path.home() / "dot_local" / "list_of_ignores.txt"
 counts = {"ok": 0, "pushed": 0, "synced": 0, "manual": 0, "attention": 0, "failed": 0}
 
 # One repo's outcome. `status` is a key of `counts`, or "skip" for paths that
-# turned out not to be git repositories.
-Result = namedtuple("Result", "repo status message")
+# turned out not to be git repositories. `dirty` is True/False, or None when the
+# working tree could not be inspected.
+Result = namedtuple("Result", "repo status message dirty", defaults=(None,))
 SYNCED_STATUSES = ("ok", "pushed", "synced")
 
 
@@ -84,24 +92,36 @@ def column_width(repos):
     return max((len(_short(r)) for r in repos), default=0)
 
 
-def _line(tag, color, subject, message, width=0):
-    print(f"{color}[{tag}]{NOCOLOR}  {_short(subject):<{width}}  {message}".rstrip())
+def _state(dirty):
+    """Label for the working-tree column; None means 'never inspected'."""
+    if dirty is None:
+        return UNKNOWN
+    return DIRTY if dirty else CLEAN
 
 
-def info(repo, message, width=0):
-    _line(OK, GREEN, repo, message, width)
+def _line(tag, color, subject, message, width=0, state=None):
+    """Print one row. `state` of None omits the working-tree column entirely."""
+    columns = [f"{color}[{tag}]{NOCOLOR}", f"{_short(subject):<{width}}"]
+    if state is not None:
+        columns.append(f"{state:<{STATE_WIDTH}}")
+    columns.append(message)
+    print("  ".join(columns).rstrip())
 
 
-def scanning(repo, message, width=0):
-    _line(SCAN, GREEN, repo, message, width)
+def info(repo, message, width=0, state=None):
+    _line(OK, GREEN, repo, message, width, state)
 
 
-def warning(repo, message, width=0):
-    _line(WARN, YELLOW, repo, message, width)
+def scanning(repo, message, width=0, state=None):
+    _line(SCAN, GREEN, repo, message, width, state)
 
 
-def error(repo, message, width=0):
-    _line(FAIL, RED, repo, message, width)
+def warning(repo, message, width=0, state=None):
+    _line(WARN, YELLOW, repo, message, width, state)
+
+
+def error(repo, message, width=0, state=None):
+    _line(FAIL, RED, repo, message, width, state)
 
 
 def git(repo, *args, capture=True):
@@ -144,69 +164,76 @@ def sync_repo(repo):
     if rc != 0 or inside != "true":
         return Result(repo, "skip", "Not a git repository")
 
+    # Inspect the working tree up front so every real repo can be reported as
+    # clean or dirty, even when it later fails on branch, upstream, or fetch.
+    rc, status, err = git(repo, "status", "--porcelain")
+    if rc != 0:
+        return Result(repo, "failed", f"Status check failed - {err or 'unknown error'}")
+    dirty = bool(status)
+    dirty_count = len(status.splitlines())
+
     rc, branch, err = git(repo, "branch", "--show-current")
     if rc != 0:
-        return Result(repo, "failed", f"Branch check failed - {err or 'unknown error'}")
+        return Result(repo, "failed", f"Branch check failed - {err or 'unknown error'}", dirty)
     if not branch:
-        return Result(repo, "attention", "Detached HEAD or no branch")
+        return Result(repo, "attention", "Detached HEAD or no branch", dirty)
 
     rc, remote, remote_err = git(repo, "config", "--get", f"branch.{branch}.remote")
     merge_rc, merge_ref, merge_err = git(repo, "config", "--get", f"branch.{branch}.merge")
     if rc not in (0, 1) or merge_rc not in (0, 1):
         reason = remote_err or merge_err or "unknown error"
-        return Result(repo, "failed", f"Upstream configuration check failed - {reason}")
+        return Result(repo, "failed", f"Upstream configuration check failed - {reason}", dirty)
     if rc != 0 or merge_rc != 0 or not remote or not merge_ref:
-        return Result(repo, "attention", "No upstream branch configured")
+        return Result(repo, "attention", "No upstream branch configured", dirty)
     if remote == ".":
-        return Result(repo, "attention", "Local upstream remotes are not supported")
+        return Result(repo, "attention", "Local upstream remotes are not supported", dirty)
 
     # Fetch the configured upstream remote.
     rc, _, err = git(repo, "fetch", remote)
     if rc != 0:
-        return Result(repo, "failed", f"Fetch failed - {_fetch_reason(err)}")
+        return Result(repo, "failed", f"Fetch failed - {_fetch_reason(err)}", dirty)
 
     rc, upstream, err = git(
         repo, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"
     )
     if rc != 0 or not upstream:
-        return Result(repo, "failed", f"Could not resolve upstream branch - {err or 'unknown error'}")
+        return Result(repo, "failed",
+                      f"Could not resolve upstream branch - {err or 'unknown error'}", dirty)
 
     # Dirty working tree
-    rc, status, err = git(repo, "status", "--porcelain")
-    if rc != 0:
-        return Result(repo, "failed", f"Status check failed - {err or 'unknown error'}")
-    if status:
-        n = len(status.splitlines())
-        return Result(repo, "attention", f"Uncommitted changes ({n} file(s))")
+    if dirty:
+        return Result(repo, "attention",
+                      f"Uncommitted changes ({dirty_count} file(s))", dirty)
 
     # Ahead / behind
     rc, comparison, err = git(repo, "rev-list", "--left-right", "--count", f"HEAD...{upstream}")
     parts = comparison.split()
     if rc != 0 or len(parts) != 2 or not all(part.isdigit() for part in parts):
         reason = err or comparison or "invalid Git output"
-        return Result(repo, "failed", f"Upstream comparison failed - {reason}")
+        return Result(repo, "failed", f"Upstream comparison failed - {reason}", dirty)
     ahead, behind = map(int, parts)
 
     # Diverged
     if ahead > 0 and behind > 0:
-        return Result(repo, "attention", f"Diverged (ahead {ahead}, behind {behind})")
+        return Result(repo, "attention", f"Diverged (ahead {ahead}, behind {behind})", dirty)
 
     # Ahead only -> push
     if ahead > 0:
         rc, _, err = git(repo, "push", remote, f"HEAD:{merge_ref}")
         if rc == 0:
-            return Result(repo, "pushed", f"Pushed {ahead} local commit(s)")
-        return Result(repo, "failed", f"Push failed - {err or 'see git output'}")
+            return Result(repo, "pushed", f"Pushed {ahead} local commit(s)", dirty)
+        return Result(repo, "failed", f"Push failed - {err or 'see git output'}", dirty)
 
     # Up to date
     if behind == 0:
-        return Result(repo, "ok", "Already up to date")
+        return Result(repo, "ok", "Already up to date", dirty)
 
     # Behind only -> fast-forward to the already-fetched upstream. No push is needed.
     rc, _, err = git(repo, "merge", "--ff-only", upstream)
     if rc == 0:
-        return Result(repo, "synced", f"Fast-forwarded by {behind} remote commit(s)")
-    return Result(repo, "attention", f"Fast-forward failed - {err or 'upstream changed'}")
+        return Result(repo, "synced", f"Fast-forwarded by {behind} remote commit(s)", dirty)
+    return Result(repo, "attention",
+                  f"Fast-forward failed - {err or 'upstream changed'}", dirty)
 
 
 def _fetch_reason(stderr):
@@ -367,7 +394,7 @@ def run_parallel(repos, jobs):
             try:
                 results.append(future.result())
             except Exception as exc:  # keep going on unexpected failure
-                results.append(Result(repo, "failed", f"Unexpected error - {exc}"))
+                results.append(Result(repo, "failed", f"Unexpected error - {exc}", None))
             scanning(f"{done}/{total}".rjust(counter_width), _short(repo))
     return sorted(results, key=lambda r: r.repo)
 
@@ -385,14 +412,14 @@ def report(results):
         print()
         print("Synced:")
         for r in synced:
-            info(r.repo, r.message, width)
+            info(r.repo, r.message, width, _state(r.dirty))
     if attention or failed:
         print()
         print("Needs attention:")
         for r in attention:
-            warning(r.repo, r.message, width)
+            warning(r.repo, r.message, width, _state(r.dirty))
         for r in failed:
-            error(r.repo, r.message, width)
+            error(r.repo, r.message, width, _state(r.dirty))
 
 
 def prompt_for_attention(results):
@@ -413,7 +440,7 @@ def prompt_for_attention(results):
     print(f"{pad}i = ignore this repo from now on    q = quit, leave the rest alone")
     for r in attention:
         print()
-        warning(r.repo, r.message, width)
+        warning(r.repo, r.message, width, _state(r.dirty))
         try:
             answer = input(f"{pad}Action? [y/N/i/q] ").strip().lower()
         except (EOFError, KeyboardInterrupt):
@@ -452,7 +479,7 @@ def run_manual(repos):
             error(repo, "lazygit exited unsuccessfully")
 
 
-def print_summary():
+def print_summary(dirty=None):
     total = sum(counts.values())
     parts = [
         f"{counts['ok']} up-to-date",
@@ -462,6 +489,8 @@ def print_summary():
         f"{counts['attention']} need attention",
         f"{counts['failed']} failed",
     ]
+    if dirty is not None:
+        parts.append(f"{dirty} dirty")
     tag = FAIL if counts["failed"] else (WARN if counts["attention"] else OK)
     color = RED if counts["failed"] else (YELLOW if counts["attention"] else GREEN)
     _line(tag, color, f"{total} item(s) processed", ", ".join(parts))
@@ -503,10 +532,12 @@ def main():
     ignore_patterns.extend(read_ignore_file(LOCAL_IGNORE_LIST))
     repos = dedup(collect_repos(list_files, target_dirs, ignore_patterns))
     repos = [r for r in repos if not is_ignored(r, ignore_patterns)]
+    dirty_total = None
     if args.manual:
         run_manual(repos)
     else:
         results = run_parallel(repos, args.jobs)
+        dirty_total = sum(1 for r in results if r.dirty)
         for r in results:
             if r.status in counts:
                 counts[r.status] += 1
@@ -517,7 +548,7 @@ def main():
             counts["failed"] += failures
 
     print()
-    print_summary()
+    print_summary(dirty_total)
     if counts["failed"]:
         return 1
     if counts["attention"]:
