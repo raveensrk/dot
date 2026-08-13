@@ -19,6 +19,7 @@ Behaviour per repo:
   - --manual                  -> open lazygit; do not fetch, merge, or push
   - not a git repo            -> skip silently
   - detached HEAD / no branch -> needs attention
+  - no upstream configured    -> OK if clean; needs attention if dirty
   - fetch fails               -> ERROR, skip (reason shown)
   - dirty working tree        -> needs attention
   - diverged (ahead & behind) -> needs attention
@@ -184,7 +185,13 @@ def sync_repo(repo):
         reason = remote_err or merge_err or "unknown error"
         return Result(repo, "failed", f"Upstream configuration check failed - {reason}", dirty)
     if rc != 0 or merge_rc != 0 or not remote or not merge_ref:
-        return Result(repo, "attention", "No upstream branch configured", dirty)
+        # Nothing to sync against. A clean tree has nothing to lose, so that is
+        # fine; only uncommitted work in an unbacked repo needs a human.
+        if not dirty:
+            return Result(repo, "ok", "No upstream branch configured", dirty)
+        return Result(repo, "attention",
+                      f"No upstream branch configured, uncommitted changes "
+                      f"({dirty_count} file(s))", dirty)
     if remote == ".":
         return Result(repo, "attention", "Local upstream remotes are not supported", dirty)
 
