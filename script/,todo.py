@@ -230,8 +230,8 @@ def existing_paths(values: list[str]) -> list[Path]:
     for value in values:
         path = expand_path(value)
         if path.exists():
-            # Absolute, so ripgrep prints absolute paths and absolute `ignore`
-            # entries match; see ignore_patterns().
+            # Absolute, so ripgrep prints absolute paths and drop_ignored_paths()
+            # can compare them against absolute `ignore` entries.
             paths.append(path.absolute())
         else:
             print(f"todo: skipping missing path: {path}", file=sys.stderr)
@@ -260,31 +260,57 @@ def build_patterns(config: TodoConfig) -> tuple[str, str]:
     return markdown, source
 
 
+def is_absolute_ignore(pattern: str) -> bool:
+    """True if an `ignore` entry names one exact path rather than a name."""
+    pattern = os.path.expandvars(pattern)
+    return pattern.startswith("/") or pattern.startswith("~")
+
+
 def ignore_patterns(pattern: str) -> list[str]:
-    """Translate one `ignore` entry into ripgrep glob patterns.
+    """Translate one relative `ignore` entry into ripgrep glob patterns.
 
-    Two ripgrep behaviours have to be worked around:
+    A bare "!dir" glob prunes a directory found *during* the walk, but never
+    the search root itself -- scanning an ignored directory directly still
+    reports every file under it. Excluding the contents too ("!dir/**") covers
+    that case.
 
-    * A bare "!dir" glob prunes a directory found *during* the walk, but never
-      the search root itself -- scanning an ignored directory directly still
-      reports every file under it. Excluding the contents too ("!dir/**")
-      covers that case.
-    * Globs are matched against each path as ripgrep renders it, which depends
-      on the current working directory, so a leading "/" anchors to the cwd
-      rather than to the filesystem root. An absolute entry (written as such,
-      or produced by expanding "~" / "$VAR") therefore only matches when run
-      from "/". Prefixing it with "**/" makes it cwd-independent.
+    Absolute entries get no glob at all. Ripgrep matches globs against the path
+    as it renders it, and "**/" spans whole path components, so it cannot
+    absorb the leading "/" that starts an absolute path: "**//abs/path" never
+    matches, and a bare "/abs/path" anchors to the cwd instead of to the
+    filesystem root. There is no glob spelling for "this exact absolute path",
+    so drop_ignored_paths() enforces those entries after the search instead.
     """
     pattern = os.path.expandvars(pattern).rstrip("/")
-    if not pattern:
+    if not pattern or is_absolute_ignore(pattern):
         return []
-    if pattern.startswith("~"):
-        pattern = str(Path(pattern).expanduser())
-    if pattern.startswith("/"):
-        pattern = f"**{pattern}"
-    elif not pattern.startswith("**"):
+    if not pattern.startswith("**"):
         pattern = f"**/{pattern}"
     return [pattern, f"{pattern}/**"]
+
+
+def drop_ignored_paths(
+    matches: list[TodoMatch], config: TodoConfig
+) -> list[TodoMatch]:
+    """Drop matches under an absolute `ignore` entry.
+
+    Relative entries are handled by globs during the search; absolute ones
+    cannot be (see ignore_patterns()), so they are applied here, where an exact
+    path comparison is available.
+    """
+    roots = [
+        expand_path(pattern.rstrip("/")).absolute()
+        for pattern in config.ignore
+        if is_absolute_ignore(pattern)
+    ]
+    if not roots:
+        return matches
+
+    def ignored(match: TodoMatch) -> bool:
+        path = Path(match.file).absolute()
+        return any(path == root or root in path.parents for root in roots)
+
+    return [match for match in matches if not ignored(match)]
 
 
 def ignore_globs(config: TodoConfig) -> list[str]:
@@ -524,6 +550,7 @@ def scan(
             source_globs.extend(("--glob", f"*.{extension}"))
         source_globs.extend(ignores)
         matches.extend(rg_json(source_pattern, source_globs, paths))
+    matches = drop_ignored_paths(matches, config)
     matches = drop_foreign_mentions(matches, config.owner_mentions)
     if not include_excluded:
         matches = drop_excluded(matches, config)

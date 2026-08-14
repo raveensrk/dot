@@ -326,6 +326,42 @@ class TodoScannerTest(unittest.TestCase):
         # Overlay replaces `patterns`, so the local-only BUG keyword is matched.
         self.assertIn("- BUG: local-only keyword", result.stdout)
 
+    def test_absolute_ignore_entry_excludes_that_directory(self) -> None:
+        # Absolute entries cannot be expressed as a ripgrep glob, so they are
+        # applied after the search; a relative entry alone never covered this.
+        nested = self.fixture / "project" / "tests" / "fixtures"
+        nested.mkdir(parents=True)
+        (nested / "sample.md").write_text("- TODO: fixture example task\n")
+        self.write("project/real.md", "- TODO: real task\n")
+        config = self.write_config(
+            "abs.toml", patterns=["TODO"], ignore=[str(nested)]
+        )
+        result = self.run_scanner(
+            "--format", "plain", str(self.fixture), config=config
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("fixture example task", result.stdout)
+        self.assertIn("- TODO: real task", result.stdout)
+
+    def test_absolute_ignore_entry_does_not_over_match_by_suffix(self) -> None:
+        # Only the exact path is ignored; a directory elsewhere that happens to
+        # end in the same components stays visible.
+        ignored = self.fixture / "one" / "tests" / "fixtures"
+        ignored.mkdir(parents=True)
+        (ignored / "a.md").write_text("- TODO: ignored fixture task\n")
+        other = self.fixture / "two" / "tests" / "fixtures"
+        other.mkdir(parents=True)
+        (other / "b.md").write_text("- TODO: other fixture task\n")
+        config = self.write_config(
+            "abs_exact.toml", patterns=["TODO"], ignore=[str(ignored)]
+        )
+        result = self.run_scanner(
+            "--format", "plain", str(self.fixture), config=config
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("ignored fixture task", result.stdout)
+        self.assertIn("- TODO: other fixture task", result.stdout)
+
     def test_ignore_applies_when_the_ignored_directory_is_the_search_root(
         self,
     ) -> None:
