@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -PCeuo pipefail
+IFS=$'\n\t'
+
+# Generate random words, sentences, or paragraphs from the system dictionary.
+#
+# Usage:
+#   random_text word [N]        N random words (default 1), one per line
+#   random_text sentence [N]    N random sentences (default 1)
+#   random_text paragraph [N]   N random paragraphs (default 1)
+
+DICT=${DICT:-/usr/share/dict/words}
+
+usage() {
+	sed -n '/^# Usage:/,/^$/s/^# \{0,2\}//p' "$0"
+	exit "${1:-0}"
+}
+
+words() {
+	shuf -n "$1" "$DICT" | tr '[:upper:]' '[:lower:]'
+}
+
+sentence() {
+	local s
+	s=$(words $((RANDOM % 8 + 5)) | paste -sd ' ' -)
+	printf '%s%s.\n' "$(tr '[:lower:]' '[:upper:]' <<<"${s:0:1}")" "${s:1}"
+}
+
+paragraph() {
+	local i n=$((RANDOM % 4 + 3))
+	for ((i = 0; i < n; i++)); do
+		sentence
+	done | paste -sd ' ' -
+}
+
+[[ -r $DICT ]] || { echo "random_text: dictionary not found: $DICT" >&2; exit 1; }
+
+cmd=${1:-usage}
+count=${2:-1}
+[[ $count =~ ^[0-9]+$ ]] || { echo "random_text: count must be a number: $count" >&2; exit 1; }
+
+case $cmd in
+word | words) words "$count" ;;
+sentence | sentences)
+	for ((i = 0; i < count; i++)); do sentence; done
+	;;
+paragraph | paragraphs)
+	for ((i = 0; i < count; i++)); do
+		paragraph
+		if ((i < count - 1)); then echo; fi
+	done
+	;;
+-h | --help | usage) usage ;;
+*)
+	echo "random_text: unknown command: $cmd" >&2
+	usage 1
+	;;
+esac
