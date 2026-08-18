@@ -5,7 +5,7 @@
 " equivalent.
 
 let s:active_line = '^\s*[-*] \(TODO\|IN_PROGRESS\): '
-let s:todo_line = '^\s*[-*] \(TODO\|IN_PROGRESS\|OPTIONAL\|DONE\|OBSOLETE\): '
+let s:todo_line = todo#line_pattern()
 
 function! s:IsDueLine(line) abort
 	if a:line !~# s:active_line

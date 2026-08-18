@@ -7,7 +7,7 @@
 " tomorrow, weekly -> next occurrence of that weekday, ...), so recurring
 " tasks keep their anchor instead of stepping through the past.
 
-let s:todo_line = '^\s*[-*] \(TODO\|IN_PROGRESS\|OPTIONAL\|DONE\|OBSOLETE\): '
+let s:todo_line = todo#line_pattern()
 
 " [count, unit] parsed from the recurring: value; unit is d/w/m/y.
 function! s:ParseInterval(line) abort

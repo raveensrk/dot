@@ -86,6 +86,7 @@ class TodoScannerTest(unittest.TestCase):
         ignore: list[str] | None = None,
         owner_mentions: list[str] | None = None,
         flow_order: list[str] | None = None,
+        states: list[str] | None = None,
     ) -> Path:
         values = {
             "patterns": patterns,
@@ -106,6 +107,11 @@ class TodoScannerTest(unittest.TestCase):
                 ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]
                 if flow_order is None
                 else flow_order
+            ),
+            "states": (
+                ["TODO", "IN_PROGRESS", "OPTIONAL", "DONE", "OBSOLETE"]
+                if states is None
+                else states
             ),
         }
         lines = [f"{key} = {json.dumps(value)}" for key, value in values.items()]
@@ -630,6 +636,37 @@ class TodoScannerTest(unittest.TestCase):
         result = self.run_scanner("--format", "plain", config=invalid)
         self.assertEqual(result.returncode, 2)
         self.assertIn("unknown configuration keys", result.stderr)
+
+    def test_states_flag_prints_the_configured_states(self) -> None:
+        config = self.write_config(
+            "states.toml", patterns=["TODO"], states=["TODO", "DONE"]
+        )
+        result = self.run_scanner("--states", config=config)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, "TODO\nDONE\n")
+
+    def test_states_default_to_the_schema_lifecycle(self) -> None:
+        self.write("states-absent.toml", "patterns = ['TODO']\nextensions = ['md']\n")
+        result = self.run_scanner("--states", config=self.fixture / "states-absent.toml")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(
+            result.stdout.split(),
+            ["TODO", "IN_PROGRESS", "OPTIONAL", "DONE", "OBSOLETE"],
+        )
+
+    def test_empty_states_are_rejected(self) -> None:
+        config = self.write_config("no-states.toml", patterns=["TODO"], states=[])
+        result = self.run_scanner("--states", config=config)
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("'states' must not be empty", result.stderr)
+
+    def test_repository_states_match_the_schema_document(self) -> None:
+        """config/todo.toml is the vocabulary vim's :TodoState cycles through."""
+        result = self.run_scanner("--states", config=ROOT / "config" / "todo.toml")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        schema = (ROOT / "docs" / "todo-schema.md").read_text(encoding="utf-8")
+        for state in result.stdout.split():
+            self.assertIn(f"`{state}`", schema)
 
 
 if __name__ == "__main__":

@@ -167,3 +167,12 @@ file-path ordering.
 ```bash
 flow_order = ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]
 ```
+
+`states` is the lifecycle vocabulary from [todo-schema.md](todo-schema.md), in
+cycle order. Unlike `patterns` it is the full list, terminal states included, and
+it does not affect scanning — it is the shared definition that Vim's `:TodoState`
+cycles through (see [Todo in Vim](todo-vim.md)). Print it with:
+
+```bash
+,todo.py --states
+```

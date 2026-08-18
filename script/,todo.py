@@ -33,6 +33,15 @@ class TodoConfig:
     )
     checkbox_patterns: list[str] = field(default_factory=lambda: [r"\[ \]"])
     exclude_patterns: list[str] = field(default_factory=lambda: ["LATER"])
+    states: list[str] = field(
+        default_factory=lambda: [
+            "TODO",
+            "IN_PROGRESS",
+            "OPTIONAL",
+            "DONE",
+            "OBSOLETE",
+        ]
+    )
     extensions: list[str] = field(default_factory=lambda: ["md"])
     source_extensions: list[str] = field(default_factory=list)
     default_dirs: list[str] = field(default_factory=lambda: ["."])
@@ -62,6 +71,7 @@ class TodoConfig:
         "patterns",
         "checkbox_patterns",
         "exclude_patterns",
+        "states",
         "extensions",
         "source_extensions",
         "default_dirs",
@@ -132,6 +142,8 @@ class TodoConfig:
             raise TodoError("configuration 'patterns' must not be empty")
         if not config.extensions:
             raise TodoError("configuration 'extensions' must not be empty")
+        if not config.states:
+            raise TodoError("configuration 'states' must not be empty")
         return config
 
 
@@ -184,6 +196,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--due",
         action="store_true",
         help="only tasks whose due: date is today or earlier",
+    )
+    parser.add_argument(
+        "--states",
+        action="store_true",
+        help="print the configured lifecycle states, one per line, and exit",
     )
     parser.add_argument(
         "paths",
@@ -634,6 +651,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
     try:
         config = TodoConfig.load(config_path(), local_config_path())
+        if args.states:
+            print("\n".join(config.states))
+            return 0
         paths = existing_paths(args.paths or config.default_dirs)
         matches = scan(
             config,
