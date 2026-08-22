@@ -3,7 +3,7 @@
 " and then through one stateless slot, wrapping:
 "
 "   - Buy milk -> - TODO: Buy milk -> - IN_PROGRESS: ... -> - OPTIONAL: ...
-"   -> - DONE: ... -> - OBSOLETE: ... -> - Buy milk
+"   -> - LATER: ... -> - DONE: ... -> - OBSOLETE: ... -> - Buy milk
 "
 " ,x runs it on the current line, or on every line of a visual selection.
 " :TodoStateBack walks the other way, and :TodoState DONE jumps straight to a

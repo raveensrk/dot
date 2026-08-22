@@ -34,10 +34,11 @@ But it is slightly adapted to my needs.
 | `TODO` | Not started |
 | `IN_PROGRESS` | Actively being worked |
 | `OPTIONAL` | Nice to have - do it if time permits |
+| `LATER` | Deferred - worth doing, but not now |
 | `DONE` | Completed |
 | `OBSOLETE` | Dropped / no longer relevant (kept for history) |
 
-Life cycle: `TODO → IN_PROGRESS → DONE`; any state can move to `OBSOLETE`. `OPTIONAL` items can be promoted to `TODO`/`IN_PROGRESS` or dropped to `OBSOLETE`.
+Life cycle: `TODO → IN_PROGRESS → DONE`; any state can move to `OBSOLETE`. `OPTIONAL` and `LATER` items can be promoted to `TODO`/`IN_PROGRESS` or dropped to `OBSOLETE`.
 
 ## Reporting
 
@@ -45,7 +46,7 @@ When summarizing todos in reports, use the Emoji Legend (`~/repos/ai/docs/agents
 
 | State | Emoji |
 |-------|-------|
-| `TODO`, `IN_PROGRESS` | ⏳ |
+| `TODO`, `IN_PROGRESS`, `OPTIONAL`, `LATER` | ⏳ |
 | `DONE` | ✅ |
 | `OBSOLETE` | 🗑️ |
 | Past `due:` date | ⚠️ (replaces the state emoji) |

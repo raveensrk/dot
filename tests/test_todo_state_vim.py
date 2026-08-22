@@ -16,7 +16,7 @@ VIM_DIR = ROOT / "config" / "vim"
 PLUGIN = VIM_DIR / "ftplugin" / "markdown" / "todo_state.vim"
 CONFIG = ROOT / "config" / "todo.toml"
 
-STATES = ["TODO", "IN_PROGRESS", "OPTIONAL", "DONE", "OBSOLETE"]
+STATES = ["TODO", "IN_PROGRESS", "OPTIONAL", "LATER", "DONE", "OBSOLETE"]
 
 
 class TodoStateTest(unittest.TestCase):
@@ -71,7 +71,7 @@ class TodoStateTest(unittest.TestCase):
         )
         self.assertEqual(
             self.run_vim("TodoStateBack", "- DONE: Buy milk\n"),
-            "- OPTIONAL: Buy milk\n",
+            "- LATER: Buy milk\n",
         )
 
     def test_metadata_and_bullet_style_are_preserved(self) -> None:

@@ -109,7 +109,7 @@ class TodoScannerTest(unittest.TestCase):
                 else flow_order
             ),
             "states": (
-                ["TODO", "IN_PROGRESS", "OPTIONAL", "DONE", "OBSOLETE"]
+                ["TODO", "IN_PROGRESS", "OPTIONAL", "LATER", "DONE", "OBSOLETE"]
                 if states is None
                 else states
             ),
@@ -651,7 +651,7 @@ class TodoScannerTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(
             result.stdout.split(),
-            ["TODO", "IN_PROGRESS", "OPTIONAL", "DONE", "OBSOLETE"],
+            ["TODO", "IN_PROGRESS", "OPTIONAL", "LATER", "DONE", "OBSOLETE"],
         )
 
     def test_empty_states_are_rejected(self) -> None:

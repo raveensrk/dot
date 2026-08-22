@@ -38,6 +38,7 @@ class TodoConfig:
             "TODO",
             "IN_PROGRESS",
             "OPTIONAL",
+            "LATER",
             "DONE",
             "OBSOLETE",
         ]

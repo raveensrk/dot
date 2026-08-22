@@ -2,7 +2,7 @@
 " The state vocabulary lives in config/todo.toml so vim and ,todo.py agree on
 " it; this reads that one line directly rather than shelling out to python.
 
-let s:fallback = ['TODO', 'IN_PROGRESS', 'OPTIONAL', 'DONE', 'OBSOLETE']
+let s:fallback = ['TODO', 'IN_PROGRESS', 'OPTIONAL', 'LATER', 'DONE', 'OBSOLETE']
 
 " Lifecycle states in cycle order, cached for the session.
 function! todo#states() abort
