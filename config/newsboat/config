@@ -127,3 +127,8 @@ highlight article "\\b[A-Z][A-Z0-9_]{3,}\\b"                     color215  defau
 #
 # `highlight article` (below/above, for the article BODY) is unaffected -
 # the body has no focus bar to clobber.
+#
+
+
+browser "w3m %u"
+
