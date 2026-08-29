@@ -320,3 +320,5 @@ fi
 if [[ $os == "Darwin" ]]; then
 	export PATH="/opt/homebrew/bin:$PATH"
 fi
+
+alias ,t=",todo.py"
