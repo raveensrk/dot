@@ -237,6 +237,7 @@ export PYTHONPATH+=":$DOT/script"
 export PYTHONPATH+=":$HOME/work/practice/python"
 [ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
 export PATH+=":$HOME/project/work/wallpapers"
+export PATH+=":$HOME/Library/Python/3.14/bin"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
 ,goto_file_directory() {
