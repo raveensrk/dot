@@ -1,5 +1,8 @@
 source $VIMRUNTIME/vimrc_example.vim
 set runtimepath^=~/dot/config/vim
+" Ahead of ~/dot but behind ~/dot_local: netrw drops .netrwhist/.netrwbook into
+" the first writable runtimepath entry, and that has to stay ~/dot_local.
+set runtimepath^=~/repos/work/config/vim
 set runtimepath^=~/dot_local/config/vim
 set runtimepath+=~/dot/config/vim/after
 let g:pathogen_blacklist = ['Damian-Conway-s-Vim-Setup']
