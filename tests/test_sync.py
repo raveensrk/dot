@@ -37,6 +37,8 @@ class SyncTestCase(unittest.TestCase):
             "comparison": (0, "0 0", ""),
             "push": (0, "", ""),
             "merge": (0, "", ""),
+            "superproject": (0, "", ""),
+            "submodule_update": (0, "", ""),
         }
         responses.update(overrides)
 
@@ -44,6 +46,10 @@ class SyncTestCase(unittest.TestCase):
             command = tuple(args)
             if command == ("rev-parse", "--is-inside-work-tree"):
                 return responses["inside"]
+            if command == ("rev-parse", "--show-superproject-working-tree"):
+                return responses["superproject"]
+            if command == ("submodule", "update", "--recursive"):
+                return responses["submodule_update"]
             if command == ("branch", "--show-current"):
                 return responses["branch"]
             if command == ("config", "--get", "branch.main.remote"):
@@ -72,31 +78,36 @@ class SyncTestCase(unittest.TestCase):
 
 
 class ManualModeTest(SyncTestCase):
+    """Manual mode lives in run_manual; sync_repo has no manual path."""
+
     def test_manual_mode_opens_lazygit_without_sync_commands(self):
-        def repository_check(repo, *args, capture=True):
+        def check(repo, *args, capture=True):
             self.assertEqual(args, ("rev-parse", "--is-inside-work-tree"))
             return 0, "true", ""
 
-        with mock.patch.object(sync, "git", side_effect=repository_check) as git, \
-                mock.patch.object(sync, "open_lazygit", return_value=0) as lazygit:
-            sync.sync_repo(self.repo, manual=True)
+        with mock.patch.object(sync, "git", side_effect=check) as git, \
+                mock.patch.object(sync, "open_lazygit", return_value=0) as lazygit, \
+                redirect_stdout(io.StringIO()):
+            sync.run_manual([self.repo])
 
-        lazygit.assert_called_once_with(str(self.repo))
+        lazygit.assert_called_once_with(self.repo)
         self.assertEqual(git.call_count, 1)
         self.assertEqual(sync.counts["manual"], 1)
 
     def test_manual_mode_skips_non_git_directories(self):
         with mock.patch.object(sync, "git", return_value=(128, "", "not a repository")), \
-                mock.patch.object(sync, "open_lazygit") as lazygit:
-            sync.sync_repo(self.repo, manual=True)
+                mock.patch.object(sync, "open_lazygit") as lazygit, \
+                redirect_stdout(io.StringIO()):
+            sync.run_manual([self.repo])
 
         lazygit.assert_not_called()
         self.assertEqual(sum(sync.counts.values()), 0)
 
     def test_manual_mode_reports_lazygit_failure(self):
         with mock.patch.object(sync, "git", return_value=(0, "true", "")), \
-                mock.patch.object(sync, "open_lazygit", return_value=1):
-            sync.sync_repo(self.repo, manual=True)
+                mock.patch.object(sync, "open_lazygit", return_value=1), \
+                redirect_stdout(io.StringIO()):
+            sync.run_manual([self.repo])
 
         self.assertEqual(sync.counts["manual"], 0)
         self.assertEqual(sync.counts["failed"], 1)
@@ -104,122 +115,178 @@ class ManualModeTest(SyncTestCase):
     def test_repository_check_timeout_is_a_failure(self):
         with mock.patch.object(
             sync, "git", return_value=(124, "", "Git command timed out")
-        ):
-            sync.sync_repo(self.repo, manual=True)
+        ), redirect_stdout(io.StringIO()):
+            sync.run_manual([self.repo])
 
         self.assertEqual(sync.counts["failed"], 1)
 
 
 class AutomaticModeTest(SyncTestCase):
+    """sync_repo is a pure worker: it returns a Result and prints nothing."""
+
     def run_sync(self, **overrides):
         git = mock.Mock(side_effect=self.automatic_responses(**overrides))
-        output = io.StringIO()
-        with mock.patch.object(sync, "git", git), redirect_stdout(output):
-            sync.sync_repo(self.repo)
-        return git, output.getvalue()
+        with mock.patch.object(sync, "git", git):
+            result = sync.sync_repo(self.repo)
+        return git, result
 
     def test_up_to_date_repository(self):
-        git, output = self.run_sync()
+        git, result = self.run_sync()
 
-        self.assertEqual(sync.counts["ok"], 1)
-        self.assertIn("Already up to date", output)
+        self.assertEqual(result.status, "ok")
+        self.assertIn("Already up to date", result.message)
+        self.assertFalse(result.dirty)
         git.assert_any_call(str(self.repo), "fetch", "backup")
 
     def test_ahead_repository_pushes_to_configured_upstream(self):
-        git, _ = self.run_sync(comparison=(0, "2 0", ""))
+        git, result = self.run_sync(comparison=(0, "2 0", ""))
 
-        self.assertEqual(sync.counts["pushed"], 1)
+        self.assertEqual(result.status, "pushed")
         git.assert_any_call(str(self.repo), "push", "backup", "HEAD:refs/heads/trunk")
 
     def test_behind_repository_fast_forwards_without_push(self):
-        git, output = self.run_sync(comparison=(0, "0 3", ""))
+        git, result = self.run_sync(comparison=(0, "0 3", ""))
 
-        self.assertEqual(sync.counts["synced"], 1)
-        self.assertIn("Fast-forwarded by 3", output)
+        self.assertEqual(result.status, "synced")
+        self.assertIn("Fast-forwarded by 3", result.message)
         git.assert_any_call(str(self.repo), "merge", "--ff-only", "backup/trunk")
         self.assertFalse(any(call.args[1] == "push" for call in git.call_args_list))
 
-    def test_diverged_repository_opens_lazygit(self):
-        with mock.patch.object(sync, "open_lazygit", return_value=0) as lazygit:
-            self.run_sync(comparison=(0, "2 3", ""))
+    def test_fast_forward_checks_out_moved_submodule_commits(self):
+        git, result = self.run_sync(comparison=(0, "0 1", ""))
 
-        lazygit.assert_called_once_with(str(self.repo))
-        self.assertEqual(sync.counts["attention"], 1)
+        self.assertEqual(result.status, "synced")
+        git.assert_any_call(str(self.repo), "submodule", "update", "--recursive")
 
-    def test_missing_upstream_opens_lazygit(self):
-        with mock.patch.object(sync, "open_lazygit", return_value=0):
-            self.run_sync(remote=(1, "", "no upstream configured"))
+    def test_submodule_update_failure_after_fast_forward_needs_attention(self):
+        _, result = self.run_sync(
+            comparison=(0, "0 1", ""),
+            submodule_update=(1, "", "unable to checkout"),
+        )
 
-        self.assertEqual(sync.counts["attention"], 1)
+        self.assertEqual(result.status, "attention")
+        self.assertIn("submodule update failed", result.message)
+
+    def test_submodule_is_skipped_before_anything_is_fetched(self):
+        git, result = self.run_sync(superproject=(0, "/repos/parent", ""))
+
+        self.assertEqual(result.status, "skip")
+        self.assertFalse(any(call.args[1] == "fetch" for call in git.call_args_list))
+
+    def test_diverged_repository_needs_attention(self):
+        with mock.patch.object(sync, "open_lazygit") as lazygit:
+            _, result = self.run_sync(comparison=(0, "2 3", ""))
+
+        self.assertEqual(result.status, "attention")
+        self.assertIn("Diverged (ahead 2, behind 3)", result.message)
+        # The worker only reports. Opening lazygit is the prompt's job, and it
+        # must stay that way or a parallel run would fight over the terminal.
+        lazygit.assert_not_called()
+
+    def test_missing_upstream_depends_on_the_working_tree(self):
+        cases = (((0, "", ""), "ok"), ((0, " M file", ""), "attention"))
+        for status, expected in cases:
+            with self.subTest(status=status[1] or "clean"):
+                _, result = self.run_sync(remote=(1, "", ""), status=status)
+                self.assertEqual(result.status, expected)
+                self.assertIn("No upstream branch configured", result.message)
+
+    def test_local_upstream_remote_needs_attention(self):
+        _, result = self.run_sync(remote=(0, ".", ""))
+
+        self.assertEqual(result.status, "attention")
+        self.assertIn("Local upstream remotes are not supported", result.message)
 
     def test_branch_command_failure_is_reported(self):
-        _, output = self.run_sync(branch=(124, "", "command timed out"))
+        _, result = self.run_sync(branch=(124, "", "command timed out"))
 
-        self.assertEqual(sync.counts["failed"], 1)
-        self.assertEqual(sync.counts["attention"], 0)
-        self.assertIn("Branch check failed", output)
+        self.assertEqual(result.status, "failed")
+        self.assertIn("Branch check failed", result.message)
 
     def test_upstream_configuration_command_failure_is_reported(self):
-        _, output = self.run_sync(remote=(2, "", "configuration is invalid"))
+        _, result = self.run_sync(remote=(2, "", "configuration is invalid"))
 
-        self.assertEqual(sync.counts["failed"], 1)
-        self.assertEqual(sync.counts["attention"], 0)
-        self.assertIn("Upstream configuration check failed", output)
+        self.assertEqual(result.status, "failed")
+        self.assertIn("Upstream configuration check failed", result.message)
 
     def test_unresolvable_upstream_after_fetch_is_a_failure(self):
-        _, output = self.run_sync(upstream=(128, "", "unknown revision"))
+        _, result = self.run_sync(upstream=(128, "", "unknown revision"))
 
-        self.assertEqual(sync.counts["failed"], 1)
-        self.assertIn("Could not resolve upstream branch", output)
+        self.assertEqual(result.status, "failed")
+        self.assertIn("Could not resolve upstream branch", result.message)
 
     def test_fetch_failure_is_reported(self):
-        _, output = self.run_sync(fetch=(1, "", "network is unreachable"))
+        _, result = self.run_sync(fetch=(1, "", "network is unreachable"))
 
-        self.assertEqual(sync.counts["failed"], 1)
-        self.assertIn("network unreachable", output)
+        self.assertEqual(result.status, "failed")
+        self.assertIn("network unreachable", result.message)
 
     def test_status_failure_is_not_treated_as_clean(self):
-        _, output = self.run_sync(status=(1, "", "index is corrupt"))
+        _, result = self.run_sync(status=(1, "", "index is corrupt"))
 
-        self.assertEqual(sync.counts["failed"], 1)
-        self.assertEqual(sync.counts["ok"], 0)
-        self.assertIn("Status check failed", output)
+        self.assertEqual(result.status, "failed")
+        self.assertIn("Status check failed", result.message)
+        self.assertIsNone(result.dirty)
 
     def test_comparison_failure_is_not_treated_as_up_to_date(self):
-        _, output = self.run_sync(comparison=(128, "", "bad revision"))
+        _, result = self.run_sync(comparison=(128, "", "bad revision"))
 
-        self.assertEqual(sync.counts["failed"], 1)
-        self.assertEqual(sync.counts["ok"], 0)
-        self.assertIn("Upstream comparison failed", output)
+        self.assertEqual(result.status, "failed")
+        self.assertIn("Upstream comparison failed", result.message)
 
     def test_invalid_comparison_output_is_a_failure(self):
-        self.run_sync(comparison=(0, "invalid", ""))
+        _, result = self.run_sync(comparison=(0, "invalid", ""))
 
-        self.assertEqual(sync.counts["failed"], 1)
-        self.assertEqual(sync.counts["ok"], 0)
+        self.assertEqual(result.status, "failed")
 
-    def test_dirty_repository_opens_lazygit(self):
-        with mock.patch.object(sync, "open_lazygit", return_value=0):
-            self.run_sync(status=(0, " M file1\n?? file2", ""))
+    def test_dirty_repository_needs_attention_and_counts_files(self):
+        _, result = self.run_sync(status=(0, " M file1\n?? file2", ""))
 
-        self.assertEqual(sync.counts["attention"], 1)
+        self.assertEqual(result.status, "attention")
+        self.assertTrue(result.dirty)
+        self.assertIn("2 file(s)", result.message)
 
-    def test_failed_fast_forward_opens_lazygit(self):
-        with mock.patch.object(sync, "open_lazygit", return_value=0):
-            self.run_sync(
-                comparison=(0, "0 1", ""),
-                merge=(1, "", "not possible to fast-forward"),
-            )
+    def test_failed_fast_forward_needs_attention(self):
+        _, result = self.run_sync(
+            comparison=(0, "0 1", ""),
+            merge=(1, "", "not possible to fast-forward"),
+        )
 
-        self.assertEqual(sync.counts["attention"], 1)
-        self.assertEqual(sync.counts["synced"], 0)
+        self.assertEqual(result.status, "attention")
+        self.assertIn("Fast-forward failed", result.message)
 
-    def test_failed_lazygit_is_counted_as_failure_not_attention(self):
-        with mock.patch.object(sync, "open_lazygit", return_value=1):
-            self.run_sync(comparison=(0, "1 1", ""))
 
-        self.assertEqual(sync.counts["failed"], 1)
-        self.assertEqual(sync.counts["attention"], 0)
+class AttentionPromptTest(SyncTestCase):
+    def attention(self):
+        return [sync.Result(str(self.repo), "attention", "Diverged (ahead 1, behind 1)", False)]
+
+    def test_failed_lazygit_is_reported_as_a_failure(self):
+        with mock.patch.object(sync, "open_lazygit", return_value=1), \
+                mock.patch.object(sync, "input", create=True, return_value="y"), \
+                redirect_stdout(io.StringIO()):
+            failures = sync.prompt_for_attention(self.attention())
+
+        self.assertEqual(failures, 1)
+
+    def test_declining_leaves_the_repository_alone(self):
+        with mock.patch.object(sync, "open_lazygit") as lazygit, \
+                mock.patch.object(sync, "input", create=True, return_value=""), \
+                redirect_stdout(io.StringIO()):
+            failures = sync.prompt_for_attention(self.attention())
+
+        self.assertEqual(failures, 0)
+        lazygit.assert_not_called()
+
+    def test_quitting_stops_the_remaining_prompts(self):
+        results = self.attention() + [
+            sync.Result("/repos/other", "attention", "Detached HEAD or no branch", False)
+        ]
+        with mock.patch.object(sync, "open_lazygit") as lazygit, \
+                mock.patch.object(sync, "input", create=True, return_value="q"), \
+                redirect_stdout(io.StringIO()):
+            sync.prompt_for_attention(results)
+
+        lazygit.assert_not_called()
 
 
 class GitCommandTest(unittest.TestCase):
@@ -263,7 +330,8 @@ class RepositoryCollectionTest(unittest.TestCase):
                 "../listed\n$SYNC_TEST_REPO\ndir: ../scan\n",
             )
 
-            with mock.patch.dict(os.environ, {"SYNC_TEST_REPO": str(environment_repo)}):
+            with mock.patch.dict(os.environ, {"SYNC_TEST_REPO": str(environment_repo)}), \
+                    redirect_stdout(io.StringIO()):
                 repos = sync.collect_repos([repo_list], [])
 
         resolved = set(sync.dedup(repos))
@@ -347,12 +415,12 @@ class LocalGitIntegrationTest(unittest.TestCase):
 
         with redirect_stdout(io.StringIO()), \
                 mock.patch.object(sync, "open_lazygit") as lazygit:
-            sync.sync_repo(self.repo)
+            result = sync.sync_repo(self.repo)
 
         local_head = self.run_git("-C", str(self.repo), "rev-parse", "HEAD")
         remote_head = self.run_git("--git-dir", str(self.remote), "rev-parse", "refs/heads/main")
         self.assertEqual(local_head, remote_head)
-        self.assertEqual(sync.counts["synced"], 1)
+        self.assertEqual(result.status, "synced")
         lazygit.assert_not_called()
 
     def test_ahead_repository_is_pushed(self):
@@ -362,12 +430,12 @@ class LocalGitIntegrationTest(unittest.TestCase):
 
         with redirect_stdout(io.StringIO()), \
                 mock.patch.object(sync, "open_lazygit") as lazygit:
-            sync.sync_repo(self.repo)
+            result = sync.sync_repo(self.repo)
 
         local_head = self.run_git("-C", str(self.repo), "rev-parse", "HEAD")
         remote_head = self.run_git("--git-dir", str(self.remote), "rev-parse", "refs/heads/main")
         self.assertEqual(local_head, remote_head)
-        self.assertEqual(sync.counts["pushed"], 1)
+        self.assertEqual(result.status, "pushed")
         lazygit.assert_not_called()
 
 
@@ -475,18 +543,34 @@ class MainExitStatusTest(unittest.TestCase):
             with self.subTest(outcome=outcome):
                 sync.counts["failed"] = 99
 
-                def process(repo, manual=False):
-                    sync.counts[outcome] += 1
+                def worker(repo, outcome=outcome):
+                    return sync.Result(repo, outcome, outcome, False)
 
                 with mock.patch.object(sync, "collect_repos", return_value=["/repo"]), \
                         mock.patch.object(sync, "dedup", side_effect=lambda repos: repos), \
-                        mock.patch.object(sync, "sync_repo", side_effect=process), \
-                        mock.patch.object(sync.sys, "argv", ["sync.py", "--file", "repos.txt"]), \
+                        mock.patch.object(sync, "sync_repo", side_effect=worker), \
+                        mock.patch.object(sync.sys, "argv",
+                                          ["sync.py", "--file", "repos.txt", "--no-prompt"]), \
                         redirect_stdout(io.StringIO()):
                     result = sync.main()
 
                 self.assertEqual(result, expected)
                 self.assertNotEqual(sync.counts["failed"], 99)
+
+    def test_skipped_repositories_are_not_counted(self):
+        def worker(repo):
+            return sync.Result(repo, "skip", "Submodule of another repository")
+
+        with mock.patch.object(sync, "collect_repos", return_value=["/repo/sub"]), \
+                mock.patch.object(sync, "dedup", side_effect=lambda repos: repos), \
+                mock.patch.object(sync, "sync_repo", side_effect=worker), \
+                mock.patch.object(sync.sys, "argv",
+                                  ["sync.py", "--file", "repos.txt", "--no-prompt"]), \
+                redirect_stdout(io.StringIO()):
+            result = sync.main()
+
+        self.assertEqual(result, 0)
+        self.assertEqual(sum(sync.counts.values()), 0)
 
 
 if __name__ == "__main__":
