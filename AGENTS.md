@@ -2,7 +2,7 @@
 
 ## Common rules
 
-~/repos/ai/docs/agents/common.md
+At session start, read `~/repos/ai/docs/agents/common.md` and follow it.
 
 ## Goal
 
