@@ -371,6 +371,103 @@ class LocalGitIntegrationTest(unittest.TestCase):
         lazygit.assert_not_called()
 
 
+@unittest.skipUnless(shutil.which("git"), "Git is required for integration tests")
+class SubmoduleTest(unittest.TestCase):
+    """Superproject + submodule behaviour, against real repositories."""
+
+    def setUp(self):
+        sync.reset_counts()
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.root = Path(self.temporary_directory.name)
+        self.sub_remote = self.root / "sub.git"
+        self.parent_remote = self.root / "parent.git"
+        self.sub_seed = self.root / "sub_seed"
+        self.parent_seed = self.root / "parent_seed"
+        self.parent = self.root / "parent"
+        self.submodule = self.parent / "sub"
+
+        self.run_git("init", "--bare", "--initial-branch=main", str(self.sub_remote))
+        self.run_git("init", "--bare", "--initial-branch=main", str(self.parent_remote))
+
+        self.run_git("init", "--initial-branch=main", str(self.sub_seed))
+        self.configure(self.sub_seed)
+        (self.sub_seed / "file.txt").write_text("first\n")
+        self.run_git("-C", str(self.sub_seed), "add", "file.txt")
+        self.run_git("-C", str(self.sub_seed), "commit", "-m", "first")
+        self.run_git("-C", str(self.sub_seed), "remote", "add", "origin", str(self.sub_remote))
+        self.run_git("-C", str(self.sub_seed), "push", "--set-upstream", "origin", "main")
+
+        self.run_git("init", "--initial-branch=main", str(self.parent_seed))
+        self.configure(self.parent_seed)
+        (self.parent_seed / "top.txt").write_text("top\n")
+        self.run_git("-C", str(self.parent_seed), "add", "top.txt")
+        self.run_git("-C", str(self.parent_seed), "commit", "-m", "top")
+        self.run_git("-C", str(self.parent_seed), "submodule", "add", str(self.sub_remote), "sub")
+        self.run_git("-C", str(self.parent_seed), "commit", "-m", "add submodule")
+        self.run_git("-C", str(self.parent_seed), "remote", "add", "origin", str(self.parent_remote))
+        self.run_git("-C", str(self.parent_seed), "push", "--set-upstream", "origin", "main")
+
+        self.run_git("clone", "--recurse-submodules", str(self.parent_remote), str(self.parent))
+        self.configure(self.parent)
+
+    def tearDown(self):
+        self.temporary_directory.cleanup()
+
+    @staticmethod
+    def run_git(*args):
+        # Git refuses the file transport for submodules by default (CVE-2022-39253);
+        # these fixtures clone submodules from paths on disk, so allow it here.
+        return subprocess.run(
+            ["git", "-c", "protocol.file.allow=always", *args],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip()
+
+    def configure(self, repo):
+        self.run_git("-C", str(repo), "config", "user.name", "Sync Test")
+        self.run_git("-C", str(repo), "config", "user.email", "sync@example.invalid")
+        self.run_git("-C", str(repo), "config", "protocol.file.allow", "always")
+
+    def bump_submodule_upstream(self):
+        """Publish a new submodule commit and move the superproject gitlink to it."""
+        (self.sub_seed / "file.txt").write_text("second\n")
+        self.run_git("-C", str(self.sub_seed), "commit", "-am", "second")
+        self.run_git("-C", str(self.sub_seed), "push")
+        self.run_git("-C", str(self.parent_seed / "sub"), "fetch", "origin")
+        self.run_git("-C", str(self.parent_seed / "sub"), "checkout", "origin/main")
+        self.run_git("-C", str(self.parent_seed), "commit", "-am", "bump submodule")
+        self.run_git("-C", str(self.parent_seed), "push")
+
+    def test_submodule_working_tree_is_skipped(self):
+        """A submodule is part of its superproject, not a repo to sync on its own.
+
+        It sits at a detached HEAD by design, so syncing it standalone can only
+        ever report it as needing attention.
+        """
+        with redirect_stdout(io.StringIO()):
+            result = sync.sync_repo(self.submodule)
+
+        self.assertEqual(result.status, "skip")
+
+    def test_fast_forward_checks_out_the_new_submodule_commit(self):
+        """A gitlink the fast-forward pulled in must reach the working tree.
+
+        Moving the pointer without checking the submodule out leaves the
+        superproject reporting a modification nobody made.
+        """
+        self.bump_submodule_upstream()
+
+        with redirect_stdout(io.StringIO()):
+            result = sync.sync_repo(self.parent)
+
+        self.assertEqual(result.status, "synced")
+        recorded = self.run_git("-C", str(self.parent), "rev-parse", "HEAD:sub")
+        checked_out = self.run_git("-C", str(self.submodule), "rev-parse", "HEAD")
+        self.assertEqual(checked_out, recorded)
+        self.assertEqual(
+            self.run_git("-C", str(self.parent), "status", "--porcelain"), ""
+        )
+
+
 class MainExitStatusTest(unittest.TestCase):
     def test_main_resets_counts_and_returns_meaningful_status(self):
         cases = (("ok", 0), ("attention", 2), ("failed", 1))

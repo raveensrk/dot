@@ -28,6 +28,21 @@ Git commands are noninteractive and time out after 60 seconds. The program
 returns `0` for success, `1` for failures, and `2` when manual attention is
 needed.
 
+### Submodules
+
+A directory scan finds a submodule like any other repository - its `.git` is a
+file rather than a directory, but it is still there. Submodules are skipped
+silently instead of being synced on their own: one is checked out at whatever
+commit its superproject records, so it sits at a detached HEAD by design and
+would otherwise be reported as needing attention on every run.
+
+After a fast-forward the script runs `git submodule update --recursive`.
+`git merge` takes no `--recurse-submodules`, and the global `submodule.recurse`
+setting does not cover merge either, so a gitlink the merge moved would
+otherwise point at a commit that is never checked out - and the next run would
+report the superproject as carrying an uncommitted change nobody made. There is
+no `--init`: submodules that were never initialized stay that way.
+
 ## Manual mode
 
 Use `--manual` (or `-m`) to open every discovered Git repository in `lazygit`.

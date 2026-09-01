@@ -18,13 +18,15 @@ future runs (appended to ~/dot_local/list_of_ignores.txt), q = stop prompting.
 Behaviour per repo:
   - --manual                  -> open lazygit; do not fetch, merge, or push
   - not a git repo            -> skip silently
+  - submodule of another repo -> skip silently
   - detached HEAD / no branch -> needs attention
   - no upstream configured    -> OK if clean; needs attention if dirty
   - fetch fails               -> ERROR, skip (reason shown)
   - dirty working tree        -> needs attention
   - diverged (ahead & behind) -> needs attention
   - ahead only                -> push
-  - behind only               -> fast-forward only (failure -> needs attention)
+  - behind only               -> fast-forward only, then check out any submodule
+                                 commits it moved (failure -> needs attention)
   - up to date                -> OK
   - ignored (via --ignore or 'ignore:' list lines) -> skipped silently
 """
@@ -165,6 +167,14 @@ def sync_repo(repo):
     if rc != 0 or inside != "true":
         return Result(repo, "skip", "Not a git repository")
 
+    # A submodule is checked out at whatever commit its superproject records, so
+    # it sits at a detached HEAD by design and has nothing to sync on its own.
+    # A directory scan finds one like any other repo: its .git is a file rather
+    # than a directory, but it is still there.
+    rc, superproject, _ = git(repo, "rev-parse", "--show-superproject-working-tree")
+    if rc == 0 and superproject:
+        return Result(repo, "skip", "Submodule of another repository")
+
     # Inspect the working tree up front so every real repo can be reported as
     # clean or dirty, even when it later fails on branch, upstream, or fetch.
     rc, status, err = git(repo, "status", "--porcelain")
@@ -237,10 +247,21 @@ def sync_repo(repo):
 
     # Behind only -> fast-forward to the already-fetched upstream. No push is needed.
     rc, _, err = git(repo, "merge", "--ff-only", upstream)
-    if rc == 0:
-        return Result(repo, "synced", f"Fast-forwarded by {behind} remote commit(s)", dirty)
-    return Result(repo, "attention",
-                  f"Fast-forward failed - {err or 'upstream changed'}", dirty)
+    if rc != 0:
+        return Result(repo, "attention",
+                      f"Fast-forward failed - {err or 'upstream changed'}", dirty)
+
+    # git merge takes no --recurse-submodules, and submodule.recurse does not
+    # cover merge either, so a gitlink the merge just moved still points at a
+    # commit that is not checked out. Left alone the next run sees the moved
+    # pointer as an uncommitted change nobody made. No --init: submodules the
+    # user never initialised stay that way.
+    rc, _, err = git(repo, "submodule", "update", "--recursive")
+    if rc != 0:
+        return Result(repo, "attention",
+                      f"Fast-forwarded by {behind} remote commit(s), submodule update "
+                      f"failed - {err or 'unknown error'}", dirty)
+    return Result(repo, "synced", f"Fast-forwarded by {behind} remote commit(s)", dirty)
 
 
 def _fetch_reason(stderr):
