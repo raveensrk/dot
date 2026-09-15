@@ -16,4 +16,4 @@
     - Make the colors subtle. Text must be legible.
 - DONE: Add keybind for markdown file
     - a keybing to go no next overdue item
-- TODO: newsboat3 url to newsboat2. I have some local rss feed that i need to filter.
+- TODO: newsboat3 url to newsboat2. I have some local rss feed that i need to filter. due:2026-09-16
