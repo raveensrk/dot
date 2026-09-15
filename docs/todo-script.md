@@ -148,13 +148,15 @@ expanded, and a trailing `/` is optional.
 Todos inside fenced code blocks (delimited by ``` ``` ``` or `~~~`) in Markdown
 files are ignored.
 
-`owner_mentions` lists the owner's names. A todo whose text `@mentions` anyone not
-in this list is dropped (comparison is case-insensitive). Todos with no `@mention`,
-or that only mention the owner, are kept. For example, with the default list a task
-ending in `@Sakthi` is dropped while one ending in `@raveen` is kept:
+`others` lists other people. A todo whose text `@mentions` anyone in this list is
+dropped (comparison is case-insensitive). Every other `@tag` is kept, so context
+tags from the [todo schema](todo-schema.md) such as `@writing` still show. The
+committed default is empty; put real names in the machine-local overlay. For
+example, this list drops a task ending in `@Sakthi` and keeps one ending in
+`@writing`:
 
 ```bash
-owner_mentions = ["raveen", "raveensrk", "raveenkumar", "raveen_kumar", "raveen-kumar"]
+others = ["Sakthi"]
 ```
 
 `flow_order` sorts results by kanban status rather than by file path, so the most

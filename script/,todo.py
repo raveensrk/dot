@@ -47,15 +47,7 @@ class TodoConfig:
     source_extensions: list[str] = field(default_factory=list)
     default_dirs: list[str] = field(default_factory=lambda: ["."])
     ignore: list[str] = field(default_factory=list)
-    owner_mentions: list[str] = field(
-        default_factory=lambda: [
-            "raveen",
-            "raveensrk",
-            "raveenkumar",
-            "raveen_kumar",
-            "raveen-kumar",
-        ]
-    )
+    others: list[str] = field(default_factory=list)
     flow_order: list[str] = field(
         default_factory=lambda: [
             "IN_PROGRESS",
@@ -77,7 +69,7 @@ class TodoConfig:
         "source_extensions",
         "default_dirs",
         "ignore",
-        "owner_mentions",
+        "others",
         "flow_order",
         "comment_prefix_pattern",
     }
@@ -441,17 +433,17 @@ _MENTION_RE = re.compile(r"@([A-Za-z0-9_-]+)")
 
 
 def drop_foreign_mentions(
-    matches: list[TodoMatch], owner_mentions: list[str]
+    matches: list[TodoMatch], others: list[str]
 ) -> list[TodoMatch]:
-    """Drop matches whose text @mentions anyone who is not the owner.
+    """Drop matches whose text @mentions anyone listed in `others`.
 
-    Matches without any @mention are kept.
+    Every other @tag (e.g. the context tag @writing) is kept.
     """
-    owners = {name.lower() for name in owner_mentions}
+    names = {name.lower() for name in others}
     kept: list[TodoMatch] = []
     for match in matches:
         mentions = _MENTION_RE.findall(match.text)
-        if any(mention.lower() not in owners for mention in mentions):
+        if any(mention.lower() in names for mention in mentions):
             continue
         kept.append(match)
     return kept
@@ -569,7 +561,7 @@ def scan(
         source_globs.extend(ignores)
         matches.extend(rg_json(source_pattern, source_globs, paths))
     matches = drop_ignored_paths(matches, config)
-    matches = drop_foreign_mentions(matches, config.owner_mentions)
+    matches = drop_foreign_mentions(matches, config.others)
     if not include_excluded:
         matches = drop_excluded(matches, config)
     if due_only:

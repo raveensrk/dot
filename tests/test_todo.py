@@ -84,7 +84,7 @@ class TodoScannerTest(unittest.TestCase):
         exclude_patterns: list[str] | None = None,
         source_extensions: list[str] | None = None,
         ignore: list[str] | None = None,
-        owner_mentions: list[str] | None = None,
+        others: list[str] | None = None,
         flow_order: list[str] | None = None,
         states: list[str] | None = None,
     ) -> Path:
@@ -98,11 +98,7 @@ class TodoScannerTest(unittest.TestCase):
             "source_extensions": source_extensions or [],
             "default_dirs": [str(self.fixture)],
             "ignore": ignore or ["ignored"],
-            "owner_mentions": (
-                ["raveen", "raveensrk", "raveenkumar", "raveen_kumar", "raveen-kumar"]
-                if owner_mentions is None
-                else owner_mentions
-            ),
+            "others": others or [],
             "flow_order": (
                 ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]
                 if flow_order is None
@@ -272,36 +268,37 @@ class TodoScannerTest(unittest.TestCase):
         self.assertNotIn("fenced task ignored", result.stdout)
         self.assertNotIn("fenced checkbox ignored", result.stdout)
 
-    def test_foreign_mentions_are_ignored(self) -> None:
+    def test_others_are_ignored(self) -> None:
+        config = self.write_config(
+            "others.toml", patterns=["TODO"], others=["Sakthi"]
+        )
         self.write(
             "mentions.md",
             """\
             - TODO: assigned to someone else @Sakthi
-            - TODO: mine lowercase @raveen
-            - TODO: mine mixed case @Raveen_Kumar
-            - TODO: mine hyphen @raveen-kumar
+            - TODO: other person lowercase @sakthi
+            - TODO: publish the post +blog @writing
+            - TODO: mine @raveen
             - TODO: unassigned task with no mention
             """,
         )
         result = self.run_scanner(
-            "--format", "plain", str(self.fixture / "mentions.md")
+            "--format", "plain", str(self.fixture / "mentions.md"), config=config
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertNotIn("@Sakthi", result.stdout)
-        self.assertIn("mine lowercase @raveen", result.stdout)
-        self.assertIn("mine mixed case @Raveen_Kumar", result.stdout)
-        self.assertIn("mine hyphen @raveen-kumar", result.stdout)
+        self.assertNotIn("@sakthi", result.stdout)
+        self.assertIn("publish the post +blog @writing", result.stdout)
+        self.assertIn("mine @raveen", result.stdout)
         self.assertIn("unassigned task with no mention", result.stdout)
 
-    def test_owner_mentions_are_configurable(self) -> None:
-        config = self.write_config(
-            "custom-owner.toml", patterns=["TODO"], owner_mentions=["alice"]
-        )
+    def test_no_others_keeps_every_mention(self) -> None:
+        config = self.write_config("no-others.toml", patterns=["TODO"])
         self.write(
             "custom.md",
             """\
             - TODO: for alice @alice
-            - TODO: for raveen @raveen
+            - TODO: context tag @website
             """,
         )
         result = self.run_scanner(
@@ -309,7 +306,7 @@ class TodoScannerTest(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("for alice @alice", result.stdout)
-        self.assertNotIn("@raveen", result.stdout)
+        self.assertIn("context tag @website", result.stdout)
 
     def test_local_overlay_appends_ignore_and_overrides_keys(self) -> None:
         base = self.write_config("base.toml", patterns=["TODO"], ignore=["ignored"])

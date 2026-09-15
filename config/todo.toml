@@ -33,9 +33,10 @@ default_dirs = ["~/dot", "~/repos"]
 # `ignore` array is appended to this one.
 ignore = ["node_modules"]
 
-# A todo that @mentions someone NOT in this list is dropped (case-insensitive).
-# Todos with no @mention, or that only mention these names, are kept.
-owner_mentions = ["raveen", "raveensrk", "raveenkumar", "raveen_kumar", "raveen-kumar"]
+# A todo that @mentions anyone in this list is dropped (case-insensitive).
+# Every other @tag, such as the context tag @writing, is kept. Real names
+# belong in the machine-local overlay ~/dot_local/config/todo.toml.
+others = []
 
 # Kanban flow order: results are sorted by status in this order (file:line breaks
 # ties within a status). "[ ]" is the checkbox token; anything not listed sorts
