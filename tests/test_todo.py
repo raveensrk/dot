@@ -661,7 +661,9 @@ class TodoScannerTest(unittest.TestCase):
         """config/todo.toml is the vocabulary vim's :TodoState cycles through."""
         result = self.run_scanner("--states", config=ROOT / "config" / "todo.toml")
         self.assertEqual(result.returncode, 0, result.stderr)
-        schema = (ROOT / "docs" / "todo-schema.md").read_text(encoding="utf-8")
+        schema = (
+            Path.home() / "repos" / "ai" / "docs" / "agents" / "todo_schema.md"
+        ).read_text(encoding="utf-8")
         for state in result.stdout.split():
             self.assertIn(f"`{state}`", schema)
 

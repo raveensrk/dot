@@ -9,7 +9,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | [Lazygit](lazygit.md) | Config path, `C` = commit message via pi |
 | [Newsboat](newsboat.md) | RSS reader: the "Chrome Teal" theme, config reference, and the traps found while building it |
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
-| [Todo schema](todo-schema.md) | Canonical todo item format used across projects |
+| [Todo schema](~/repos/ai/docs/agents/todo_schema.md) | Canonical todo item format used across projects |
 | [Todo script](todo-script.md) | `script/,todo.py`, the Markdown task scanner |
 | [Todo in Vim](todo-vim.md) | Markdown todo plugins: state cycling, due-date shifting and filtering |
 | [Vim colorscheme](vim-colorscheme.md) | Current scheme, eye-comfort research, and how pathogen plugins are installed |
@@ -37,9 +37,9 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 Tracked so it is not rediscovered every session.
 
 - Existing doc filenames are kebab-case, but the shared naming rule asks for
-  `snake_case`. Renaming `todo-schema.md` would break the absolute reference to
-  `~/dot/docs/todo-schema.md` in the shared `common.md`, so the rename needs to
-  happen on both sides at once. Not done yet.
+  `snake_case`. The todo schema now lives in
+  [todo_schema.md](~/repos/ai/docs/agents/todo_schema.md). Remaining kebab-case
+  names in this wiki are local.
 - The shared rules ask for a [Divio](https://docs.divio.com/documentation-system/)
   layout (`tutorials/`, `how-to/`, `reference/`, `explanation/`). This `docs/`
   is still flat. Migrating means updating the same external reference above.

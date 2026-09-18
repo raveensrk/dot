@@ -1,6 +1,6 @@
 # Todo in Vim
 
-Buffer-local plugins for editing todo items ([todo-schema.md](todo-schema.md)) in
+Buffer-local plugins for editing todo items ([todo_schema.md](~/repos/ai/docs/agents/todo_schema.md)) in
 Markdown. They live in `config/vim/ftplugin/markdown/` and load automatically for
 `.md` buffers via the `runtimepath` entry in `config/vimrc` — no install step.
 

@@ -150,7 +150,7 @@ files are ignored.
 
 `others` lists other people. A todo whose text `@mentions` anyone in this list is
 dropped (comparison is case-insensitive). Every other `@tag` is kept, so context
-tags from the [todo schema](todo-schema.md) such as `@writing` still show. The
+tags from the [todo schema](~/repos/ai/docs/agents/todo_schema.md) such as `@writing` still show. The
 committed default is empty; put real names in the machine-local overlay. For
 example, this list drops a task ending in `@Sakthi` and keeps one ending in
 `@writing`:
@@ -170,7 +170,7 @@ file-path ordering.
 flow_order = ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]
 ```
 
-`states` is the lifecycle vocabulary from [todo-schema.md](todo-schema.md), in
+`states` is the lifecycle vocabulary from [todo_schema.md](~/repos/ai/docs/agents/todo_schema.md), in
 cycle order. Unlike `patterns` it is the full list, terminal states included, and
 it does not affect scanning — it is the shared definition that Vim's `:TodoState`
 cycles through (see [Todo in Vim](todo-vim.md)). Print it with:

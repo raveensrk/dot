@@ -22,6 +22,7 @@ class LazygitConfigTest(unittest.TestCase):
     def test_bashrc_exports_lg_config_file(self):
         text = BASHRC.read_text(encoding="utf-8")
         self.assertIn("export LG_CONFIG_FILE=$DOT/config/lazygit.yml", text)
+        self.assertIn("alias lg=lazygit", text)
 
     def test_config_points_at_pi_commit_script(self):
         text = CONFIG.read_text(encoding="utf-8")

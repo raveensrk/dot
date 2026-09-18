@@ -84,6 +84,7 @@ alias bashrc="vim \$DOT/config/bashrc"
 alias ,source_bash_profile="source ~/.bash_profile"
 alias q="exit"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
+alias lg=lazygit
 alias git_pickaxe="git log -p -S"
 alias grep="grep --color"
 alias tmux0="tmux -L SOCKET_0 attach || tmux -L SOCKET_0"

@@ -1,4 +1,4 @@
-" Cycle the lifecycle state of a todo line (~/dot/docs/todo-schema.md).
+" Cycle the lifecycle state of a todo line (~/repos/ai/docs/agents/todo_schema.md).
 " :TodoState steps forward through the states configured in config/todo.toml
 " and then through one stateless slot, wrapping:
 "

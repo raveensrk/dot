@@ -9,7 +9,7 @@ exclude_patterns = ["LATER"]
 # Patterns matched as "- [ ] content" in Markdown files.
 checkbox_patterns = ['\[ \]']
 
-# Lifecycle states from docs/todo-schema.md, in cycle order. Unlike `patterns`
+# Lifecycle states from ~/repos/ai/docs/agents/todo_schema.md, in cycle order. Unlike `patterns`
 # (what the scanner reports) this is the full vocabulary, terminal states
 # included. Used by vim's :TodoState cycle and by `,todo.py --states`.
 states = ["TODO", "IN_PROGRESS", "OPTIONAL", "LATER", "DONE", "OBSOLETE"]

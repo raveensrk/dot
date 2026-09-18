@@ -1,4 +1,4 @@
-" Shared helpers for the markdown todo plugins (~/dot/docs/todo-schema.md).
+" Shared helpers for the markdown todo plugins (~/repos/ai/docs/agents/todo_schema.md).
 " The state vocabulary lives in config/todo.toml so vim and ,todo.py agree on
 " it; this reads that one line directly rather than shelling out to python.
 

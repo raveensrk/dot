@@ -3,10 +3,11 @@
 Git TUI. Config lives in [config/lazygit.yml](../config/lazygit.yml).
 
 `LG_CONFIG_FILE` is set in [config/bashrc](../config/bashrc) so a plain
-`lazygit` load uses that file:
+`lazygit` load uses that file. Alias: `lg`.
 
 ```sh
 export LG_CONFIG_FILE=$DOT/config/lazygit.yml
+alias lg=lazygit
 ```
 
 Install: [packages/lazygit.sh](../packages/lazygit.sh) (Linux) or `brew install
