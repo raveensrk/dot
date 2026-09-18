@@ -8,6 +8,7 @@ export INPUTRC=$DOT/config/inputrc
 export TASKRC=$DOT/config/taskrc
 export MYVIMRC=$DOT/config/vimrc
 export VIMINIT=":source $MYVIMRC"
+export LG_CONFIG_FILE=$DOT/config/lazygit.yml
 export TERM=xterm-256color
 export COLORTERM="Yes"
 # export DISPLAY=:0

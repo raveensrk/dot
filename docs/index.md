@@ -6,6 +6,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 
 | Doc | What it covers |
 |---|---|
+| [Lazygit](lazygit.md) | Config path, `C` = commit message via pi |
 | [Newsboat](newsboat.md) | RSS reader: the "Chrome Teal" theme, config reference, and the traps found while building it |
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
 | [Todo schema](todo-schema.md) | Canonical todo item format used across projects |

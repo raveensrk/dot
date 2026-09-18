@@ -1,0 +1,7 @@
+customCommands:
+  - key: "C"
+    context: "files"
+    description: "Commit with pi"
+    loadingText: "Asking pi..."
+    command: "$HOME/dot/config/lazygit_pi_commit.sh"
+    output: terminal
