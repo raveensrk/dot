@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+raw="${1:-}"
+line="${2:-}"
+[[ -n "$raw" ]] || exit 1
+
+path="$(/usr/bin/python3 -c '
+import sys
+from urllib.parse import unquote, urlparse
+raw = sys.argv[1]
+if raw.startswith("file:"):
+    print(unquote(urlparse(raw).path))
+else:
+    print(unquote(raw))
+' "$raw")"
+
+# Cmd-click of a PATH command (iterm_open_in_macvim) is a basename.
+# Prefer a cwd hit; otherwise open the executable from PATH.
+if [[ ! -e "$path" && "$path" != */* ]]; then
+	resolved="$(command -v "$path" 2>/dev/null || true)"
+	if [[ -n "$resolved" && -f "$resolved" ]]; then
+		path="$resolved"
+	fi
+fi
+
+if [[ -d "$path" ]]; then
+	open "$path"
+	exit 0
+fi
+
+mvim="${ITERM_OPEN_MVIM:-/Applications/MacVim.app/Contents/bin/mvim}"
+if [[ -n "$line" && "$line" != "0" ]]; then
+	exec "$mvim" --remote-silent "+${line}" "$path"
+fi
+exec "$mvim" --remote-silent "$path"
