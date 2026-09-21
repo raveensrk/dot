@@ -203,8 +203,8 @@ else
 fi
 
 if command -v eza > /dev/null; then
-	alias ls="eza -X --group-directories-first  --color"
-	alias l="eza -X --group-directories-first  --color -lAh"
+	alias ls="eza -X --group-directories-first  --color=auto"
+	alias l="eza -X --group-directories-first  --color=auto -lAh"
 else
 	alias ls="ls -X --group-directories-first  --color"
 	alias l="ls -X --group-directories-first  --color -lAh"
