@@ -21,7 +21,10 @@ Keyword entries require a colon and non-empty content:
   - IN_PROGRESS: Test the migration
 ```
 
-Checkbox entries use standard Markdown checkbox syntax:
+Checkbox entries use standard Markdown checkbox syntax. The default config leaves
+them off, because the [todo schema](~/repos/ai/docs/agents/todo_schema.md) treats
+checkboxes as checklists rather than todo items; set `checkbox_patterns` to match
+them:
 
 ```markdown
 - [ ] Review the pull request
@@ -38,13 +41,16 @@ match:
 
 ```python
 # TODO: Add input validation
-run_migration()  # FIXME: Make this operation atomic
+run_migration()  # TODO: Make this operation atomic
 ```
 
 ```systemverilog
-// BUG: Reset sequencing is incorrect
+// TODO: Reset sequencing is incorrect
 /* LATER: Refactor the compatibility layer */
 ```
+
+`FIXME` and `BUG` are not keywords: the [todo schema](~/repos/ai/docs/agents/todo_schema.md)
+records a task's kind as a tag, such as `+bug`.
 
 Bare keywords inside strings and identifiers such as `TODO_CONFIG` do not match.
 Markdown files are excluded from source-comment scanning so headings and examples
@@ -99,7 +105,7 @@ the scanner to handle colons in paths and decode non-UTF-8 matches safely.
 ## Configuration
 
 `config/todo.toml` defines `patterns` for keyword entries and
-`checkbox_patterns` for checkbox entries. Both arrays contain ripgrep regular
+`checkbox_patterns` for checkbox entries (empty by default). Both arrays contain ripgrep regular
 expressions. Markdown extensions, optional source extensions, recognized comment
 prefixes, default search directories, and ignored paths live in the same file.
 
@@ -167,7 +173,7 @@ ties within a status keep the file-then-line order. An empty array restores plai
 file-path ordering.
 
 ```bash
-flow_order = ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]
+flow_order = ["IN_PROGRESS", "TODO", "LATER"]
 ```
 
 `states` is the lifecycle vocabulary from [todo_schema.md](~/repos/ai/docs/agents/todo_schema.md), in

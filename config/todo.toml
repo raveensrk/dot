@@ -1,13 +1,16 @@
 # Keywords matched as "- KEYWORD: content" or after a source comment prefix.
-patterns = ["TODO", "IN_PROGRESS", "FIXME", "BUG", "LATER"]
+# FIXME and BUG are tags (+fixme, +bug), not keywords - see the todo schema.
+patterns = ["TODO", "IN_PROGRESS", "LATER"]
 
 # Keywords whose items are hidden by default (they are still matched; show them
 # with --include-excluded). Compared against the line's leading status token, so
 # "- TODO: ... revisit LATER" is still reported. An empty array hides nothing.
 exclude_patterns = ["LATER"]
 
-# Patterns matched as "- [ ] content" in Markdown files.
-checkbox_patterns = ['\[ \]']
+# Patterns matched as "- [ ] content" in Markdown files. Empty on purpose: the
+# todo schema treats checkboxes as checklists, not todo items. Deleting the key
+# does not turn them off - the scanner then falls back to ['\[ \]'].
+checkbox_patterns = []
 
 # Lifecycle states from ~/repos/ai/docs/agents/todo_schema.md, in cycle order. Unlike `patterns`
 # (what the scanner reports) this is the full vocabulary, terminal states
@@ -41,4 +44,4 @@ others = []
 # Kanban flow order: results are sorted by status in this order (file:line breaks
 # ties within a status). "[ ]" is the checkbox token; anything not listed sorts
 # last. An empty array falls back to plain file-path ordering.
-flow_order = ["IN_PROGRESS", "TODO", "[ ]", "FIXME", "BUG", "LATER"]
+flow_order = ["IN_PROGRESS", "TODO", "LATER"]
