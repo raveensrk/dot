@@ -37,3 +37,11 @@ tests/__pycache__
 script/fail.log
 script/pass.log
 script/run.log
+config/pi/agent/auth.json
+config/pi/agent/models-store.json
+config/pi/agent/trust.json
+config/pi/agent/npm/
+config/pi/agent/sessions/
+config/pi/agent/web-search-cache/
+config/pi/agent/*.bak*
+config/pi/agent/crashes.json
