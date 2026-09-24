@@ -1,0 +1,31 @@
+# -*- mode: org -*-
+#+TODO: TODO IN_PROGRESS OPTIONAL LATER | DONE OBSOLETE
+Archived entries
+** DONE keybind for todo vim plugin
+  :PROPERTIES:
+  :ID: 7995b5a8-f256-406c-a4ca-bb85614058fe
+  :END:
+  - tab key toggle due date from overdue -> today -> tomorrow -> today...
+  - return key toggle from TODO -> IN_PROGRESS - DONE -> and all other states in schema finally no state.
+  - basically Tab keywill be a toggle for due dates
+  - return key will be toggle for states
+  - if no state in line return key will add TODO state in line
+** DONE state cycling as :TodoState / :TodoStateBack, bound to ,x
+  :PROPERTIES:
+  :ID: 590867b3-77f6-421e-944c-45d13eb6c98e
+  :END:
+  (docs/todo-vim.md). <CR> stays with ToggleCheckBox; the <Tab> due-date
+  toggle is not written yet.
+** DONE todo vim syntax highlight update - line highlight
+  :PROPERTIES:
+  :ID: 478b9672-ed2b-48c1-94ea-7bda592d7a1f
+  :END:
+  - Red for overdue
+  - Blue for due today
+  - No yellow anymore
+  - Make the colors subtle. Text must be legible.
+** DONE Add keybind for markdown file
+  :PROPERTIES:
+  :ID: 2d91b426-a9e2-4bba-8c35-e3bb93e931ab
+  :END:
+  - a keybing to go no next overdue item

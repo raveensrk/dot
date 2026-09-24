@@ -1,0 +1,8 @@
+#+TITLE: TODO
+#+TODO: TODO IN_PROGRESS OPTIONAL LATER | DONE OBSOLETE
+#+STARTUP: logdone
+* Tasks
+** LATER newsboat3 url to newsboat2. I have some local rss feed that i need to filter.
+  :PROPERTIES:
+  :ID: 07778c3f-b40a-4273-a89f-55097fdb79c3
+  :END:
