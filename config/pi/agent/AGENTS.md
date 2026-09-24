@@ -1,3 +1,3 @@
 # Global instructions
 
-Before doing anything else, read and follow [Common instructions](/Users/raveenkumarwork/repos/ai/docs/agents/common.md).
+Before doing anything else, read and follow [Common instructions](~/repos/ai/docs/agents/common.md).

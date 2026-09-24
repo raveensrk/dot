@@ -214,8 +214,15 @@ def sync_repo(repo):
         repo, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"
     )
     if rc != 0 or not upstream:
-        return Result(repo, "failed",
-                      f"Could not resolve upstream branch - {err or 'unknown error'}", dirty)
+        # The branch is configured with an upstream, but the remote-tracking ref
+        # does not exist even after a successful fetch: the remote is empty or
+        # the tracked branch was deleted. Nothing to sync against, so treat it
+        # like a missing upstream rather than a hard failure.
+        if not dirty:
+            return Result(repo, "ok", "Upstream branch does not exist on remote", dirty)
+        return Result(repo, "attention",
+                      "Upstream branch does not exist on remote, uncommitted changes "
+                      f"({dirty_count} file(s))", dirty)
 
     # Dirty working tree
     if dirty:
