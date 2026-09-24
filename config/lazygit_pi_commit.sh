@@ -13,5 +13,18 @@ msg=$(printf '%s' "$d" | pi -p -nt -nc --no-session --thinking off -- \
 tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
 printf '%s\n' "$msg" > "$tmp"
-git commit -e -F "$tmp"
-[[ ${1:-} == push ]] && git push
+
+push= noedit=
+for a in "$@"; do
+  case $a in
+    push) push=1 ;;
+    -y) noedit=1 ;;
+  esac
+done
+
+if [[ -n $noedit ]]; then
+  git commit -F "$tmp"
+else
+  git commit -e -F "$tmp"
+fi
+[[ -n $push ]] && git push

@@ -5,6 +5,12 @@ customCommands:
     loadingText: "Asking pi..."
     command: "$HOME/dot/config/lazygit_pi_commit.sh"
     output: terminal
+  - key: "E"
+    context: "files"
+    description: "Commit with pi (no editor)"
+    loadingText: "Asking pi..."
+    command: "$HOME/dot/config/lazygit_pi_commit.sh -y"
+    output: terminal
   - key: "P"
     context: "files"
     description: "Commit with pi + push"
