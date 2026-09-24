@@ -1,0 +1,22 @@
+{
+  "lastChangelogVersion": "0.87.1",
+  "theme": "dark",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "glm-5.3-flash",
+  "hideThinkingBlock": true,
+  "skills": [
+    "~/repos/ai/docs/agents/.pi/skills/todo"
+  ],
+  "packages": [
+    "npm:pi-web-access",
+    "npm:pi-mcp-adapter",
+    "npm:pi-subagents",
+    "npm:@companion-ai/feynman",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:pi-powerline-footer",
+    "npm:@narumitw/pi-usage",
+    "npm:@dietrichgebert/ponytail",
+    "npm:pi-caveman"
+  ]
+}
