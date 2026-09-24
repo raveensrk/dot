@@ -1,12 +1,11 @@
 {
   "lastChangelogVersion": "0.87.1",
   "theme": "dark",
+  "enableInstallTelemetry": false,
   "defaultProvider": "opencode-go",
   "defaultModel": "glm-5.3-flash",
   "hideThinkingBlock": true,
-  "skills": [
-    "~/repos/ai/docs/agents/.pi/skills/todo"
-  ],
+  "extensions": [],
   "packages": [
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",
