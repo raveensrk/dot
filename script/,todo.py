@@ -432,6 +432,205 @@ def drop_fenced(matches: list[TodoMatch]) -> list[TodoMatch]:
 _MENTION_RE = re.compile(r"@([A-Za-z0-9_-]+)")
 
 
+# --- Org schema scanning (~/repos/ai/docs/agents/todo_schema.org) ---
+
+ORG_HEADING = re.compile(r"^(\*+) (\S+)(.*)$")
+ORG_BLOCK = re.compile(r"^\s*#\+(BEGIN|END)_(\S+)\s*$")
+ORG_TODO_LINE = re.compile(r"^#\+TODO:\s*(.+)$")
+ORG_STAMP = re.compile(
+    r"[<\[](\d{4})-(\d{2})-(\d{2}) ?([A-Za-z]{3})?[^>\]]*[>\]]"
+)
+ORG_DEADLINE = re.compile(r"^\s*DEADLINE:\s*<")
+ORG_GLOBS = ("*.org", "*.org_archive")
+ORG_SKIP_DIRS = {".git", "node_modules", "target", "dist", "build", ".venv", "venv"}
+
+
+def near_miss(a: str, b: str) -> bool:
+    """True if `a` is one edit away from `b`: substitution, transposition,
+    insertion or deletion. The schema's near-miss rule."""
+    if abs(len(a) - len(b)) > 1:
+        return False
+    if len(a) == len(b):
+        diff = [i for i, (x, y) in enumerate(zip(a, b)) if x != y]
+        if len(diff) == 1:
+            return True
+        return (
+            len(diff) == 2
+            and diff[1] == diff[0] + 1
+            and a[diff[0]] == b[diff[1]]
+            and a[diff[1]] == b[diff[0]]
+        )
+    long, short = (a, b) if len(a) > len(b) else (b, a)
+    i = j = edits = 0
+    while i < len(long) and j < len(short):
+        if long[i] == short[j]:
+            i += 1
+            j += 1
+        else:
+            edits += 1
+            if edits > 1:
+                return False
+            i += 1  # one extra character in `long`
+    return True
+
+
+def state_like(word: str, states: list[str]) -> bool:
+    """True if a container heading starting with `word` would be misread as a
+    task state: an exact state, or the near-miss rules of the schema."""
+    token = word.rstrip(":").lower()
+    lowered = [s.lower() for s in states]
+    if token in lowered:
+        return True
+    return any(
+        len(state) >= 6 and len(token) >= 6 and near_miss(token, state)
+        for state in lowered
+    )
+
+
+def org_file_paths(paths: list[Path]) -> list[Path]:
+    """Every *.org and *.org_archive file under the paths, symlinks resolved."""
+    seen: set[str] = set()
+    found: list[Path] = []
+    for root in paths:
+        for dirpath, dirs, names in os.walk(root, followlinks=True):
+            dirs[:] = [d for d in dirs if d not in ORG_SKIP_DIRS]
+            for name in names:
+                if not name.endswith((".org", ".org_archive")):
+                    continue
+                real = os.path.realpath(os.path.join(dirpath, name))
+                if real not in seen:
+                    seen.add(real)
+                    found.append(Path(real))
+    return sorted(found)
+
+
+def org_states(lines: list[str]) -> list[str]:
+    """The states declared in the file's own #+TODO: line, or the default pair."""
+    for line in lines:
+        found = ORG_TODO_LINE.match(line)
+        if found:
+            return [word for word in found.group(1).split() if word != "|"]
+    return ["TODO", "DONE"]
+
+
+def check_stamps(text: str, line_number: int, errors: list[str], path: Path) -> None:
+    """Every timestamp on the line must carry the weekday its date says."""
+    for year, month, day, name in ORG_STAMP.findall(text):
+        if not name:
+            continue
+        real = datetime.date(int(year), int(month), int(day)).strftime("%a")
+        if real != name:
+            column = text.find(f"{year}-{month}-{day} {name}") + 1
+            errors.append(
+                f"{path}:{line_number}:{column}: day name says {name}, date is {real}"
+            )
+
+
+def scan_org_file(path: Path, config: TodoConfig, *, due_only: bool, today: str) -> tuple[
+    list[TodoMatch], list[str]
+]:
+    """One org file -> (task matches, schema errors). Per the reader conformance."""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as error:
+        return [], [f"{path}:0:0: {error}"]
+
+    states = org_states(text.splitlines())
+    declared = set(states)
+    excluded = set(config.exclude_patterns)
+    matches: list[TodoMatch] = []
+    errors: list[str] = []
+    inside_blocks: list[str] = []  # block names; nested blocks stack
+    pending_task: TodoMatch | None = None
+    pending_deadline: str | None = None
+
+    for number, line in enumerate(text.splitlines(), start=1):
+        block = ORG_BLOCK.match(line)
+        if block:
+            if block.group(1) == "BEGIN":
+                inside_blocks.append(block.group(2))
+            elif inside_blocks and inside_blocks[-1] == block.group(2):
+                inside_blocks.pop()
+            continue
+        if inside_blocks:
+            continue
+
+        check_stamps(line, number, errors, path)
+
+        if not line.startswith("*"):
+            deadline = ORG_DEADLINE.match(line)
+            if deadline and pending_task is not None:
+                found = ORG_STAMP.search(line)
+                if found:
+                    pending_deadline = f"{found.group(1)}-{found.group(2)}-{found.group(3)}"
+            if re.match(r"^\s+\*\s+\S", line) and state_like(line.split()[1], config.states):
+                errors.append(
+                    f"{path}:{number}:{len(line) - len(line.lstrip()) + 1}: "
+                    "an indented * with a state keyword is a task that would vanish"
+                )
+            continue
+
+        heading = ORG_HEADING.match(line)
+        if not heading:
+            errors.append(f"{path}:{number}:1: bad heading line")
+            continue
+        # The previous task's window ends here; resolve its due filter first.
+        if pending_task is not None:
+            if pending_deadline is not None and pending_deadline <= today:
+                matches.append(pending_task)
+            pending_task, pending_deadline = None, None
+        stars, token, rest = heading.groups()
+        column = len(stars) + 2
+        pending_task, pending_deadline = None, None
+
+        if token in declared:
+            if not rest.strip():
+                errors.append(f"{path}:{number}:{column}: empty title")
+                continue
+            match = TodoMatch(
+                file=str(path), line=number, column=column, text=line.rstrip()
+            )
+            # Only outstanding states are reported; DONE/OBSOLETE stay in the file.
+            if token not in set(config.patterns):
+                continue
+            if token in excluded:
+                continue
+            if due_only:
+                pending_task = match  # deadline may follow on the next line
+                continue
+            matches.append(match)
+        elif state_like(token, config.states):
+            errors.append(
+                f"{path}:{number}:{column}: state-like container heading"
+            )
+        # else: a plain container heading; carries no task data
+
+    if pending_task is not None:
+        if pending_deadline is not None and pending_deadline <= today:
+            matches.append(pending_task)
+
+    return matches, errors
+
+
+def org_scan(
+    config: TodoConfig, paths: list[Path], *, due_only: bool
+) -> list[TodoMatch]:
+    """Scan every org file under the paths. One rejection fails the scan."""
+    today = datetime.date.today().isoformat()
+    all_matches: list[TodoMatch] = []
+    all_errors: list[str] = []
+    for path in org_file_paths(paths):
+        if drop_ignored_paths([TodoMatch(str(path), 0, 0, "")], config):
+            file_matches, file_errors = scan_org_file(
+                path, config, due_only=due_only, today=today
+            )
+            all_matches.extend(file_matches)
+            all_errors.extend(file_errors)
+    if all_errors:
+        raise TodoError("\n".join(all_errors))
+    return all_matches
+
+
 def drop_foreign_mentions(
     matches: list[TodoMatch], others: list[str]
 ) -> list[TodoMatch]:
@@ -466,11 +665,15 @@ def leading_status(config: TodoConfig, entries: list[str]):
     """Return a function giving the leftmost of `entries` present in a match.
 
     This is the line's own marker: a ``- TODO: ... see LATER`` line reports
-    ``TODO``. Returns None when the text carries none of the entries.
+    ``TODO``. Org headings (`** TODO Fix x`) report their keyword directly.
+    Returns None when the text carries none of the entries.
     """
     specs = [(entry, status_regex(config, entry)) for entry in entries]
 
     def status_of(match: TodoMatch) -> str | None:
+        heading = ORG_HEADING.match(match.text)
+        if heading and heading.group(2) in set(config.states):
+            return heading.group(2)
         best: str | None = None
         best_pos: int | None = None
         for entry, regex in specs:
@@ -566,6 +769,7 @@ def scan(
         matches = drop_excluded(matches, config)
     if due_only:
         matches = drop_not_due(matches)
+    matches.extend(org_scan(config, paths, due_only=due_only))
     rank_of = flow_ranker(config)
     return sorted(set(matches), key=lambda match: (rank_of(match), match))
 

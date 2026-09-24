@@ -662,10 +662,159 @@ class TodoScannerTest(unittest.TestCase):
         result = self.run_scanner("--states", config=ROOT / "config" / "todo.toml")
         self.assertEqual(result.returncode, 0, result.stderr)
         schema = (
-            Path.home() / "repos" / "ai" / "docs" / "agents" / "todo_schema.md"
+            Path.home() / "repos" / "ai" / "docs" / "agents" / "todo_schema.org"
         ).read_text(encoding="utf-8")
         for state in result.stdout.split():
-            self.assertIn(f"`{state}`", schema)
+            self.assertIn(f"~{state}~", schema)
+
+
+class OrgScanTest(unittest.TestCase):
+    """Org-schema scanning: *.org and *.org_archive per todo_schema.org."""
+
+    def setUp(self) -> None:
+        temporary_directory = tempfile.TemporaryDirectory(prefix="org-scan-test.")
+        self.addCleanup(temporary_directory.cleanup)
+        self.fixture = Path(temporary_directory.name)
+        self.config = self.fixture / "todo.toml"
+        lines = [
+            'patterns = ["TODO", "IN_PROGRESS", "LATER"]',
+            'exclude_patterns = ["LATER"]',
+            "checkbox_patterns = []",
+            'extensions = ["md"]',
+            "source_extensions = []",
+            f"default_dirs = [{json.dumps(str(self.fixture))}]",
+            "ignore = []",
+            "others = []",
+            'flow_order = ["IN_PROGRESS", "TODO", "LATER"]',
+            'states = ["TODO", "IN_PROGRESS", "OPTIONAL", "LATER", "DONE", "OBSOLETE"]',
+            "comment_prefix_pattern = '//+|#|--|;|/\\*+|\\*+|<!--|%'",
+        ]
+        self.write("todo.toml", "\n".join(lines) + "\n")
+
+    def write(self, relative_path: str, content: str) -> Path:
+        path = self.fixture / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(textwrap.dedent(content), encoding="utf-8")
+        return path
+
+    def scan(self, *arguments: str) -> subprocess.CompletedProcess[str]:
+        env = os.environ.copy()
+        env["TODO_CONFIG"] = str(self.config)
+        return subprocess.run(
+            [sys.executable, str(ROOT / "script" / ",todo.py"), *arguments],
+            capture_output=True, check=False, env=env, text=True,
+        )
+
+    def test_org_tasks_are_reported_and_containers_are_not(self) -> None:
+        self.write(
+            "todo.org",
+            ""\
+            """
+            #+TITLE: TODO
+            #+TODO: TODO IN_PROGRESS OPTIONAL LATER | DONE OBSOLETE
+            #+STARTUP: logdone
+
+            * Tasks
+            ** TODO Fix the leak :home:
+            ** DONE Paid rent
+            ** Reading list
+            """,
+        )
+        result = self.scan("-f", "plain")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn(":7:4:** TODO Fix the leak :home:", result.stdout)
+        self.assertNotIn("Paid rent", result.stdout)
+        self.assertNotIn("Reading", result.stdout)
+
+    def test_org_archives_are_scanned(self) -> None:
+        self.write(
+            "todo.org_archive",
+            "# -*- mode: org -*-\n"
+            "#+TODO: TODO IN_PROGRESS OPTIONAL LATER | DONE OBSOLETE\n"
+            "* Tasks\n** TODO Something done already\n",
+        )
+        result = self.scan("-f", "plain")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("** TODO Something done already", result.stdout)
+
+    def test_example_blocks_and_indentation_hide_tasks(self) -> None:
+        self.write(
+            "todo.org",
+            ""\
+            """
+            #+TODO: TODO | DONE
+            #+BEGIN_EXAMPLE
+              #+BEGIN_SRC org
+              * TODO a real task, not an example
+              #+END_SRC
+            #+END_EXAMPLE
+              * TODO indented outside any block
+            """,
+        )
+        result = self.scan("-f", "plain")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("would vanish", result.stderr)
+        self.assertNotIn("example", result.stdout)
+
+    def test_day_name_mismatch_is_rejected(self) -> None:
+        self.write(
+            "todo.org",
+            ""\
+            """
+            #+TODO: TODO | DONE
+            * Tasks
+            ** TODO Pay rent
+               DEADLINE: <2026-08-19 Xyz>
+            """,
+        )
+        result = self.scan("-f", "plain")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("day name says Xyz, date is Wed", result.stderr)
+
+    def test_near_miss_state_is_rejected(self) -> None:
+        self.write(
+            "todo.org",
+            ""\
+            """
+            #+TODO: TODO | DONE
+            * Tasks
+            ** OBOSLETE Old idea
+            """,
+        )
+        result = self.scan("-f", "plain")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("state-like container heading", result.stderr)
+
+    def test_due_filter_uses_the_deadline_planning_line(self) -> None:
+        self.write(
+            "todo.org",
+            ""\
+            """
+            #+TODO: TODO | DONE
+            * Tasks
+            ** TODO Overdue rent
+               DEADLINE: <2020-01-01 Wed>
+            ** TODO Undated work
+            """,
+        )
+        result = self.scan("-f", "plain", "--due")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Overdue rent", result.stdout)
+        self.assertNotIn("Undated work", result.stdout)
+
+    def test_file_todo_line_declares_the_vocabulary(self) -> None:
+        self.write(
+            "todo.org",
+            ""\
+            """
+            #+TODO: TODO | DONE
+            * Tasks
+            ** IN_PROGRESS Not declared in this file
+            """,
+        )
+        result = self.scan("-f", "plain")
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("state-like", result.stderr)
 
 
 if __name__ == "__main__":
