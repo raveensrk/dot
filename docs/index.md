@@ -6,6 +6,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 
 | Doc | What it covers |
 |---|---|
+| [Emacs](emacs.md) | Restored config, repository agenda discovery, isolated tests |
 | [Lazygit](lazygit.md) | Config path, `C` = commit message via pi |
 | [Newsboat](newsboat.md) | RSS reader: the "Chrome Teal" theme, config reference, and the traps found while building it |
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
