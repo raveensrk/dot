@@ -14,3 +14,4 @@ tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
 printf '%s\n' "$msg" > "$tmp"
 git commit -e -F "$tmp"
+[[ ${1:-} == push ]] && git push
