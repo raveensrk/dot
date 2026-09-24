@@ -1,4 +1,4 @@
-" Highlighting for the TODO schema (~/repos/ai/docs/agents/todo_schema.md) in markdown.
+" Highlighting for the TODO schema (~/repos/ai/docs/agents/todo_schema.org) in markdown.
 "
 " Matches only list lines shaped like the schema, e.g.
 "   - TODO: Pay rent +Finance @home due:2026-08-05 recurring:monthly (A)

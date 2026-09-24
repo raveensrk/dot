@@ -1,4 +1,4 @@
-" Subtle background tint for todo lines (~/repos/ai/docs/agents/todo_schema.md) whose
+" Subtle background tint for todo lines (~/repos/ai/docs/agents/todo_schema.org) whose
 " due: date is overdue, today, or tomorrow. Syntax patterns cannot compare
 " dates, so an autocmd rescans the buffer and applies text properties.
 " DONE/OBSOLETE items are ignored, and recurring tasks skip the tomorrow

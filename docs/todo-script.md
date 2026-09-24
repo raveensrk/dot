@@ -22,7 +22,7 @@ Keyword entries require a colon and non-empty content:
 ```
 
 Checkbox entries use standard Markdown checkbox syntax. The default config leaves
-them off, because the [todo schema](~/repos/ai/docs/agents/todo_schema.md) treats
+them off, because the [todo schema](~/repos/ai/docs/agents/todo_schema.org) treats
 checkboxes as checklists rather than todo items; set `checkbox_patterns` to match
 them:
 
@@ -49,7 +49,7 @@ run_migration()  # TODO: Make this operation atomic
 /* LATER: Refactor the compatibility layer */
 ```
 
-`FIXME` and `BUG` are not keywords: the [todo schema](~/repos/ai/docs/agents/todo_schema.md)
+`FIXME` and `BUG` are not keywords: the [todo schema](~/repos/ai/docs/agents/todo_schema.org)
 records a task's kind as a tag, such as `+bug`.
 
 Bare keywords inside strings and identifiers such as `TODO_CONFIG` do not match.
@@ -156,7 +156,7 @@ files are ignored.
 
 `others` lists other people. A todo whose text `@mentions` anyone in this list is
 dropped (comparison is case-insensitive). Every other `@tag` is kept, so context
-tags from the [todo schema](~/repos/ai/docs/agents/todo_schema.md) such as `@writing` still show. The
+tags from the [todo schema](~/repos/ai/docs/agents/todo_schema.org) such as `@writing` still show. The
 committed default is empty; put real names in the machine-local overlay. For
 example, this list drops a task ending in `@Sakthi` and keeps one ending in
 `@writing`:
@@ -176,7 +176,7 @@ file-path ordering.
 flow_order = ["IN_PROGRESS", "TODO", "LATER"]
 ```
 
-`states` is the lifecycle vocabulary from [todo_schema.md](~/repos/ai/docs/agents/todo_schema.md), in
+`states` is the lifecycle vocabulary from [todo_schema.org](~/repos/ai/docs/agents/todo_schema.org), in
 cycle order. Unlike `patterns` it is the full list, terminal states included, and
 it does not affect scanning — it is the shared definition that Vim's `:TodoState`
 cycles through (see [Todo in Vim](todo-vim.md)). Print it with:

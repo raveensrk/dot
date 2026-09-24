@@ -1,5 +1,5 @@
 " :TodoHelp / ,? echoes a cheat sheet for the todo plugins
-" (~/repos/ai/docs/agents/todo_schema.md). The state line is built from todo#states() so
+" (~/repos/ai/docs/agents/todo_schema.org). The state line is built from todo#states() so
 " it tracks config/todo.toml; the command table is maintained by hand here and
 " mirrors docs/todo-vim.md.
 

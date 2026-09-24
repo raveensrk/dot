@@ -1,5 +1,5 @@
 " Toggle a filtered view showing only active todo lines
-" (~/repos/ai/docs/agents/todo_schema.md) whose due: date is today or earlier, plus
+" (~/repos/ai/docs/agents/todo_schema.org) whose due: date is today or earlier, plus
 " their indented sub-items; everything else collapses into folds. ,D
 " toggles the view. The global ,d (:Todo!) is the cross-file quickfix
 " equivalent.

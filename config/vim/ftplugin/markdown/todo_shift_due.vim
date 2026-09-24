@@ -1,4 +1,4 @@
-" Shift the due: date of a todo line (~/repos/ai/docs/agents/todo_schema.md) by one
+" Shift the due: date of a todo line (~/repos/ai/docs/agents/todo_schema.org) by one
 " recurrence interval: <S-Right> forward, <S-Left> backward. The interval
 " comes from the line's recurring: field (daily/weekly/monthly/yearly or
 " compact 2d/3w/6m); without one it defaults to 1 day. A THH:MM time
