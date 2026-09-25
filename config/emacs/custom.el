@@ -13,7 +13,7 @@
  '(beacon-blink-duration 1)
  '(beacon-blink-when-point-moves-horizontally 1)
  '(beacon-blink-when-point-moves-vertically 1)
- '(beacon-color "brightblack")
+ '(beacon-color "dim gray")
  '(beacon-dont-blink-commands nil)
  '(beacon-size 100)
  '(blink-cursor-delay 0.2)

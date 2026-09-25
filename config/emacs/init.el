@@ -303,7 +303,7 @@
 
 (pixel-scroll-mode t)
 
-(set-face-attribute 'line-number-current-line nil :background "dark gray")
+(set-face-attribute 'line-number-current-line nil :background "dim gray")
 (set-face-attribute 'line-number-current-line nil :foreground "black")
 (tool-bar-mode t)
 (menu-bar-mode t)
@@ -585,7 +585,7 @@
   (setq dashboard-icon-type 'all-the-icons)  ; use `all-the-icons' package
   (setq dashboard-set-navigator t)
   (setq dashboard-set-init-info t)
-  (setq dashboard-startup-banner nil)
+  (setq dashboard-startup-banner 'ascii) ; nil is unsupported since dashboard 1.9
   )
 ;; (setq debug-on-error nil)
 
