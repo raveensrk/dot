@@ -80,7 +80,7 @@ if __name__ == "__main__":
         "~/personal_repo",
         "~/project",
         "~/python_venv",
-        "~/script",
+        "~/dot_local/script",
         "~/tmp",
         "~/work",
         "~/Notes",

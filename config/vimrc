@@ -249,11 +249,11 @@ set viminfo+=r~/.vim/plugged
 let mapleader = " "
 
 " set path+=**;~/ " This is awesome but find search takes too long
-set tags+=./tags,../tags,~/script/tags
+set tags+=./tags,../tags,~/dot_local/script/tags
 " set path+=*
 " set path+=.*
 " set path+=./;~/
-set path+=~/script
+set path+=~/dot_local/script
 set path+=~/dot/**
 " autocmd! BufWritePre
 " autocmd BufWritePre *.txt s/ \+$//e
@@ -263,8 +263,8 @@ let g:ft_man_no_sect_fallback = 1
 set keywordprg=:Man
 set hidden
 
-if filereadable(expand('~/script/custom/custom.vim'))
-    execute 'source ' . expand('~/script/custom/custom.vim')
+if filereadable(expand('~/dot_local/script/custom/custom.vim'))
+    execute 'source ' . expand('~/dot_local/script/custom/custom.vim')
 endif
 " set gdefault
 "

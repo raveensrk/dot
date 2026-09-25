@@ -77,7 +77,7 @@ bash ~/dot/config/vim/plugin/install_vim_plugins.sh
 Add paths to the list of all git repositories in this file. This is for `lg.py`.
 
 ```sh
-/Users/$USER/script/list_of_repositories.txt
+/Users/$USER/dot_local/list_of_repositories.txt
 ```
 
 ## macOS: Basic setup

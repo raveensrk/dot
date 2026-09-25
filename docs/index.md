@@ -21,7 +21,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | Path | Holds |
 |---|---|
 | `config/` | Application configs, symlinked or sourced from `$DOT` |
-| `script/` | Executables on `PATH` (see `config/bashrc`) |
+| `script/` and `~/dot_local/script/` | Executables on `PATH` (see `config/bashrc`) |
 | `tests/` | `unittest` suites, run with `pytest` |
 | `packages/` | Per-tool install notes |
 | `docs/` | This wiki |
@@ -30,8 +30,10 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 
 - Common rules for this repo live in [common.md](~/repos/ai/docs/agents/common.md),
   referenced from [AGENTS.md](../AGENTS.md).
-- Scripts go in `script/`, not `scripts/`. This predates the shared rule and is
-  wired into `PATH` in `config/bashrc`.
+- Scripts go in `script/`, not `scripts/`. Machine-local scripts, secrets and
+  overrides go in `~/dot_local/script/`. Both are wired into `PATH` in
+  `config/bashrc`. The old machine-local `~/script/` was merged into
+  `~/dot_local/` in September 2026.
 
 ## Known drift
 

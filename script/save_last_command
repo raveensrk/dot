@@ -7,7 +7,7 @@ IFS=$'\n\t'
 echo "Enter name of the script: " | lolcat -a
 read -re name
 
-loc="$HOME/script/$name"
+loc="$HOME/dot_local/script/$name"
 
 create_executable_script "$loc"
 

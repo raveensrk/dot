@@ -13,7 +13,7 @@ export TERM=xterm-256color
 export COLORTERM="Yes"
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/script:$PATH"
+export PATH+="$HOME/dot_local/script:$PATH"
 export PATH="$DOT/script:$PATH"
 # shellcheck disable=1091
 source "$DOT/script/header.sh"
@@ -310,9 +310,8 @@ if [[ $- == *i* ]]; then
 fi
 #}}}
 # FINAL CUSTOM{{{
-# shellcheck source=../../script/custom/custom.sh
-if [[ -f "$HOME/script/custom/custom.sh" ]]; then
-	source "$HOME/script/custom/custom.sh"
+if [[ -f "$HOME/dot_local/script/custom/custom.sh" ]]; then
+	source "$HOME/dot_local/script/custom/custom.sh"
 fi
 
 if [[ -f "$HOME/dot_local/config/bashrc.sh" ]]; then

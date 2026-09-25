@@ -99,7 +99,7 @@ nmap <leader>fr :FR<CR>
 " Find files from list of directories{{{
 function! FFL () abort
 	cd $HOME
-	call fzf#run({'source': 'ffl.py --config ~/script/ffl.json', 
+	call fzf#run({'source': 'ffl.py --config ~/dot_local/script/ffl.json', 
 				\ 'sink': 'e', 
 				\ 'options': '--prompt "Find Files List: "'})
 	redraw! 

@@ -8,7 +8,7 @@ while read -re line; do
     expansion+="$line\n"
 done
 
-cat <<HERE >> ~/script/custom.sh
+cat <<HERE >> ~/dot_local/script/custom.sh
 unset -f $name
 declare -fxr $name
 $name () {

@@ -22,7 +22,7 @@ nmap <unique> <leader>r :RangerChooser<cr>
 nmap <unique> <leader>w :w<CR>
 
 set path+=$HOME/dot/**
-set path+=$HOME/script/**
+set path+=$HOME/dot_local/script/**
 set path+=$HOME/work/**
 
 let g:loaded_finder=1

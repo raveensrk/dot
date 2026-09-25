@@ -8,7 +8,7 @@ import argparse
 import json
 
 parser = argparse.ArgumentParser("ffl.py also known as find files and list will list all the files given in the ffl.json config file", epilog="This is epilog")
-parser.add_argument("--config", type=str, required=False, default=os.path.expanduser("~/script/ffl.json"), help="Path to ffl.json file")
+parser.add_argument("--config", type=str, required=False, default=os.path.expanduser("~/dot_local/script/ffl.json"), help="Path to ffl.json file")
 args = parser.parse_args()
 
 

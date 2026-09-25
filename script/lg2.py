@@ -6,7 +6,7 @@ Read a file containing list of git repositories and run lazygit in that
 import subprocess
 import os
 
-list_of_repositories = os.path.expanduser("~/script/list_of_repositories.txt")
+list_of_repositories = os.path.expanduser("~/dot_local/list_of_repositories.txt")
 
 with open(list_of_repositories, "r", encoding="UTF-8") as file_pointer:
     repos = file_pointer.readlines()
