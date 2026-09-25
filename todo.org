@@ -6,3 +6,13 @@
   :PROPERTIES:
   :ID: 07778c3f-b40a-4273-a89f-55097fdb79c3
   :END:
+** TODO Update emacs configs :emacs:dotfiles:
+  :PROPERTIES:
+  :ID: fc2a6fc1-9ad6-4ee4-9aee-8636806652a0
+  :CREATED: 2026-09-26
+  :END:
+  Prune review done and fixes committed (aa0c385a, f0e30829, 61c12fb9, c0b26146).
+  Report: ~/Downloads/emacs_config_review.html. Remaining items: trace the
+  GUI-only "lexical-binding buffer-local" warning with emacs --debug-init,
+  create ~/.config/openai-api-key.el for gptel, install all-the-icons fonts
+  if dashboard icons render as boxes.
