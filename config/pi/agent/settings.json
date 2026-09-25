@@ -17,5 +17,6 @@
     "npm:@narumitw/pi-usage",
     "npm:@dietrichgebert/ponytail",
     "npm:pi-caveman"
-  ]
+  ],
+  "defaultThinkingLevel": "max"
 }
