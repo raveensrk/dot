@@ -1,7 +1,5 @@
 ;;; Introduction
 
-;; (setq debug-on-error t)
-
 (setq custom-file "~/dot/config/emacs/custom.el")
 (load custom-file)
 (set-face-attribute 'default nil :weight 'semi-bold :height '120 :family "Fira Code")
@@ -11,18 +9,19 @@
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
+;; package-initialize removed: straight.el owns all package installs, and
+;; package-initialize only scanned an empty ~/.emacs.d/elpa at every startup.
 
-(setq pixel-scroll-precision-mode t)
-
-;; Emacs 30 bundles project, xref, eldoc and seq as core packages. straight.el
-;; does not know that (its built-in list still predates Emacs 30) and installs
-;; ELPA copies next to them. Both sets of autoloads then get registered; when
-;; one fires it loads the built-in file, and a later require of the straight
-;; copy aborts with "Feature 'project' is now provided by a different file",
-;; which killed eglot and verilog-ext. Keep straight off these four.
+;; Emacs 30 bundles project, xref, eldoc, seq, eglot, flymake, jsonrpc and
+;; external-completion as core packages. straight.el does not know that (its
+;; built-in list still predates Emacs 30) and installs ELPA copies next to
+;; them. Both sets of autoloads then get registered; when one fires it loads
+;; the built-in file, and a later require of the straight copy aborts with
+;; "Feature 'project' is now provided by a different file", which killed
+;; eglot and verilog-ext. Keep straight off these.
 (setq straight-built-in-pseudo-packages
-      '(emacs nadvice python image-mode project xref eldoc seq))
+      '(emacs nadvice python image-mode project xref eldoc seq
+              eglot flymake jsonrpc external-completion))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -58,12 +57,10 @@
   (beacon-mode 1))
 
 (setq visible-bell t)
-(setq display-line-numbers t)
 (setq display-line-numbers-type t)
 (global-display-line-numbers-mode +1)
 
 (setq ring-bell-function 'ignore)
-(setq show-paren-mode t)
 
 (setq kill-whole-line t)
 (setq sentence-end-double-space nil)
@@ -81,12 +78,6 @@
   (wrap-region-global-mode)
   (wrap-region-add-wrapper "*" "*"))
 
-(use-package browse-kill-ring
-  :config
-  (setq browse-kill-ring-highlight-inserted-item t
-        browse-kill-ring-highlight-current-entry nil
-        browse-kill-ring-show-preview t))
-
 (use-package company
   :config
   (global-company-mode 1))
@@ -101,22 +92,7 @@
 
 (use-package hydra)
 
-(use-package browse-at-remote)
-
-(use-package posframe)
-
 (use-package file-info)
-
-(use-package fzf
-  :ensure t
-  :config
-  (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
-        fzf/executable "fzf"
-        fzf/git-grep-args "-i --line-number %s"
-        ;; fzf/grep-command "rg --no-heading -nH"
-        fzf/grep-command "grep -nrH"
-        fzf/position-bottom t
-        fzf/window-height 15))
 
 (use-package which-key
   :config (which-key-mode 1))
@@ -237,7 +213,6 @@
   (delete-other-windows)
   (switch-to-dashboard-buffer))
 
-(setq speedbar-show-unknown-files t)
 (setq compilation-auto-jump-to-first-error t)
 (setq compilation-scroll-output t)
 (setq vc-follow-symlinks nil)
@@ -254,7 +229,7 @@
       (insert (format "%s=\"%s\"" variable selection))
       (move-beginning-of-line nil))))
 
-(use-package magit)
+(use-package magit :defer t)
 (setq require-final-newline t)
 (setq-default indicate-empty-lines t)
 
@@ -266,22 +241,23 @@
 (setq cperl-invalid-face nil)
 (setq cperl-electric-keywords t) ;; expands for keywords such as foreach, while, etc...
 (setq cperl-hairy t) ;; Turns on most of the CPerlMode options
-(add-to-list 'auto-mode-alist '("\\.bash_aliases$" . shell-script-mode))
+(add-to-list 'auto-mode-alist '("\\.bash_aliases$" . sh-mode))
 (use-package elpy
-  :config
-  (elpy-enable))
+  :defer t
+  :init
+  (add-hook 'python-mode-hook #'elpy-enable))
 (put 'upcase-region 'disabled nil)
 
 (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
 (setq comint-buffer-maximum-size 500)
 
-(use-package gptel)
+(use-package gptel :defer t)
 
 (if (file-exists-p "~/.config/openai-api-key.el")
     (load-file "~/.config/openai-api-key.el"))
 
-(setq gc-cons-threshold 20000000)
-(setq large-file-warning-threshold 200000000)
+;; 100 MB during init keeps GC quiet; stays high for big org/verilog buffers.
+(setq gc-cons-threshold 100000000)
 (fset 'yes-or-no-p 'y-or-n-p)
 (display-time-mode t)
 (setq save-place-file "~/.emacs.d/saveplace")
@@ -301,28 +277,12 @@
 
 (use-package restart-emacs)
 
-(pixel-scroll-mode t)
+(pixel-scroll-precision-mode 1)
 
 (set-face-attribute 'line-number-current-line nil :background "dim gray")
 (set-face-attribute 'line-number-current-line nil :foreground "black")
-(tool-bar-mode t)
-(menu-bar-mode t)
-(ido-mode t)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(setq ido-use-filename-at-point 'guess)
-(setq ido-use-url-at-point nil)
-(setq ido-ignore-extensions t)
-(use-package smex
-  :config
-  (smex-initialize))
-;; This is your old M-x.
 
-(add-to-list 'tags-table-list "~/tags/TAGS")
-
-(use-package rainbow-delimiters
-  :config
-  (rainbow-delimiters-mode t))
+(use-package rainbow-delimiters)
 
 (use-package occur-x
   :config
@@ -344,9 +304,7 @@
 
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode-enable)
 
-(use-package iedit)
-
-(use-package embark
+(use-package occur-x
   :ensure t
   :bind
   (("C-c e" . embark-act)         ;; pick some comfortable binding
@@ -397,8 +355,6 @@
     ("D" dired "dired")
     ("d" kill-whole-line "kill whole line")
     ("c" comment-line "comment line")
-    ("a" avy-goto-char "avy")
-    ("b" bmkp-cycle "Cycle bookmarks")
     ("e" next-line "next line")
     ("h" gptel "gptel" :exit t :color blue)
     ("i" previous-line "previous line")
@@ -408,11 +364,8 @@
     ("o" forward-char "forward character")
     ("p" yank "forward character")
     ("q" nil "quit" :exit t :color blue)
-    ("C-." emabark-act)
+    ("C-." embark-act)
     ("r" recentf-open "Recent files")
-    ("/" hydra-tools/body "tools" :color teal)
-    ("t" treemacs "treemacs")
-    ("w" ace-window "ace window")
     ("x" eval-last-sexp "evaluate last sexp")
     ("X" eval-buffer "evaluate whole buffer")
     )
@@ -477,38 +430,20 @@
         telephone-line-evil-use-short-tag t)
   )
 
-;; (use-package dimmer
-;;   :config
-;;   (require 'dimmer)
-;;   (dimmer-configure-which-key)
-;;   (dimmer-configure-helm)
-;;   (dimmer-mode t))
-
 (use-package rainbow-mode
   :config
   (rainbow-mode t))
 
-(use-package telephone-line
-  :config
-  (telephone-line-mode 1)
-  (setq telephone-line-primary-left-separator 'telephone-line-gradient
-        telephone-line-secondary-left-separator 'telephone-line-nil
-        telephone-line-primary-right-separator 'telephone-line-gradient
-        telephone-line-secondary-right-separator 'telephone-line-nil)
-  (setq telephone-line-height 24
-        telephone-line-evil-use-short-tag t)
-  )
 (use-package all-the-icons
   :if (display-graphic-p))
 
-(use-package multiple-cursors)
+(use-package multiple-cursors :defer t)
 
-(use-package ialign)
 (use-package literate-calc-mode
   :config
   (literate-calc-minor-mode t))
 
-(use-package tldr)
+(use-package tldr :defer t)
 
 (use-package fancy-compilation
   :commands (fancy-compilation-mode))
@@ -520,11 +455,7 @@
   :config
   (dirvish-override-dired-mode t))
 
-(use-package osx-trash
-  :config
-  (when (eq system-type 'darwin)
-    (osx-trash-setup))
-  (setq delete-by-moving-to-trash t))
+(setq delete-by-moving-to-trash t)
 
 (use-package ws-butler
   :config
@@ -546,13 +477,9 @@
   :config
   (global-aggressive-indent-mode 1))
 
-(use-package tiny)
+(use-package dumb-jump :defer t)
 
-(use-package dumb-jump)
-
-(use-package buffer-expose)
-
-(use-package wgrep)
+(use-package wgrep :defer t)
 
 (use-package on-screen
   :config
@@ -562,10 +489,6 @@
 (use-package num3-mode
   :config
   (global-num3-mode t))
-
-(use-package cyberpunk-theme
-  :config
-  (load-theme 'cyberpunk))
 
 (use-package breadcrumb
   :config
@@ -589,14 +512,8 @@
   )
 ;; (setq debug-on-error nil)
 
-;; (use-package syntax-subword
-;;   :config
-;;   (global-syntax-subword-mode nil))
-
-(setq-default menu-bar-mode nil)
-(setq-default tool-bar-mode nil)
-(menu-bar-mode nil)
-(tool-bar-mode nil)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; Org settings for the todo schema. See ~/repos/ai/docs/agents/todo_schema.org,
 ;; section "Required configuration".
@@ -639,21 +556,9 @@
   )
 (load (expand-file-name "~/dot/config/emacs/org_agenda.el") nil 'nomessage)
 
-;; org-default ((t (:inherit default :height 180 :family "Chalkboard")))
-;; org-modules '(ol-bbdb ol-bibtex org-ctags ol-docview ol-doi ol-eww ol-gnus org-habit org-id ol-info ol-irc ol-mhe org-mouse org-protocol ol-rmail org-tempo ol-w3m ol-eshell org-annotate-file ol-bookmark org-checklist org-choose org-collector ol-elisp-symbol org-eval-light org-eval org-expiry org-learn org-notify org-panel org-screen org-screenshot org-toc org-velocity)
-
-;; (straight-remove-unused-repos t)
-
-;; (error "DONE")
-
-;; (setq-default use-package-always-pin nil)
-;; (setq straight-use-package-by-default nil)
 (put 'downcase-region 'disabled nil)
 
 (use-package gruvbox-theme :config (load-theme 'gruvbox-dark-hard t))
-
-;; (setq-default shift-select-mode t)
-;; Doesnot work in terminals properly
 
 (add-hook 'dired-mode-hook (lambda () (define-key dired-mode-map (kbd "C-c +") 'dired-create-empty-file)))
 (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy)
@@ -693,6 +598,6 @@
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 (global-set-key (kbd "C-x SPC") 'hydra-rectangle/body)
 (global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "M-X") 'execute-extended-command)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key [remap dabbrev-expand] 'hippie-expand)

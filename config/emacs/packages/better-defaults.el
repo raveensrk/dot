@@ -43,10 +43,6 @@
 ;;; Code:
 
 (progn
-  (unless (or (fboundp 'helm-mode) (fboundp 'ivy-mode) (bound-and-true-p fido-vertical-mode))
-    (ido-mode t)
-    (setq ido-enable-flex-matching t))
-
   (unless (memq window-system '(mac ns))
     (menu-bar-mode -1))
   (when (fboundp 'tool-bar-mode)
@@ -85,8 +81,10 @@
         load-prefer-newer t
         backup-by-copying t
         frame-inhibit-implied-resize t
-        ediff-window-setup-function 'ediff-setup-windows-plain
-        custom-file (expand-file-name "custom.el" user-emacs-directory))
+        ediff-window-setup-function 'ediff-setup-windows-plain)
+  ;; custom-file intentionally NOT set here: it hijacked the tracked
+  ;; ~/dot/config/emacs/custom.el and sent Customize saves to an untracked
+  ;; ~/.emacs.d/custom.el. init.el owns custom-file.
 
   (unless backup-directory-alist
     (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
