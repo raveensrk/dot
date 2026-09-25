@@ -4,7 +4,7 @@
   "enableInstallTelemetry": false,
   "defaultProvider": "opencode-go",
   "defaultModel": "glm-5.3-flash",
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "extensions": [],
   "packages": [
     "npm:pi-web-access",
@@ -16,7 +16,10 @@
     "npm:pi-powerline-footer",
     "npm:@narumitw/pi-usage",
     "npm:@dietrichgebert/ponytail",
-    "npm:pi-caveman"
+    "npm:pi-caveman",
+    "npm:@narumitw/pi-accounts",
+    "npm:pi-markdown-preview",
+    "npm:pi-file-diff"
   ],
-  "defaultThinkingLevel": "max"
+  "defaultThinkingLevel": "medium"
 }
