@@ -15,6 +15,15 @@
 
 (setq pixel-scroll-precision-mode t)
 
+;; Emacs 30 bundles project, xref, eldoc and seq as core packages. straight.el
+;; does not know that (its built-in list still predates Emacs 30) and installs
+;; ELPA copies next to them. Both sets of autoloads then get registered; when
+;; one fires it loads the built-in file, and a later require of the straight
+;; copy aborts with "Feature 'project' is now provided by a different file",
+;; which killed eglot and verilog-ext. Keep straight off these four.
+(setq straight-built-in-pseudo-packages
+      '(emacs nadvice python image-mode project xref eldoc seq))
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
