@@ -45,3 +45,4 @@ config/pi/agent/sessions/
 config/pi/agent/web-search-cache/
 config/pi/agent/*.bak*
 config/pi/agent/crashes.json
+*.har
