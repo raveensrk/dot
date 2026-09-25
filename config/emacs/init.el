@@ -84,8 +84,10 @@
 
 (use-package yasnippet
   :config
-  (yas-global-mode 1)
-  (setq yas-snippet-dirs '("~/dot/config/emacs/snippets/")))
+  ;; Set dirs BEFORE yas-global-mode: the mode prepares just-in-time snippet
+  ;; loading on enable, so dirs set after it trigger "no snippets found".
+  (setq yas-snippet-dirs '("~/dot/config/emacs/snippets/"))
+  (yas-global-mode 1))
 
 (use-package yasnippet-snippets
   :after yasnippet)
