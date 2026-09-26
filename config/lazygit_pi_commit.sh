@@ -8,7 +8,7 @@ if [[ -z "$d" ]]; then
 fi
 
 msg=$(printf '%s' "$d" | pi -p -nt -nc --no-session --thinking off -- \
-  'Write a conventional commit message for this staged diff. Output only the message. No markdown fences.')
+  'Write a conventional commit message for this staged diff. Output only the message. No markdown fences. Only Plain Text.')
 
 tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
