@@ -7,8 +7,13 @@ Run with --delete to actually delete what the report lists.
 Usage:
     python3 ai_data_scrub.py            # report only, deletes nothing
     python3 ai_data_scrub.py --delete   # delete after report
+    python3 ai_data_scrub.py --be-gone  # interactive: pick harnesses, then per
+                                        #   harness tier: data / all incl configs
+                                        #   / uninstall app + everything
     python3 ai_data_scrub.py --no-open  # report without opening browser
     python3 ai_data_scrub.py --check    # tiny self-test
+
+--be-gone never touches ~/dot or ~/.dot (your dotfiles repo), in any tier.
 
 Requires Python 3.8+. macOS and Linux (no Windows). All paths are relative to
 $HOME, so it works for any user. Paths that don't exist are skipped silently.
@@ -21,6 +26,7 @@ import shutil
 import subprocess
 import sys
 import webbrowser
+import zipfile
 from datetime import datetime
 from pathlib import Path
 
@@ -225,9 +231,12 @@ CATALOG = [
     ("opencode", ".cache/opencode", "cache", "delete", "opencode cache (XDG path)."),
 ]
 
-CATALOG[:] = [(h, str(Path(p).expanduser()), c, a, r) for h, p, c, a, r in CATALOG]
+# Anchor relative catalog paths at $HOME — expanduser only handles '~', so
+# without this the script's results depend on the cwd it was launched from.
+CATALOG[:] = [(h, str(Path(p).expanduser() if p.startswith(("~", "/")) else HOME / p),
+               c, a, r) for h, p, c, a, r in CATALOG]
 
-RUNNING_PROCESSES = ["claude", "codex", "opencode", "pi", "Claude"]
+RUNNING_PROCESSES = ["claude", "codex", "opencode", "pi", "Claude", "ChatGPT", "Ollama", "ollama"]
 
 
 def human_size(n):
@@ -294,7 +303,320 @@ def fmt_path(p):
     return s.replace(str(HOME), "~", 1)
 
 
-# ── HTML report ──────────────────────────────────────────────────────────────
+def delete_paths(items):
+    """Delete [(Path, size)] in the given order. Returns (freed, errors)."""
+    freed = errors = 0
+    for path, size in items:
+        try:
+            if path.is_dir() and not path.is_symlink():
+                shutil.rmtree(path)
+            elif path.exists():
+                path.unlink()
+                # sqlite sidecars live next to deleted db files
+                for suffix in ("-wal", "-shm"):
+                    Path(str(path) + suffix).unlink(missing_ok=True)
+            freed += size
+            print(f"  ✓ {fmt_path(path)}  ({human_size(size)})")
+        except FileNotFoundError:
+            freed += size  # vanished between scan and delete — count as gone
+        except OSError as e:
+            errors += 1
+            print(f"  ✗ {fmt_path(path)}: {e}")
+    return freed, errors
+
+
+# ── --be-gone: interactive full uninstall ────────────────────────────────────
+# Tiers: d = catalog "delete" rows only (same paths as --delete, per harness)
+#        a = every catalog row for that harness (configs, auth, skills included)
+#        u = tier a + the app itself: bundle, plists, keychain, launch agents, CLI
+# ~/dot and ~/.dot are NEVER touched, in any tier.
+
+APPS = {
+    "Claude Code": dict(
+        roots=[".claude"], bundles=[], bundle_ids=[],
+        cli=[("claude", "@anthropic-ai/claude-code")],
+        keychain=["Claude Code", "Claude Code-credentials"], launch_tokens=["claude"]),
+    "Claude Desktop": dict(
+        roots=["Library/Application Support/Claude"],
+        bundles=["/Applications/Claude.app"], bundle_ids=["com.anthropic.claudefordesktop"],
+        cli=[], keychain=["Claude", "Claude Safe Storage"], launch_tokens=["claude"]),
+    "Codex": dict(
+        roots=[".codex"], bundles=["/Applications/Codex.app"], bundle_ids=["com.openai.codex"],
+        cli=[("codex", "@openai/codex")],
+        keychain=["Codex", "OpenAI"], launch_tokens=["codex", "openai"]),
+    "opencode": dict(
+        roots=[".opencode", ".local/share/opencode", ".config/opencode",
+               ".local/state/opencode", ".cache/opencode"],
+        bundles=[], bundle_ids=[], cli=[("opencode", "opencode-ai")],
+        keychain=["opencode"], launch_tokens=["opencode"]),
+    "pi": dict(
+        roots=[".pi"], bundles=[], bundle_ids=[],
+        cli=[("pi", "@earendil-works/pi-coding-agent")],
+        keychain=["pi"], launch_tokens=["earendil", "pi-coding-agent"]),
+    "Gemini CLI": dict(
+        roots=[".gemini"], bundles=[], bundle_ids=[],
+        cli=[("gemini", "@google/gemini-cli")],
+        keychain=["Gemini"], launch_tokens=["gemini"]),
+    "Ollama": dict(
+        roots=[".ollama"], bundles=["/Applications/Ollama.app"], bundle_ids=["com.ollama"],
+        cli=[("ollama", "ollama")],
+        keychain=["Ollama"], launch_tokens=["ollama"]),
+    "ChatGPT Desktop": dict(
+        roots=["Library/Application Support/ChatGPT"],
+        bundles=["/Applications/ChatGPT.app"], bundle_ids=["com.openai.chat"],
+        cli=[], keychain=["ChatGPT", "OpenAI"], launch_tokens=["chatgpt", "openai.chat"]),
+}
+
+TIER_LABEL = {"d": "DATA ONLY", "a": "ALL INCL CONFIGS+AUTH",
+              "u": "UNINSTALL — APP + EVERYTHING"}
+NEVER = {HOME / "dot", HOME / ".dot"}  # dotfiles repo — survives every tier
+
+
+def is_never(p):
+    return p in NEVER or Path(os.path.realpath(p)) in NEVER
+
+
+def bundle_paths(bid):
+    """All Library locations a macOS bundle id leaves behind."""
+    lib = HOME / "Library"
+    cands = [f"Preferences/{bid}.plist", f"Caches/{bid}", f"WebKit/{bid}",
+             f"Saved Application State/{bid}.savedState",
+             f"Application Scripts/{bid}", f"Containers/{bid}"]
+    cands += glob.glob(str(lib / "HTTPStorages" / f"{bid}*"))
+    cands += glob.glob(str(lib / "Group Containers" / f"*{bid}*"))
+    return [(lib / c, 0) for c in cands if (lib / c).exists()]
+
+
+def uninstall_extras(h):
+    """Extra (paths, specs) removed at tier u.
+    specs: ('defaults', bid) | ('keychain', name) | ('cli', cli, pkg)."""
+    spec = APPS.get(h, {})
+    paths, specs = [], []
+    for b in spec.get("bundles", []):
+        if Path(b).exists():
+            paths.append((Path(b), 0))
+    for bid in spec.get("bundle_ids", []):
+        paths += bundle_paths(bid)
+        specs.append(("defaults", bid))
+    for root in spec.get("roots", []):
+        p = HOME / root
+        if p.exists():
+            paths.append((p, 0))
+    for name in spec.get("keychain", []):
+        specs.append(("keychain", name))
+    for cli, pkg in spec.get("cli", []):
+        specs.append(("cli", cli, pkg))
+    la = HOME / "Library/LaunchAgents"
+    if la.is_dir():
+        for f in la.glob("*.plist"):
+            try:
+                txt = f.read_text(errors="ignore").lower()
+            except OSError:
+                continue
+            if any(t in txt for t in spec.get("launch_tokens", [])):
+                paths.append((f, 0))
+    return paths, specs
+
+
+def spec_desc(s):
+    if s[0] == "defaults":
+        return f"defaults delete {s[1]}"
+    if s[0] == "keychain":
+        return f"keychain items matching {s[1]!r} (best effort)"
+    return f"uninstall cli: {s[1]} (pkg {s[2]})"
+
+
+def run_specs(specs):
+    for s in specs:
+        if s[0] == "defaults":
+            subprocess.run(["defaults", "delete", s[1]], capture_output=True)
+        elif s[0] == "keychain":
+            for opt in (("-s", s[1]), ("-a", s[1])):
+                subprocess.run(["security", "delete-generic-password", *opt],
+                               capture_output=True)
+            print(f"  ⚿ {spec_desc(s)}")
+        elif s[0] == "cli":
+            print(f"  ⌘ {uninstall_cli(s[1], s[2])}")
+
+
+def uninstall_cli(cli, pkg):
+    p = shutil.which(cli)
+    if not p:
+        return f"{cli}: not on PATH (nothing to do)"
+    real = str(Path(p).resolve())
+    try:
+        prefix = subprocess.run(["npm", "prefix", "-g"], capture_output=True,
+                                text=True).stdout.strip()
+    except OSError:
+        prefix = ""
+    if prefix and real.startswith(prefix + os.sep):
+        subprocess.run(["npm", "uninstall", "-g", pkg], capture_output=True)
+        return f"npm uninstall -g {pkg} ({p})"
+    if "/Cellar/" in real or "/homebrew/" in real:
+        subprocess.run(["brew", "uninstall", cli], capture_output=True)
+        return f"brew uninstall {cli} ({p})"
+    return f"unknown install method — remove manually: {p}"
+
+
+def parse_sel(s, n):
+    """'all', '1,3', '1-3' → sorted unique picks, or None if nothing valid."""
+    s = s.strip().lower()
+    out = set()
+    if s == "all":
+        out.update(range(1, n + 1))
+    else:
+        for part in s.split(","):
+            part = part.strip()
+            a, _, b = part.partition("-")
+            if b.isdigit() and a.isdigit() and 1 <= int(a) <= int(b) <= n:
+                out.update(range(int(a), int(b) + 1))
+            elif a.isdigit() and 1 <= int(a) <= n:
+                out.add(int(a))
+    return sorted(out) or None
+
+
+def ask(prompt):
+    try:
+        return input(prompt)
+    except (EOFError, KeyboardInterrupt):
+        sys.exit("\nAborted — nothing deleted.")
+
+
+def ask_tier(h):
+    can_u = h in APPS
+    while True:
+        hint = "[d]ata / [a]ll incl configs+auth" + (" / [u]ninstall app+everything" if can_u else "")
+        a = ask(f"  {h} — {hint} [d]: ").strip().lower() or "d"
+        if a in ("d", "a") or (a == "u" and can_u):
+            return a
+        print(f"  ? answer d, a{', u' if can_u else ''}")
+
+
+def backup_zip(paths):
+    out = TMP / f"ai-scrub-backup-{datetime.now():%Y%m%d-%H%M%S}.zip"
+    n = 0
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+        for p in paths:
+            if is_never(p):
+                continue
+            p = Path(p)
+            if p.is_file():
+                z.write(p, str(p.relative_to(HOME)))
+                n += 1
+            elif p.is_dir():
+                for root, _dirs, files in os.walk(p):
+                    for f in files:
+                        fp = Path(root) / f
+                        z.write(fp, str(fp.relative_to(HOME)))
+                        n += 1
+    return out, n
+
+
+def build_plan(rows, picks):
+    """Merge catalog rows + uninstall extras into a per-harness plan;
+    drop nested/duplicate paths so nothing is deleted or counted twice."""
+    plan = []
+    for h, tier in picks.items():
+        hrows = [r for r in rows if r["harness"] == h]
+        if tier == "d":
+            sel = [(r["path"], r["size"]) for r in hrows if r["action"] == "delete"]
+            specs = []
+        else:
+            sel = [(r["path"], r["size"]) for r in hrows]
+            specs = []
+        extra_paths = []
+        if tier == "u":
+            extra_paths, specs = uninstall_extras(h)
+            extra_paths = [(p, path_size(p)[0]) for p, _ in extra_paths]  # real sizes
+            sel += extra_paths
+        backup = [r["path"] for r in hrows
+                  if tier != "d" and r["cat"] in ("config", "auth") and not is_never(r["path"])]
+        merged = {}
+        for p, s in sel:
+            if not is_never(p):
+                merged[p] = max(merged.get(p, 0), s)
+        plan.append(dict(harness=h, tier=tier, paths=merged, specs=specs,
+                         extra={p for p, _ in extra_paths}, backup=backup))
+    # drop paths nested inside another planned path: no double counting, no
+    # redundant rmtree of children the parent deletion already covers
+    all_p = [p for e in plan for p in e["paths"]]
+    nested = {p for p in all_p for q in all_p
+              if q != p and str(p).startswith(str(q) + os.sep)}
+    for e in plan:
+        e["paths"] = {p: s for p, s in e["paths"].items() if p not in nested}
+    return plan
+
+
+def be_gone():
+    if not sys.stdin.isatty():
+        print("ABORT: --be-gone is interactive and needs a TTY.")
+        sys.exit(1)
+    rows = scan()
+    installed = sorted({r["harness"] for r in rows})
+    for name, spec in APPS.items():
+        if name not in installed and (
+                any(Path(b).exists() for b in spec["bundles"])
+                or any(shutil.which(c) for c, _ in spec["cli"])):
+            installed.append(name)
+    installed.sort(key=lambda h: -sum(r["size"] for r in rows if r["harness"] == h))
+    if not installed:
+        print("No AI harness data found — nothing to remove.")
+        return
+
+    print("Installed AI harnesses:")
+    for i, h in enumerate(installed, 1):
+        total = sum(r["size"] for r in rows if r["harness"] == h)
+        print(f"  {i}. {h:<16} {human_size(total):>9}")
+
+    while True:
+        nums = parse_sel(ask("\nSelect (e.g. 1,3 or all): "), len(installed))
+        if nums:
+            break
+        print("  ? try e.g. 1,3 or all")
+    picks = {installed[n - 1]: ask_tier(installed[n - 1]) for n in nums}
+
+    plan = build_plan(rows, picks)
+    print("\nPLAN:")
+    total = 0
+    for e in plan:
+        t = sum(e["paths"].values())
+        total += t
+        print(f"  ✗ {e['harness']} — {TIER_LABEL[e['tier']]} — "
+              f"{human_size(t)}, {len(e['paths'])} paths")
+        for p, s in sorted(e["paths"].items(), key=lambda kv: -kv[1]):
+            if p in e["extra"]:
+                print(f"      {fmt_path(p)} ({human_size(s)})")
+        for s in e["specs"]:
+            print(f"      {spec_desc(s)}")
+    print(f"\n  Total: {human_size(total)}")
+
+    backup_paths = [p for e in plan for p in e["backup"]]
+    if backup_paths and ask("\nZip config/auth locations to ~/tmp first? [y/N]: ") \
+            .lower().startswith("y"):
+        out, n = backup_zip(backup_paths)
+        print(f"Backup: {out} ({n} files)")
+
+    alive = running_processes()
+    if alive:
+        print(f"\nABORT: these are running: {', '.join(alive)}. "
+              f"Quit them first (sqlite/WAL corruption risk).")
+        sys.exit(1)
+
+    if ask("\nType BE GONE to execute: ").strip() != "BE GONE":
+        print("Aborted — nothing deleted.")
+        return
+
+    print("\nDeleting…")
+    freed = errors = 0
+    for e in plan:
+        f, er = delete_paths(sorted(e["paths"].items(), key=lambda kv: -kv[1]))
+        freed += f
+        errors += er
+        run_specs(e["specs"])
+    print(f"\nDone. Freed {human_size(freed)}; {errors} errors.")
+
+
+# ── HTML report ──────────────────────────────────────────────────────────
 
 CAT_COLORS = {"cache": "#58a6ff", "history": "#f85149", "data": "#d29922",
               "auth": "#3fb950", "config": "#3fb950"}
@@ -402,15 +724,32 @@ def render(rows, delete_mode):
 def main():
     ap = argparse.ArgumentParser(description="Scrub AI agent harness data (keeps configs). Dry-run by default.")
     ap.add_argument("--delete", action="store_true", help="Actually delete (default: report only)")
+    ap.add_argument("--be-gone", dest="be_gone", action="store_true",
+                    help="Interactive: pick harnesses, then delete data, configs+auth, "
+                         "or uninstall the whole app")
     ap.add_argument("--no-open", action="store_true", help="Don't open the report in a browser")
     ap.add_argument("--check", action="store_true", help="Run self-test and exit")
     args = ap.parse_args()
+
+    if args.be_gone:
+        try:
+            be_gone()
+        except KeyboardInterrupt:
+            print("\nAborted — nothing deleted.")
+        return
 
     if args.check:
         assert human_size(0).endswith("0 B")
         assert human_size(1536 * 1024 * 1024).endswith("1.5 GB")
         assert path_size(Path("/nonexistent-xyz")) == (0, 0)
         assert expand("/nonexistent-xyz/*.tmp") == []
+        assert parse_sel("all", 3) == [1, 2, 3]
+        assert parse_sel("1,3", 3) == [1, 3]
+        assert parse_sel("1-3", 3) == [1, 2, 3]
+        assert parse_sel("9", 3) is None
+        assert parse_sel("", 3) is None
+        assert uninstall_extras("Nope-XYZ") == ([], [])
+        assert is_never(HOME / "dot") and is_never(HOME / ".dot")
         rows = scan()
         assert all(r["size"] >= 0 and r["files"] >= 0 for r in rows)
         # dedup: no concrete path scanned twice
@@ -445,23 +784,9 @@ def main():
         return
 
     print("Deleting…")
-    freed = errors = 0
-    for r in sorted((r for r in rows if r["action"] == "delete"), key=lambda r: -r["size"]):
-        try:
-            if r["path"].is_dir() and not r["path"].is_symlink():
-                shutil.rmtree(r["path"])
-            elif r["path"].exists():
-                r["path"].unlink()
-                # sqlite sidecars live next to deleted db files
-                for suffix in ("-wal", "-shm"):
-                    Path(str(r["path"]) + suffix).unlink(missing_ok=True)
-            freed += r["size"]
-            print(f"  ✓ {fmt_path(r['path'])}  ({human_size(r['size'])})")
-        except FileNotFoundError:
-            freed += r["size"]  # vanished between scan and delete — count as gone
-        except OSError as e:
-            errors += 1
-            print(f"  ✗ {fmt_path(r['path'])}: {e}")
+    items = [(r["path"], r["size"]) for r in
+             sorted((r for r in rows if r["action"] == "delete"), key=lambda r: -r["size"])]
+    freed, errors = delete_paths(items)
     print(f"\nDone. Freed {human_size(freed)}; {errors} errors. Report kept at {report}")
 
 
