@@ -1,0 +1,23 @@
+--- a/dist/core/tools/renderers/bash.js
++++ b/dist/core/tools/renderers/bash.js
+@@ -31,10 +31,22 @@ function formatDuration(ms) {
+     return `${Math.floor(minutes / 60)}h ${minutes % 60}m ${remainder}s`;
+ }
++function formatTimeout(timeout) {
++    if (!(timeout > 60))
++        return `${timeout}s`;
++    const total = Math.floor(timeout);
++    const minutes = Math.floor(total / 60);
++    const seconds = total % 60;
++    if (minutes < 60)
++        return `${minutes}m ${seconds}s`;
++    return `${Math.floor(minutes / 60)}h ${minutes % 60}m ${seconds}s`;
++}
+ function formatShellCall(args, prompt) {
+     const command = str(args?.command);
+     const timeout = args?.timeout;
+-    const timeoutSuffix = timeout ? theme.fg("muted", ` (timeout ${timeout}s)`) : "";
++    const timeoutSuffix = timeout ? theme.fg("muted", ` (timeout ${formatTimeout(timeout)})`) : "";
+     const commandDisplay = command === null ? invalidArgText(theme) : command ? command : theme.fg("toolOutput", "...");
+     return theme.fg("toolTitle", theme.bold(`${prompt} ${commandDisplay}`)) + timeoutSuffix;
+ }
