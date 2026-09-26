@@ -294,6 +294,12 @@ source "$DOT/config/gitconfig"
 [ -x direnv ] && eval "$(direnv hook bash)"
 [ -x pandoc ] && eval "$(pandoc --bash-completion)"
 [ -x fx ] && source <(fx --comp bash)
+# regen pi completions when pi binary is newer than generated file
+if [[ -n $(command -v pi) && $(command -v pi) -nt "$DOT/config/pi-completion.sh" ]]; then
+	"$DOT/script/pi-completion-gen" || echo "pi completion regen failed; keeping old file" >&2
+fi
+# shellcheck disable=1091
+source "$DOT/config/pi-completion.sh"
 # }}}
 # TRASH CAN{{{
 # alias rm="trash -v"
