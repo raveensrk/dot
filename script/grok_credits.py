@@ -2,7 +2,8 @@
 """CLI for the grok.com SuperGrok credit meter.
 
 Auth is grok.com Cookie from GROK_COOKIE, --cookie, --har, or
-~/.local/share/grok_credits/session.har. GROK_TOKEN is optional Bearer.
+~/.local/share/grok_credits/session.har. GROK_TOKEN is an optional Bearer
+only when a cookie is also set.
 """
 
 from __future__ import annotations
@@ -43,12 +44,11 @@ class GrokCreditsError(RuntimeError):
 class OAuthCredentials:
     token: str
     source: str
-    base_url: str
     cookie: str = ""
 
 
 def _redact_sensitive(value: object) -> str:
-    """Return a string safe to show in terminal/Waybar errors."""
+    """Return a string safe to show in terminal errors."""
     text = str(value)
     for pattern in _SENSITIVE_PATTERNS:
         if pattern.pattern.startswith("Bearer"):
@@ -80,27 +80,19 @@ def resolve_auth(
     cookie: Optional[str] = None,
     har: Optional[str] = None,
 ) -> OAuthCredentials:
-    """Cookie, then Bearer, then HAR. Never log secrets."""
+    """Cookie, then HAR. Never log secrets."""
     cki = (cookie or os.environ.get("GROK_COOKIE") or "").strip()
     tok = (token or os.environ.get("GROK_TOKEN") or "").strip()
     if cki:
         src = "--cookie" if (cookie or "").strip() else "GROK_COOKIE"
-        return OAuthCredentials(token=tok, source=src, base_url="https://api.x.ai/v1", cookie=cki)
-    if tok:
-        src = "--token" if (token or "").strip() else "GROK_TOKEN"
-        return OAuthCredentials(token=tok, source=src, base_url="https://api.x.ai/v1")
+        return OAuthCredentials(token=tok, source=src, cookie=cki)
     har_arg = (har or os.environ.get("GROK_HAR") or "").strip()
     path = Path(har_arg).expanduser() if har_arg else DEFAULT_HAR
     if har_arg and not path.is_file():
         raise GrokCreditsError("HAR not found")
     if path.is_file():
         src = "--har" if (har or "").strip() else ("GROK_HAR" if har_arg else HAR_LABEL)
-        return OAuthCredentials(
-            token="",
-            source=src,
-            base_url="https://api.x.ai/v1",
-            cookie=cookie_from_har(path),
-        )
+        return OAuthCredentials(token="", source=src, cookie=cookie_from_har(path))
     raise GrokCreditsError("No auth. Set GROK_COOKIE or pass --har.")
 
 
@@ -318,33 +310,6 @@ def _parse_timestamp(message: Optional[bytes]) -> Optional[Dict[str, Any]]:
     }
 
 
-def _parse_billing_cycle(message: Optional[bytes]) -> Dict[str, int]:
-    year = 0
-    month = 0
-    if message:
-        for number, wire, value in _iter_fields(message):
-            if number == 1 and wire == 0:
-                year = int(value)
-            elif number == 2 and wire == 0:
-                month = int(value)
-    return {"year": year, "month": month}
-
-
-def _parse_period_usage(message: bytes) -> Dict[str, Any]:
-    cycle: Dict[str, int] = {"year": 0, "month": 0}
-    on_demand_used_cents = 0
-    for number, wire, value in _iter_fields(message):
-        if number == 1 and wire == 2:
-            cycle = _parse_billing_cycle(value)
-        elif number == 2 and wire == 2:
-            on_demand_used_cents = _parse_cent(value)
-    return {
-        **cycle,
-        "on_demand_used_cents": on_demand_used_cents,
-        "on_demand_used_usd": on_demand_used_cents / 100.0,
-    }
-
-
 def parse_get_grok_credits_config_response(payload: bytes) -> Dict[str, Any]:
     config_msg = _first_message(payload, 1)
     if config_msg is None:
@@ -355,7 +320,6 @@ def parse_get_grok_credits_config_response(payload: bytes) -> Dict[str, Any]:
     on_demand_used_cents = 0
     billing_period_start = None
     billing_period_end = None
-    history: List[Dict[str, Any]] = []
 
     for number, wire, value in _iter_fields(config_msg):
         if number == 1 and wire == 5:
@@ -368,8 +332,6 @@ def parse_get_grok_credits_config_response(payload: bytes) -> Dict[str, Any]:
             billing_period_start = _parse_timestamp(value)
         elif number == 5 and wire == 2:
             billing_period_end = _parse_timestamp(value)
-        elif number == 6 and wire == 2:
-            history.append(_parse_period_usage(value))
 
     return {
         "plan": PLAN_NAME,
@@ -383,7 +345,6 @@ def parse_get_grok_credits_config_response(payload: bytes) -> Dict[str, Any]:
         "on_demand_used_cents": on_demand_used_cents,
         "on_demand_used_usd": on_demand_used_cents / 100.0,
         "on_demand_enabled": on_demand_cap_cents > 0,
-        "history": history,
     }
 
 
@@ -402,14 +363,57 @@ def format_usage_display(percent: float) -> str:
     return f"{math.ceil(percent)}% used"
 
 
-def _waybar_class(percent: float) -> str:
-    if percent >= 100:
-        return "exhausted"
-    if percent >= 80:
-        return "high"
-    if percent >= 50:
-        return "medium"
-    return "low"
+DAY_MS = 86_400_000
+SLACK = 1
+
+
+def _left(iso: Optional[str], now: datetime) -> str:
+    if not iso:
+        return ""
+    try:
+        end = datetime.fromisoformat(iso)
+    except ValueError:
+        return ""
+    ms = (end - now).total_seconds() * 1000
+    if ms <= 0:
+        return " · 0 days left"
+    days = math.ceil(ms / DAY_MS)
+    unit = "day" if days == 1 else "days"
+    return f" · {days} {unit} left"
+
+
+def _pace(actual: float, start_iso: Optional[str], end_iso: Optional[str], now: datetime) -> str:
+    if not start_iso or not end_iso:
+        return ""
+    try:
+        start = datetime.fromisoformat(start_iso)
+        end = datetime.fromisoformat(end_iso)
+    except ValueError:
+        return ""
+    span = (end - start).total_seconds() * 1000
+    if not span > 0:
+        return ""
+    expected = max(0.0, min(100.0, ((now - start).total_seconds() * 1000 / span) * 100))
+    tag = "on track"
+    if actual > expected + SLACK:
+        tag = "over"
+    if actual < expected - SLACK:
+        tag = "under"
+    return f" · even {round(expected)}% · {tag}"
+
+
+def widget_line(report: Dict[str, Any], now: Optional[datetime] = None) -> str:
+    """One status line. Empty when usage display is missing."""
+    used = str(report.get("credit_usage_display") or "").replace(" used", "")
+    if not used:
+        return ""
+    now = now or datetime.now(timezone.utc)
+    reset = report.get("reset_display")
+    reset_bit = f" · Resets {reset}" if reset else ""
+    end = (report.get("billing_period_end") or {}).get("iso_utc")
+    start = (report.get("billing_period_start") or {}).get("iso_utc")
+    actual = float(report.get("credit_usage_percent") or 0)
+    return f"Grok {used}{reset_bit}{_left(end, now)}{_pace(actual, start, end, now)}"
 
 
 def build_report(
@@ -430,12 +434,7 @@ def build_report(
         cookie=creds.cookie,
     )
     parsed = parse_get_grok_credits_config_response(payload)
-    parsed["source"] = {
-        "auth": creds.source,
-        "provider_source": creds.source,
-        "endpoint": endpoint,
-        "inference_base_url": creds.base_url,
-    }
+    parsed["source"] = {"auth": creds.source, "endpoint": endpoint}
     return parsed
 
 
@@ -455,50 +454,6 @@ def print_plain(report: Dict[str, Any]) -> None:
     else:
         print("Pay-as-you-go: disabled")
     print(f"Source: {report['source']['auth']} → {report['source']['endpoint']}")
-
-
-def _format_updated_line(dt: Optional[datetime] = None) -> str:
-    dt = (dt or datetime.now(timezone.utc)).astimezone()
-    return f"Updated: {dt.strftime('%a %H:%M:%S %Z')}"
-
-
-def print_waybar(report: Dict[str, Any]) -> None:
-    reset = report.get("reset_display") or "?"
-    percent = float(report.get("credit_usage_percent") or 0.0)
-    source = report.get("source") or {}
-    tooltip_lines = [
-        f"Free credits with {report['plan']}: {report['credit_usage_display']} · Resets {reset}",
-        _format_updated_line(),
-    ]
-    if source:
-        auth = source.get("auth", "unknown")
-        tooltip_lines.append(f"Source: {auth}")
-    tooltip_lines.append("Click to refresh")
-    print(
-        json.dumps(
-            {
-                "text": f"Grok {report['credit_usage_display'].replace(' used', '')}",
-                "tooltip": "\n".join(tooltip_lines),
-                "class": _waybar_class(percent),
-                "percentage": max(0, min(100, math.ceil(percent))),
-            },
-            separators=(",", ":"),
-        )
-    )
-
-
-def print_waybar_error(message: str) -> None:
-    tooltip = "\n".join([
-        message,
-        _format_updated_line(),
-        "Click to refresh",
-    ])
-    print(
-        json.dumps(
-            {"text": "Grok error", "tooltip": tooltip, "class": "error"},
-            separators=(",", ":"),
-        )
-    )
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -528,7 +483,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     parser.add_argument("--timeout", type=float, default=15.0, help="HTTP timeout in seconds")
     parser.add_argument("--json", action="store_true", help="print machine-readable JSON")
-    parser.add_argument("--waybar", action="store_true", help="print Waybar JSON")
+    parser.add_argument("--widget", action="store_true", help="print one status line")
     args = parser.parse_args(argv)
 
     try:
@@ -541,24 +496,19 @@ def main(argv: Optional[List[str]] = None) -> int:
             har=args.har,
         )
     except GrokCreditsError as exc:
-        safe_error = _redact_sensitive(exc)
-        if args.waybar:
-            print_waybar_error(f"Error: {safe_error}")
-            return 0
-        print(f"error: {safe_error}", file=sys.stderr)
+        print(f"error: {_redact_sensitive(exc)}", file=sys.stderr)
         return 1
-    except Exception as exc:
-        if args.waybar:
-            print_waybar_error(f"Unexpected error: {_redact_sensitive(exc)}")
-            return 0
-        raise
 
     if args.json:
         print(json.dumps(report, indent=2, sort_keys=True))
-    elif args.waybar:
-        print_waybar(report)
-    else:
-        print_plain(report)
+        return 0
+    if args.widget:
+        line = widget_line(report)
+        if not line:
+            return 1
+        print(line)
+        return 0
+    print_plain(report)
     return 0
 
 

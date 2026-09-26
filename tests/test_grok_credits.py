@@ -1,10 +1,9 @@
-import contextlib
-import io
 import json
 import os
 import sys
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -32,7 +31,21 @@ class GrokCreditsParserTest(unittest.TestCase):
         self.assertEqual(report["billing_period_start"]["iso_utc"], "2026-05-01T00:00:00+00:00")
         self.assertEqual(report["billing_period_end"]["iso_utc"], "2026-06-01T00:00:00+00:00")
         self.assertFalse(report["on_demand_enabled"])
-        self.assertEqual([h["month"] for h in report["history"]], [4, 3, 2])
+        self.assertNotIn("history", report)
+
+    def test_widget_line(self):
+        now = datetime(2026, 5, 16, tzinfo=timezone.utc)
+        report = {
+            "credit_usage_display": "12% used",
+            "credit_usage_percent": 12.0,
+            "reset_display": "Jun 1",
+            "billing_period_start": {"iso_utc": "2026-05-01T00:00:00+00:00"},
+            "billing_period_end": {"iso_utc": "2026-06-01T00:00:00+00:00"},
+        }
+        self.assertEqual(
+            grok_credits.widget_line(report, now),
+            "Grok 12% · Resets Jun 1 · 16 days left · even 48% · under",
+        )
 
     def test_refuses_non_grok_endpoint_by_default(self):
         token = "x" * 64
@@ -47,93 +60,10 @@ class GrokCreditsParserTest(unittest.TestCase):
         self.assertIn("non-grok.com endpoint", message)
         self.assertNotIn(token, message)
 
-    def test_waybar_tooltip_includes_updated_and_refresh_lines(self):
-        report = {
-            "plan": "SuperGrok Heavy",
-            "credit_usage_percent": 12.0,
-            "credit_usage_display": "12% used",
-            "reset_display": "Jun 1",
-            "source": {
-                "auth": "GROK_TOKEN",
-                "endpoint": grok_credits.DEFAULT_ENDPOINT,
-            },
-        }
-        buf = io.StringIO()
-
-        with contextlib.redirect_stdout(buf):
-            grok_credits.print_waybar(report)
-
-        payload = json.loads(buf.getvalue())
-        tooltip_lines = payload["tooltip"].splitlines()
-        self.assertEqual(
-            tooltip_lines[0],
-            "Free credits with SuperGrok Heavy: 12% used · Resets Jun 1",
-        )
-        self.assertRegex(
-            tooltip_lines[1],
-            r"^Updated: [A-Z][a-z]{2} \d{2}:\d{2}:\d{2}(?: .*)?$",
-        )
-        self.assertEqual(tooltip_lines[2], "Source: GROK_TOKEN")
-        self.assertEqual(tooltip_lines[3], "Click to refresh")
-
-    def test_waybar_error_tooltip_includes_updated_and_refresh_lines(self):
-        buf = io.StringIO()
-
-        with mock.patch.object(
-            grok_credits,
-            "build_report",
-            side_effect=grok_credits.GrokCreditsError("boom"),
-        ):
-            with contextlib.redirect_stdout(buf):
-                rc = grok_credits.main(["--waybar"])
-
-        self.assertEqual(rc, 0)
-        payload = json.loads(buf.getvalue())
-        self.assertEqual(payload["text"], "Grok error")
-        self.assertEqual(payload["class"], "error")
-        tooltip_lines = payload["tooltip"].splitlines()
-        self.assertEqual(tooltip_lines[0], "Error: boom")
-        self.assertRegex(
-            tooltip_lines[1],
-            r"^Updated: [A-Z][a-z]{2} \d{2}:\d{2}:\d{2}(?: .*)?$",
-        )
-        self.assertEqual(tooltip_lines[2], "Click to refresh")
-
-    def test_waybar_unexpected_error_still_returns_visible_module(self):
-        buf = io.StringIO()
-
-        with mock.patch.object(grok_credits, "build_report", side_effect=ValueError("bad parse")):
-            with contextlib.redirect_stdout(buf):
-                rc = grok_credits.main(["--waybar"])
-
-        self.assertEqual(rc, 0)
-        payload = json.loads(buf.getvalue())
-        self.assertEqual(payload["text"], "Grok error")
-        self.assertEqual(payload["class"], "error")
-        self.assertIn("Unexpected error: bad parse", payload["tooltip"])
-
     def test_error_redaction(self):
         redact = getattr(grok_credits, "_redact_sensitive")
         redacted = redact("Authorization: Bearer " + ("a" * 64))
         self.assertEqual(redacted, "Authorization: Bearer [REDACTED]")
-
-    def test_resolve_token_from_env(self):
-        token = "e" * 64
-        env = {k: v for k, v in os.environ.items() if k not in ("GROK_TOKEN", "GROK_COOKIE")}
-        env["GROK_TOKEN"] = token
-        with mock.patch.dict("os.environ", env, clear=True):
-            creds = grok_credits.resolve_auth()
-        self.assertEqual(creds.token, token)
-        self.assertEqual(creds.source, "GROK_TOKEN")
-
-    def test_resolve_token_prefers_arg(self):
-        given = "g" * 64
-        env = {k: v for k, v in os.environ.items() if k not in ("GROK_TOKEN", "GROK_COOKIE")}
-        env["GROK_TOKEN"] = "e" * 64
-        with mock.patch.dict("os.environ", env, clear=True):
-            creds = grok_credits.resolve_auth(token=given)
-        self.assertEqual(creds.token, given)
-        self.assertEqual(creds.source, "--token")
 
     def test_resolve_cookie_from_env(self):
         cookie = "sso=abc; sso-rw=def"
