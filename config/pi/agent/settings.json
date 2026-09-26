@@ -4,7 +4,7 @@
   "enableInstallTelemetry": false,
   "defaultProvider": "opencode-go",
   "defaultModel": "glm-5.3-flash",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "extensions": [],
   "packages": [
     "npm:pi-web-access",

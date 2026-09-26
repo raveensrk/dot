@@ -327,4 +327,5 @@ if [[ $os == "Darwin" ]]; then
 fi
 
 alias ,t=",todo.py"
+alias pi-grok-4.7="pi --model xai/grok-4.7:medium"
 export PI_CODING_AGENT_DIR="$HOME/dot/config/pi/agent"
