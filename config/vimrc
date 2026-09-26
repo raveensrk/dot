@@ -119,7 +119,7 @@ endfunction
 command! CenterCursor call CenterCursor()
 command! NoCenterCursor call NoCenterCursor()
 
-" Scan outstanding tasks into the quickfix list (see ~/dot/script/,todo.py).
+" Scan outstanding tasks into the quickfix list (main_quest qf).
 "   :Todo            scan the configured default_dirs
 "   :Todo path ...   scan the given paths instead
 "   :Todo!           only tasks with a due: date of today or earlier
@@ -138,7 +138,7 @@ function! TodoQuickfixText(info) abort
 endfunction
 
 function! Todo(due, ...) abort
-    let l:cmd = 'python3 ' . shellescape(expand('~/dot/script/,todo.py')) . ' -f plain'
+    let l:cmd = 'main_quest qf'
     if a:due
         let l:cmd .= ' --due'
     endif

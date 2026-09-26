@@ -9,6 +9,7 @@ export TASKRC=$DOT/config/taskrc
 export MYVIMRC=$DOT/config/vimrc
 export VIMINIT=":source $MYVIMRC"
 export LG_CONFIG_FILE=$DOT/config/lazygit.yml
+export ZELLIJ_CONFIG_DIR=$DOT/config/zellij
 export TERM=xterm-256color
 export COLORTERM="Yes"
 # export DISPLAY=:0
@@ -326,6 +327,6 @@ if [[ $os == "Darwin" ]]; then
 	export PATH="/opt/homebrew/bin:$PATH"
 fi
 
-alias ,t=",todo.py"
+alias ,t="main_quest qf"
 alias pi-grok-4.7="pi --model xai/grok-4.7:medium"
 export PI_CODING_AGENT_DIR="$HOME/dot/config/pi/agent"
