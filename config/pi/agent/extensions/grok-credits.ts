@@ -4,6 +4,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { widgetFor } from "./shared/widget-gate.ts";
 
 const execFileAsync = promisify(execFile);
 const BIN = join(homedir(), "dot", "script", "grok_credits.py");
@@ -53,7 +54,7 @@ function paint(ctx: Ui, grok: string | undefined): void {
 		hide(ctx);
 		return;
 	}
-	ctx.ui.setWidget(KEY, [grok], { placement: "belowEditor" });
+	ctx.ui.setWidget(KEY, [grok], { placement: "aboveEditor" });
 }
 
 export default function (pi: ExtensionAPI) {
@@ -94,6 +95,10 @@ export default function (pi: ExtensionAPI) {
 		if (!ctx.hasUI) {
 			return;
 		}
+		if (widgetFor(pi.model?.provider) !== "grok") {
+			hide(ctx);
+			return;
+		}
 		paint(ctx, await grokLine());
 	}
 
@@ -121,6 +126,17 @@ export default function (pi: ExtensionAPI) {
 			stop();
 			ctx.ui.notify("Grok widget off", "info");
 		},
+	});
+
+	pi.on("model_select", async (event, ctx) => {
+		const active = widgetFor(event.model.provider) === "grok";
+		if (!active) {
+			stop();
+		}
+		await refresh(ctx);
+		if (active && grokOn() && !timer) {
+			start(ctx);
+		}
 	});
 
 	pi.on("session_start", async (_event, ctx) => {

@@ -1,0 +1,13 @@
+{
+  "colors": {
+    "model": "#d787af",
+    "path": "#00afaf",
+    "gitClean": "success",
+    "gitDirty": "warning",
+    "context": "dim",
+    "contextWarn": "warning",
+    "contextError": "error",
+    "cost": "text",
+    "tokens": "muted"
+  }
+}

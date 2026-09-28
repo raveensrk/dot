@@ -3,7 +3,7 @@
   "theme": "dark",
   "enableInstallTelemetry": false,
   "defaultProvider": "opencode",
-  "defaultModel": "glm-5.3-flash",
+  "defaultModel": "deepseek-v4.1-flash",
   "hideThinkingBlock": true,
   "extensions": [],
   "packages": [
@@ -14,7 +14,48 @@
     "npm:pi-powerline-footer",
     "npm:@narumitw/pi-usage",
     "npm:@dietrichgebert/ponytail",
-    "npm:pi-caveman"
+    "npm:pi-caveman",
+    "npm:@injaneity/pi-computer-use"
   ],
-  "defaultThinkingLevel": "max"
+  "defaultThinkingLevel": "max",
+  "powerline": {
+    "preset": "default",
+    "placement": "above",
+    "path": {
+      "mode": "full"
+    },
+    "cost": {
+      "subscriptionDisplay": "both",
+      "currency": "USD"
+    },
+    "layout": {
+      "left": [
+        "model",
+        "custom:active-model",
+        "path",
+        "git",
+        "cost",
+        "context_pct"
+      ],
+      "right": [],
+      "secondary": [
+        "custom:openrouter"
+      ]
+    },
+    "customItems": [
+      {
+        "id": "active-model",
+        "statusKey": "active-model",
+        "position": "left",
+        "color": "#a0ccc5"
+      },
+      {
+        "id": "openrouter",
+        "statusKey": "or-spend",
+        "position": "secondary",
+        "prefix": "openrouter",
+        "color": "#cfb985"
+      }
+    ]
+  }
 }
