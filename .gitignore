@@ -48,3 +48,4 @@ config/pi/agent/*.bak*
 config/pi/agent/crashes.json
 config/pi/agent/missions/
 *.har
+/.org-index.db

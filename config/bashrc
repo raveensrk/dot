@@ -337,3 +337,7 @@ fi
 alias ,t="main_quest qf"
 alias pi-grok-4.7="pi --model xai/grok-4.7:medium"
 export PI_CODING_AGENT_DIR="$HOME/dot/config/pi/agent"
+iterm-tab-name () 
+{ 
+    printf "\033]1;$@\007"
+}
