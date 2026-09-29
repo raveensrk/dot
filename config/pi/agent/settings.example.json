@@ -5,7 +5,10 @@
   "compaction": {
     "modelOverrides": {
       "openrouter/deepseek/deepseek-v4.1-flash": {
-        "reserveTokens": 350000
+        "reserveTokens": 698576
+      },
+      "opencode/deepseek-v4.1-flash": {
+        "reserveTokens": 650000
       }
     }
   },
