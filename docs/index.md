@@ -11,7 +11,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | [Newsboat](newsboat.md) | RSS reader: the "Chrome Teal" theme, config reference, and the traps found while building it |
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
 | [Agent config](agent_config.md) | `script/,agent_config.py`, native global skill registration and shared-settings export |
-| [Todo schema](~/repos/ai/docs/agents/todo_schema.org) | Canonical todo item format used across projects |
+| [Todo schema](~/repos/Main_Quest/todo_schema.org) | Canonical todo item format used across projects |
 | [Todo script](todo-script.md) | `script/,todo.py`, the Markdown task scanner |
 | [Todo in Vim](todo-vim.md) | Markdown todo plugins: state cycling, due-date shifting and filtering |
 | [Vim colorscheme](vim-colorscheme.md) | Current scheme, eye-comfort research, and how pathogen plugins are installed |
@@ -42,7 +42,7 @@ Tracked so it is not rediscovered every session.
 
 - Existing doc filenames are kebab-case, but the shared naming rule asks for
   `snake_case`. The todo schema now lives in
-  [todo_schema.org](~/repos/ai/docs/agents/todo_schema.org). Remaining kebab-case
+  [todo_schema.org](~/repos/Main_Quest/todo_schema.org). Remaining kebab-case
   names in this wiki are local.
 - The shared rules ask for a [Divio](https://docs.divio.com/documentation-system/)
   layout (`tutorials/`, `how-to/`, `reference/`, `explanation/`). This `docs/`

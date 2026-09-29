@@ -517,7 +517,7 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 
-;; Org settings for the todo schema. See ~/repos/ai/docs/agents/todo_schema.org,
+;; Org settings for the todo schema. See ~/repos/Main_Quest/todo_schema.org,
 ;; section "Required configuration".
 ;;
 ;; org-tags-column 0 puts tags one space after the title. The default is -77 with
