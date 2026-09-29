@@ -29,7 +29,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 
 ## Conventions
 
-- Common rules for this repo live in [common.md](~/repos/ai/docs/agents/common.md),
+- Common rules for this repo live in [common.md](~/repos/agent1/common.md),
   referenced from [AGENTS.md](../AGENTS.md).
 - Scripts go in `script/`, not `scripts/`. Machine-local scripts, secrets and
   overrides go in `~/dot_local/script/`. Both are wired into `PATH` in

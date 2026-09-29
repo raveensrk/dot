@@ -133,7 +133,7 @@ after all operations succeed.
 Pi skills - preview (no changes)
 |-- Settings: ~/dot/config/pi/agent/settings.json
 |-- [KEEP] git-report
-|   `-- Source: ~/repos/ai/docs/agents/skills/git-report
+|   `-- Source: ~/repos/agent1/skills/git-report
 `-- Summary: 1 global, 0 to add, 0 to remove, 0 links to migrate
 ```
 
