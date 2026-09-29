@@ -2,6 +2,26 @@
 #+TODO: TODO IN_PROGRESS OPTIONAL LATER | DONE OBSOLETE
 #+STARTUP: logdone
 * Tasks
+** DONE Sync global skills through native Pi paths :pi:
+  CLOSED: [2026-09-29 Tue 18:00]
+  :PROPERTIES:
+  :ID: 6d47bbcb-9170-4aa4-aa55-dcece741b974
+  :CREATED: 2026-09-29
+  :END:
+  Implement script/,agent_config.py: preview default, explicit --apply, scan dot and
+  repos for metadata.scope global, preserve manual config, prune owned paths,
+  reject duplicate names, and migrate matching shared symlinks only after
+  native registration succeeds. Verify tests, initial seven registrations,
+  unrelated settings preservation, and an idempotent second run.
+  Verified temporary-directory tests, Pi native loader (seven skills, zero
+  diagnostics), exact backup, seven migrated links, and no-op second apply.
+  GPT-5.5 review: added directory fsync after atomic replacement; retained
+  deliberate rule that manually rewritten entries become user-owned.
+  Usage and ownership rules: docs/agent_config.md. Renamed from ,skills.py
+  since it also exports shared Pi settings.
+  Follow-up: readable tree output; live Pi settings untracked and gitignored.
+  Shared settings.example.json excludes provider/model, skill paths, and
+  changelog state. Verified live settings byte-identical and two tests pass.
 ** LATER newsboat3 url to newsboat2. I have some local rss feed that i need to filter.
   :PROPERTIES:
   :ID: 07778c3f-b40a-4273-a89f-55097fdb79c3

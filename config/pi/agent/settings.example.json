@@ -1,9 +1,6 @@
 {
-  "lastChangelogVersion": "0.87.1",
   "theme": "dark",
   "enableInstallTelemetry": false,
-  "defaultProvider": "opencode",
-  "defaultModel": "deepseek-v4.1-flash",
   "hideThinkingBlock": true,
   "extensions": [],
   "packages": [
@@ -17,7 +14,6 @@
     "npm:pi-caveman",
     "npm:@injaneity/pi-computer-use"
   ],
-  "defaultThinkingLevel": "max",
   "powerline": {
     "preset": "default",
     "placement": "above",
@@ -39,10 +35,17 @@
       ],
       "right": [],
       "secondary": [
+        "custom:usage",
         "custom:openrouter"
       ]
     },
     "customItems": [
+      {
+        "id": "usage",
+        "statusKey": "usage",
+        "position": "secondary",
+        "selfColorize": true
+      },
       {
         "id": "active-model",
         "statusKey": "active-model",

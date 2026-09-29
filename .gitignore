@@ -38,6 +38,7 @@ script/fail.log
 script/pass.log
 script/run.log
 config/pi/agent/auth.json
+config/pi/agent/settings.json
 config/pi/agent/models-store.json
 config/pi/agent/trust.json
 config/pi/agent/npm/
