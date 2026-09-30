@@ -117,3 +117,7 @@
   :ID: 2d91b426-a9e2-4bba-8c35-e3bb93e931ab
   :END:
   - a keybing to go no next overdue item
+
+* Custom org agenda views: deadlines, IN_PROGRESS, per-tag
+
+* emacs -nw: opt+w region copy does not reach macOS clipboard; shell-command-on-region to pbcopy works. Fix.
