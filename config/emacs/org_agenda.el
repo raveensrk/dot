@@ -76,6 +76,12 @@ to one entry per file.  Runs before every agenda build."
                                     "|" "DONE" "OBSOLETE"))
       org-log-done 'time)
 
+;;; Display
+
+;; The agenda owns the frame: delete other windows on open, restore on quit
+;; (`org-agenda-restore-windows-after-quit' is t in init.el).
+(setq org-agenda-window-setup 'only-window)
+
 ;;; Capture
 
 (defun dot-org-capture-file ()
