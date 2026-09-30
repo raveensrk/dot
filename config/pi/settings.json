@@ -10,7 +10,6 @@
     "npm:pi-web-access",
     "npm:pi-mcp-adapter",
     "npm:@companion-ai/feynman",
-    "npm:@juicesharp/rpiv-ask-user-question",
     "npm:pi-powerline-footer",
     "npm:@narumitw/pi-usage",
     "npm:@dietrichgebert/ponytail",
