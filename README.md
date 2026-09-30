@@ -72,6 +72,18 @@ bash ~/dot/packages/ubuntu.sh
 bash ~/dot/config/vim/plugin/install_vim_plugins.sh
 ```
 
+## Link app configs with stow
+
+Dry-run first, then apply. See [docs/dotfiles-stow.md](docs/dotfiles-stow.md).
+
+```sh
+python3 ~/dot/script/install.py
+python3 ~/dot/script/install.py --apply
+```
+
+On a machine where an app already wrote its own config, install aborts and
+lists conflicts; `--backup` renames them, `--adopt` imports them into the repo.
+
 ## Other
 
 Add paths to the list of all git repositories in this file. This is for `lg.py`.

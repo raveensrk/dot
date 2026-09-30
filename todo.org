@@ -2,6 +2,18 @@
 #+TODO: TODO IN_PROGRESS OPTIONAL LATER | DONE OBSOLETE
 #+STARTUP: logdone
 * Tasks
+** TODO Fix failing sync unresolvable-upstream test :sync:
+  :PROPERTIES:
+  :ID: 488b6d6f-8f2c-4b43-adb2-9c495286a9e0
+  :CREATED: 2026-09-30
+  :END:
+  tests/test_sync.py::AutomaticModeTest.test_unresolvable_upstream_after_fetch_is_a_failure
+  fails: commit 02aa6293 ("treat missing upstream-tracking ref as ok instead of
+  failure") returns status "ok" / "Upstream branch does not exist on remote"
+  when rev-parse @{upstream} fails, but the test still expects "failed" /
+  "Could not resolve upstream branch". Decide which behaviour is right, then
+  align script/,sync.py and the test (stash@{0} and stash@{1} touch the same
+  area).
 ** DONE Sync global skills through native Pi paths :pi:
   CLOSED: [2026-09-29 Tue 18:00]
   :PROPERTIES:

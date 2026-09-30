@@ -1,26 +1,23 @@
 {
+  "lastChangelogVersion": "0.99.1",
   "theme": "dark",
   "enableInstallTelemetry": false,
+  "defaultProvider": "opencode",
+  "defaultModel": "deepseek-v4.1-flash",
   "hideThinkingBlock": true,
-  "compaction": {
-    "modelOverrides": {
-      "openrouter/deepseek/deepseek-v4.1-flash": {
-        "reserveTokens": 698576
-      },
-      "opencode/deepseek-v4.1-flash": {
-        "reserveTokens": 650000
-      }
-    }
-  },
   "extensions": [],
   "packages": [
+    "npm:pi-web-access",
     "npm:pi-mcp-adapter",
+    "npm:@companion-ai/feynman",
+    "npm:@juicesharp/rpiv-ask-user-question",
     "npm:pi-powerline-footer",
     "npm:@narumitw/pi-usage",
     "npm:@dietrichgebert/ponytail",
     "npm:pi-caveman",
     "npm:@injaneity/pi-computer-use"
   ],
+  "defaultThinkingLevel": "max",
   "powerline": {
     "preset": "default",
     "placement": "above",
@@ -67,6 +64,5 @@
         "color": "#cfb985"
       }
     ]
-  },
-  "defaultThinkingLevel": "max"
+  }
 }

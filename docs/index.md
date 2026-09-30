@@ -10,7 +10,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | [Lazygit](lazygit.md) | Config path, `C` = commit message via pi |
 | [Newsboat](newsboat.md) | RSS reader: the "Chrome Teal" theme, config reference, and the traps found while building it |
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
-| [Agent config](agent_config.md) | `script/,agent_config.py`, native global skill registration and shared-settings export |
+| [Stow](dotfiles-stow.md) | `script/install.py`/`uninstall.py` link repo packages into `$HOME` with GNU Stow |
 | [Todo schema](~/repos/Main_Quest/todo_schema.org) | Canonical todo item format used across projects |
 | [Todo script](todo-script.md) | `script/,todo.py`, the Markdown task scanner |
 | [Todo in Vim](todo-vim.md) | Markdown todo plugins: state cycling, due-date shifting and filtering |
@@ -21,7 +21,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 
 | Path | Holds |
 |---|---|
-| `config/` | Application configs, symlinked or sourced from `$DOT` |
+| `config/` | Application configs, stowed or sourced from `$DOT` (pi config via `script/install.py`) |
 | `script/` and `~/dot_local/script/` | Executables on `PATH` (see `config/bashrc`) |
 | `tests/` | `unittest` suites, run with `pytest` |
 | `packages/` | Per-tool install notes |

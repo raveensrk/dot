@@ -2,11 +2,11 @@
 # ,pi-clear.sh - delete all pi data, keep pi configs. (Python, dry-run first.)
 #
 # Deletes (everything regenerable):
-#   $PI_CODING_AGENT_DIR/sessions            session transcripts
-#   $PI_CODING_AGENT_DIR/npm                 installed packages, pi reinstalls
-#                                            them from settings.json on start
-#   $PI_CODING_AGENT_DIR/web-search-cache    search cache
-#   $PI_CODING_AGENT_DIR/models-store.json   model metadata cache
+#   ~/.pi/agent/sessions            session transcripts
+#   ~/.pi/agent/npm                 installed packages, pi reinstalls
+#                                   them from settings.json on start
+#   ~/.pi/agent/web-search-cache    search cache
+#   ~/.pi/agent/models-store.json   model metadata cache
 #   ~/.pi/*                                  leftovers (browser profile, ...)
 #
 # Keeps: settings.json, AGENTS.md, auth.json, pi-accounts.json, extensions/,
@@ -20,10 +20,16 @@ import shutil
 import subprocess
 import sys
 
-AGENT = os.environ.get("PI_CODING_AGENT_DIR", os.path.expanduser("~/dot/config/pi/agent"))
+AGENT = os.path.expanduser("~/.pi/agent")
 HOME_PI = os.path.expanduser("~/.pi")
 
-TARGETS = [os.path.join(AGENT, p) for p in ("sessions", "npm", "web-search-cache", "models-store.json")] + [HOME_PI]
+# Everything in ~/.pi except the agent dir: browser profile and other leftovers.
+LEFTOVERS = (
+    [e.path for e in os.scandir(HOME_PI) if e.path != AGENT]
+    if os.path.isdir(HOME_PI) else []
+)
+
+TARGETS = [os.path.join(AGENT, p) for p in ("sessions", "npm", "web-search-cache", "models-store.json")] + LEFTOVERS
 
 
 def size_mb(path):

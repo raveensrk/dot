@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = ROOT / "script" / "install_pi_timeout_label.py"
 PATCH = ROOT / "config" / "pi" / "patches" / "timeout_label.patch"
-EXT = ROOT / "config" / "pi" / "agent" / "extensions" / "timeout-label-patch.ts"
+EXT = ROOT / "config" / "pi" / "extensions" / "timeout-label-patch.ts"
 
 
 def load():
