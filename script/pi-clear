@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ,pi-clear.sh - delete all pi data, keep pi configs. (Python, dry-run first.)
+# pi-clear - delete all pi data, keep pi configs. (Python, dry-run first.)
 #
 # Deletes (everything regenerable):
 #   ~/.pi/agent/sessions            session transcripts

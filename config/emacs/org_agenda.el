@@ -1,16 +1,54 @@
-;;; org_agenda.el --- Discover repository task files -*- lexical-binding: t; -*-
+;;; org_agenda.el --- Agenda discovery and capture for the todo skill schema -*- lexical-binding: t; -*-
 
+;; Mirrors the todo skill (~/repos/agent1/skills/todo/SKILL.md).  Boards are
+;; org files, states are TODO/IN_PROGRESS/OPTIONAL/LATER/DONE/OBSOLETE, and
+;; capture appends a plain heading.
+;;
+;; Discovery duplicates the skill config (~/dot_local/config/todo_skill.toml):
+;; default_dirs and ignore.  Change both when the config changes.
+
+(require 'cl-lib)
 (require 'org-agenda)
+(require 'org-capture)
+
+;;; Discovery
 
 (defvar dot-org-roots '("~/dot" "~/repos")
   "Directories searched recursively for Org agenda files.
-Discovery includes gitignored files and hidden directories, except Git
-metadata.  Directory symlinks are not followed, avoiding cycles.")
+The same list as default_dirs in todo_skill.toml.")
+
+(defvar dot-org-ignore '("node_modules" "docs/corpus")
+  "Paths excluded from agenda discovery.
+The same list as ignore in todo_skill.toml.  A bare name matches a path
+component, an entry with a slash matches that run of components, a glob is
+a glob, and an absolute or ~/ entry matches that exact path and below.")
+
+(defun dot-org-ignored-p (path)
+  "Non-nil when PATH matches an entry in `dot-org-ignore'."
+  (let ((text (expand-file-name path)))
+    (cl-some
+     (lambda (pattern)
+       (cond
+        ((string-prefix-p "~" pattern)
+         (let ((base (expand-file-name pattern)))
+           (or (equal text base) (string-prefix-p (concat base "/") text))))
+        ((string-prefix-p "/" pattern)
+         (or (equal text pattern) (string-prefix-p (concat pattern "/") text)))
+        ((string-match-p "[*?[]" pattern)
+         (or (string-match-p (wildcard-to-regexp pattern) text)
+             (string-match-p (wildcard-to-regexp pattern)
+                             (file-name-nondirectory path))))
+        ((string-match-p "/" pattern)
+         (or (equal text pattern)
+             (string-suffix-p (concat "/" pattern) text)
+             (string-match-p (concat "/" (regexp-quote pattern) "/") text)))
+        (t (member pattern (split-string text "/")))))
+     dot-org-ignore)))
 
 (defun dot-org-refresh (&rest _args)
-  "Refresh `org-agenda-files' before generating or rebuilding an agenda.
-Keep archives out of the normal agenda; Org's archive mode includes them
-on request.  Resolve file symlinks and overlapping roots to a single file."
+  "Rebuild `org-agenda-files' from `dot-org-roots'.
+Skips hidden directories and `dot-org-ignore', and resolves file symlinks
+to one entry per file.  Runs before every agenda build."
   (interactive)
   (let (files)
     (dolist (root dot-org-roots)
@@ -18,10 +56,10 @@ on request.  Resolve file symlinks and overlapping roots to a single file."
       (if (not (file-directory-p root))
           (display-warning 'dot-org (format "Missing agenda root: %s" root))
         (dolist (path (directory-files-recursively
-                      root "\\.org\\'" nil
-                      (lambda (dir)
-                        (not (equal (file-name-nondirectory
-                                     (directory-file-name dir)) ".git")))))
+                       root "\\.org\\'" nil
+                       (lambda (dir)
+                         (and (not (string-prefix-p "." (file-name-nondirectory dir)))
+                              (not (dot-org-ignored-p dir))))))
           (when (file-regular-p path)
             (push (file-truename path) files)))))
     (setq org-agenda-files (sort (delete-dups files) #'string-lessp))))
@@ -30,21 +68,31 @@ on request.  Resolve file symlinks and overlapping roots to a single file."
 ;; Do not walk the repositories during startup or on each file lookup.
 (advice-add 'org-agenda-prepare :before #'dot-org-refresh)
 
-(require 'org-capture)
+;;; Todo states
 
-(defun dot-org-inbox ()
-  "Return the originating buffer's repository-root inbox.
-Recognize .git directories and worktree/submodule .git files.  Refuse to
-choose a destination when capture starts outside a repository."
-  (with-current-buffer (or (org-capture-get :original-buffer) (current-buffer))
-    (let ((root (locate-dominating-file default-directory ".git")))
-      (unless root
-        (user-error "Capture requires a repository buffer; open one first"))
-      (expand-file-name "inbox.org" root))))
+;; The same states as scripts/todo.el.  A file with a #+TODO: line overrides
+;; this; headerless boards fall back to it.
+(setq org-todo-keywords '((sequence "TODO" "IN_PROGRESS" "OPTIONAL" "LATER"
+                                    "|" "DONE" "OBSOLETE"))
+      org-log-done 'time)
 
-;; Raw inbox entries are headings, not tasks, until triaged.
+;;; Capture
+
+(defun dot-org-capture-file ()
+  "Ask which file to capture into.
+Default to todo.org at the repository root when the buffer is inside a
+repository (a .git directory or worktree file); no default otherwise."
+  (let* ((root (locate-dominating-file default-directory ".git"))
+         (file (read-file-name "Capture file: " nil
+                               (and root (expand-file-name "todo.org" root)))))
+    ;; org-capture fails on a missing parent directory; create it up front.
+    (make-directory (file-name-directory file) t)
+    file))
+
+;; Plain heading, no state: the skill triages it later.  No :prepend, so the
+;; entry lands at the end of the file, same as `scripts/todo capture'.
 (setq org-capture-templates
-      '(("c" "capture" entry (file dot-org-inbox) "* %?\n" :prepend t)))
+      '(("c" "capture" entry (file dot-org-capture-file) "* %?\n")))
 (setq org-id-locations-file (expand-file-name "org-id-locations" user-emacs-directory))
 
 (provide 'dot-org-agenda)

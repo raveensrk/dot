@@ -101,9 +101,6 @@ alias newsboat3='newsboat -C "$DOT/config/newsboat/config" -u "$HOME/dot_local/c
 alias ls=eza
 alias l="eza -lAh"
 alias claude2="claude --permission-mode bypassPermissions"
-alias pi2="pi -c"
-alias pi3="pi -r"
-alias pi4="pi --no-session"
 # }}}
 # {{{ PAGERS
 alias less='less -s -R -wi -S --ignore-case'
@@ -340,7 +337,7 @@ source "$DOT/config/pi-completion.sh"
 
 alias ,t="main_quest qf"
 alias pi-grok-4.7="pi --model xai/grok-4.7:medium"
-# Update pi and its packages, then launch. Runs before pi2/pi3/pi4 too,
+# Update pi and its packages, then launch. Runs before any alias too,
 # since aliases expand to `pi ...` and resolve to this function.
 pi() {
 	command pi update --all 2>/dev/null
