@@ -10,8 +10,6 @@ Output format:  <LEVEL>: <emoji>: <tool>: <message>
 
 Current updaters (v1):
   - brew    : brew update -> brew upgrade -> brew cleanup
-  - claude  : claude update            (npm global @anthropic-ai/claude-code)
-  - codex   : brew upgrade --cask codex (OpenAI Codex CLI)
   - agy     : agy update               (~/.local/bin/agy)
 
 Adding a new app later = append one Updater(...) to UPDATERS. If it needs a
@@ -161,8 +159,6 @@ def update_brew(u):
 
 UPDATERS = [
     Updater("brew",   "brew",   update_brew),
-    Updater("claude", "claude", lambda u: simple(u, ["claude", "update"], ["claude", "--version"])),
-    Updater("codex",  "codex",  lambda u: simple(u, ["brew", "upgrade", "--cask", "codex"], ["codex", "--version"])),
     Updater("agy",    "agy",    lambda u: simple(u, ["agy", "update"], ["agy", "--version"])),
 ]
 
