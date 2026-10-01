@@ -224,6 +224,92 @@ CATALOG = [
     # ── Browser-automation caches ──
     ("Misc AI", ".cache/puppeteer", "cache", "delete", "550 MB downloaded Chromium for MCP/browser automation; re-downloaded on demand."),
 
+    # ── Hermes ──
+    ("Hermes", ".hermes/sessions", "history", "delete", "Session transcripts."),
+    ("Hermes", ".hermes/memories", "data", "delete", "Agent memory files."),
+    ("Hermes", ".hermes/logs", "cache", "delete", "Log files."),
+    ("Hermes", ".hermes/cache", "cache", "delete", "Misc cache (246 MB); rebuilt on demand."),
+    ("Hermes", ".hermes/audio_cache", "cache", "delete", "Generated audio cache."),
+    ("Hermes", ".hermes/image_cache", "cache", "delete", "Generated image cache."),
+    ("Hermes", ".hermes/bootstrap-cache", "cache", "delete", "Bootstrap downloads."),
+    ("Hermes", ".hermes/source-checks", "cache", "delete", "Source-check scratch data."),
+    ("Hermes", ".hermes/runtime", "cache", "delete", "Runtime scratch space."),
+    ("Hermes", ".hermes/terminal-sessions", "cache", "delete", "Terminal session state."),
+    ("Hermes", ".hermes/desktop", "cache", "delete", "Desktop integration cache."),
+    ("Hermes", ".hermes/sandboxes", "data", "delete", "Agent sandboxes."),
+    ("Hermes", ".hermes/bot_relay", "data", "delete", "Bot relay queue."),
+    ("Hermes", ".hermes/backups", "data", "delete", "Auto-backups."),
+    ("Hermes", ".hermes/state.db", "data", "delete", "Runtime state database."),
+    ("Hermes", ".hermes/state.db-shm", "data", "delete", "State database SHM."),
+    ("Hermes", ".hermes/state.db-wal", "data", "delete", "State database WAL."),
+    ("Hermes", ".hermes/projects.db", "data", "delete", "Projects database."),
+    ("Hermes", ".hermes/shared-state.db", "data", "delete", "Shared state database."),
+    ("Hermes", ".hermes/spawn-ledger.json", "data", "delete", "Spawn ledger (tracking)."),
+    ("Hermes", ".hermes/install_id", "data", "delete", "Install identifier (tracking)."),
+    ("Hermes", ".hermes/models_dev_cache.json", "cache", "delete", "Model list cache; refetched."),
+    ("Hermes", ".hermes/models_dev_cache.etag", "cache", "delete", "Model list cache etag."),
+    ("Hermes", ".hermes/provider_models_cache.json", "cache", "delete", "Provider model cache; refetched."),
+    ("Hermes", ".hermes/context_length_cache.yaml", "cache", "delete", "Context length cache; refetched."),
+    ("Hermes", ".local/bin/hermes", "data", "delete", "Launcher script."),
+    ("Hermes", ".local/bin/hermes-agent", "data", "delete", "Launcher script."),
+    ("Hermes", ".local/bin/hermes-acp", "data", "delete", "Launcher script."),
+    ("Hermes", ".local/bin/herdr", "data", "delete", "Helper binary."),
+    ("Hermes", ".hermes/hermes-agent", "data", "keep", "Full agent install (2.3 GB) — review manually."),
+    ("Hermes", ".hermes/installs", "data", "keep", "Versioned installs (345 MB) — review manually."),
+    ("Hermes", ".hermes/tools", "data", "keep", "Bundled tools (970 MB) — review manually."),
+    ("Hermes", ".hermes/hermes-setup", "data", "keep", "Setup bundle — review manually."),
+    ("Hermes", ".hermes/config.yaml", "config", "keep", "Your config — kept."),
+    ("Hermes", ".hermes/auth.json", "auth", "keep", "Login credentials — kept."),
+    ("Hermes", ".hermes/skills", "config", "keep", "Installed skills — kept."),
+    ("Hermes", ".hermes/plugins", "config", "keep", "Installed plugins — kept."),
+    ("Hermes", ".hermes/hooks", "config", "keep", "Your hooks — kept."),
+    ("Hermes", ".hermes/desktop-plugins", "config", "keep", "Desktop plugins — kept."),
+    ("Hermes", ".hermes/pairing", "config", "keep", "Device pairing — kept."),
+    ("Hermes", ".hermes/shared", "config", "keep", "Shared config — kept."),
+    ("Hermes", ".hermes/SOUL.md", "config", "keep", "Agent persona — kept."),
+
+    # ── OpenClaw / ClawHub ──
+    ("OpenClaw", ".openclaw/browser", "cache", "delete", "Automation browser profile (107 MB); rebuilt on demand."),
+    ("OpenClaw", ".openclaw/logs", "cache", "delete", "Log files."),
+    ("OpenClaw", ".openclaw/media", "cache", "delete", "Media cache."),
+    ("OpenClaw", ".openclaw/update-check.json", "cache", "delete", "Update check stamp."),
+    ("OpenClaw", ".openclaw/memory", "data", "delete", "Agent memory."),
+    ("OpenClaw", ".openclaw/cron", "data", "delete", "Scheduled jobs."),
+    ("OpenClaw", ".openclaw/devices", "data", "delete", "Paired devices."),
+    ("OpenClaw", "Library/LaunchAgents/ai.openclaw.gateway.plist", "data", "delete", "Gateway launch agent."),
+    ("OpenClaw", ".openclaw/agents", "data", "keep", "Agent definitions — review manually."),
+    ("OpenClaw", ".openclaw/workspace", "data", "keep", "Workspace files (40 MB) — review manually."),
+    ("OpenClaw", ".openclaw/canvas", "data", "keep", "Canvas data — review manually."),
+    ("OpenClaw", ".openclaw/identity", "auth", "keep", "Identity keys — kept."),
+    ("OpenClaw", ".openclaw/openclaw.json", "config", "keep", "Your config — kept."),
+
+    # ── Grok CLI ──
+    ("Grok CLI", ".grok/settings.json", "config", "keep", "Your settings — kept."),
+    ("Grok CLI", ".grok/user-settings.json", "auth", "keep", "User settings/token — kept."),
+    ("Grok CLI", ".grok/hooks", "config", "keep", "Your hooks — kept."),
+
+    # ── CodexBar (menu bar app) ──
+    ("CodexBar", "Library/Application Support/CodexBar", "cache", "delete", "App support."),
+    ("CodexBar", "Library/Application Support/com.steipete.codexbar", "cache", "delete", "App support."),
+    ("CodexBar", "Library/Group Containers/group.com.steipete.codexbar", "data", "delete", "Shared container."),
+    ("CodexBar", "Library/WebKit/com.steipete.codexbar", "cache", "delete", "WebKit storage."),
+    ("CodexBar", "Library/Containers/com.steipete.codexbar", "cache", "delete", "Sandbox container."),
+    ("CodexBar", "Library/Containers/com.steipete.codexbar.widget", "cache", "delete", "Widget container (needs sudo)."),
+    ("CodexBar", "Library/HTTPStorages/com.steipete.codexbar", "cache", "delete", "Network cache."),
+    ("CodexBar", "Library/HTTPStorages/com.steipete.codexbar.binarycookies", "data", "delete", "Tracking cookies."),
+    ("CodexBar", "Library/Preferences/com.steipete.codexbar.plist", "config", "keep", "Preferences — kept."),
+
+    # ── AI-adjacent editors ──
+    ("VS Code", ".vscode", "data", "delete", "Extensions, workspaces, argv (1.0 GB)."),
+    ("VS Code", "Library/Application Support/Code", "data", "delete", "User data: settings, snippets, history (772 MB)."),
+    ("VS Code", "Library/Caches/com.microsoft.VSCode", "cache", "delete", "macOS cache."),
+    ("VS Code", "Library/Caches/com.microsoft.VSCode.ShipIt", "cache", "delete", "Updater cache."),
+    ("VS Code", "Library/HTTPStorages/com.microsoft.VSCode", "cache", "delete", "Network cache."),
+    ("VS Code", "Library/Preferences/com.microsoft.VSCode.plist", "config", "keep", "Preferences — kept."),
+    ("Cursor", ".cursor", "data", "delete", "Extensions, projects, AI tracking, plugins."),
+    ("Cursor", "Library/Application Support/Cursor", "data", "delete", "User data and caches (35 MB)."),
+    ("Cursor", "Library/Preferences/com.todesktop.230313mzl4w4u92.plist", "config", "keep", "Preferences — kept on macOS."),
+
     # ── Linux equivalents (skipped silently on macOS, where they don't exist) ──
     ("Claude Code", ".cache/claude-cli-nodejs", "cache", "delete", "Claude Code cache on Linux (XDG path)."),
     ("Codex", ".cache/codex-runtimes", "cache", "delete", "Codex runtime downloads (1.6 GB); re-fetched when needed."),
@@ -365,6 +451,24 @@ APPS = {
         roots=["Library/Application Support/ChatGPT"],
         bundles=["/Applications/ChatGPT.app"], bundle_ids=["com.openai.chat"],
         cli=[], keychain=["ChatGPT", "OpenAI"], launch_tokens=["chatgpt", "openai.chat"]),
+    "Hermes": dict(
+        roots=[".hermes"], bundles=[], bundle_ids=[],
+        cli=[], keychain=["Hermes"], launch_tokens=["hermes"]),
+    "OpenClaw": dict(
+        roots=[".openclaw"], bundles=[], bundle_ids=[],
+        cli=[("openclaw", "openclaw")], keychain=["OpenClaw"], launch_tokens=["openclaw", "clawhub"]),
+    "Grok CLI": dict(
+        roots=[".grok"], bundles=[], bundle_ids=[],
+        cli=[("grok", "@vibe-kit/grok-cli")], keychain=[], launch_tokens=["grok-cli", "vibe-kit"]),
+    "CodexBar": dict(
+        roots=[], bundles=["/Applications/CodexBar.app"],
+        bundle_ids=["com.steipete.codexbar"], cli=[], keychain=["CodexBar"], launch_tokens=["codexbar"]),
+    "VS Code": dict(
+        roots=[".vscode"], bundles=["/Applications/Visual Studio Code.app"],
+        bundle_ids=["com.microsoft.VSCode"], cli=[], keychain=[], launch_tokens=[]),
+    "Cursor": dict(
+        roots=[".cursor"], bundles=["/Applications/Cursor.app"],
+        bundle_ids=["com.todesktop.230313mzl4w4u92"], cli=[], keychain=["Cursor"], launch_tokens=["cursor"]),
 }
 
 TIER_LABEL = {"d": "DATA ONLY", "a": "ALL INCL CONFIGS+AUTH",
