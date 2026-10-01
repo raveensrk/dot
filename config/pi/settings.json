@@ -29,7 +29,7 @@
     "layout": {
       "left": [
         "model",
-        "custom:active-model",
+        "thinking",
         "path",
         "git",
         "cost",
@@ -46,12 +46,6 @@
         "statusKey": "usage",
         "position": "secondary",
         "selfColorize": true
-      },
-      {
-        "id": "active-model",
-        "statusKey": "active-model",
-        "position": "left",
-        "color": "#a0ccc5"
       },
       {
         "id": "openrouter",
