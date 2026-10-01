@@ -27,4 +27,4 @@ _pi() {
   fi
   COMPREPLY=($(compgen -W "$sf" -- "$cur"))
 }
-complete -F _pi pi
+complete -o bashdefault -o default -F _pi pi

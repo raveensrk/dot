@@ -1,9 +1,9 @@
 {
-  "lastChangelogVersion": "0.99.1",
+  "lastChangelogVersion": "0.99.2",
   "theme": "dark",
   "enableInstallTelemetry": false,
-  "defaultProvider": "opencode",
-  "defaultModel": "deepseek-v4.1-flash",
+  "defaultProvider": "openrouter",
+  "defaultModel": "deepseek/deepseek-v4.1-flash",
   "hideThinkingBlock": true,
   "extensions": [],
   "packages": [

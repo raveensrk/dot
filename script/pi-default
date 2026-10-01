@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# pi-default - run Pi with a stock install plus a chosen model.
+#
+# Only provider, model, and thinking level are set here. Everything else is
+# Pi's own default: a dedicated config dir keeps ~/.pi/agent packages, skills,
+# extensions, and project instructions from loading.
+#
+# Config dir is ~/.pi-default. Delete it to start from a clean install again.
+
+set -euo pipefail
+
+PROVIDER="openrouter"
+MODEL="openrouter/deepseek/deepseek-v4.1-flash"
+THINKING="max"
+
+KEYS="$HOME/dot_local/config/api_key.sh"
+[ -r "$KEYS" ] && . "$KEYS"
+
+export PI_CODING_AGENT_DIR="$HOME/.pi-default"
+
+exec pi \
+  --no-approve \
+  --no-extensions \
+  --no-skills \
+  --no-prompt-templates \
+  --no-themes \
+  --no-context-files \
+  --provider "$PROVIDER" \
+  --model "$MODEL" \
+  --thinking "$THINKING" \
+  --api-key "${OPENROUTER_API_KEY:?OPENROUTER_API_KEY not set - fill it in $KEYS}" \
+  "$@"

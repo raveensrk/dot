@@ -101,7 +101,7 @@ def emit(main_flags, subs, sub_flags, nested):
         "  fi",
         '  COMPREPLY=($(compgen -W "$sf" -- "$cur"))',
         "}",
-        "complete -F _pi pi",
+        "complete -o bashdefault -o default -F _pi pi",
     ]
     return "\n".join(out) + "\n"
 
