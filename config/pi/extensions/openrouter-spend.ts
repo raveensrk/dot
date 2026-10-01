@@ -1,6 +1,6 @@
 /**
  * Publishes OpenRouter account spend to the "or-spend" status key so powerline
- * (via powerline.customItems) can show it: "or $0.19 used · $49.79 left".
+ * (via powerline.customItems) can show it as "openrouter $0.19/$49.79".
  * Data: GET https://openrouter.ai/api/v1/key (all-time usage + key credit left).
  */
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
@@ -24,8 +24,8 @@ async function spendLine(ctx: ExtensionContext): Promise<string | undefined> {
 		const body = (await res.json()) as { data?: { usage?: number; limit_remaining?: number } };
 		const data = body.data;
 		if (!data || typeof data.usage !== "number") return undefined;
-		// Spend only; balance was dropped from the bar (see powerline layout).
-		return `${usd(data.usage)} used`;
+		const left = typeof data.limit_remaining === "number" ? usd(data.limit_remaining) : undefined;
+		return left ? `${usd(data.usage)}/${left}` : usd(data.usage);
 	} catch {
 		return undefined;
 	}
