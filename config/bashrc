@@ -336,8 +336,7 @@ fi
 # shellcheck disable=1091
 source "$DOT/config/pi-completion.sh"
 
-alias ,t="main_quest qf"
-alias pi-grok-4.7="pi --model xai/grok-4.7:medium"
+alias pi-grok="pi --model xai/grok-4.7:low"
 
 # Random password: genpass [length] (default 20), letters + digits + specials.
 # tr loops on /dev/urandom, so output is always exactly length chars.

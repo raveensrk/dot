@@ -44,7 +44,7 @@ class GrokCreditsParserTest(unittest.TestCase):
         }
         self.assertEqual(
             grok_credits.widget_line(report, now),
-            "Grok 12% · Resets Jun 1 · 16 days left · even 48% · under",
+            "Grok 12%/48% · 16d",
         )
 
     def test_refuses_non_grok_endpoint_by_default(self):

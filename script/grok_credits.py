@@ -364,7 +364,6 @@ def format_usage_display(percent: float) -> str:
 
 
 DAY_MS = 86_400_000
-SLACK = 1
 
 
 def _left(iso: Optional[str], now: datetime) -> str:
@@ -376,44 +375,41 @@ def _left(iso: Optional[str], now: datetime) -> str:
         return ""
     ms = (end - now).total_seconds() * 1000
     if ms <= 0:
-        return " · 0 days left"
+        return " · 0d"
     days = math.ceil(ms / DAY_MS)
-    unit = "day" if days == 1 else "days"
-    return f" · {days} {unit} left"
+    return f" · {days}d"
 
 
-def _pace(actual: float, start_iso: Optional[str], end_iso: Optional[str], now: datetime) -> str:
+def _even(start_iso: Optional[str], end_iso: Optional[str], now: datetime) -> Optional[int]:
+    """Percent of the billing window elapsed. That is the even pace."""
     if not start_iso or not end_iso:
-        return ""
+        return None
     try:
         start = datetime.fromisoformat(start_iso)
         end = datetime.fromisoformat(end_iso)
     except ValueError:
-        return ""
+        return None
     span = (end - start).total_seconds() * 1000
     if not span > 0:
-        return ""
+        return None
     expected = max(0.0, min(100.0, ((now - start).total_seconds() * 1000 / span) * 100))
-    tag = "on track"
-    if actual > expected + SLACK:
-        tag = "over"
-    if actual < expected - SLACK:
-        tag = "under"
-    return f" · even {round(expected)}% · {tag}"
+    return round(expected)
 
 
 def widget_line(report: Dict[str, Any], now: Optional[datetime] = None) -> str:
-    """One status line. Empty when usage display is missing."""
+    """One status line. Empty when usage display is missing.
+
+    Usage is used/even, for example 0%/2%. The second number is the even pace.
+    """
     used = str(report.get("credit_usage_display") or "").replace(" used", "")
     if not used:
         return ""
     now = now or datetime.now(timezone.utc)
-    reset = report.get("reset_display")
-    reset_bit = f" · Resets {reset}" if reset else ""
     end = (report.get("billing_period_end") or {}).get("iso_utc")
     start = (report.get("billing_period_start") or {}).get("iso_utc")
-    actual = float(report.get("credit_usage_percent") or 0)
-    return f"Grok {used}{reset_bit}{_left(end, now)}{_pace(actual, start, end, now)}"
+    even = _even(start, end, now)
+    head = f"{used}/{even}%" if even is not None else used
+    return f"Grok {head}{_left(end, now)}"
 
 
 def build_report(

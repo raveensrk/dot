@@ -1,10 +1,10 @@
 {
-  "lastChangelogVersion": "0.99.2",
+  "lastChangelogVersion": "1.0.0",
   "theme": "dark",
   "enableInstallTelemetry": false,
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4.1-flash",
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "extensions": [],
   "packages": [
     "npm:pi-web-access",
@@ -37,7 +37,8 @@
       ],
       "right": [],
       "secondary": [
-        "custom:openrouter"
+        "custom:openrouter",
+        "custom:grok"
       ]
     },
     "customItems": [
@@ -53,6 +54,12 @@
         "position": "secondary",
         "prefix": "openrouter",
         "color": "#cfb985"
+      },
+      {
+        "id": "grok",
+        "statusKey": "grok-credits",
+        "position": "secondary",
+        "color": "#c4b5a0"
       }
     ]
   }

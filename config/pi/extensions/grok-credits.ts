@@ -1,28 +1,20 @@
+/**
+ * Publishes SuperGrok credit usage to the "grok-credits" status key so
+ * powerline (via powerline.customItems) can show it on the secondary row.
+ * Data: python3 ~/dot/script/grok_credits.py --widget
+ */
 import { execFile } from "node:child_process";
 import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { widgetFor } from "./shared/widget-gate.ts";
+import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 const execFileAsync = promisify(execFile);
 const BIN = join(homedir(), "dot", "script", "grok_credits.py");
 const FLAG = join(homedir(), ".local/share/grok_credits/disabled");
 const INTERVAL_MS = 5 * 60 * 1000;
-const KEY = "status-widget";
-
-type Ui = {
-	hasUI: boolean;
-	ui: {
-		setWidget: (
-			key: string,
-			lines: string[] | undefined,
-			opts?: { placement?: "aboveEditor" | "belowEditor" },
-		) => void;
-		notify: (text: string, level?: string) => void;
-	};
-};
+const KEY = "grok-credits";
 
 function grokOn(): boolean {
 	return !existsSync(FLAG);
@@ -39,26 +31,40 @@ function setGrokOn(value: boolean): void {
 	writeFileSync(FLAG, "");
 }
 
-function hide(ctx: Ui): void {
-	if (!ctx.hasUI) {
-		return;
-	}
-	ctx.ui.setWidget(KEY, undefined);
-}
-
-function paint(ctx: Ui, grok: string | undefined): void {
-	if (!ctx.hasUI) {
-		return;
-	}
-	if (!grok) {
-		hide(ctx);
-		return;
-	}
-	ctx.ui.setWidget(KEY, [grok], { placement: "aboveEditor" });
-}
-
 export default function (pi: ExtensionAPI) {
 	let timer: ReturnType<typeof setInterval> | undefined;
+
+	async function line(): Promise<string | undefined> {
+		if (!grokOn()) {
+			return undefined;
+		}
+		try {
+			const { stdout } = await execFileAsync("python3", [BIN, "--widget"], {
+				timeout: 20000,
+			});
+			const text = stdout.trim();
+			return text || undefined;
+		} catch {
+			return undefined;
+		}
+	}
+
+	async function refresh(ctx: ExtensionContext): Promise<void> {
+		if (!ctx.hasUI) {
+			return;
+		}
+		ctx.ui.setStatus(KEY, await line());
+	}
+
+	function start(ctx: ExtensionContext): void {
+		if (timer) {
+			clearInterval(timer);
+		}
+		timer = setInterval(() => {
+			void refresh(ctx);
+		}, INTERVAL_MS);
+		timer.unref?.();
+	}
 
 	function stop(): void {
 		if (!timer) {
@@ -68,42 +74,8 @@ export default function (pi: ExtensionAPI) {
 		timer = undefined;
 	}
 
-	function start(ctx: Ui): void {
-		stop();
-		timer = setInterval(() => {
-			void refresh(ctx);
-		}, INTERVAL_MS);
-		timer.unref?.();
-	}
-
-	async function grokLine(): Promise<string | undefined> {
-		if (!grokOn()) {
-			return undefined;
-		}
-		try {
-			const { stdout } = await execFileAsync("python3", [BIN, "--widget"], {
-				timeout: 20000,
-			});
-			const line = stdout.trim();
-			return line || undefined;
-		} catch {
-			return undefined;
-		}
-	}
-
-	async function refresh(ctx: Ui): Promise<void> {
-		if (!ctx.hasUI) {
-			return;
-		}
-		if (widgetFor(pi.model?.provider) !== "grok") {
-			hide(ctx);
-			return;
-		}
-		paint(ctx, await grokLine());
-	}
-
 	pi.registerCommand("grok-credits", {
-		description: "Enable or disable Grok usage in the status widget",
+		description: "Enable or disable Grok usage on the powerline",
 		getArgumentCompletions: (prefix) => {
 			return ["on", "off"]
 				.filter((value) => value.startsWith(prefix))
@@ -115,28 +87,17 @@ export default function (pi: ExtensionAPI) {
 				ctx.ui.notify("Usage: /grok-credits on|off", "error");
 				return;
 			}
-			const value = arg === "on";
-			setGrokOn(value);
+			const on = arg === "on";
+			setGrokOn(on);
 			await refresh(ctx);
-			if (value) {
+			if (on) {
 				start(ctx);
-				ctx.ui.notify("Grok widget on", "info");
+				ctx.ui.notify("Grok powerline on", "info");
 				return;
 			}
 			stop();
-			ctx.ui.notify("Grok widget off", "info");
+			ctx.ui.notify("Grok powerline off", "info");
 		},
-	});
-
-	pi.on("model_select", async (event, ctx) => {
-		const active = widgetFor(event.model.provider) === "grok";
-		if (!active) {
-			stop();
-		}
-		await refresh(ctx);
-		if (active && grokOn() && !timer) {
-			start(ctx);
-		}
 	});
 
 	pi.on("session_start", async (_event, ctx) => {
@@ -148,6 +109,8 @@ export default function (pi: ExtensionAPI) {
 
 	pi.on("session_shutdown", (_event, ctx) => {
 		stop();
-		hide(ctx);
+		if (ctx.hasUI) {
+			ctx.ui.setStatus(KEY, undefined);
+		}
 	});
 }
