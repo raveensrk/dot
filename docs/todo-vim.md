@@ -18,7 +18,6 @@ Vim.
 | `:TodoStateBack` | — | Cycle backward |
 | `:TodoShiftDue` / `:TodoShiftDueBack` | `<S-Right>` / `<S-Left>` | Shift `due:` by one `recurring:` interval |
 | `:TodoFilterDue` | `,D` | Fold everything except due/overdue items and their sub-items |
-| `:Todo` / `:Todo!` | `,t` / `,d` | Cross-file quickfix from `,todo.py` (defined in `config/vimrc`) |
 | `:TodoHelp` | `,?` | Echo this table plus the live state cycle |
 
 ## State cycling

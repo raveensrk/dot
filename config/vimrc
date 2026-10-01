@@ -119,53 +119,6 @@ endfunction
 command! CenterCursor call CenterCursor()
 command! NoCenterCursor call NoCenterCursor()
 
-" Scan outstanding tasks into the quickfix list (main_quest qf).
-"   :Todo            scan the configured default_dirs
-"   :Todo path ...   scan the given paths instead
-"   :Todo!           only tasks with a due: date of today or earlier
-" Render quickfix entries with the full path. Vim otherwise displays a buffer's
-" shortened name, so an entry under the current directory loses its path.
-function! TodoQuickfixText(info) abort
-    let l:items = getqflist({'id': a:info.id, 'items': 1}).items
-    let l:lines = []
-    for l:index in range(a:info.start_idx - 1, a:info.end_idx - 1)
-        let l:item = l:items[l:index]
-        let l:name = l:item.bufnr ? fnamemodify(bufname(l:item.bufnr), ':p') : ''
-        call add(l:lines, printf('%s|%d col %d|%s',
-                    \ l:name, l:item.lnum, l:item.col, l:item.text))
-    endfor
-    return l:lines
-endfunction
-
-function! Todo(due, ...) abort
-    let l:cmd = 'main_quest qf'
-    if a:due
-        let l:cmd .= ' --due'
-    endif
-    for l:path in a:000
-        let l:cmd .= ' ' . shellescape(l:path)
-    endfor
-    let l:lines = systemlist(l:cmd)
-    " rg exits 1 on "no matches"; the script maps its own errors to 2.
-    if v:shell_error > 1
-        echohl ErrorMsg | echom join(l:lines, "\n") | echohl None
-        return
-    endif
-    let l:save_efm = &errorformat
-    set errorformat=%f:%l:%c:%m
-    cgetexpr l:lines
-    let &errorformat = l:save_efm
-    if exists('*getqflist') && has('patch-8.2.0655')
-        call setqflist([], 'a', {'quickfixtextfunc': 'TodoQuickfixText'})
-    endif
-    if empty(l:lines)
-        echom 'Todo: no outstanding tasks'
-    else
-        copen
-    endif
-endfunction
-command! -bang -nargs=* -complete=file Todo call Todo(<bang>0, <f-args>)
-
 " Restart vim in place. Terminal vim: drop a marker and a session, then quit;
 " the vim() wrapper in ~/dot/config/bashrc sees the marker and relaunches with
 " the session, so this only works for vims started from an interactive shell.
@@ -270,11 +223,6 @@ endif
 "
 
 command! Format :norm mmggVGgq`m
-
-" Scan outstanding tasks into quickfix (sits with the ,c/,n/,p quickfix cluster).
-nnoremap ,t :Todo<CR>
-" Only tasks due today or overdue.
-nnoremap ,d :Todo!<CR>
 
 " Move current line / visual selection up and down with Shift-Up/Down.
 " MacVim only: Terminal.app keeps shift-arrows for scrollback and never
