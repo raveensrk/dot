@@ -1,8 +1,535 @@
-#!/usr/bin/env bash
-# Bookmark script
-set -euo pipefail
-IFS=$'\n\t'
+#!/usr/bin/env python3
+"""bookmark - one writer for every self-describing bookmark file on this machine.
 
-file="$HOME/bookmarks.txt"
+A file is a sink only if it describes itself: YAML front matter with a
+`bookmarks:` key. Nothing else is written to, so the redirect stub and any
+file without a description are invisible to `add` by construction.
 
-sort "$file" | fzf +s | cut -d "|" -f 2 | xargs open 
+    ---
+    bookmarks:
+      scope: work and technical links - agents, FPGA, electronics
+      default_section: Read Later
+      order: newest-last
+    ---
+
+    bookmark URL                 add it (routing below)
+    bookmark                     fzf over every sink, open the pick
+    bookmark list                the sinks, their scope and their counts
+    bookmark check               validate the protocol, exit 1 on findings
+    bookmark describe FILE ...   write or update the front matter
+
+Routing, in order: `--to FILE` (plus `--section`) wins; then Jev, two choices -
+the sink, then the section - and only at 0.6 confidence or better; then fzf when
+a terminal is attached; then it stops and prints the candidates. Jev sees one
+sink's scope and section names at a time, never the whole file: its accuracy
+falls with a large state and one 24-option choice is a coin toss.
+
+Sections come from the file's `##` headings, so the front matter never carries a
+copy of them. `default_section` is created at the end of the file when missing;
+any other section needs `--new-section`, because inventing a category is a
+judgement call and not a deterministic write.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import html
+import os
+import re
+import subprocess
+import sys
+import urllib.request
+from dataclasses import dataclass, field
+from pathlib import Path
+
+import yaml
+
+HOME = Path.home()
+ROOTS = [HOME / "repos", HOME / "iCloud"]
+SKIP_DIRS = {".git", "node_modules", ".venv", "venv", "__pycache__", ".Trash"}
+NAME = re.compile(r"^bookmarks?\.md$", re.IGNORECASE)
+HEADING = re.compile(r"^##\s+(.*?)\s*$")
+LINK = re.compile(r"^\s*-\s+(?:\[([^\]]*)\]\((\S+?)\)|<(\S+?)>)")
+JEV_CONFIDENCE = 0.6
+JEV_URL = "https://api.typesafe.ai/v1/systemone"
+JEV_MODEL = "jev-latest"
+TITLE_TIMEOUT = 8
+
+
+@dataclass
+class Sink:
+    path: Path
+    scope: str
+    default_section: str
+    order: str
+    sections: list[str] = field(default_factory=list)
+    text: str = ""
+
+    @property
+    def short(self) -> str:
+        try:
+            return "~/" + str(self.path.relative_to(HOME))
+        except ValueError:
+            return str(self.path)
+
+
+def roots() -> list[Path]:
+    override = os.environ.get("BOOKMARK_ROOTS")
+    if override:
+        return [Path(p).expanduser() for p in override.split(":") if p]
+    return ROOTS
+
+
+def front_matter(text: str) -> dict:
+    if not text.startswith("---"):
+        return {}
+    end = text.find("\n---", 3)
+    if end == -1:
+        return {}
+    try:
+        loaded = yaml.safe_load(text[3:end]) or {}
+    except yaml.YAMLError:
+        return {}
+    return loaded if isinstance(loaded, dict) else {}
+
+
+def headings(text: str) -> list[str]:
+    return [m.group(1) for line in text.splitlines() if (m := HEADING.match(line))]
+
+
+def discover() -> list[Sink]:
+    sinks = []
+    for root in roots():
+        if not root.is_dir():
+            continue
+        for directory, subdirs, files in os.walk(root):
+            subdirs[:] = [d for d in subdirs if d not in SKIP_DIRS]
+            for name in sorted(files):
+                if not NAME.match(name) or name.endswith(".icloud"):
+                    continue
+                path = Path(directory) / name
+                try:
+                    text = path.read_text(encoding="utf-8", errors="replace")
+                except OSError:
+                    continue
+                meta = front_matter(text).get("bookmarks")
+                if not isinstance(meta, dict):
+                    continue
+                sinks.append(
+                    Sink(
+                        path=path,
+                        scope=str(meta.get("scope", "")).strip(),
+                        default_section=str(meta.get("default_section", "Read Later")).strip(),
+                        order=str(meta.get("order", "newest-last")).strip(),
+                        sections=headings(text),
+                        text=text,
+                    )
+                )
+    return sorted(sinks, key=lambda s: s.short)
+
+
+def normalize(url: str) -> str:
+    stripped = re.sub(r"^https?://", "", url.strip().rstrip("/"))
+    stripped = re.sub(r"^www\.", "", stripped, flags=re.IGNORECASE)
+    return stripped.split("#", 1)[0]
+
+
+def existing(url: str, sinks: list[Sink]) -> tuple[Sink, int] | None:
+    want = normalize(url)
+    for sink in sinks:
+        for number, line in enumerate(sink.text.splitlines(), start=1):
+            match = LINK.match(line)
+            if match and normalize(match.group(2) or match.group(3)) == want:
+                return sink, number
+    return None
+
+
+def fetch_title(url: str) -> str:
+    """The page title, or the last path segment when the fetch gives nothing."""
+    try:
+        done = subprocess.run(
+            ["curl", "-fsSL", "--max-time", str(TITLE_TIMEOUT), url],
+            capture_output=True,
+            text=True,
+            timeout=TITLE_TIMEOUT + 4,
+        )
+        match = re.search(r"<title[^>]*>(.*?)</title>", done.stdout, re.S | re.I)
+        if match:
+            title = html.unescape(re.sub(r"\s+", " ", match.group(1))).strip()
+            if title:
+                return title
+    except (subprocess.SubprocessError, OSError):
+        pass
+    tail = url.rstrip("/").rsplit("/", 1)[-1]
+    return tail or url
+
+
+def new_lines(sink: Sink, section: str, entry: str) -> list[str]:
+    """The sink's text with the entry placed in `section` per the declared order."""
+    lines = sink.text.splitlines()
+    starts = [i for i, line in enumerate(lines) if HEADING.match(line) and HEADING.match(line).group(1) == section]
+    if not starts:
+        if not lines or lines[-1].strip():
+            lines.append("")
+        lines += [f"## {section}", "", entry]
+        return lines
+    start = starts[0]
+    end = next(
+        (i for i in range(start + 1, len(lines)) if HEADING.match(lines[i])),
+        len(lines),
+    )
+    if sink.order == "newest-first":
+        insert = start + 1
+        if insert < len(lines) and lines[insert].strip() == "":
+            lines.insert(insert + 1, entry)
+        else:
+            lines.insert(insert, entry)
+        return lines
+    insert = end
+    while insert > start + 1 and lines[insert - 1].strip() == "":
+        insert -= 1
+    lines.insert(insert, entry)
+    if insert >= len(lines) - 1:
+        lines.append("")
+    return lines
+
+
+def jev_choice(state: dict, question: str, criteria: dict[str, str]) -> tuple[str, float]:
+    """One TypeSafe call. Raises RuntimeError without a key or a usable answer."""
+    key = os.environ.get("TYPESAFE_API_KEY")
+    if not key:
+        raise RuntimeError("TYPESAFE_API_KEY not set")
+    body = json.dumps(
+        {
+            "model": JEV_MODEL,
+            "state": state,
+            "questions": {
+                "pick": {
+                    "type": "choice",
+                    "instructions": {"question": question},
+                    "criteria": criteria,
+                }
+            },
+        }
+    ).encode()
+    request = urllib.request.Request(
+        JEV_URL,
+        data=body,
+        headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(request, timeout=60) as response:
+        answer = json.load(response)["answers"]["pick"]
+    if answer.get("type") != "choice":
+        raise RuntimeError("unexpected answer shape: " + json.dumps(answer)[:120])
+    return str(answer.get("choice")), float(answer.get("confidence") or 0.0)
+
+
+def route_by_jev(url: str, title: str, sinks: list[Sink]) -> tuple[Sink, str] | None:
+    """Two choices: the sink, then a section inside it. None when Jev is unsure."""
+    if len(sinks) < 2:
+        return (sinks[0], route_section(url, title, sinks[0])) if sinks else None
+    state = {
+        "link": url,
+        "title": title,
+        "sinks": [{"id": f"s{i}", "file": s.short, "scope": s.scope} for i, s in enumerate(sinks, 1)],
+    }
+    criteria = {f"s{i}": f"{s.short} - {s.scope}" for i, s in enumerate(sinks, 1)}
+    choice, confidence = jev_choice(state, "Which bookmark file should this link go in?", criteria)
+    if confidence < JEV_CONFIDENCE:
+        return None
+    sink = sinks[int(choice[1:]) - 1]
+    return sink, route_section(url, title, sink)
+
+
+def route_section(url: str, title: str, sink: Sink) -> str:
+    if len(sink.sections) < 2:
+        return sink.default_section
+    state = {"link": url, "title": title, "file": sink.short, "scope": sink.scope}
+    criteria = {name: f"section {name}" for name in sink.sections}
+    criteria[sink.default_section] = f"{sink.default_section} - the catch-all capture section"
+    try:
+        choice, confidence = jev_choice(state, "Which section of this file should the link go in?", criteria)
+    except RuntimeError:
+        return sink.default_section
+    return choice if confidence >= JEV_CONFIDENCE else sink.default_section
+
+
+def has_tty() -> bool:
+    try:
+        with open("/dev/tty"):
+            return True
+    except OSError:
+        return False
+
+
+def pick(options: list[str], prompt: str = "select") -> str | None:
+    """fzf over the options; None when there is no terminal to draw on."""
+    if not has_tty():
+        return None
+    done = subprocess.run(
+        ["fzf", "+s", "--prompt", prompt + "> "],
+        input="\n".join(options),
+        capture_output=True,
+        text=True,
+    )
+    return done.stdout.strip() or None
+
+
+def sink_line(sink: Sink) -> str:
+    return f"{sink.short} :: {sink.scope or 'no scope written'}"
+
+
+def cmd_list(sinks: list[Sink], as_json: bool) -> int:
+    if as_json:
+        print(
+            json.dumps(
+                [
+                    {
+                        "file": str(s.path),
+                        "scope": s.scope,
+                        "default_section": s.default_section,
+                        "order": s.order,
+                        "sections": s.sections,
+                        "links": sum(1 for line in s.text.splitlines() if LINK.match(line)),
+                    }
+                    for s in sinks
+                ],
+                indent=1,
+            )
+        )
+        return 0
+    if not sinks:
+        print("no sinks: a file needs bookmarks: front matter to count (bookmark describe FILE)")
+        return 1
+    for sink in sinks:
+        links = sum(1 for line in sink.text.splitlines() if LINK.match(line))
+        print(f"{sink.short}  ({links} links, {len(sink.sections)} sections, order {sink.order})")
+        print(f"    scope: {sink.scope or 'MISSING'}")
+        print(f"    default: {sink.default_section}")
+    return 0
+
+
+def cmd_check(sinks: list[Sink]) -> int:
+    findings = []
+    notes = []
+    if not sinks:
+        findings.append("no sinks found: nothing has bookmarks: front matter")
+    seen: dict[str, str] = {}
+    for sink in sinks:
+        if not sink.scope:
+            findings.append(f"{sink.short}: scope is empty")
+        if sink.order not in ("newest-last", "newest-first"):
+            findings.append(f"{sink.short}: order must be newest-last or newest-first, not {sink.order!r}")
+        if sink.default_section not in sink.sections:
+            # not a finding: the first add creates it, so this stays green
+            notes.append(f"{sink.short}: no {sink.default_section!r} heading yet; the next add creates it")
+        for number, line in enumerate(sink.text.splitlines(), start=1):
+            match = LINK.match(line)
+            if not match:
+                continue
+            url = match.group(2) or match.group(3)
+            key = normalize(url)
+            if key in seen:
+                findings.append(f"{sink.short}:{number}: duplicate of {seen[key]} - {url}")
+            else:
+                seen[key] = f"{sink.short}:{number}"
+            if not re.match(r"^https?://", url):
+                findings.append(f"{sink.short}:{number}: not an http(s) url - {url}")
+    for note in notes:
+        print(f"note: {note}")
+    for finding in findings:
+        print(f"finding: {finding}")
+    print(f"{len(sinks)} sinks, {len(seen)} distinct links, {len(findings)} findings, {len(notes)} notes")
+    return 1 if findings else 0
+
+
+def splice_front_matter(text: str, block: list[str]) -> str:
+    """The bookmarks block into the existing front matter, other keys untouched.
+
+    Re-serialising them with yaml.safe_dump rewrote quoting, folded long
+    strings and appended `...` document-end markers to a published page, so the
+    existing lines are carried over byte for byte instead.
+    """
+    lines = text.splitlines()
+    if not lines or lines[0].strip() != "---":
+        return "\n".join(["---", *block, "---", ""]) + text.lstrip("\n")
+    end = next((i for i in range(1, len(lines)) if lines[i].strip() in ("---", "...")), None)
+    if end is None:
+        return "\n".join(["---", *block, *lines[1:], "---", ""]) + "\n"
+    kept, skip = [], False
+    for line in lines[1:end]:
+        if re.match(r"^bookmarks:\s*$", line):
+            skip = True
+            continue
+        if skip and (line.startswith(" ") or not line.strip()):
+            continue
+        skip = False
+        kept.append(line)
+    return "\n".join(["---", *block, *kept, "---", *lines[end + 1 :]]) + "\n"
+
+
+def cmd_describe(paths: list[str], scope: str | None, default_section: str, order: str) -> int:
+    # one --scope cannot describe several files differently: the last value would
+    # silently win for all of them, so this refuses instead
+    if scope and len(paths) > 1:
+        print("refused: --scope describes one file. Run describe once per file.")
+        return 2
+    for name in paths:
+        path = Path(name).expanduser()
+        text = path.read_text(encoding="utf-8") if path.exists() else ""
+        current = front_matter(text).get("bookmarks") or {}
+        chosen_scope = scope or current.get("scope", "")
+        block = [
+            "bookmarks:",
+            f"  scope: {chosen_scope}",
+            f"  default_section: {default_section}",
+            f"  order: {order}",
+        ]
+        if not scope and not current:
+            print(f"{path}: no scope given, would write:\n" + "\n".join(block))
+            print("  rerun with --scope 'what belongs in this file'")
+            continue
+        path.write_text(splice_front_matter(text, block), encoding="utf-8")
+        print(f"{path}: front matter written (scope, default_section, order)")
+    return 0
+
+
+def cmd_add(url: str, args: argparse.Namespace, sinks: list[Sink]) -> int:
+    if not re.match(r"^https?://", url):
+        print(f"refused: {url} is not an http(s) url")
+        return 2
+    if not sinks:
+        print("no sinks: nothing has bookmarks: front matter (bookmark describe FILE)")
+        return 2
+    found = existing(url, sinks)
+    if found and not args.force:
+        sink, line = found
+        print(f"refused: already in {sink.short}:{line}. Use --force to add it again.")
+        return 1
+
+    title = args.title or fetch_title(url)
+    sink = None
+    section = args.section
+    if args.to:
+        sink = next((s for s in sinks if str(s.path).endswith(args.to) or s.path == Path(args.to).expanduser()), None)
+        if sink is None:
+            print(f"refused: {args.to} is not a sink. bookmark list shows the sinks.")
+            return 2
+    elif not args.no_jev:
+        try:
+            routed = route_by_jev(url, title, sinks)
+        except (RuntimeError, OSError) as error:
+            print(f"jev unavailable ({error}); falling back to the picker")
+            routed = None
+        if routed:
+            sink, section = routed[0], args.section or routed[1]
+    if sink is None:
+        labels = [sink_line(s) for s in sinks]
+        chosen = pick(labels, "bookmark file")
+        if chosen is None:
+            print("no route: no terminal for a picker and no confident Jev answer. Pass --to FILE:")
+            for label in labels:
+                print("  " + label)
+            return 2
+        sink = sinks[labels.index(chosen)]
+    if section is None:
+        section = sink.default_section
+        if len(sink.sections) > 1:
+            picked = pick([f"{sink.short} :: {name}" for name in sink.sections], "section")
+            if picked:
+                section = picked.split(":: ", 1)[1]
+    if section not in sink.sections and section != sink.default_section and not args.new_section:
+        print(f"refused: {section!r} is not a heading in {sink.short}. Add --new-section to create it.")
+        return 2
+
+    entry = f"- [{title}]({url})"
+    updated = "\n".join(new_lines(sink, section, entry)) + "\n"
+    return write(sink, updated, entry, section, args)
+
+
+def write(sink: Sink, updated: str, entry: str, section: str, args: argparse.Namespace) -> int:
+    added = sum(1 for line in updated.splitlines() if LINK.match(line)) - sum(
+        1 for line in sink.text.splitlines() if LINK.match(line)
+    )
+    if args.dry_run:
+        print(f"dry run: would add to {sink.short} under {section!r}:\n  {entry}\n  (+{added} link)")
+        return 0
+    sink.path.write_text(updated, encoding="utf-8")
+    if args.json:
+        print(json.dumps({"file": str(sink.path), "section": section, "line": entry, "added": added}))
+    else:
+        print(f"added to {sink.short} under {section!r}:")
+        print(f"  {entry}")
+    return 0
+
+
+def cmd_open(sinks: list[Sink]) -> int:
+    entries = []
+    for sink in sinks:
+        section = ""
+        for line in sink.text.splitlines():
+            if (match := HEADING.match(line)):
+                section = match.group(1)
+                continue
+            if (match := LINK.match(line)):
+                url = match.group(2) or match.group(3)
+                text = match.group(1) or url
+                entries.append((f"{text[:70]}  [{sink.short.rsplit('/', 1)[-1]} :: {section}]", url))
+    if not entries:
+        print("no links found in any sink")
+        return 1
+    labels = [label for label, _ in entries]
+    chosen = pick(labels, "open")
+    if chosen is None:
+        print(f"no terminal for a picker. {len(entries)} links across {len(sinks)} sinks; bookmark list, or pass a url to add.")
+        return 2
+    subprocess.run(["open", entries[labels.index(chosen)][1]], check=False)
+    return 0
+
+
+def add_open_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="bookmark", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument("url", nargs="?", help="the link to add; omit to open the picker")
+    parser.add_argument("--to", help="sink path or its tail, e.g. work/bookmarks.md")
+    parser.add_argument("--section", help="section heading to place it under")
+    parser.add_argument("--title", help="link text; default is the page title")
+    parser.add_argument("--new-section", action="store_true", help="allow creating a missing section")
+    parser.add_argument("--force", action="store_true", help="add even when the url is already in a sink")
+    parser.add_argument("--no-jev", action="store_true", help="never call Jev; picker or --to only")
+    parser.add_argument("--dry-run", action="store_true", help="print the placement, write nothing")
+    parser.add_argument("--json", action="store_true", help="machine-readable result")
+    return parser
+
+
+def main() -> int:
+    argv = sys.argv[1:]
+    # dispatched by hand, not by add_subparsers: those reject a global flag after
+    # the subcommand, so `bookmark list --json` would fail
+    if argv[:1] == ["list"]:
+        parser = argparse.ArgumentParser(prog="bookmark list")
+        parser.add_argument("--json", action="store_true")
+        return cmd_list(discover(), parser.parse_args(argv[1:]).json)
+    if argv[:1] == ["check"]:
+        argparse.ArgumentParser(prog="bookmark check").parse_args(argv[1:])
+        return cmd_check(discover())
+    if argv[:1] == ["describe"]:
+        parser = argparse.ArgumentParser(prog="bookmark describe")
+        parser.add_argument("files", nargs="+")
+        parser.add_argument("--scope")
+        parser.add_argument("--default-section", default="Read Later")
+        parser.add_argument("--order", default="newest-last")
+        # intermixed: `describe --scope X FILE FILE` and `describe FILE FILE --scope X` both parse
+        parsed = parser.parse_intermixed_args(argv[1:])
+        return cmd_describe(parsed.files, parsed.scope, parsed.default_section, parsed.order)
+
+    args = add_open_parser().parse_args(argv)
+    sinks = discover()
+    if args.url:
+        return cmd_add(args.url, args, sinks)
+    return cmd_open(sinks)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
