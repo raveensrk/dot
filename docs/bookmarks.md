@@ -184,6 +184,38 @@ dry run: would add to ~/iCloud/notes/bookmarks.md under 'Meditation':
   - [Meditation.com: The place to Discover the Impact of Meditation](https://www.meditation.com/)
 ```
 
+## In pi, and in your terminal
+
+The script behaves the same way in both; only the things a terminal provides
+differ. This was measured, not assumed: inside a pi tool call `sys.stdin` and
+`sys.stdout` are not a tty and `/dev/tty` returns `Device not configured`, so the
+fzf paths cannot run and cannot hang.
+
+| What you run | Your terminal | Inside pi |
+|---|---|---|
+| `bookmark URL` | routes with Jev, else the picker | same, but a below-threshold answer stops with the candidates instead of picking |
+| `bookmark URL --to FILE` | works | works, and it is the reliable path with no terminal |
+| `bookmark` | fzf picker, opens the pick | prints every link, `url` first, with `[file :: section]`, and opens nothing |
+| `bookmark --json` | link objects | link objects, for an agent to filter or feed back into `--to` |
+| `bookmark list` / `check` / `describe` | works | works, unchanged |
+
+An agent round trip, exactly as it runs here:
+
+```
+$ bookmark --json | python3 -c "import json,sys; print(json.load(sys.stdin)[0]['file'])"
+~/iCloud/notes/bookmarks.md
+$ bookmark https://example.com/x --to "~/iCloud/notes/bookmarks.md" --dry-run
+dry run: would add to ~/iCloud/notes/bookmarks.md under 'Read Later':
+  - [x](https://example.com/x)
+  (+1 link)
+```
+
+`--to` accepts the `file` from `--json` verbatim, or any unique tail of the path
+such as `iCloud/notes/bookmarks.md`. No pi extension or custom tool is needed:
+`~/dot/script` is on `PATH`, so the harness reaches it through the ordinary bash
+tool.
+
+
 ## Duplicates
 
 `add` refuses a URL that already sits in any sink, printing the file and line,

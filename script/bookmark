@@ -463,8 +463,8 @@ def write(sink: Sink, updated: str, entry: str, section: str, args: argparse.Nam
     return 0
 
 
-def cmd_open(sinks: list[Sink]) -> int:
-    entries = []
+def entries(sinks: list[Sink]) -> list[dict]:
+    found = []
     for sink in sinks:
         section = ""
         for line in sink.text.splitlines():
@@ -473,17 +473,44 @@ def cmd_open(sinks: list[Sink]) -> int:
                 continue
             if (match := LINK.match(line)):
                 url = match.group(2) or match.group(3)
-                text = match.group(1) or url
-                entries.append((f"{text[:70]}  [{sink.short.rsplit('/', 1)[-1]} :: {section}]", url))
-    if not entries:
+                found.append(
+                    {
+                        "title": match.group(1) or url,
+                        "url": url,
+                        "file": sink.short,
+                        "section": section,
+                    }
+                )
+    return found
+
+
+def cmd_open(sinks: list[Sink], as_json: bool = False) -> int:
+    """fzf when a terminal is attached, otherwise print the links.
+
+    Inside an agent harness there is no /dev/tty, so the print path is the one
+    that runs: plain url-first lines, greppable and copyable, no picker needed.
+    """
+    links = entries(sinks)
+    if as_json:
+        print(json.dumps(links, indent=1))
+        return 0 if links else 1
+    if not links:
         print("no links found in any sink")
         return 1
-    labels = [label for label, _ in entries]
+    if not has_tty():
+        for entry in links:
+            print(f"{entry['url']}\t[{entry['file'].rsplit('/', 1)[-1]} :: {entry['section']}]\t{entry['title'][:80]}")
+        print(
+            f"{len(links)} links across {len(sinks)} sinks. No terminal, so nothing was opened. "
+            "Add with: bookmark URL. Open one with: open URL"
+        )
+        return 0
+    labels = [f"{e['title'][:70]}  [{e['file'].rsplit('/', 1)[-1]} :: {e['section']}]" for e in links]
     chosen = pick(labels, "open")
     if chosen is None:
-        print(f"no terminal for a picker. {len(entries)} links across {len(sinks)} sinks; bookmark list, or pass a url to add.")
-        return 2
-    subprocess.run(["open", entries[labels.index(chosen)][1]], check=False)
+        print("nothing selected")
+        return 0
+    subprocess.run(["open", links[labels.index(chosen)]["url"]], check=False)
     return 0
 
 
@@ -491,7 +518,7 @@ def add_open_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="bookmark", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("url", nargs="?", help="the link to add; omit to open the picker")
+    parser.add_argument("url", nargs="?", help="the link to add; omit to browse every sink")
     parser.add_argument("--to", help="sink path or its tail, e.g. work/bookmarks.md")
     parser.add_argument("--section", help="section heading to place it under")
     parser.add_argument("--title", help="link text; default is the page title")
@@ -528,7 +555,7 @@ def main() -> int:
     sinks = discover()
     if args.url:
         return cmd_add(args.url, args, sinks)
-    return cmd_open(sinks)
+    return cmd_open(sinks, args.json)
 
 
 if __name__ == "__main__":

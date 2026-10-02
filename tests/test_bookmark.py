@@ -145,6 +145,24 @@ class BookmarkTest(unittest.TestCase):
         self.assertIn("dry run", done.stdout)
         self.assertEqual(self.work.read_text(), before)
 
+    def test_reader_without_a_terminal_prints_the_links(self):
+        done = self.run_bookmark()
+        self.assertEqual(done.returncode, 0, done.stdout)
+        self.assertIn("https://example.com/old", done.stdout)
+        self.assertIn("https://bitsearch.eu/", done.stdout)
+        self.assertIn("No terminal, so nothing was opened", done.stdout)
+        # url first, so the output is greppable and copyable
+        line = [l for l in done.stdout.splitlines() if "example.com/old" in l][0]
+        self.assertTrue(line.startswith("https://example.com/old"), line)
+
+    def test_reader_json_lists_every_link_with_its_file_and_section(self):
+        done = self.run_bookmark("--json")
+        self.assertEqual(done.returncode, 0, done.stdout)
+        links = __import__("json").loads(done.stdout)
+        self.assertEqual(len(links), 3, links)
+        self.assertEqual({l["section"] for l in links}, {"Read Later", "Torrents", "FPGA"})
+        self.assertTrue(all(l["file"].endswith(".md") and l["url"].startswith("http") for l in links))
+
     def test_no_terminal_and_no_route_stops_with_the_candidates(self):
         done = self.run_bookmark("https://example.com/new")
         self.assertEqual(done.returncode, 2)
