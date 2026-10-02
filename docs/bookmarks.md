@@ -36,6 +36,122 @@ Other front matter keys are preserved byte for byte: the published page
 `~/repos/raveenkumar.xyz/raveenkumar.xyz/content/library/Bookmarks.md` keeps its
 `title`, `description`, `tags` and `date` when the block is written.
 
+## Flow
+
+Three diagrams, drawn from the same mermaid source that renders in any markdown
+viewer. Re-render them with the offline mermaid-cli that is already in the npx
+cache:
+
+```
+node ~/.npm/_npx/668c188756b835f3/node_modules/@mermaid-js/mermaid-cli/src/cli.js \
+  -i FILE.mmd -o FILE.svg -p /Users/raveen_kumar_personal/tmp/mmdc_puppeteer.json -b "#f7f8fa"
+```
+
+### 1. Which command runs, and what counts as a sink
+
+```mermaid
+flowchart TB
+    cmd(["bookmark &lt;url&gt;"]) --> dispatch{"first word"}
+
+    dispatch -->|list| ls["list: sinks, scopes, counts"]
+    dispatch -->|check| ck["check: duplicates, scope, order"]
+    dispatch -->|describe| ds["describe: write front matter"]
+    dispatch -->|"a url, or nothing"| walk
+
+    subgraph discovery["discovery - runs on every command"]
+        direction TB
+        walk["walk ~/repos and ~/iCloud"] --> isname{"bookmark*.md ?"}
+        isname -->|no| skip["ignored"]
+        isname -->|yes| isfm{"bookmarks: front matter ?"}
+        isfm -->|no| skip2["ignored: the stub, a study note,<br/>anything that does not describe itself"]
+        isfm -->|yes| sink["a sink"]
+    end
+
+    sink --> add(["continue in part 2"])
+
+    classDef entry fill:#E8F0FE,stroke:#4285F4,color:#0b2545,stroke-width:2px;
+    classDef decision fill:#FFF4E5,stroke:#F5A623,color:#3a2a00;
+    classDef good fill:#EAF7EE,stroke:#27AE60,color:#0d3b1e;
+    classDef bad fill:#FDECEA,stroke:#E74C3C,color:#4a0f08;
+
+    class cmd,ls,ck,ds,add entry;
+    class dispatch,isname,isfm decision;
+    class sink good;
+    class skip,skip2 bad;
+    style discovery fill:#F3E8FD,stroke:#8E44AD,color:#2c0a3e
+```
+
+### 2. The checks and the routing
+
+```mermaid
+flowchart TB
+    start(["a sink was found"]) --> scheme{"http(s) url ?"}
+    scheme -->|no| stop1["refuse, exit 2"]
+    scheme -->|yes| dup{"already in any sink ?"}
+    dup -->|yes| stop2["refuse: file:line, exit 1<br/>--force overrides"]
+    dup -->|no| title["title: --title, else<br/>curl --max-time 8, else url tail"]
+
+    title --> route
+    subgraph routing["which sink, which section"]
+        direction TB
+        route{"--to FILE ?"}
+        route -->|yes| chosen["target decided"]
+        route -->|no| jev{"Jev: which sink ?<br/>0.6 or better"}
+        jev -->|yes| jev2{"Jev: which section ?<br/>0.6 or better"}
+        jev -->|no| tty{"terminal attached ?"}
+        tty -->|yes| fzf["fzf picker"]
+        tty -->|no| stop3["refuse: print the candidates, exit 2"]
+        jev2 -->|yes| chosen
+        jev2 -->|no| fallback["default_section"]
+        fallback --> chosen
+    end
+
+    classDef entry fill:#E8F0FE,stroke:#4285F4,color:#0b2545,stroke-width:2px;
+    classDef decision fill:#FFF4E5,stroke:#F5A623,color:#3a2a00;
+    classDef good fill:#EAF7EE,stroke:#27AE60,color:#0d3b1e;
+    classDef bad fill:#FDECEA,stroke:#E74C3C,color:#4a0f08;
+
+    class start,title entry;
+    class scheme,dup,route,jev,jev2,tty decision;
+    class chosen,fzf,fallback good;
+    class stop1,stop2,stop3 bad;
+    style routing fill:#F3E8FD,stroke:#8E44AD,color:#2c0a3e
+```
+
+### 3. Placement and the write
+
+```mermaid
+flowchart TB
+    chosen(["target decided"]) --> place
+
+    subgraph placement["where the line lands"]
+        direction TB
+        place{"section exists ?"}
+        place -->|"no, and it is default_section"| create["create it at end of file"]
+        place -->|"no, and it is anything else"| stop4["refuse: --new-section"]
+        place -->|yes| order{"order"}
+        order -->|newest-last| append["append at end of section"]
+        order -->|newest-first| prepend["insert under the heading"]
+    end
+
+    append --> dry{"--dry-run ?"}
+    prepend --> dry
+    create --> dry
+    dry -->|yes| show["print the line, write nothing"]
+    dry -->|no| save["write the file<br/>print file :: section :: line"]
+
+    classDef entry fill:#E8F0FE,stroke:#4285F4,color:#0b2545,stroke-width:2px;
+    classDef decision fill:#FFF4E5,stroke:#F5A623,color:#3a2a00;
+    classDef good fill:#EAF7EE,stroke:#27AE60,color:#0d3b1e;
+    classDef bad fill:#FDECEA,stroke:#E74C3C,color:#4a0f08;
+
+    class chosen,save,show entry;
+    class place,order,dry decision;
+    class append,prepend,create good;
+    class stop4 bad;
+    style placement fill:#F3E8FD,stroke:#8E44AD,color:#2c0a3e
+```
+
 ## Commands
 
 | Command | What it does |
