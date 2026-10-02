@@ -39,13 +39,22 @@ Other front matter keys are preserved byte for byte: the published page
 ## Flow
 
 Three diagrams, drawn from the same mermaid source that renders in any markdown
-viewer. Re-render them with the offline mermaid-cli that is already in the npx
-cache:
+viewer. The blocks below are the source; render one with the offline mermaid-cli
+that is already in the npx cache:
 
 ```
+# 1. copy a block from this file into block.mmd, and write the puppeteer config once
+cat > ~/tmp/mmdc.json <<'JSON'
+{"executablePath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "args": ["--no-sandbox"]}
+JSON
+
+# 2. render
 node ~/.npm/_npx/668c188756b835f3/node_modules/@mermaid-js/mermaid-cli/src/cli.js \
-  -i FILE.mmd -o FILE.svg -p /Users/raveen_kumar_personal/tmp/mmdc_puppeteer.json -b "#f7f8fa"
+  -i block.mmd -o block.svg -p ~/tmp/mmdc.json -b "#f7f8fa"
 ```
+
+Keeping the diagrams as text instead of pictures means a change to the script
+is one re-render away, and the source is reviewable in a diff.
 
 ### 1. Which command runs, and what counts as a sink
 
