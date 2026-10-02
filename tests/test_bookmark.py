@@ -104,6 +104,8 @@ class BookmarkTest(unittest.TestCase):
         self.assertIn("- [PeakRDL]", text.split("## Read Later")[0])
         read_later = text.split("## Read Later")[1]
         self.assertLess(read_later.index("Old Link"), read_later.index("New Thing"))
+        # the section is last, so the file must end on the entry with one newline
+        self.assertTrue(text.endswith("- [New Thing](https://example.com/new)\n"), repr(text[-60:]))
 
     def test_newest_first_inserts_under_the_heading(self):
         done = self.run_bookmark(
@@ -137,6 +139,15 @@ class BookmarkTest(unittest.TestCase):
         done = self.run_bookmark("https://example.com/old", "--to", "work/bookmarks.md", "--force", "--title", "Again")
         self.assertEqual(done.returncode, 0, done.stdout)
         self.assertEqual(self.work.read_text().count("example.com/old"), 2)
+
+    def test_a_section_with_a_following_heading_keeps_one_blank_line(self):
+        done = self.run_bookmark(
+            "https://example.com/new", "--to", "work/bookmarks.md", "--section", "FPGA", "--title", "N"
+        )
+        self.assertEqual(done.returncode, 0, done.stdout)
+        block = self.work.read_text().split("## FPGA")[1].split("## Read Later")[0]
+        self.assertTrue(block.rstrip().endswith("- [N](https://example.com/new)"), repr(block))
+        self.assertTrue(block.endswith("\n\n"), repr(block[-20:]))
 
     def test_dry_run_writes_nothing(self):
         before = self.work.read_text()

@@ -188,9 +188,15 @@ def new_lines(sink: Sink, section: str, entry: str) -> list[str]:
     insert = end
     while insert > start + 1 and lines[insert - 1].strip() == "":
         insert -= 1
-    lines.insert(insert, entry)
-    if insert >= len(lines) - 1:
-        lines.append("")
+    # a heading follows: keep one blank line between the entry and it. At the end
+    # of the file there is nothing to separate, and appending a blank line there
+    # only added a dangling line to every add (a stray diff in git).
+    if end < len(lines):
+        lines.insert(insert, entry)
+        if insert + 1 >= len(lines) or lines[insert + 1].strip() != "":
+            lines.insert(insert + 1, "")
+    else:
+        lines.insert(insert, entry)
     return lines
 
 
