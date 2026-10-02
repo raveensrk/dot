@@ -28,6 +28,7 @@
     },
     "layout": {
       "left": [
+        "custom:session-name",
         "model",
         "thinking",
         "path",
@@ -42,6 +43,12 @@
       ]
     },
     "customItems": [
+      {
+        "id": "session-name",
+        "statusKey": "session-name",
+        "position": "left",
+        "hideWhenMissing": true
+      },
       {
         "id": "usage",
         "statusKey": "usage",
