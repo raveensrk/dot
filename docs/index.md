@@ -12,8 +12,6 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
 | [Stow](dotfiles-stow.md) | `script/install.py`/`uninstall.py` link repo packages into `$HOME` with GNU Stow |
 | [Todo schema](~/repos/Main_Quest/todo_schema.org) | Canonical todo item format used across projects |
-| [Todo script](todo-script.md) | `script/,todo.py`, the Markdown task scanner |
-| [Todo in Vim](todo-vim.md) | Markdown todo plugins: state cycling, due-date shifting and filtering |
 | [Vim colorscheme](vim-colorscheme.md) | Current scheme, eye-comfort research, and how pathogen plugins are installed |
 | [WireGuard VPN on Vultr](how-to-set-up-wireguard-vpn-in-vultr-instance.md) | Personal VPN setup with iOS and macOS clients |
 
@@ -22,7 +20,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | Path | Holds |
 |---|---|
 | `config/` | Application configs, stowed or sourced from `$DOT` (pi config via `script/install.py`) |
-| `script/` and `~/dot_local/script/` | Executables on `PATH` (see `config/bashrc`) |
+| `script/`, `~/dot_local/script/` and the todo skill's `scripts/` | Executables on `PATH` (see `config/bashrc`) |
 | `tests/` | `unittest` suites, run with `pytest` |
 | `packages/` | Per-tool install notes |
 | `docs/` | This wiki |
@@ -33,7 +31,8 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
   referenced from [AGENTS.md](../AGENTS.md).
 - Scripts go in `script/`, not `scripts/`. Machine-local scripts, secrets and
   overrides go in `~/dot_local/script/`. Both are wired into `PATH` in
-  `config/bashrc`. The old machine-local `~/script/` was merged into
+  `config/bashrc`, as is the todo skill's `~/repos/agent1/skills/todo/scripts/`.
+  The old machine-local `~/script/` was merged into
   `~/dot_local/` in September 2026.
 
 ## Known drift
