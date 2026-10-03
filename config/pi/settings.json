@@ -5,15 +5,23 @@
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4.1-flash",
   "hideThinkingBlock": false,
-  "extensions": [],
+  "extensions": [
+    "+builtin:mcp"
+  ],
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-mcp-adapter",
+    {
+      "source": "npm:pi-mcp-adapter",
+      "extensions": [
+        "-index.ts"
+      ]
+    },
     "npm:pi-powerline-footer",
     "npm:@narumitw/pi-usage",
     "npm:@dietrichgebert/ponytail",
     "npm:pi-caveman",
-    "npm:@injaneity/pi-computer-use"
+    "npm:@injaneity/pi-computer-use",
+    "npm:pi-ask-user"
   ],
   "defaultThinkingLevel": "max",
   "powerline": {
@@ -69,5 +77,13 @@
         "color": "#c4b5a0"
       }
     ]
-  }
+  },
+  "enabledModels": [
+    "openrouter/~deepseek/deepseek-flash-latest",
+    "openrouter/~z-ai/glm-flash-latest",
+    "openrouter/auto",
+    "openrouter/deepseek/deepseek-v4.1-flash",
+    "openrouter/z-ai/glm-5.3-flash",
+    "xai/grok-4.7"
+  ]
 }

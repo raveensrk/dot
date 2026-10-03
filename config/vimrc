@@ -13,6 +13,10 @@ endif
 " Linting is run on demand via :Lint / :Compile, not automatically by ALE.
 let g:ale_enabled = 0
 
+" Highlight YAML frontmatter in markdown. Must be global and set here, not in
+" ftplugin/markdown.vim: the syntax file reads it before ftplugins run.
+let g:vim_markdown_frontmatter = 1
+
 execute pathogen#infect()
 call pathogen#helptags()
 syntax on

@@ -13,7 +13,12 @@
 
 ;;; Discovery
 
-(defvar dot-org-roots '("~/dot" "~/repos")
+(defvar dot-org-roots
+  '("~/dot"
+    "~/repos"
+    ;; beorg's iCloud container (the iOS org inbox). A sibling of ~/icloud,
+    ;; not inside it, so it needs the container path.
+    "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org")
   "Directories searched recursively for Org agenda files.
 The same list as default_dirs in todo_skill.toml.")
 
@@ -78,9 +83,9 @@ to one entry per file.  Runs before every agenda build."
 
 ;;; Display
 
-;; The agenda owns the frame: delete other windows on open, restore on quit
-;; (`org-agenda-restore-windows-after-quit' is t in init.el).
-(setq org-agenda-window-setup 'only-window)
+;; The agenda owns the frame: delete other windows on open, restore on quit.
+(setq org-agenda-window-setup 'only-window
+      org-agenda-restore-windows-after-quit t)
 
 ;;; Capture
 
@@ -100,6 +105,12 @@ repository (a .git directory or worktree file); no default otherwise."
 (setq org-capture-templates
       '(("c" "capture" entry (file dot-org-capture-file) "* %?\n")))
 (setq org-id-locations-file (expand-file-name "org-id-locations" user-emacs-directory))
+
+;; Doing lives with the skill. Missing repo leaves the rest of this file working.
+(let ((todo-emacs (expand-file-name "~/repos/agent1/skills/todo/emacs.el")))
+  (when (file-exists-p todo-emacs)
+    (load todo-emacs nil 'nomessage)
+    (global-set-key (kbd "C-c o d") 'agenda2)))
 
 (provide 'dot-org-agenda)
 ;;; org_agenda.el ends here

@@ -586,6 +586,8 @@
 (global-set-key (kbd "C-c j") 'counsel-git-grep)
 (global-set-key (kbd "C-c o A") 'org-agenda)
 (global-set-key (kbd "C-c o a") 'org-agenda-list)
+(when (fboundp 'agenda2)
+  (global-set-key (kbd "C-c o d") 'agenda2))
 (global-set-key (kbd "C-c o c") 'org-capture)
 (global-set-key (kbd "C-c r") 'restart-emacs)
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)

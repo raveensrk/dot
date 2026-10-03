@@ -87,7 +87,14 @@ alias ,source_bash_profile="source ~/.bash_profile"
 alias q="exit"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 alias lg=lazygit
+# Tracked Emacs config in $DOT/config/emacs. -q skips ~/.emacs (a stale
+# Custom-written file) and ~/.emacs.d/init.el; user-emacs-directory stays
+# ~/.emacs.d, so straight.el and caches land there as usual.
+alias emacs='emacs -q -l "$DOT/config/emacs/init.el"'
 alias agenda="emacs -nw -f org-agenda-list"
+if [[ -f "$HOME/repos/agent1/skills/todo/agenda2.sh" ]]; then
+	source "$HOME/repos/agent1/skills/todo/agenda2.sh"
+fi
 alias git_pickaxe="git log -p -S"
 alias grep="grep --color"
 alias tmux0="tmux -L SOCKET_0 attach || tmux -L SOCKET_0"
@@ -336,27 +343,8 @@ fi
 # shellcheck disable=1091
 source "$DOT/config/pi-completion.sh"
 
-alias pi-grok="pi --model xai/grok-4.7:low"
+alias pi-grok="pi --model xai/grok-4.7:xhigh"
 
-# Random password: genpass [length] (default 20), letters + digits + specials.
-# tr loops on /dev/urandom, so output is always exactly length chars.
-genpass() {
-	LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&*()_+=[]{}|;:,.<>?-' </dev/urandom | head -c "${1:-20}"
-	echo
-}
-
-# Hyphen-separated passphrase: genpass-words [words] (default 2). One word is
-# capitalized and a 2-digit number is appended. Avoids ${var^} so it also runs
-# under the system bash 3.2.
-# ponytail: system web2 dict has obscure words; install the EFF wordlist if
-# memorability matters more than zero setup.
-genpass-words() {
-	local n="${1:-2}" ws i
-	read -r -a ws <<< "$(LC_ALL=C grep -E '^[a-z]{5,7}$' /usr/share/dict/words | shuf -n "$n" | tr '\n' ' ')"
-	i=$((RANDOM % n))
-	ws[i]="$(printf '%s' "${ws[i]:0:1}" | tr '[:lower:]' '[:upper:]')${ws[i]:1}"
-	(IFS=-; echo "${ws[*]}-$((RANDOM % 90 + 10))")
-}
 # Update pi and its packages, then launch. Runs before any alias too,
 # since aliases expand to `pi ...` and resolve to this function.
 pi() {

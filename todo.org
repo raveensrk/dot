@@ -47,6 +47,14 @@
   Report: ~/Downloads/emacs_config_review.html. Remaining items: trace the
   GUI-only "lexical-binding buffer-local" warning with emacs --debug-init,
   install all-the-icons fonts if dashboard icons render as boxes.
+** TODO Silence straight.el loaded after package.el warning :emacs:bug:
+Startup: "Warning (straight): straight.el was loaded when package.el was already loaded. You may wish to delete ~/.emacs.d/elpa or add (setq package-enable-at-startup nil) to ~/.emacs.d/early-init.el to avoid multiple versions of the same packages being loaded." ~/.emacs.d/elpa currently holds markdown-mode only; config/emacs/init.el already dropped package-initialize, so package.el still runs from site-start. Fix: set package-enable-at-startup nil (early-init in config/emacs, since ~/.emacs.d stays untracked) and delete ~/.emacs.d/elpa. Verify: warning gone on a fresh start through the emacs alias.
+** TODO Fix use-package cannot load company :emacs:bug:
+Startup: "Error (use-package): Cannot load company". Find the use-package form that pulls company (elpy depends on company-mode) and whether the :ensure name or the straight recipe is wrong, or drop elpy in favour of eglot. Verify: no error at startup and company-mode activates in a python buffer.
+** TODO Fix native-compiler unknown-function warnings in straight builds :emacs:bug:
+Native-compiler warnings for missing functions, all from straight builds: smartparens-pkg.el:1:2 define-package; smartparens-config.el org-element-property, org-element-at-point, org-in-src-block-p; file-info.el dired-get-filename; browse-at-remote.el log-view-current-entry, dired-current-directory; pyvenv.el widget-types-convert-widget, widget-copy. Cause: packages compile before org, dired, log-view and widget are loaded. Fix: require them from config, or accept and filter these from the startup report. Verify: rebuild straight and confirm the warnings are gone.
+** TODO Fix elpy native-compiler unknown-function warnings :emacs:bug:
+Native-compiler warnings from ~/.emacs.d/straight/build/elpy (elpy.el, elpy-rpc.el, elpy-shell.el, elpy-refactor.el, elpy-django.el, snippets/python-mode/.yas-setup.el) and from occur-x/occur-x.el: unknown functions elpy-rpc-get-*, elpy-nav-*, eval-sexp-fu-flash, projectile-*, company-*, flymake-*, yas-minor-mode, linum-mode. elpy is unmaintained on Emacs 30. Decide: drop elpy for eglot or vendored python setup, or keep with the warnings filtered. Same check applies to occur-x and linum-mode. Verify: python buffer keeps completion, flymake and yasnippet, and the warnings are gone.
 
 
 
@@ -120,3 +128,6 @@
 * Custom org agenda views: deadlines, IN_PROGRESS, per-tag
 
 * emacs -nw: opt+w region copy does not reach macOS clipboard; shell-command-on-region to pbcopy works. Fix.
+
+* TODO Add spotlight-like menu for pi :pi:
+Open a Spotlight-like launcher, type a prompt, send it to pi.
