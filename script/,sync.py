@@ -21,6 +21,9 @@ Behaviour per repo:
   - submodule of another repo -> skip silently
   - detached HEAD / no branch -> needs attention
   - no upstream configured    -> OK if clean; needs attention if dirty
+  - upstream gone on remote   -> same, after a successful fetch (empty remote
+                                 or a deleted tracked branch): OK if clean;
+                                 needs attention if dirty
   - fetch fails               -> ERROR, skip (reason shown)
   - dirty working tree        -> needs attention
   - diverged (ahead & behind) -> needs attention

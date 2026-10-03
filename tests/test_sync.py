@@ -209,11 +209,21 @@ class AutomaticModeTest(SyncTestCase):
         self.assertEqual(result.status, "failed")
         self.assertIn("Upstream configuration check failed", result.message)
 
-    def test_unresolvable_upstream_after_fetch_is_a_failure(self):
-        _, result = self.run_sync(upstream=(128, "", "unknown revision"))
-
-        self.assertEqual(result.status, "failed")
-        self.assertIn("Could not resolve upstream branch", result.message)
+    def test_unresolvable_upstream_after_fetch_depends_on_the_working_tree(self):
+        # A configured upstream whose remote-tracking ref is gone after a fetch
+        # (empty remote, deleted tracked branch) is the same situation as no
+        # upstream at all: nothing to sync against, so only uncommitted work
+        # needs a human.
+        cases = (((0, "", ""), "ok"), ((0, " M file", ""), "attention"))
+        for status, expected in cases:
+            with self.subTest(status=status[1] or "clean"):
+                _, result = self.run_sync(
+                    upstream=(128, "", "unknown revision"), status=status
+                )
+                self.assertEqual(result.status, expected)
+                self.assertIn("Upstream branch does not exist on remote", result.message)
+                if expected == "attention":
+                    self.assertIn("uncommitted changes", result.message)
 
     def test_fetch_failure_is_reported(self):
         _, result = self.run_sync(fetch=(1, "", "network is unreachable"))
