@@ -4,7 +4,7 @@ _pi() {
   local cur c1 sf sc
   cur="${COMP_WORDS[COMP_CWORD]}"
   c1="${COMP_WORDS[1]}"
-  local flags="--provider --model --api-key --system-prompt --append-system-prompt --mode --print -p --continue -c --resume -r --session --session-id --fork --session-dir --no-session --name -n --models --no-tools -nt --no-builtin-tools -nbt --tools -t --exclude-tools -xt --thinking --extension -e --no-extensions -ne --skill --no-skills -ns --prompt-template --no-prompt-templates -np --theme --use-theme --no-themes --no-context-files -nc --export --list-models --verbose --tui-mode --approve -a --no-approve -na --offline --help -h --version -v --plan --mcp-config"
+  local flags="--provider --model --api-key --system-prompt --append-system-prompt --mode --print -p --continue -c --resume -r --session --session-id --fork --session-dir --no-session --name -n --models --no-tools -nt --no-builtin-tools -nbt --tools -t --exclude-tools -xt --thinking --extension -e --no-extensions -ne --skill --no-skills -ns --prompt-template --no-prompt-templates -np --theme --use-theme --no-themes --no-context-files -nc --export --list-models --verbose --tui-mode --approve -a --no-approve -na --offline --help -h --version -v --plan"
   local cmds="install remove uninstall update list config auth mcp"
   if (( COMP_CWORD == 1 )); then
     COMPREPLY=($(compgen -W "$cmds $flags" -- "$cur"))
