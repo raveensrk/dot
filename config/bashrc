@@ -5,8 +5,6 @@ export ORG_ACTOR=pi
 export VISUAL="vim"
 export DOT=$HOME/dot
 export INPUTRC=$DOT/config/inputrc
-# Must be set before bash_completion loads task.sh, which runs `task` at load time
-export TASKRC=$DOT/config/taskrc
 export MYVIMRC=$DOT/config/vimrc
 export VIMINIT=":source $MYVIMRC"
 export LG_CONFIG_FILE=$DOT/config/lazygit.yml
@@ -250,6 +248,7 @@ export PYTHONPATH+=":$HOME/work/practice/python"
 [ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
 export PATH+=":$HOME/project/work/wallpapers"
 export PATH+=":$HOME/Library/Python/3.14/bin"
+export PATH+=":$HOME/repos/agent1/skills/todo/scripts"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
 ,goto_file_directory() {
@@ -268,7 +267,6 @@ export PATH+=":$HOME/Library/Python/3.14/bin"
 
 # Grep for a specific line in a file and go to it
 alias goto="vim -c 'Rg'"
-alias todo="vim -c 'Rg todo'"
 alias fixme="vim -c 'Rg fixme'"
 
 # }}}
