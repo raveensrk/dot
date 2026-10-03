@@ -4,7 +4,7 @@
   "enableInstallTelemetry": false,
   "defaultProvider": "openrouter",
   "defaultModel": "deepseek/deepseek-v4.1-flash",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "extensions": [
     "+builtin:mcp"
   ],
