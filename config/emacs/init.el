@@ -5,12 +5,17 @@
 (set-face-attribute 'default nil :weight 'semi-bold :height '120 :family "Fira Code")
 
 (require 'package)
+(setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
 ;; and `package-pinned-packages`. Most users will not need or want to do this.
 ;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;; package-initialize removed: straight.el owns all package installs, and
 ;; package-initialize only scanned an empty ~/.emacs.d/elpa at every startup.
+;; Set before straight.el loads, so package.el never activates at startup and
+;; straight does not warn about it loading twice (that warning wants exactly
+;; this line). The alias runs emacs -q, which never reads an early-init file,
+;; so the line lives here, not there.
 
 ;; Emacs 30 bundles project, xref, eldoc, seq, eglot, flymake, jsonrpc and
 ;; external-completion as core packages. straight.el does not know that (its

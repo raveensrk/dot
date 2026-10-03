@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# This script is the human door for the agent commit block
+# (~/repos/agent1/harness/githooks): git denies a commit unless AGENT1_COMMIT=1,
+# and only the commit paths a human drives set it.
+export AGENT1_COMMIT=1
+
 d=$(git diff --cached)
 if [[ -z "$d" ]]; then
   echo "Nothing staged"
