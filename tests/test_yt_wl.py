@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import argparse
 import hashlib
 import importlib.machinery
 import importlib.util
@@ -90,6 +91,30 @@ class AskTest(unittest.TestCase):
             self.assertTrue(ytwl.ask("delete?"))
         with patch("builtins.input", return_value="n"):
             self.assertFalse(ytwl.ask("delete?"))
+
+
+class ViewLimitTest(unittest.TestCase):
+    """The plain list shows one entry; every machine output still reads all of them."""
+
+    def args(self, **kw) -> argparse.Namespace:
+        base = dict(limit=None, all=False, urls=False, json=False, csv=False, rm=None, watch=False)
+        return argparse.Namespace(**{**base, **kw})
+
+    def test_plain_list_fetches_one(self) -> None:
+        self.assertEqual(ytwl.view_limit(self.args()), 1)
+
+    def test_all_and_machine_outputs_fetch_everything(self) -> None:
+        for kw in ({"all": True}, {"urls": True}, {"json": True}, {"csv": True}, {"rm": ["1"]}, {"watch": True}):
+            self.assertIsNone(ytwl.view_limit(self.args(**kw)), kw)
+
+    def test_explicit_limit_wins(self) -> None:
+        self.assertEqual(ytwl.view_limit(self.args(limit=5, all=True)), 5)
+
+
+class HintTest(unittest.TestCase):
+    def test_hint_is_the_delete_command_for_that_id(self) -> None:
+        row = ytwl.normalize(PAYLOAD)[0]
+        self.assertEqual(ytwl.hint(row), "delete: yt-wl --rm aaa")
 
 
 class PlaylistIdTest(unittest.TestCase):

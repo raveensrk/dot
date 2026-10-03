@@ -7,7 +7,8 @@ watchLaterNotAccessible. This reads it through yt-dlp with your browser
 cookies, lists it, plays it in mpv and deletes entries through YouTube's own
 InnerTube endpoint. No API key, no OAuth, no browser window.
 
-    yt-wl                       # Watch Later as a numbered list, one entry per line
+    yt-wl                       # the next entry only, plus the command that deletes it
+    yt-wl --all                 # the whole list, one numbered entry per line
     yt-wl --urls                # just the URLs, to pipe into yt-dlp -a -
     yt-wl --json                # full records
     yt-wl --csv                 # spreadsheet
@@ -115,6 +116,20 @@ def print_list(rows: list[dict]) -> None:
         return
     for row in rows:
         print(line(row))
+
+
+def view_limit(args) -> int | None:
+    """How many entries to fetch: -n wins, the plain list shows one, anything else all."""
+    if args.limit:
+        return args.limit
+    if args.all or args.urls or args.json or args.csv or args.rm or args.watch:
+        return None
+    return 1
+
+
+def hint(row: dict) -> str:
+    """The one-line command that deletes this entry."""
+    return f"delete: yt-wl --rm {row['id']}"
 
 
 def playlist_id(playlist: str) -> str:
@@ -243,6 +258,7 @@ def main() -> None:
     p.add_argument("-p", "--playlist", default=":ytwatchlater:", help="playlist URL or id (:ytwatchlater:, :ytfav:, :ythistory:, PL...)")
     p.add_argument("-c", "--cookies", default="firefox", help="browser for cookies: firefox, firefox:profile (default: firefox)")
     p.add_argument("-n", "--limit", type=int, help="only the first N entries")
+    p.add_argument("--all", action="store_true", help="list every entry instead of just the next one")
     p.add_argument("--rm", nargs="+", metavar="ROW|ID", help="delete entries by table row number or video id")
     p.add_argument("--watch", action="store_true", help="play entries in mpv, offering to delete each after watching")
     p.add_argument("--auto", action="store_true", help="with --watch: delete without asking")
@@ -254,7 +270,7 @@ def main() -> None:
     out.add_argument("--csv", action="store_true", help="print CSV")
     args = p.parse_args()
 
-    rows = fetch(args.playlist, args.cookies, args.limit)
+    rows = fetch(args.playlist, args.cookies, view_limit(args))
 
     if args.rm or args.watch:
         pid = playlist_id(args.playlist)
@@ -305,6 +321,8 @@ def main() -> None:
         w.writerows(rows)
     else:
         print_list(rows)
+        if len(rows) == 1:
+            print(f"\n{hint(rows[0])}")
 
 
 if __name__ == "__main__":
