@@ -1,0 +1,311 @@
+#!/usr/bin/env python3
+"""yt-wl - read and edit a private YouTube playlist (Watch Later) without a browser.
+
+Watch Later (playlist id WL) is invisible to the YouTube Data API v3 since
+2016-09-12: playlistItems.list on WL returns no items, or 403
+watchLaterNotAccessible. This reads it through yt-dlp with your browser
+cookies, lists it, plays it in mpv and deletes entries through YouTube's own
+InnerTube endpoint. No API key, no OAuth, no browser window.
+
+    yt-wl                       # Watch Later as a numbered list, one entry per line
+    yt-wl --urls                # just the URLs, to pipe into yt-dlp -a -
+    yt-wl --json                # full records
+    yt-wl --csv                 # spreadsheet
+    yt-wl -n 10                 # first 10 entries
+    yt-wl watch                 # play them one by one, offer to delete each
+    yt-wl watch --auto          # same, delete without asking
+    yt-wl watch --oldest        # start from the oldest entry
+    yt-wl rm 3 7 dQw4w9WgXcQ    # delete by table row number or video id
+    yt-wl -p :ytfav:            # any other playlist: liked videos
+    yt-wl -p :ythistory:        # watch history
+    yt-wl --cookies firefox:abc123.default-release
+
+Firefox cookies are read straight from cookies.sqlite. Chrome cookies are
+encrypted with the login keychain and are not supported here; list-only with
+Chrome still works through yt-dlp (--cookies chrome), but rm and watch need
+Firefox.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import glob
+import hashlib
+import json
+import os
+import shutil
+import sqlite3
+import subprocess
+import sys
+import tempfile
+import time
+import urllib.error
+import urllib.request
+from pathlib import Path
+
+YT_DLP = "yt-dlp"
+INNERTUBE_CLIENT = "2.20260114.08.00"  # WEB client version, matches yt-dlp 2026.03.17
+FIREFOX_PROFILES = Path.home() / "Library/Application Support/Firefox/Profiles"
+PLAYLIST_IDS = {":ytwatchlater:": "WL", ":ytfav:": "LL", ":ythistory:": "HL"}
+
+
+def fetch(playlist: str, cookies: str, limit: int | None) -> list[dict]:
+    """Run yt-dlp and return one flat record per playlist entry, in playlist order."""
+    if shutil.which(YT_DLP) is None:
+        sys.exit("yt-wl needs yt-dlp on PATH. Install it: brew install yt-dlp")
+
+    cmd = [
+        YT_DLP,
+        "--no-update",
+        "--flat-playlist",
+        "--dump-single-json",
+        f"--cookies-from-browser={cookies}",
+    ]
+    if limit:
+        cmd += ["--playlist-end", str(limit)]
+    cmd.append(playlist)
+
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    if proc.returncode != 0:
+        sys.exit(f"yt-dlp failed on {playlist}:\n{proc.stderr.strip()}")
+
+    return normalize(json.loads(proc.stdout))
+
+
+def normalize(data: dict) -> list[dict]:
+    """Flat yt-dlp records -> minimal rows, numbered as the playlist shows them."""
+    rows = []
+    for entry in data.get("entries") or []:
+        if not entry:
+            continue
+        vid = entry.get("id") or ""
+        rows.append(
+            {
+                "n": len(rows) + 1,
+                "id": vid,
+                "title": entry.get("title") or "",
+                "channel": entry.get("channel") or entry.get("uploader") or "",
+                "duration": entry.get("duration"),
+                "url": entry.get("url")
+                or (f"https://www.youtube.com/watch?v={vid}" if vid else ""),
+            }
+        )
+    return rows
+
+
+def hms(seconds) -> str:
+    """0:59 / 2:38 / 1:02:05; '' when the duration is unknown, so it can be dropped."""
+    if not seconds:
+        return ""
+    m, s = divmod(int(seconds), 60)
+    h, m = divmod(m, 60)
+    return f"{h}:{m:02d}:{s:02d}" if h else f"{m}:{s:02d}"
+
+
+def line(row: dict) -> str:
+    """One numbered entry: '1. 2:38 Title - Channel - URL'. Empty parts are dropped."""
+    head = " ".join(p for p in (hms(row["duration"]), row["title"]) if p)
+    tail = " - ".join(p for p in (row["channel"], row["url"]) if p)
+    return f"{row['n']}. {head}" + (f" - {tail}" if tail else "")
+
+
+def print_list(rows: list[dict]) -> None:
+    if not rows:
+        print("empty - check the playlist id and that the browser profile is signed in")
+        return
+    for row in rows:
+        print(line(row))
+
+
+def playlist_id(playlist: str) -> str:
+    """':ytwatchlater:' and friends to the id InnerTube expects."""
+    return PLAYLIST_IDS.get(playlist, playlist)
+
+
+def resolve_targets(rows: list[dict], specs: list[str]) -> list[dict]:
+    """Table row numbers or video ids -> the rows to delete, in the order given."""
+    by_n = {str(r["n"]): r for r in rows}
+    by_id = {r["id"]: r for r in rows}
+    picked, seen = [], set()
+    for spec in specs:
+        row = by_n.get(spec) or by_id.get(spec.strip())
+        if not row:
+            sys.exit(f"no entry in the playlist matches {spec!r}")
+        if row["id"] not in seen:
+            seen.add(row["id"])
+            picked.append(row)
+    return picked
+
+
+def firefox_profile(spec: str) -> Path:
+    """'firefox' -> the default-release profile; 'firefox:name' -> that profile."""
+    name = spec.split(":", 1)[1] if ":" in spec else ""
+    profiles = sorted(FIREFOX_PROFILES.glob("*/cookies.sqlite"))
+    if not profiles:
+        sys.exit(f"no Firefox cookies.sqlite under {FIREFOX_PROFILES}")
+    if name:
+        hits = [p for p in profiles if p.parent.name == name]
+        if not hits:
+            sys.exit(f"no Firefox profile {name!r}. Available: " + ", ".join(p.parent.name for p in profiles))
+        return hits[0]
+    default = [p for p in profiles if p.parent.name.endswith(".default-release")]
+    return (default or profiles)[0]
+
+
+def firefox_cookies(spec: str) -> dict[str, str]:
+    """YouTube cookies for a Firefox profile. The db is copied: Firefox may be running."""
+    src = firefox_profile(spec)
+    with tempfile.TemporaryDirectory() as tmp:
+        copy = Path(tmp) / "cookies.sqlite"
+        for suffix in ("", "-wal", "-shm"):
+            if (src.parent / f"cookies.sqlite{suffix}").exists():
+                shutil.copy(src.parent / f"cookies.sqlite{suffix}", str(copy) + suffix)
+        con = sqlite3.connect(copy)
+        rows = con.execute(
+            "select name, value from moz_cookies where host like '%youtube.com'"
+        ).fetchall()
+        con.close()
+    cookies: dict[str, str] = {}
+    for name, value in rows:
+        cookies.setdefault(name, value)
+    if "SAPISID" not in cookies:
+        sys.exit(f"no YouTube session in Firefox profile {src.parent.name} - sign in to youtube.com in that profile")
+    return cookies
+
+
+def auth_header(sapisid: str, ts: int | None = None) -> str:
+    """YouTube's SAPISIDHASH scheme: sha1 of '<ts> <SAPISID> https://www.youtube.com'."""
+    ts = int(time.time()) if ts is None else ts
+    digest = hashlib.sha1(f"{ts} {sapisid} https://www.youtube.com".encode()).hexdigest()
+    return f"SAPISIDHASH {ts}_{digest}"
+
+
+def edit_playlist(pid: str, action: str, video_id: str, cookies: dict[str, str]) -> dict:
+    """One edit_playlist call to YouTube's own InnerTube API. Raises on refusal."""
+    body = {
+        "context": {
+            "client": {
+                "clientName": "WEB",
+                "clientVersion": INNERTUBE_CLIENT,
+                "hl": "en",
+                "gl": "US",
+            }
+        },
+        "playlistId": pid,
+        "actions": [{"action": action, "removedVideoId": video_id}],
+    }
+    req = urllib.request.Request(
+        "https://www.youtube.com/youtubei/v1/browse/edit_playlist?prettyPrint=false",
+        data=json.dumps(body).encode(),
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": auth_header(cookies["SAPISID"]),
+            "X-Origin": "https://www.youtube.com",
+            "X-Goog-AuthUser": "0",
+            "Cookie": "; ".join(f"{k}={v}" for k, v in cookies.items()),
+            "User-Agent": "Mozilla/5.0",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.loads(resp.read())
+    except urllib.error.HTTPError as exc:
+        raise SystemExit(
+            f"YouTube refused to edit {pid} ({exc.code} {exc.reason}). "
+            "Re-sign in to youtube.com in Firefox, or list with --cookies chrome and delete by hand."
+        ) from exc
+
+
+def remove(row: dict, pid: str, cookies: dict[str, str]) -> None:
+    # ACTION_REMOVE_VIDEO_BY_VIDEO_ID is the action the web UI sends; the older
+    # ACTION_REMOVE_VIDEO answers 400 badRequest on Watch Later.
+    edit_playlist(pid, "ACTION_REMOVE_VIDEO_BY_VIDEO_ID", row["id"], cookies)
+    print(f"removed - {line(row)}")
+
+
+def ask(prompt: str, default: bool = True) -> bool:
+    """'[Y/n]' prompt. Ctrl-C, EOF and an unreadable stdin always keep the video."""
+    suffix = "[Y/n]" if default else "[y/N]"
+    try:
+        answer = input(f"{prompt} {suffix} ").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        print("keep")
+        return False
+    return default if not answer else answer in ("y", "yes")
+
+
+def main() -> None:
+    p = argparse.ArgumentParser(
+        description=__doc__.splitlines()[0],
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__.split("Watch Later (playlist id WL)")[1],
+    )
+    p.add_argument("-p", "--playlist", default=":ytwatchlater:", help="playlist URL or id (:ytwatchlater:, :ytfav:, :ythistory:, PL...)")
+    p.add_argument("-c", "--cookies", default="firefox", help="browser for cookies: firefox, firefox:profile (default: firefox)")
+    p.add_argument("-n", "--limit", type=int, help="only the first N entries")
+    p.add_argument("--rm", nargs="+", metavar="ROW|ID", help="delete entries by table row number or video id")
+    p.add_argument("--watch", action="store_true", help="play entries in mpv, offering to delete each after watching")
+    p.add_argument("--auto", action="store_true", help="with --watch: delete without asking")
+    p.add_argument("--oldest", action="store_true", help="with --watch: start from the oldest entry")
+    p.add_argument("--player", default="mpv", help="player for --watch (default: mpv)")
+    out = p.add_mutually_exclusive_group()
+    out.add_argument("--urls", action="store_true", help="print only video URLs")
+    out.add_argument("--json", action="store_true", help="print JSON records")
+    out.add_argument("--csv", action="store_true", help="print CSV")
+    args = p.parse_args()
+
+    rows = fetch(args.playlist, args.cookies, args.limit)
+
+    if args.rm or args.watch:
+        pid = playlist_id(args.playlist)
+        cookies = firefox_cookies(args.cookies)
+
+    if args.rm:
+        targets = resolve_targets(rows, args.rm)
+        print(f"deleting {len(targets)} of {len(rows)} entries from {args.playlist}:")
+        for r in targets:
+            print(line(r))
+        print()
+        for r in targets:
+            remove(r, pid, cookies)
+        return
+
+    if args.watch:
+        if shutil.which(args.player) is None:
+            sys.exit(f"--watch needs {args.player} on PATH. Install it: brew install {args.player}")
+        queue = list(reversed(rows)) if args.oldest else list(rows)
+        print(f"{len(queue)} entries queued from {args.playlist} - q to quit mpv, n to keep, Enter to delete")
+        kept = 0
+        try:
+            while queue:
+                row = queue.pop(0)
+                print(f"\n{len(queue) + 1} left - {line(row)}")
+                rc = subprocess.run([args.player, row["url"]]).returncode
+                if rc != 0:
+                    print(f"{args.player} exited {rc}; keeping {row['title']}")
+                    kept += 1
+                    continue
+                if args.auto or ask(f"delete {row['title'][:60]!r}?"):
+                    remove(row, pid, cookies)
+                else:
+                    kept += 1
+        except KeyboardInterrupt:
+            print()
+        print(f"\ndone - {len(queue)} unplayed, {kept} kept")
+        return
+
+    if args.urls:
+        print("\n".join(r["url"] for r in rows))
+    elif args.json:
+        json.dump(rows, sys.stdout, indent=2)
+        print()
+    elif args.csv:
+        w = csv.DictWriter(sys.stdout, fieldnames=list(rows[0]) if rows else ["n", "id", "title", "channel", "duration", "url"])
+        w.writeheader()
+        w.writerows(rows)
+    else:
+        print_list(rows)
+
+
+if __name__ == "__main__":
+    main()
