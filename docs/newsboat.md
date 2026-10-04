@@ -161,8 +161,8 @@ To eyeball the real output without touching your live cache, render it in tmux
 against a copy:
 
 ```sh
-cp ~/.newsboat/cache.db /tmp/vis.db
-tmux new-session -d -s nb -x 100 -y 20 'LANG=en_US.UTF-8 newsboat -C config/newsboat/config -u config/newsboat/urls -c /tmp/vis.db'
+cp ~/.newsboat/cache.db ~/tmp/vis.db
+tmux new-session -d -s nb -x 100 -y 20 'LANG=en_US.UTF-8 newsboat -C config/newsboat/config -u config/newsboat/urls -c ~/tmp/vis.db'
 tmux capture-pane -t nb -p -e | cat -v
 ```
 
