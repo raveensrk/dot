@@ -51,8 +51,7 @@ Expect a clean exit and `=== INIT OK ===`. First run takes several minutes and
 needs network access; later runs reuse `~/.emacs.d/straight` and finish in
 seconds.
 
-`custom.el` was pruned of two dead historical entries: `custom-enabled-themes
-'(cyberpunk)`, which failed because `custom.el` loads before straight clones
+`custom.el` was pruned of two dead historical entries: `custom-enabled-themes '(cyberpunk)`, which failed because `custom.el` loads before straight clones
 the theme, and an `org-capture-templates` pointing at the old `~/org/capture`.
 Both were superseded by `init.el` and [org_agenda.el](../config/emacs/org_agenda.el).
 The only remaining first-run message is `Failed to restore scratch buffers`,

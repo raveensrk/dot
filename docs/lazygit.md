@@ -10,8 +10,7 @@ export LG_CONFIG_FILE=$DOT/config/lazygit.yml
 alias lg=lazygit
 ```
 
-Install: [packages/lazygit.sh](../packages/lazygit.sh) (Linux) or `brew install
-lazygit` via [packages/macos.sh](../packages/macos.sh).
+Install: [packages/lazygit.sh](../packages/lazygit.sh) (Linux) or `brew install lazygit` via [packages/macos.sh](../packages/macos.sh).
 Tests: [tests/test_lazygit.py](../tests/test_lazygit.py).
 
 ## Commit with pi

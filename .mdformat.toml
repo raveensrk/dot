@@ -1,0 +1,3 @@
+# mdformat config. Pinned so `mdformat` and the mdformat_check guard agree.
+# number: keep 1. 2. 3. in ordered lists; mdformat's default renumbers all to 1.
+number = true
