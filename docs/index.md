@@ -6,6 +6,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 
 | Doc | What it covers |
 |---|---|
+| [Dev tools](dev_tools.md) | Tool inventory in preference order: editors, AI, CLI, and formats |
 | [Emacs](emacs.md) | Restored config, repository agenda discovery, isolated tests |
 | [Lazygit](lazygit.md) | Config path, `C` = commit message via pi |
 | [Newsboat](newsboat.md) | RSS reader: the "Chrome Teal" theme, config reference, and the traps found while building it |
