@@ -1,10 +1,10 @@
 {
-  "lastChangelogVersion": "1.0.1",
+  "lastChangelogVersion": "1.0.2",
   "theme": "dark",
   "enableInstallTelemetry": false,
-  "defaultProvider": "openrouter",
-  "defaultModel": "deepseek/deepseek-v4.1-flash",
-  "hideThinkingBlock": true,
+  "defaultProvider": "opencode",
+  "defaultModel": "glm-5.3-flash",
+  "hideThinkingBlock": false,
   "extensions": [
     "+builtin:mcp"
   ],
@@ -21,7 +21,10 @@
     "npm:@dietrichgebert/ponytail",
     "npm:pi-caveman",
     "npm:@injaneity/pi-computer-use",
-    "npm:pi-ask-user"
+    "npm:pi-ask-user",
+    "npm:@narumitw/pi-worktree",
+    "npm:pi-subagents",
+    "npm:pi-thinking-box"
   ],
   "defaultThinkingLevel": "max",
   "powerline": {
@@ -84,6 +87,8 @@
     "openrouter/auto",
     "openrouter/deepseek/deepseek-v4.1-flash",
     "openrouter/z-ai/glm-5.3-flash",
-    "xai/grok-4.7"
+    "xai/grok-4.7",
+    "opencode/deepseek-v4.1-flash",
+    "opencode/glm-5.3-flash"
   ]
 }
