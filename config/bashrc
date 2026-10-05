@@ -343,6 +343,8 @@ source "$DOT/config/pi-completion.sh"
 
 alias pi-grok="pi --model xai/grok-4.7:xhigh"
 alias pi-gpt="pi --model openai-codex/gpt-6.1-sol:max"
+# bare pi: no tools, extensions, skills, templates, themes, context files, session
+alias pi-bare="pi -nt -nc -ne -np -ns --no-session --no-themes"
 
 # Update pi and its packages, then launch. Runs before any alias too,
 # since aliases expand to `pi ...` and resolve to this function.
