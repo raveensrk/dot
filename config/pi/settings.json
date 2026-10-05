@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "1.0.2",
+  "lastChangelogVersion": "1.0.3",
   "theme": "dark",
   "enableInstallTelemetry": false,
   "defaultProvider": "opencode",
@@ -90,6 +90,7 @@
     "openrouter/z-ai/glm-5.3-flash",
     "xai/grok-4.7",
     "opencode/deepseek-v4.1-flash",
-    "opencode/glm-5.3-flash"
+    "opencode/glm-5.3-flash",
+    "openai-codex/gpt-6.1-sol"
   ]
 }

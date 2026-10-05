@@ -342,6 +342,7 @@ fi
 source "$DOT/config/pi-completion.sh"
 
 alias pi-grok="pi --model xai/grok-4.7:xhigh"
+alias pi-gpt="pi --model openai-codex/gpt-6.1-sol:max"
 
 # Update pi and its packages, then launch. Runs before any alias too,
 # since aliases expand to `pi ...` and resolve to this function.
