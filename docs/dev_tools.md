@@ -140,6 +140,8 @@ These are my programming language preferences.
 - Haskell
 - Common Lisp
 - Clojure
+- ClojureScript
+- Racket
 
 ## Formats
 
