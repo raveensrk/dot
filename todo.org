@@ -105,3 +105,6 @@ Native-compiler warnings from ~/.emacs.d/straight/build/elpy (elpy.el, elpy-rpc.
 
 * TODO Add spotlight-like menu for pi :pi:
 Open a Spotlight-like launcher, type a prompt, send it to pi.
+
+* TODO [#C] Migrate all docs into code or into agent1
+Move dot repo documentation into owning code or ~/repos/agent1. Update references and retire standalone pages after migration.

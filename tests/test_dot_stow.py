@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -123,6 +124,20 @@ class StowEngineTest(unittest.TestCase):
 
 
 class ResolveTest(unittest.TestCase):
+    def test_installer_help_includes_setup_docs(self):
+        script = Path(__file__).resolve().parent.parent / "script" / "install.py"
+        for flag in ("-h", "--help"):
+            with self.subTest(flag=flag):
+                out = subprocess.run(
+                    [sys.executable, str(script), flag],
+                    capture_output=True, text=True, timeout=10,
+                )
+                self.assertEqual(out.returncode, 0, out.stderr)
+                self.assertIn("Examples:\n  script/install.py", out.stdout)
+                for text in ("~/.pi/agent/", ".stow-local-ignore", "--backup",
+                             "--adopt", "script/uninstall.py", "History:"):
+                    self.assertIn(text, out.stdout)
+
     def test_unknown_package(self):
         with self.assertRaises(KeyError):
             dot_stow.resolve(["nope"])

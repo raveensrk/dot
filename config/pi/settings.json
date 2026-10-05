@@ -49,6 +49,7 @@
       ],
       "right": [],
       "secondary": [
+        "custom:usage",
         "custom:openrouter",
         "custom:grok"
       ]
@@ -62,7 +63,7 @@
       },
       {
         "id": "usage",
-        "statusKey": "usage",
+        "statusKey": "openai-usage",
         "position": "secondary",
         "selfColorize": true
       },

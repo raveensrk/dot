@@ -74,7 +74,8 @@ bash ~/dot/config/vim/plugin/install_vim_plugins.sh
 
 ## Link app configs with stow
 
-Dry-run first, then apply. See [docs/dotfiles-stow.md](docs/dotfiles-stow.md).
+Dry-run first, then apply. Setup docs live in [script/install.py](script/install.py)
+and `python3 ~/dot/script/install.py --help`.
 
 ```sh
 python3 ~/dot/script/install.py
