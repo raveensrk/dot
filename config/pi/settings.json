@@ -91,6 +91,7 @@
     "xai/grok-4.7",
     "opencode/deepseek-v4.1-flash",
     "opencode/glm-5.3-flash",
-    "openai-codex/gpt-6.1-sol"
+    "openai-codex/gpt-6.1-sol",
+    "openai-codex/gpt-6-luna"
   ]
 }
