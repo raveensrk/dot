@@ -17,6 +17,13 @@
 ;; this line). The alias runs emacs -q, which never reads an early-init file,
 ;; so the line lives here, not there.
 
+;; Default face: JetBrains Mono Nerd Font. Guarded so a machine without the
+;; font (font not yet installed) boots with the fallback instead of erroring.
+(when (member "JetBrainsMono Nerd Font Mono" (font-family-list))
+  (set-frame-font "JetBrainsMono Nerd Font Mono-13" nil t)
+  (add-to-list 'default-frame-alist
+               '(font . "JetBrainsMono Nerd Font Mono-13")))
+
 ;; Emacs 30 bundles project, xref, eldoc, seq, eglot, flymake, jsonrpc and
 ;; external-completion as core packages. straight.el does not know that (its
 ;; built-in list still predates Emacs 30) and installs ELPA copies next to
@@ -143,7 +150,8 @@
       (progn (revert-buffer) ; otherwise just revert to re-show
              (set (make-local-variable 'dired-dotfiles-show-p) t)))))
 
-(add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+(defun dot-dired-hide-details () (dired-hide-details-mode 1))
+(add-hook 'dired-mode-hook #'dot-dired-hide-details)
 
 (use-package dired-narrow)
 
@@ -281,8 +289,6 @@
   :lighter " sticky"
   :keymap nil
   (set-window-dedicated-p (selected-window) sticky-buffer-mode))
-
-(use-package restart-emacs)
 
 (pixel-scroll-precision-mode 1)
 
@@ -539,6 +545,7 @@
    org-archive-file-header-format "\nArchived entries\n\n"
    org-archive-save-context-info '(time olpath category todo itags)
    org-cycle-hide-block-startup t
+   org-deadline-warning-days 0 ; deadlines appear on their day only, never announced early
    org-extend-today-until 4
    org-fontify-todo-headline t
    org-fontify-whole-heading-line t
@@ -567,7 +574,9 @@
 
 (use-package gruvbox-theme :config (load-theme 'gruvbox-dark-hard t))
 
-(add-hook 'dired-mode-hook (lambda () (define-key dired-mode-map (kbd "C-c +") 'dired-create-empty-file)))
+(defun dot-dired-plus ()
+  (define-key dired-mode-map (kbd "C-c +") 'dired-create-empty-file))
+(add-hook 'dired-mode-hook #'dot-dired-plus)
 (define-key dired-mode-map (kbd "/") 'dired-narrow-fuzzy)
 (define-key ivy-mode-map (kbd "C-c RET") 'ivy-immediate-done)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
@@ -594,7 +603,7 @@
 (when (fboundp 'agenda2)
   (global-set-key (kbd "C-c o d") 'agenda2))
 (global-set-key (kbd "C-c o c") 'org-capture)
-(global-set-key (kbd "C-c r") 'restart-emacs)
+(global-set-key (kbd "C-c r") 'reload-config)
 (global-set-key (kbd "C-c t") 'toggle-truncate-lines)
 (global-set-key (kbd "C-c w") 'tab-list)
 (global-set-key (kbd "C-c y") 'duplicate-dwim)
@@ -610,3 +619,23 @@
 (global-set-key (kbd "M-X") 'execute-extended-command)
 (global-set-key (kbd "M-x") 'counsel-M-x)
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
+
+;;; Reload
+
+(defun reload-config ()
+  "Reload the whole Emacs config in a live session.
+Re-runs this file.  Safe to call repeatedly: hooks use named
+functions, `use-package' and `straight' skip already-installed
+packages, and every `add-hook' is idempotent.  `dired-mode-map' and
+other mode maps already exist, so `define-key' just re-binds."
+  (interactive)
+  (load (expand-file-name "~/dot/config/emacs/init.el") nil 'nomessage)
+  (message "emacs config reloaded"))
+
+;; Only overdue deadlines are red.  Two vanilla faces paint
+;; every FUTURE deadline red/orange: `org-upcoming-deadline' (gruvbox makes
+;; it inherit font-lock-keyword-face, orange) and
+;; `org-upcoming-distant-deadline'.  Neutralize both -- AFTER the theme
+;; loads, or the theme resets them back.  Overdue keeps `org-imminent-deadline'.
+(dolist (face '(org-upcoming-deadline org-upcoming-distant-deadline))
+  (set-face-attribute face nil :inherit 'default :foreground nil :background nil))

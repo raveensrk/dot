@@ -87,6 +87,62 @@ to one entry per file.  Runs before every agenda build."
 (setq org-agenda-window-setup 'only-window
       org-agenda-restore-windows-after-quit t)
 
+(defun dot-org-agenda-tags ()
+  "Tags of the entry as a fixed 28-wide column, for the agenda prefix."
+  (let ((tags (ignore-errors (org-get-tags))))
+    (format "%-28.28s" (if tags (concat ":" (string-join tags ":") ":") ""))))
+
+;; Fixed-width columns: category (21: longest file name, 20, plus one), tags (28), time (5),
+;; leader (10), then the heading.  Tags sit on the left, so the trailing
+;; copy is removed.  Leader is blank on the deadline's own day,
+;; "Overdue 3d" only when past due, all within the column; the grid's dot/dash fillers are dropped.
+(setq org-agenda-prefix-format
+      '((agenda . " %-21.21c %(dot-org-agenda-tags) %5t  %-10s ")
+        (todo . " %-21.21c %(dot-org-agenda-tags) ")
+        (tags . " %-21.21c %(dot-org-agenda-tags) ")
+        (search . " %-21.21c %(dot-org-agenda-tags) "))
+      org-agenda-remove-tags t
+      org-agenda-deadline-leaders '("" "In %d d." "Overdue %dd")
+      org-agenda-time-grid '((daily today require-timed)
+                             (800 1000 1200 1400 1600 1800 2000) "" "")
+      org-agenda-tags-column -100)
+
+;; Red only when overdue against TODAY.  Org picks the deadline face from
+;; the day column being drawn, so repeat occurrences after the deadline
+;; date (future columns) came out red.  Every deadline gets the neutral
+;; face here; the finalize hook below reds the ones whose date < today.
+(setq org-agenda-deadline-faces '((-1.0e10 . org-upcoming-deadline)))
+
+(defun dot-org-agenda-red-overdue ()
+  "Give `org-imminent-deadline' to undone deadlines dated before today."
+  (let ((today (org-today))
+        (inhibit-read-only t))
+    (save-excursion
+      (goto-char (point-min))
+      (while (not (eobp))
+        (let ((date (get-text-property (point) 'ts-date))
+              (type (get-text-property (point) 'type))
+              (end (line-end-position)))
+          (cond
+           ;; Overdue: whole line red, TODO keyword and priority included.
+           ((and date (< date today)
+                 (member type '("deadline" "upcoming-deadline")))
+            (put-text-property (point) end 'face 'org-imminent-deadline))
+           ;; Any other task line: plain text, no faces at all.
+           ((get-text-property (point) 'org-marker)
+            (put-text-property (point) end 'face nil))))
+        (forward-line 1)))))
+(add-hook 'org-agenda-finalize-hook #'dot-org-agenda-red-overdue)
+
+(defun dot-org-agenda-plain-keywords ()
+  "Draw TODO keywords and [#X] priorities as plain text in the agenda.
+Buffer-local remap, so org files keep their colours."
+  (face-remap-add-relative 'org-todo 'default)
+  (face-remap-add-relative 'org-priority 'default))
+(add-hook 'org-agenda-mode-hook #'dot-org-agenda-plain-keywords)
+;; [#B] colour comes from overlays, not the face above.
+(setq org-agenda-fontify-priorities nil)
+
 ;;; Capture
 
 (defun dot-org-capture-file ()
@@ -111,6 +167,7 @@ repository (a .git directory or worktree file); no default otherwise."
   (when (file-exists-p todo-emacs)
     (load todo-emacs nil 'nomessage)
     (global-set-key (kbd "C-c o d") 'agenda2)))
+
 
 (provide 'dot-org-agenda)
 ;;; org_agenda.el ends here
