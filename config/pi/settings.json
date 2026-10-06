@@ -32,6 +32,7 @@
   "powerline": {
     "preset": "default",
     "placement": "above",
+    "welcome": false,
     "path": {
       "mode": "full"
     },
