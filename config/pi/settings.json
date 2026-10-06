@@ -5,7 +5,9 @@
   "defaultProvider": "opencode",
   "defaultModel": "glm-5.3-flash",
   "hideThinkingBlock": false,
-  "defaultTools": ["+codemode"],
+  "defaultTools": [
+    "+codemode"
+  ],
   "extensions": [
     "+builtin:mcp"
   ],
@@ -95,6 +97,7 @@
     "opencode/deepseek-v4.1-flash",
     "opencode/glm-5.3-flash",
     "openai-codex/gpt-6.1-sol",
-    "openai-codex/gpt-6-luna"
+    "openai-codex/gpt-6-luna",
+    "openrouter/anthropic/claude-opus-5.5"
   ]
 }
