@@ -342,16 +342,15 @@ fi
 source "$DOT/config/pi-completion.sh"
 
 alias pi-grok="pi --model xai/grok-4.7:xhigh"
-alias pi-gpt="pi --model openai-codex/gpt-6.1-sol:max"
-# bare pi: no tools, extensions, skills, templates, themes, context files, session
-alias pi-bare="pi -nt -nc -ne -np -ns --no-session --no-themes"
 
-# Update pi and its packages, then launch. Runs before any alias too,
-# since aliases expand to `pi ...` and resolve to this function.
-pi() {
+# `pi-update-and-run`: update packages first, then launch pi (auto version check on).
+pi-update-and-run() {
 	command pi update --all 2>/dev/null
 	command pi "$@"
 }
+alias pi-gpt="pi --model openai-codex/gpt-6.1-sol:max"
+# bare pi: no tools, extensions, skills, templates, themes, context files, session
+alias pi-bare="pi -nt -nc -ne -np -ns --no-session --no-themes"
 iterm-tab-name () 
 { 
     printf "\033]1;$@\007"
