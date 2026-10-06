@@ -5,6 +5,7 @@
   "defaultProvider": "opencode",
   "defaultModel": "glm-5.3-flash",
   "hideThinkingBlock": false,
+  "defaultTools": ["+codemode"],
   "extensions": [
     "+builtin:mcp"
   ],
@@ -24,7 +25,8 @@
     "npm:pi-ask-user",
     "npm:@narumitw/pi-worktree",
     "npm:pi-subagents",
-    "npm:pi-thinking-box"
+    "npm:pi-thinking-box",
+    "~/repos/agent1"
   ],
   "defaultThinkingLevel": "max",
   "powerline": {
