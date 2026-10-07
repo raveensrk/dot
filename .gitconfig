@@ -1,0 +1,4 @@
+# Included per clone: git config --local include.path ../.gitconfig
+# Without it, git stores the iTerm2 prefs file raw.
+[filter "iterm2prefs"]
+	clean = "~/dot/script/iterm2_prefs_redact --clean"

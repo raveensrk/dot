@@ -1,0 +1,149 @@
+#!/usr/bin/env python3
+"""Redact iTerm2's synced prefs file so a public repo never sees private data.
+
+iTerm2 keeps settings in a custom folder (Settings > General > Settings). It
+writes that file raw: home paths, machine-local keys, opaque blobs. This script
+is the git clean filter for that file. It keeps a key only when iTerm2 itself
+would sync it, drops every blob, and rewrites home paths as ~.
+
+  iterm2_prefs_redact [--clean] [--check] [FILE]
+  iterm2_prefs_redact -h|--help
+
+  (no flag)  redact FILE in place, print one summary line
+  --clean    filter protocol: read the plist on stdin, write it to stdout
+  --check    certify FILE is already clean; exit 1 with the fix when it is not
+             (for a published copy: a fresh checkout, or the staged blob. The
+             working copy on the machine that owns iTerm2 stays raw on purpose,
+             so --check fails there and the filter cleans it at git add.)
+  -h, --help print this help
+
+Default FILE: ~/dot/config/iterm2/com.googlecode.iterm2.plist
+
+Wiring, per clone (see packages/iterm2.md):
+  git config --local include.path ../.gitconfig
+"""
+
+from __future__ import annotations
+
+import plistlib
+import re
+import sys
+from pathlib import Path
+
+DEFAULT_FILE = Path.home() / "dot/config/iterm2/com.googlecode.iterm2.plist"
+
+# Keys iTerm2 refuses to sync, from iTermRemotePreferencesKeyIsSyncable.
+EXEMPT = {
+    "LoadPrefsFromCustomFolder",
+    "PrefsCustomFolder",
+    "Secure Input",
+    "moveToApplicationsFolderAlertSuppress",
+    "AppVersion",
+    "CGFontRenderingFontSmoothingDisabled",
+    "PreventEscapeSequenceFromChangingProfile",
+    "PreventEscapeSequenceFromClearingHistory",
+    "Coprocess MRU",
+    "MetalCaptureEnabled",
+    "MetalCaptureEnabledDate",
+}
+PREFIXES = ("NS", "SU", "NoSync", "UK")
+HOME_RE = re.compile(r"/(?:Users|home)/[^/\s\"']+")
+
+
+def syncable(key: str) -> bool:
+    return key not in EXEMPT and not key.startswith(PREFIXES)
+
+
+def redact_value(value):
+    if isinstance(value, dict):
+        return {k: redact_value(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [redact_value(v) for v in value]
+    if isinstance(value, str):
+        return HOME_RE.sub("~", value)
+    return value
+
+
+def redact(prefs: dict) -> dict:
+    out = {}
+    for key, value in prefs.items():
+        if not syncable(key):
+            continue
+        # A <data> blob cannot be reviewed in a diff and never merges.
+        if isinstance(value, bytes):
+            continue
+        out[key] = redact_value(value)
+    return out
+
+
+def violations(prefs: dict) -> list[str]:
+    found = []
+    for key, value in prefs.items():
+        if not syncable(key):
+            found.append(f"machine-local key: {key}")
+        if isinstance(value, bytes):
+            found.append(f"opaque blob: {key} ({len(value)} B)")
+        for hit in _strings(value):
+            for match in HOME_RE.findall(hit):
+                found.append(f"home path in {key}: {match}")
+    return found
+
+
+def _strings(value):
+    if isinstance(value, dict):
+        for item in value.values():
+            yield from _strings(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _strings(item)
+    elif isinstance(value, str):
+        yield value
+
+
+def check(path: Path) -> int:
+    prefs = plistlib.loads(path.read_bytes())
+    found = violations(prefs)
+    if not found:
+        print(f"ok: {path} is clean")
+        return 0
+    print(f"dirty: {path}", file=sys.stderr)
+    for item in found:
+        print(f"  {item}", file=sys.stderr)
+    print(f"fix: {Path(__file__).resolve()} {path}", file=sys.stderr)
+    return 1
+
+
+def clean_stream() -> int:
+    prefs = plistlib.loads(sys.stdin.buffer.read())
+    sys.stdout.buffer.write(plistlib.dumps(redact(prefs), fmt=plistlib.FMT_XML))
+    return 0
+
+
+def write(path: Path) -> int:
+    before = plistlib.loads(path.read_bytes())
+    after = redact(before)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_bytes(plistlib.dumps(after, fmt=plistlib.FMT_XML))
+    tmp.replace(path)
+    dropped = sorted(set(before) - set(after))
+    print(f"redacted: {len(before)} keys -> {len(after)}, dropped {len(dropped)}")
+    for key in dropped:
+        print(f"  - {key}")
+    return 0
+
+
+def main(argv: list[str]) -> int:
+    if any(a in ("-h", "--help") for a in argv[1:]):
+        print(__doc__.strip())
+        return 0
+    args = [a for a in argv[1:] if a not in ("--clean", "--check")]
+    path = Path(args[0]).expanduser() if args else DEFAULT_FILE
+    if "--clean" in argv:
+        return clean_stream()
+    if "--check" in argv:
+        return check(path)
+    return write(path)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

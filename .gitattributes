@@ -1,0 +1,4 @@
+# iTerm2's synced prefs file is written raw by iTerm2 and holds home paths,
+# machine-local keys and opaque blobs. The filter redacts it on the way into
+# git, so the working file stays faithful to what iTerm2 wrote.
+config/iterm2/*.plist filter=iterm2prefs
