@@ -4,7 +4,7 @@
   "enableInstallTelemetry": false,
   "defaultProvider": "opencode",
   "defaultModel": "glm-5.3-flash",
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "defaultTools": [
     "+codemode"
   ],
