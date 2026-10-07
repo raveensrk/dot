@@ -1,5 +1,6 @@
 /**
  * /list-skills - prints every skill loaded in this pi session.
+ * -v adds the description per skill.
  * Source of truth is ctx.getSystemPrompt(): pi lists loaded skills in its
  * <available_skills> block (user, project, and package skills), so the list
  * always matches what the model sees.
@@ -35,16 +36,18 @@ function parseSkills(prompt: string): LoadedSkill[] {
 export default function (pi: ExtensionAPI) {
 	pi.registerCommand("list-skills", {
 		description: "List all skills loaded in this session",
-		handler: async (_args: string, ctx: ExtensionCommandContext) => {
+		handler: async (args: string, ctx: ExtensionCommandContext) => {
 			const skills = parseSkills(ctx.getSystemPrompt());
 			if (skills.length === 0) {
 				ctx.ui.notify("no skills loaded", "warning");
 				return;
 			}
 
+			// -v adds the description per skill.
+			const verbose = args.split(/\s+/).includes("-v");
 			const lines = skills
 				.sort((a, b) => a.name.localeCompare(b.name))
-				.map((s) => `${s.name} - ${s.description}`);
+				.map((s) => (verbose ? `${s.name} - ${s.description}` : s.name));
 			ctx.ui.notify(`Skills (${skills.length}):\n${lines.join("\n")}`, "info");
 		},
 	});
