@@ -352,6 +352,7 @@ pi-update-and-run() {
 alias pi-gpt="pi --model openai-codex/gpt-6.1-sol:max"
 # bare pi: no tools, extensions, skills, templates, themes, context files, session
 alias pi-bare="pi -nt -nc -ne -np -ns --no-session --no-themes"
+alias pi-todo="pi '/skill:todo brief'"
 iterm-tab-name () 
 { 
     printf "\033]1;$@\007"

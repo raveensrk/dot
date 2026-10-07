@@ -42,6 +42,9 @@
       "subscriptionDisplay": "both",
       "currency": "USD"
     },
+    "model": {
+      "display": "qualified"
+    },
     "layout": {
       "left": [
         "custom:session-name",
@@ -56,7 +59,8 @@
       "secondary": [
         "custom:usage",
         "custom:openrouter",
-        "custom:grok"
+        "custom:grok",
+        "custom:opencode"
       ]
     },
     "customItems": [
@@ -84,6 +88,13 @@
         "statusKey": "grok-credits",
         "position": "secondary",
         "color": "#c4b5a0"
+      },
+      {
+        "id": "opencode",
+        "statusKey": "oc-usage",
+        "position": "secondary",
+        "prefix": "opencode",
+        "color": "#8fb8d8"
       }
     ]
   },
@@ -98,6 +109,7 @@
     "opencode/glm-5.3-flash",
     "openai-codex/gpt-6.1-sol",
     "openai-codex/gpt-6-luna",
-    "openrouter/anthropic/claude-opus-5.5"
+    "openrouter/anthropic/claude-opus-5.5",
+    "opencode-go/deepseek-v4.1-flash"
   ]
 }

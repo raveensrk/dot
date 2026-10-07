@@ -1,8 +1,9 @@
 /**
- * Exactly one below-editor widget shows at a time. The winner is picked by the
- * current model's provider:
- *   xai / grok (grok subscription) -> "grok"     (no widget; credits are on powerline)
- *   opencode / opencode-go (Go, Zen) -> "opencode" (opencode-usage oc-usage)
+ * Picks which provider owns the below-editor status slot. Grok credits and
+ * opencode usage moved to powerline items, so the mapping only gates
+ * show-model's active-model status now:
+ *   xai / grok (grok subscription) -> "grok"
+ *   opencode / opencode-go (Go, Zen) -> "opencode"
  *   everything else (e.g. openrouter/auto) -> "model" (show-model active-model)
  */
 export type WidgetId = "grok" | "opencode" | "model";

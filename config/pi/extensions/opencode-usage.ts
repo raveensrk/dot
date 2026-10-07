@@ -1,10 +1,15 @@
+/**
+ * Publishes opencode Go plan windows and the Zen wallet balance to the
+ * "oc-usage" status key so powerline (via powerline.customItems) can show it
+ * on the secondary row.
+ * Data: python3 ~/dot/script/opencode_usage.py
+ */
 import { execFile } from "node:child_process";
 import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { widgetFor } from "./shared/widget-gate.ts";
+import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 const execFileAsync = promisify(execFile);
 const BIN = join(homedir(), "dot", "script", "opencode_usage.py");
@@ -12,23 +17,11 @@ const FLAG = join(homedir(), ".local/share/opencode_usage/disabled");
 const INTERVAL_MS = 5 * 60 * 1000;
 const KEY = "oc-usage";
 
-type Ui = {
-	hasUI: boolean;
-	ui: {
-		setWidget: (
-			key: string,
-			lines: string[] | undefined,
-			opts?: { placement?: "aboveEditor" | "belowEditor" },
-		) => void;
-		notify: (text: string, level?: string) => void;
-	};
-};
-
-function on(): boolean {
+function opencodeOn(): boolean {
 	return !existsSync(FLAG);
 }
 
-function setOn(value: boolean): void {
+function setOpencodeOn(value: boolean): void {
 	if (value) {
 		if (existsSync(FLAG)) {
 			unlinkSync(FLAG);
@@ -39,26 +32,40 @@ function setOn(value: boolean): void {
 	writeFileSync(FLAG, "");
 }
 
-function hide(ctx: Ui): void {
-	if (!ctx.hasUI) {
-		return;
-	}
-	ctx.ui.setWidget(KEY, undefined);
-}
-
-function paint(ctx: Ui, line: string | undefined): void {
-	if (!ctx.hasUI) {
-		return;
-	}
-	if (!line) {
-		hide(ctx);
-		return;
-	}
-	ctx.ui.setWidget(KEY, [line], { placement: "aboveEditor" });
-}
-
 export default function (pi: ExtensionAPI) {
 	let timer: ReturnType<typeof setInterval> | undefined;
+
+	async function line(): Promise<string | undefined> {
+		if (!opencodeOn()) {
+			return undefined;
+		}
+		try {
+			const { stdout } = await execFileAsync("python3", [BIN], {
+				timeout: 20000,
+			});
+			const text = stdout.trim();
+			return text || undefined;
+		} catch {
+			return undefined;
+		}
+	}
+
+	async function refresh(ctx: ExtensionContext): Promise<void> {
+		if (!ctx.hasUI) {
+			return;
+		}
+		ctx.ui.setStatus(KEY, await line());
+	}
+
+	function start(ctx: ExtensionContext): void {
+		if (timer) {
+			clearInterval(timer);
+		}
+		timer = setInterval(() => {
+			void refresh(ctx);
+		}, INTERVAL_MS);
+		timer.unref?.();
+	}
 
 	function stop(): void {
 		if (!timer) {
@@ -68,41 +75,8 @@ export default function (pi: ExtensionAPI) {
 		timer = undefined;
 	}
 
-	function start(ctx: Ui): void {
-		stop();
-		timer = setInterval(() => {
-			void refresh(ctx);
-		}, INTERVAL_MS);
-		timer.unref?.();
-	}
-
-	async function line(): Promise<string | undefined> {
-		if (!on()) {
-			return undefined;
-		}
-		try {
-			const { stdout } = await execFileAsync("python3", [BIN], {
-				timeout: 20000,
-			});
-			return stdout.trim() || undefined;
-		} catch {
-			return undefined;
-		}
-	}
-
-	async function refresh(ctx: Ui): Promise<void> {
-		if (!ctx.hasUI) {
-			return;
-		}
-		if (widgetFor(pi.model?.provider) !== "opencode") {
-			hide(ctx);
-			return;
-		}
-		paint(ctx, await line());
-	}
-
 	pi.registerCommand("opencode-usage", {
-		description: "Enable or disable opencode Go usage in the status widget",
+		description: "Enable or disable opencode Go and Zen usage on the powerline",
 		getArgumentCompletions: (prefix) => {
 			return ["on", "off"]
 				.filter((value) => value.startsWith(prefix))
@@ -114,38 +88,30 @@ export default function (pi: ExtensionAPI) {
 				ctx.ui.notify("Usage: /opencode-usage on|off", "error");
 				return;
 			}
-			setOn(arg === "on");
+			const on = arg === "on";
+			setOpencodeOn(on);
 			await refresh(ctx);
-			if (arg === "on") {
+			if (on) {
 				start(ctx);
-				ctx.ui.notify("opencode usage widget on", "info");
+				ctx.ui.notify("opencode powerline on", "info");
 				return;
 			}
 			stop();
-			ctx.ui.notify("opencode usage widget off", "info");
+			ctx.ui.notify("opencode powerline off", "info");
 		},
-	});
-
-	pi.on("model_select", async (event, ctx) => {
-		const active = widgetFor(event.model.provider) === "opencode";
-		if (!active) {
-			stop();
-		}
-		await refresh(ctx);
-		if (active && on() && !timer) {
-			start(ctx);
-		}
 	});
 
 	pi.on("session_start", async (_event, ctx) => {
 		await refresh(ctx);
-		if (on()) {
+		if (opencodeOn()) {
 			start(ctx);
 		}
 	});
 
 	pi.on("session_shutdown", (_event, ctx) => {
 		stop();
-		hide(ctx);
+		if (ctx.hasUI) {
+			ctx.ui.setStatus(KEY, undefined);
+		}
 	});
 }

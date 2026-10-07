@@ -135,3 +135,11 @@ Missing deterministic halves:
 - Optional judgment half: when a symlink is genuinely justified, Jev could score the justification instead of prose hedging (see typesafe-ai skill).
 
 Verify like the rest of the harness: node test for the guard, `lint.py --check no_symlinks` on a scratch repo with a created link, `timeout 120 pi -p "reply with just: ok"` clean after extension edits. Ties into "pi: replace remaining symlinks with packages" on this board - that migration must land on both computers: volt and atlas.
+
+* TODO [#B] Check upstream powerline wrap issue 244 and pi issue 9628
+DEADLINE: <2026-10-21 Wed>
+Two-week check on upstream items from 2026-10-07.
+
+1. https://github.com/nicobailon/pi-powerline-footer/issues/244 - asked upstream to wrap secondary-row overflow into extra rows instead of dropping the tail (zoomed-in terminal loses the last powerline items). Offered a PR. If it shipped: opt in via the new powerline setting and stop dropping the tail.
+
+2. https://github.com/earendil-works/pi/issues/9628 - "bash tool: show elapsed time in minutes once it passes 60s". CLOSED as of 2026-10-07; closed is not shipped. If a pi release carries it, retire the local bundle patch: ~/dot/script/install_pi_timeout_label.py, ~/dot/config/pi/patches/timeout_label.patch, and the timeout-label-patch.ts guard.

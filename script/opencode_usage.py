@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""One-line opencode Go limit + zen balance status for the pi status widget."""
+"""One-line opencode Go limit + zen balance status for the pi powerline."""
 
 import json
 import sys
 import urllib.request
-import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,16 +14,16 @@ COOKIE_FILE = Path.home() / ".local/share/opencode_usage/zen_cookie"
 # ponytail: hardcoded workspace id; re-fetch orgs via /console/api/orgs if you add workspaces
 ORG = "wrk_01M2MV43M69KXZJY076CABZB7G"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+# Console money unit: 100,000,000 microcents = $1 (console billing docs and the
+# console bundle's dollars<->microcents helpers). Not 1e6; that is microcents per cent.
+MICROCENTS_PER_DOLLAR = 100_000_000
 
 
-def zen_balance() -> str | None:
-    """Console session cookie -> prepaid wallet balance. Absent cookie = None."""
-    try:
-        cookie = COOKIE_FILE.read_text().strip()
-    except OSError:
-        return None
-    if not cookie:
-        return None
+def format_zen(microcents: object) -> str:
+    """Console microcents -> "$12.34". None or junk -> "$0.00"."""
+    return f"${int(microcents or 0) / MICROCENTS_PER_DOLLAR:.2f}"
+
+
 def zen_balance() -> str | None:
     """Console session cookie -> prepaid wallet balance. Absent cookie = None."""
     try:
@@ -42,7 +41,7 @@ def zen_balance() -> str | None:
         req = urllib.request.Request("https://opencode.ai/console/api/billing/status", headers=headers)
         with urllib.request.urlopen(req, timeout=15) as res:
             data = json.loads(res.read())
-        return f"${int(data.get("availableMicroCents", 0)) / 1e6:.2f}"
+        return format_zen(data.get("availableMicroCents"))
     except Exception:
         return "?"
 

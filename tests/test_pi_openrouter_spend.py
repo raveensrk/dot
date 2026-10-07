@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
-"""The powerline openrouter segment: A must be the account balance.
+"""The powerline openrouter segment: "balance" and "total" are account-wide.
 
-A is what openrouter.ai/settings/credits calls "Total available":
+"total" is GET /api/v1/credits -> total_usage, the all-time account spend -
+not the key's usage from /api/v1/key.
+
+"balance" is what openrouter.ai/settings/credits calls "Total available":
 GET /api/v1/credits -> total_credits - total_usage. It is not the per-key
 cap, which is /api/v1/key -> limit. See
 https://openrouter.ai/docs/api-reference/limits
@@ -32,7 +35,7 @@ console.log(JSON.stringify(cases.map(([k, c]) => formatSpend(k, c))));
 
 @unittest.skipIf(NODE is None, "node is not installed")
 class OpenrouterSpendTest(unittest.TestCase):
-    def test_builds_key_remaining_and_account_available(self):
+    def test_labels_key_usage_key_cap_account_spend_and_balance(self):
         with tempfile.TemporaryDirectory() as tmp:
             probe = Path(tmp) / "probe.ts"
             probe.write_text(PROBE)
@@ -46,9 +49,9 @@ class OpenrouterSpendTest(unittest.TestCase):
         self.assertEqual(
             json.loads(out.stdout),
             [
-                "[U:$11.35|L:$3.65|A:$12.78]",
-                "[U:$1.50|L:$0.50|A:$2.00]",
-                "[U:$1.00]",
+                "balance $12.78 · limit $3.65 · used $11.35 · total $12.22",
+                "balance $2.00 · limit $0.50 · used $1.50",
+                "used $1.00",
             ],
         )
 

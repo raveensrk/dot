@@ -1,8 +1,12 @@
 /**
  * Publishes OpenRouter account spend to the "or-spend" status key so powerline
- * (via powerline.customItems) can show it as "openrouter [U:$11.35|L:$3.65|A:$12.78]".
+ * (via powerline.customItems) can show it as
+ * "openrouter · balance $12.78 · limit $3.65 · used $11.35 · total $12.22".
  * Data: GET /api/v1/key (key all-time usage + credit left) and GET /api/v1/credits
- * (account total_credits - total_usage = the "Total available" pay-as-you-go balance).
+ * (account total_usage = all-time spend, total_credits - total_usage = the "Total
+ * available" pay-as-you-go balance).
+ * Scope differs per label: "balance" and "total" are the whole account, "limit" and
+ * "used" are this API key.
  * Self-check: node --experimental-strip-types openrouter-spend.ts
  */
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
@@ -20,19 +24,21 @@ export function formatSpend(
 ): string | undefined {
 	if (typeof data.usage !== "number") return undefined;
 	const remaining = typeof data.limit_remaining === "number" ? data.limit_remaining : undefined;
+	const spent = typeof credits?.total_usage === "number" ? credits.total_usage : undefined;
 	const available =
 		typeof credits?.total_credits === "number" && typeof credits.total_usage === "number"
 			? credits.total_credits - credits.total_usage
 			: remaining !== undefined
 				? data.usage + remaining
 				: undefined;
-	return `[${[
-		`U:${usd(data.usage)}`,
-		remaining !== undefined && `L:${usd(remaining)}`,
-		available !== undefined && `A:${usd(available)}`,
+	return [
+		available !== undefined && `balance ${usd(available)}`,
+		remaining !== undefined && `limit ${usd(remaining)}`,
+		`used ${usd(data.usage)}`,
+		spent !== undefined && `total ${usd(spent)}`,
 	]
 		.filter(Boolean)
-		.join("|")}]`;
+		.join(" · ");
 }
 
 async function getJson<T>(url: string, key: string): Promise<T | undefined> {
@@ -88,10 +94,10 @@ if ((import.meta as { main?: boolean }).main) {
 	const cases: [Parameters<typeof formatSpend>, string | undefined][] = [
 		[
 			[{ usage: 11.350662497, limit_remaining: 3.649337503 }, { total_credits: 25, total_usage: 12.220717341 }],
-			"[U:$11.35|L:$3.65|A:$12.78]",
+			"balance $12.78 · limit $3.65 · used $11.35 · total $12.22",
 		],
-		[[{ usage: 1.5, limit_remaining: 0.5 }], "[U:$1.50|L:$0.50|A:$2.00]"],
-		[[{ usage: 1 }], "[U:$1.00]"],
+		[[{ usage: 1.5, limit_remaining: 0.5 }], "balance $2.00 · limit $0.50 · used $1.50"],
+		[[{ usage: 1 }], "used $1.00"],
 		[[{ limit_remaining: 1 }], undefined],
 	];
 	for (const [input, want] of cases) {
