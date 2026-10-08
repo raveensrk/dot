@@ -1,0 +1,16 @@
+{
+  "name": "dot-pi",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Dot-owned pi extensions, loaded in place as a local pi package (settings.json packages: ~/dot/config/pi)",
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "extensions": [
+      "extensions/*.ts",
+      "extensions/session-name/index.ts"
+    ]
+  }
+}

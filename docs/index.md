@@ -11,7 +11,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | [Lazygit](lazygit.md) | Config path, `C` = commit message via pi |
 | [Newsboat](newsboat.md) | RSS reader: the "Chrome Teal" theme, config reference, and the traps found while building it |
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
-| [Stow installer](../script/install.py) | Setup docs and `--help`; install/uninstall dotfile symlinks with GNU Stow |
+| [Harness installer](../script/install.py) | Setup docs and `--help`; installs pi, Claude Code and Codex config without symlinks |
 | [Todo schema](~/repos/Main_Quest/todo_schema.org) | Canonical todo item format used across projects |
 | [Vim colorscheme](vim-colorscheme.md) | Current scheme, eye-comfort research, and how pathogen plugins are installed |
 | [WireGuard VPN on Vultr](how-to-set-up-wireguard-vpn-in-vultr-instance.md) | Personal VPN setup with iOS and macOS clients |
@@ -20,7 +20,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 
 | Path | Holds |
 |---|---|
-| `config/` | Application configs, stowed or sourced from `$DOT` (pi config via `script/install.py`) |
+| `config/` | Application configs, sourced from `$DOT` (agent harness config via `script/install.py`) |
 | `script/`, `~/dot_local/script/` and the todo skill's `scripts/` | Executables on `PATH` (see `config/bashrc`) |
 | `tests/` | `unittest` suites, run with `pytest` |
 | `packages/` | Per-tool install notes |

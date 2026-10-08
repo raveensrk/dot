@@ -1,5 +1,4 @@
 {
-  "lastChangelogVersion": "1.0.4",
   "theme": "dark",
   "enableInstallTelemetry": false,
   "defaultProvider": "openrouter",
@@ -28,6 +27,7 @@
     "npm:@narumitw/pi-worktree",
     "npm:pi-subagents",
     "npm:pi-thinking-box",
+    "~/dot/config/pi",
     "~/repos/agent1"
   ],
   "defaultThinkingLevel": "max",

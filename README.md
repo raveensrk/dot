@@ -72,18 +72,20 @@ bash ~/dot/packages/ubuntu.sh
 bash ~/dot/config/vim/plugin/install_vim_plugins.sh
 ```
 
-## Link app configs with stow
+## Install the agent harness config
 
-Dry-run first, then apply. Setup docs live in [script/install.py](script/install.py)
-and `python3 ~/dot/script/install.py --help`.
+pi, Claude Code and Codex config, no symlinks. Dry-run first, then apply.
+Setup docs live in [script/install.py](script/install.py) and
+`python3 ~/dot/script/install.py --help`.
 
 ```sh
 python3 ~/dot/script/install.py
 python3 ~/dot/script/install.py --apply
+python3 ~/dot/script/install.py --check
 ```
 
-On a machine where an app already wrote its own config, install aborts and
-lists conflicts; `--backup` renames them, `--adopt` imports them into the repo.
+Registering the Claude plugins needs the `claude` CLI on `PATH`; the
+installer prints the install command when it is missing.
 
 ## Other
 

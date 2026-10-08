@@ -1,0 +1,14 @@
+{
+  "name": "agents-dir",
+  "description": "Skills installed into ~/.agents/skills by npx skills or by hand, loaded live by Claude Code",
+  "owner": {
+    "name": "Raveen Kumar"
+  },
+  "plugins": [
+    {
+      "name": "agents-dir",
+      "source": "./",
+      "description": "Every skill in ~/.agents/skills"
+    }
+  ]
+}

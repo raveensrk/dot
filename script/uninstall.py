@@ -1,38 +1,55 @@
 #!/usr/bin/env python3
-"""Remove the stow links created by install.py. Dry-run by default; pass --apply to write."""
+"""Undo script/install.py. Dry-run by default; pass --apply to write.
+
+  script/uninstall.py             show the plan
+  script/uninstall.py --apply     do it
+  script/uninstall.py -h, --help  this text
+
+Unregisters the ~/.agents plugin from Claude Code, moves the files
+install.py copied to the Trash when they still match this repo (an edited
+copy stays and is reported), then runs ~/repos/agent1/uninstall.py. Keys merged
+into the harness settings files stay: they are the harness's live config now,
+and removing them could break it. Edit those files by hand if needed.
+"""
 
 from __future__ import annotations
 
 import argparse
+import filecmp
+import os
+import subprocess
 import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import dot_stow  # noqa: E402
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+import install  # noqa: E402
+from install_lib import Run  # noqa: E402
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("packages", nargs="*", help="package names (default: all)")
-    parser.add_argument("--apply", action="store_true", help="make changes (default: dry-run)")
-    args = parser.parse_args(argv)
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("-a", "--apply", action="store_true", help="make the changes")
+    opts = parser.parse_args(argv)
 
-    try:
-        packages = dot_stow.resolve(args.packages)
-    except KeyError as error:
-        parser.error(str(error))
+    run = Run(opts.apply)
+    if not run.apply:
+        print("dry run: nothing will change; pass --apply to write")
 
-    failed = False
-    for package in packages.values():
-        try:
-            plan = dot_stow.uninstall(package, apply=args.apply)
-        except dot_stow.StowError as error:
-            print(f"`-- {package.name}: {error}", file=sys.stderr)
-            failed = True
+    # Unregister first: the CLI reads the marketplace files trashed below.
+    install.install_lib.claude(run, install.AGENTS_DIR, True)
+
+    for src, dest, _home in install.COPIES:
+        src, dest = os.path.join(install.DOT, src), os.path.expanduser(dest)
+        if not os.path.isfile(dest):
             continue
-        for line in dot_stow.format_plan(plan, applied=args.apply):
-            print(line)
-    return 1 if failed else 0
+        if filecmp.cmp(src, dest, shallow=False):
+            run.trash(dest, "copy of %s" % install.tilde(src))
+        else:
+            run.say("keep", dest, "edited since install; differs from %s" % install.tilde(src))
+
+    print("\n== agent1", flush=True)
+    flags = ["--apply"] if run.apply else []
+    agent1 = subprocess.run([sys.executable, os.path.join(install.AGENT1, "uninstall.py"), *flags])
+    return 1 if run.conflicts or agent1.returncode else 0
 
 
 if __name__ == "__main__":
