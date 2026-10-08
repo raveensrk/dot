@@ -25,7 +25,13 @@
     "npm:@injaneity/pi-computer-use",
     "npm:pi-ask-user",
     "npm:@narumitw/pi-worktree",
-    "npm:pi-subagents",
+    {
+      "source": "npm:pi-subagents",
+      "extensions": [],
+      "skills": [],
+      "prompts": [],
+      "themes": []
+    },
     "npm:pi-thinking-box",
     "~/dot/config/pi",
     "~/repos/agent1"
