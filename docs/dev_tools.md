@@ -130,16 +130,7 @@ These are my programming language preferences.
 ### Games and 2D Graphics
 
 - Lua
-- Fennel
 - LÖVE (love2d)
-
-### Functional Programming
-
-- Haskell
-- Common Lisp
-- Clojure
-- ClojureScript
-- Racket
 
 ## Formats
 
