@@ -1,8 +1,8 @@
 {
   "theme": "dark",
   "enableInstallTelemetry": false,
-  "defaultProvider": "openrouter",
-  "defaultModel": "z-ai/glm-5.3-flash",
+  "defaultProvider": "xai",
+  "defaultModel": "grok-4.7",
   "hideThinkingBlock": false,
   "defaultTools": [
     "+codemode"
@@ -30,7 +30,7 @@
     "~/dot/config/pi",
     "~/repos/agent1"
   ],
-  "defaultThinkingLevel": "max",
+  "defaultThinkingLevel": "xhigh",
   "powerline": {
     "preset": "default",
     "placement": "above",
