@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest import mock
 
@@ -581,6 +581,61 @@ class MainExitStatusTest(unittest.TestCase):
 
         self.assertEqual(result, 0)
         self.assertEqual(sum(sync.counts.values()), 0)
+
+
+
+class ListModeTest(unittest.TestCase):
+    """--list: sync as usual, then only the lazygit list on stdout."""
+
+    def run_list(self, results, extra=()):
+        by_repo = {r.repo: r for r in results}
+        out, err = io.StringIO(), io.StringIO()
+        with mock.patch.object(sync, "collect_repos", return_value=list(by_repo)), \
+                mock.patch.object(sync, "dedup", side_effect=lambda repos: repos), \
+                mock.patch.object(sync, "sync_repo", side_effect=lambda repo: by_repo[repo]), \
+                mock.patch.object(sync, "prompt_for_attention") as prompt, \
+                mock.patch.object(sync.sys.stdin, "isatty", return_value=True), \
+                mock.patch.object(sync.sys, "argv", ["sync.py", "--file", "repos.txt", "--list", *extra]), \
+                redirect_stdout(out), redirect_stderr(err):
+            code = sync.main()
+        sync.LIST_MODE = False
+        return code, out.getvalue(), err.getvalue(), prompt
+
+    def test_stdout_holds_only_the_repos_for_lazygit(self):
+        code, out, err, prompt = self.run_list([
+            sync.Result("/r/clean", "ok", "Already up to date", False),
+            sync.Result("/r/pushed", "pushed", "Pushed 1 local commit(s)", False),
+            sync.Result("/r/dirty", "attention", "Uncommitted changes (2 file(s))", True),
+            sync.Result("/r/split", "attention", "Diverged (ahead 1, behind 1)", False),
+        ])
+        self.assertEqual(out.splitlines(), [
+            "/r/dirty  Uncommitted changes (2 file(s))",
+            "/r/split  Diverged (ahead 1, behind 1)",
+        ])
+        self.assertEqual(code, 2)
+        prompt.assert_not_called()
+        # No progress lines anywhere; the summary goes to stderr.
+        self.assertNotIn("SCAN", out + err)
+        self.assertIn("need attention", err)
+
+    def test_failures_go_to_stderr(self):
+        code, out, err, _ = self.run_list([
+            sync.Result("/r/offline", "failed", "Fetch failed - network unreachable", False),
+        ])
+        self.assertEqual(out, "")
+        self.assertIn("/r/offline", err)
+        self.assertIn("network unreachable", err)
+        self.assertEqual(code, 1)
+
+    def test_nothing_to_do_prints_nothing_and_exits_zero(self):
+        code, out, _, _ = self.run_list([sync.Result("/r/clean", "ok", "Already up to date", False)])
+        self.assertEqual((code, out), (0, ""))
+
+    def test_list_and_manual_are_refused_together(self):
+        with mock.patch.object(sync.sys, "argv", ["sync.py", "--list", "--manual"]), \
+                redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as ctx:
+            sync.main()
+        self.assertEqual(ctx.exception.code, 2)
 
 
 if __name__ == "__main__":

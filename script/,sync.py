@@ -15,6 +15,10 @@ the synced repos are reported first, then the ones needing attention, and each
 of those is prompted: y = open lazygit, n = leave it, i = ignore it now and on
 future runs (appended to ~/dot_local/list_of_ignores.txt), q = stop prompting.
 
+-l/--list is the non-interactive mode: the same sync, no prompts, and stdout
+holds only the repos to open in lazygit, one '<path>  <reason>' line each.
+Progress, failures and the summary go to stderr, so the list pipes cleanly.
+
 Behaviour per repo:
   - --manual                  -> open lazygit; do not fetch, merge, or push
   - not a git repo            -> skip silently
@@ -69,6 +73,10 @@ DEFAULT_REPO_DIR = Path.home() / "repos"
 # Personal, untracked skip list. Always applied, regardless of --file/--dir.
 LOCAL_IGNORE_LIST = Path.home() / "dot_local" / "list_of_ignores.txt"
 
+# --list mode: stdout carries only the lazygit list, everything else goes to
+# stderr and progress is dropped. Set once in main().
+LIST_MODE = False
+
 # --- tally ----------------------------------------------------------------
 counts = {"ok": 0, "pushed": 0, "synced": 0, "manual": 0, "attention": 0, "failed": 0}
 
@@ -111,7 +119,7 @@ def _line(tag, color, subject, message, width=0, state=None):
     if state is not None:
         columns.append(f"{state:<{STATE_WIDTH}}")
     columns.append(message)
-    print("  ".join(columns).rstrip())
+    print("  ".join(columns).rstrip(), file=sys.stderr if LIST_MODE else sys.stdout)
 
 
 def info(repo, message, width=0, state=None):
@@ -119,6 +127,8 @@ def info(repo, message, width=0, state=None):
 
 
 def scanning(repo, message, width=0, state=None):
+    if LIST_MODE:
+        return
     _line(SCAN, GREEN, repo, message, width, state)
 
 
@@ -460,6 +470,17 @@ def report(results):
             error(r.repo, r.message, width, _state(r.dirty))
 
 
+def list_attention(results):
+    """--list: the repos to open in lazygit on stdout, failures on stderr."""
+    attention = [r for r in results if r.status == "attention"]
+    failed = [r for r in results if r.status == "failed"]
+    width = column_width([r.repo for r in attention])
+    for r in attention:
+        print(f"{_short(r.repo):<{width}}  {r.message}")
+    for r in failed:
+        error(r.repo, r.message, column_width([f.repo for f in failed]), _state(r.dirty))
+
+
 def prompt_for_attention(results):
     """Ask, per repo needing attention, whether to open lazygit.
 
@@ -556,9 +577,17 @@ def main():
                         help="number of repositories to sync concurrently (default: 8)")
     parser.add_argument("-y", "--no-prompt", action="store_true",
                         help="report only; never prompt to open or ignore a repository")
+    parser.add_argument("-l", "--list", action="store_true",
+                        help="non-interactive: sync as usual, then print only the repos to "
+                             "open in lazygit, one '<path>  <reason>' line each on stdout; "
+                             "progress, failures and the summary go to stderr")
     args = parser.parse_args()
     if args.jobs < 1:
         parser.error("--jobs must be at least 1")
+    if args.list and args.manual:
+        parser.error("--list and --manual are opposites: --list never opens lazygit")
+    global LIST_MODE
+    LIST_MODE = args.list
 
     list_files = list(args.file)
     target_dirs = list(args.dir)
@@ -579,13 +608,17 @@ def main():
         for r in results:
             if r.status in counts:
                 counts[r.status] += 1
-        report(results)
-        if not args.no_prompt and sys.stdin.isatty():
+        if args.list:
+            list_attention(results)
+        else:
+            report(results)
+        if not args.list and not args.no_prompt and sys.stdin.isatty():
             failures = prompt_for_attention(results)
             counts["attention"] -= failures
             counts["failed"] += failures
 
-    print()
+    if not LIST_MODE:
+        print()
     print_summary(dirty_total)
     if counts["failed"]:
         return 1

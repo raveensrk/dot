@@ -43,6 +43,22 @@ otherwise point at a commit that is never checked out - and the next run would
 report the superproject as carrying an uncommitted change nobody made. There is
 no `--init`: submodules that were never initialized stay that way.
 
+## List mode
+
+Use `--list` (or `-l`) to run without prompts. The sync is the same - fetch,
+push what is ahead, fast-forward what is behind - but stdout holds only the
+repositories to open in `lazygit` and commit or push by hand, one
+`<path>  <reason>` line each:
+
+```bash
+script/,sync.py --list
+```
+
+Progress, failures (such as an unreachable remote) and the summary go to stderr,
+so the list pipes cleanly. The exit status is 0 when nothing needs you, 2 when
+the list is not empty and 1 when something failed. `--list` cannot be combined
+with `--manual`.
+
 ## Manual mode
 
 Use `--manual` (or `-m`) to open every discovered Git repository in `lazygit`.
