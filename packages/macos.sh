@@ -59,8 +59,6 @@ packages=(
 	direnv
 	entr
 	mpv
-	task
-	taskopen
 	zoxide
 )
 
