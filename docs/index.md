@@ -7,7 +7,6 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | Doc | What it covers |
 |---|---|
 | [Dev tools](dev_tools.md) | Tool inventory in preference order: editors, AI, CLI, and formats |
-| [Emacs](emacs.md) | Restored config, repository agenda discovery, isolated tests |
 | [Lazygit](lazygit.md) | Config path, `C` = commit message via pi |
 | [Newsboat](newsboat.md) | RSS reader: the "Chrome Teal" theme, config reference, and the traps found while building it |
 | [Repository sync](repository-sync.md) | `script/,sync.py`, which manages multiple Git repos |
@@ -21,7 +20,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
 | Path | Holds |
 |---|---|
 | `config/` | Application configs, sourced from `$DOT` (agent harness config via `script/install.py`) |
-| `script/`, `~/dot_local/script/` and the todo skill's `scripts/` | Executables on `PATH` (see `config/bashrc`) |
+| `script/` and `~/dot_local/script/` | Executables on `PATH` (see `config/bashrc`) |
 | `tests/` | `unittest` suites, run with `pytest` |
 | `packages/` | Per-tool install notes |
 | `docs/` | This wiki |
@@ -32,7 +31,7 @@ Wiki index for this dotfiles repo. Every doc under `docs/` is listed here.
   referenced from [AGENTS.md](../AGENTS.md).
 - Scripts go in `script/`, not `scripts/`. Machine-local scripts, secrets and
   overrides go in `~/dot_local/script/`. Both are wired into `PATH` in
-  `config/bashrc`, as is the todo skill's `~/repos/agent1/skills/todo/scripts/`.
+  `config/bashrc`.
   The old machine-local `~/script/` was merged into
   `~/dot_local/` in September 2026.
 
