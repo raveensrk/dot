@@ -87,7 +87,6 @@ wget https://tpo.pe/pathogen.vim -O ~/.vim/autoload/pathogen.vim
 
 git clone "git@github.com:Donaldttt/fuzzyy.git"                        || true # &
 git clone "git@github.com:easymotion/vim-easymotion"                   || true # &
-git clone "git@github.com:jceb/vim-orgmode.git"                       || true # &
 git clone "git@github.com:junegunn/fzf"                                || true # &
 git clone "git@github.com:junegunn/fzf.vim"                            || true # &
 git clone "git@github.com:junegunn/vim-easy-align"                     || true # &

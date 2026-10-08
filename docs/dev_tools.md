@@ -7,7 +7,6 @@ more. This file is under development, so more tools will be added.
 ## Text Editing
 
 - Vim / MacVim
-- Emacs
 
 ### Tags
 
@@ -120,7 +119,6 @@ These are my programming language preferences.
 ### Editor and Tooling Extension
 
 - Vim script
-- Emacs Lisp
 
 ### Data and Query
 

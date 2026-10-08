@@ -85,15 +85,6 @@ alias ,source_bash_profile="source ~/.bash_profile"
 alias q="exit"
 alias git_diff='git diff --minimal -w -b -M --word-diff'
 alias lg=lazygit
-# Tracked Emacs config in $DOT/config/emacs. -q skips ~/.emacs (a stale
-# Custom-written file) and ~/.emacs.d/init.el; user-emacs-directory stays
-# ~/.emacs.d, so straight.el and caches land there as usual.
-alias emacs='emacs -q -l "$DOT/config/emacs/init.el"'
-alias agenda="emacs -f org-agenda-list"
-alias agenda-nw="agenda -nw"
-if [[ -f "$HOME/repos/agent1/skills/todo/agenda2.sh" ]]; then
-	source "$HOME/repos/agent1/skills/todo/agenda2.sh"
-fi
 alias git_pickaxe="git log -p -S"
 alias grep="grep --color"
 alias tmux0="tmux -L SOCKET_0 attach || tmux -L SOCKET_0"
@@ -249,7 +240,6 @@ export PYTHONPATH+=":$HOME/work/practice/python"
 [ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
 export PATH+=":$HOME/project/work/wallpapers"
 export PATH+=":$HOME/Library/Python/3.14/bin"
-export PATH+=":$HOME/repos/agent1/skills/todo/scripts"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
 ,goto_file_directory() {
