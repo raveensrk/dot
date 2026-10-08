@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # {{{ ENVIRONMENT VARIABLES
 export EDITOR="vim"
 export ORG_ACTOR=pi
