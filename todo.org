@@ -1,5 +1,5 @@
 #+TITLE: TODO
-#+TODO: TODO IN_PROGRESS OPTIONAL LATER | DONE OBSOLETE
+#+TODO: TODO IN_PROGRESS | DONE OBSOLETE
 #+STARTUP: logdone
 * Tasks
 ** DONE Fix failing sync unresolvable-upstream test :sync:
@@ -36,7 +36,8 @@ Decided 2026-10-03: the code is right, the test was stale. A configured upstream
   Follow-up: readable tree output; live Pi settings untracked and gitignored.
   Shared settings.example.json excludes provider/model, skill paths, and
   changelog state. Verified live settings byte-identical and two tests pass.
-** LATER newsboat3 url to newsboat2. I have some local rss feed that i need to filter.
+** TODO newsboat3 url to newsboat2. I have some local rss feed that i need to filter.
+DEADLINE: <2026-12-15 Tue>
   :PROPERTIES:
   :ID: 07778c3f-b40a-4273-a89f-55097fdb79c3
   :END:
