@@ -88,6 +88,48 @@ class GrokCreditsParserTest(unittest.TestCase):
         self.assertIn("GROK_COOKIE", str(cm.exception))
         self.assertNotIn("abc", str(cm.exception))
 
+    def test_proxy_config_widget(self):
+        now = datetime(2026, 10, 9, 18, 41, 30, 457497, tzinfo=timezone.utc)
+        report = grok_credits.report_from_proxy(
+            {
+                "creditUsagePercent": 3.0,
+                "currentPeriod": {
+                    "type": "USAGE_PERIOD_TYPE_WEEKLY",
+                    "start": "2026-10-08T18:41:30.457497+00:00",
+                    "end": "2026-10-15T18:41:30.457497+00:00",
+                },
+            },
+            "GrokPro",
+        )
+        self.assertEqual(grok_credits.widget_line(report, now), "Grok 3%/14% \u00b7 6d")
+        self.assertEqual(report["plan"], "GrokPro")
+
+    def test_proxy_refuses_other_host(self):
+        with self.assertRaises(grok_credits.GrokCreditsError) as cm:
+            grok_credits._proxy_get("https://example.com/v1/user", "tok", 1)
+        self.assertIn("non-proxy", str(cm.exception))
+        self.assertNotIn("tok", str(cm.exception))
+
+    def test_pi_access_reads_unexpired_and_rejects_expired(self):
+        future = int((datetime.now(timezone.utc).timestamp() + 3600) * 1000)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "auth.json"
+            path.write_text(
+                json.dumps(
+                    {"xai": {"type": "oauth", "access": "abc", "refresh": "def", "expires": future}}
+                ),
+                encoding="utf-8",
+            )
+            self.assertEqual(grok_credits.pi_access(path), "abc")
+            path.write_text(
+                json.dumps({"xai": {"type": "oauth", "access": "abc", "refresh": "def", "expires": 1}}),
+                encoding="utf-8",
+            )
+            with self.assertRaises(grok_credits.GrokCreditsError) as cm:
+                grok_credits.pi_access(path)
+        self.assertIn("expired", str(cm.exception))
+        self.assertNotIn("abc", str(cm.exception))
+
     def test_cookie_from_har(self):
         payload = {
             "log": {

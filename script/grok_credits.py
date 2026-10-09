@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""CLI for the grok.com SuperGrok credit meter.
+"""CLI for SuperGrok credit usage, including the pi powerline widget.
 
-Auth is grok.com Cookie from GROK_COOKIE, --cookie, --har, or
-~/.local/share/grok_credits/session.har. GROK_TOKEN is an optional Bearer
-only when a cookie is also set.
+Auth, first match wins: PI_XAI_ACCESS, then ~/.pi/agent/auth.json xAI OAuth
+(cli-chat-proxy.grok.com). A grok.com Cookie from GROK_COOKIE, --cookie,
+--har, or GROK_HAR still wins when one of those is set. The default HAR is
+only the fallback when OAuth is absent. GROK_TOKEN is an optional Bearer
+only on the cookie path. This command reads usage. It does not write
+credentials.
 """
 
 from __future__ import annotations
@@ -26,6 +29,12 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 DEFAULT_ENDPOINT = "https://grok.com/grok_api_v2.GrokBuildBilling/GetGrokCreditsConfig"
 HAR_LABEL = "~/.local/share/grok_credits/session.har"
 DEFAULT_HAR = Path.home() / ".local/share/grok_credits/session.har"
+PI_AUTH = Path.home() / ".pi/agent/auth.json"
+PI_AUTH_LABEL = "~/.pi/agent/auth.json"
+PROXY_HOST = "cli-chat-proxy.grok.com"
+PROXY_USER = f"https://{PROXY_HOST}/v1/user?include=subscription"
+PROXY_BILLING = f"https://{PROXY_HOST}/v1/billing?format=credits"
+USER_ID_RE = re.compile(r"^[A-Za-z0-9._~-]{1,128}$")
 PLAN_NAME = "SuperGrok Heavy"
 __version__ = "0.1.0"
 
@@ -93,7 +102,9 @@ def resolve_auth(
     if path.is_file():
         src = "--har" if (har or "").strip() else ("GROK_HAR" if har_arg else HAR_LABEL)
         return OAuthCredentials(token="", source=src, cookie=cookie_from_har(path))
-    raise GrokCreditsError("No auth. Set GROK_COOKIE or pass --har.")
+    raise GrokCreditsError(
+        f"No auth. Pi xAI OAuth ({PI_AUTH_LABEL}), GROK_COOKIE, or --har."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -412,6 +423,179 @@ def widget_line(report: Dict[str, Any], now: Optional[datetime] = None) -> str:
     return f"Grok {head}{_left(end, now)}"
 
 
+def _exp_ms(expires: float) -> float:
+    """Pi stores Date.now() milliseconds. A value under 1e12 is seconds."""
+    if expires > 1_000_000_000_000:
+        return expires
+    return expires * 1000
+
+
+def pi_access(path: Path = PI_AUTH) -> Optional[str]:
+    """Unexpired xAI OAuth access token from Pi's auth file. None if absent."""
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise GrokCreditsError("Cannot read Pi auth file") from exc
+    cred = data.get("xai") if isinstance(data, dict) else None
+    if not isinstance(cred, dict) or cred.get("type") != "oauth":
+        return None
+    access = cred.get("access")
+    expires = cred.get("expires")
+    if not isinstance(access, str) or not access or isinstance(expires, bool) or not isinstance(expires, (int, float)):
+        raise GrokCreditsError("xAI OAuth credential incomplete")
+    if _exp_ms(float(expires)) <= datetime.now(timezone.utc).timestamp() * 1000:
+        raise GrokCreditsError("xAI OAuth token expired. A model call refreshes it.")
+    return access
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def _redact(value: object, token: str = "") -> str:
+    text = _redact_sensitive(value)
+    if token:
+        text = text.replace(token, "[REDACTED]")
+    return text
+
+
+def _proxy_get(
+    url: str,
+    token: str,
+    timeout: float,
+    extra: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme != "https" or parsed.hostname != PROXY_HOST:
+        raise GrokCreditsError("refusing non-proxy host")
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/json",
+        "X-XAI-Token-Auth": "xai-grok-cli",
+        "x-grok-client-version": "1.0.10",
+        "x-grok-client-mode": "interactive",
+    }
+    if extra:
+        headers.update(extra)
+    req = urllib.request.Request(url, headers=headers, method="GET")
+    opener = urllib.request.build_opener(_NoRedirect())
+    try:
+        with opener.open(req, timeout=timeout) as resp:
+            status = getattr(resp, "status", 200)
+            raw = resp.read(65_536)
+            final = resp.geturl()
+    except urllib.error.HTTPError as exc:
+        raise GrokCreditsError(f"HTTP {exc.code} from xAI usage endpoint") from exc
+    except urllib.error.URLError as exc:
+        raise GrokCreditsError(
+            f"Network error calling xAI usage endpoint: {_redact(exc, token)}"
+        ) from exc
+    if urllib.parse.urlparse(final).hostname != PROXY_HOST:
+        raise GrokCreditsError("refusing redirected xAI usage response")
+    if status != 200:
+        raise GrokCreditsError(f"HTTP {status} from xAI usage endpoint")
+    try:
+        data = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise GrokCreditsError("xAI usage endpoint returned non-JSON") from exc
+    if not isinstance(data, dict):
+        raise GrokCreditsError("xAI usage endpoint returned a non-object")
+    return data
+
+
+def _period_iso(value: object) -> Optional[str]:
+    if not isinstance(value, str) or not value or len(value) > 80:
+        return None
+    try:
+        datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    return value
+
+
+def _plan_name(value: object) -> str:
+    if isinstance(value, str) and value and len(value) <= 40 and "@" not in value:
+        return value
+    return "xAI"
+
+
+def report_from_proxy(config: Dict[str, Any], plan: str = "xAI") -> Dict[str, Any]:
+    """Map cli-chat-proxy billing config onto the widget report.
+
+    shortcut: percent-only. Upgrade when a response has monthlyLimit and no
+    creditUsagePercent.
+    """
+    percent = config.get("creditUsagePercent")
+    if isinstance(percent, bool) or not isinstance(percent, (int, float)):
+        raise GrokCreditsError("creditUsagePercent missing")
+    if not math.isfinite(percent) or percent < 0 or percent > 100:
+        raise GrokCreditsError("creditUsagePercent outside 0-100")
+    period = config.get("currentPeriod")
+    period = period if isinstance(period, dict) else {}
+    start = _period_iso(period.get("start")) or _period_iso(config.get("billingPeriodStart"))
+    end = _period_iso(period.get("end")) or _period_iso(config.get("billingPeriodEnd"))
+    used = float(percent)
+    return {
+        "plan": plan,
+        "credit_usage_percent": used,
+        "credit_usage_display": format_usage_display(used),
+        "billing_period_start": {"iso_utc": start} if start else None,
+        "billing_period_end": {"iso_utc": end} if end else None,
+        "reset_display": None,
+        "on_demand_enabled": False,
+        "source": {"auth": "pi-oauth", "endpoint": PROXY_BILLING},
+    }
+
+
+def fetch_proxy(token: str, timeout: float) -> Dict[str, Any]:
+    """Identity, then billing. userId is a header only, never stored."""
+    user = _proxy_get(PROXY_USER, token, timeout)
+    uid = user.get("userId")
+    if not isinstance(uid, str) or not USER_ID_RE.fullmatch(uid):
+        raise GrokCreditsError("xAI identity returned an unsafe user id")
+    bill = _proxy_get(PROXY_BILLING, token, timeout, {"x-userid": uid})
+    config = bill.get("config")
+    if not isinstance(config, dict):
+        raise GrokCreditsError("xAI billing response had no config")
+    return report_from_proxy(config, _plan_name(user.get("subscriptionTier")))
+
+
+def _explicit_cookie(cookie: Optional[str], har: Optional[str]) -> bool:
+    return bool(
+        (cookie or "").strip()
+        or (har or "").strip()
+        or os.environ.get("GROK_COOKIE", "").strip()
+        or os.environ.get("GROK_HAR", "").strip()
+    )
+
+
+def load_report(
+    endpoint: str,
+    timeout: float,
+    *,
+    allow_non_grok_endpoint: bool = False,
+    token: Optional[str] = None,
+    cookie: Optional[str] = None,
+    har: Optional[str] = None,
+) -> Dict[str, Any]:
+    """OAuth proxy unless the caller named a cookie or HAR."""
+    if not _explicit_cookie(cookie, har):
+        access = os.environ.get("PI_XAI_ACCESS", "").strip() or pi_access() or ""
+        if access:
+            return fetch_proxy(access, timeout)
+    return build_report(
+        endpoint,
+        timeout,
+        allow_non_grok_endpoint=allow_non_grok_endpoint,
+        token=token,
+        cookie=cookie,
+        har=har,
+    )
+
+
 def build_report(
     endpoint: str,
     timeout: float,
@@ -452,8 +636,23 @@ def print_plain(report: Dict[str, Any]) -> None:
     print(f"Source: {report['source']['auth']} → {report['source']['endpoint']}")
 
 
+def _long_help() -> str:
+    return (
+        f"{__doc__}\n"
+        "Env: PI_XAI_ACCESS, GROK_COOKIE, GROK_TOKEN, GROK_HAR.\n"
+        f"Reads: {PI_AUTH_LABEL} (xAI OAuth access only), {HAR_LABEL} on the cookie path.\n"
+        "Writes: nothing.\n"
+        "Exit: 0 ok, 1 auth/network/parse or an empty widget line, 2 bad arguments.\n"
+        "Example: python3 ~/dot/script/grok_credits.py --widget\n"
+    )
+
+
 def main(argv: Optional[List[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="Show grok.com SuperGrok credit usage")
+    args_in = sys.argv[1:] if argv is None else argv
+    if args_in[:1] == ["help"]:
+        print(_long_help())
+        return 0
+    parser = argparse.ArgumentParser(description="Show SuperGrok credit usage for the powerline")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     parser.add_argument(
         "--har",
@@ -483,7 +682,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        report = build_report(
+        report = load_report(
             endpoint=args.endpoint,
             timeout=args.timeout,
             allow_non_grok_endpoint=args.allow_non_grok_endpoint,
@@ -492,7 +691,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             har=args.har,
         )
     except GrokCreditsError as exc:
-        print(f"error: {_redact_sensitive(exc)}", file=sys.stderr)
+        print(f"error: {_redact(exc)}", file=sys.stderr)
         return 1
 
     if args.json:
