@@ -10,7 +10,8 @@ Examples:
   script/install.py --apply       # write it
   script/install.py --check       # exit 1 when a harness drifted from this repo
   script/uninstall.py --apply     # remove the files this wrote
-  script/install.py -h, --help    # this text
+  script/install.py -h, --help    # short help
+  script/install.py help          # long help
 
 What goes where:
   config/pi/settings.json      keys merged into ~/.pi/agent/settings.json
@@ -35,6 +36,10 @@ is skipped.
 
 Migration: a target that is still a symlink into this repo (the old stow
 install) is moved to the Trash and replaced with a real file.
+
+Environment: HOME selects the destination root; AGENT1 overrides the agent1 repo.
+Exit codes: 0 success; 1 conflict, drift with --check, or agent1 failure;
+2 invalid arguments.
 
 Tests: timeout 60 python3 -m pytest tests/test_install.py
 """
@@ -159,9 +164,13 @@ def copy_step(run, src, dest, home):
 
 
 def main(argv=None):
-    summary, notes = __doc__.split("\n\n", 1)
-    parser = argparse.ArgumentParser(description=summary, epilog=notes,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    if argv is None:
+        argv = sys.argv[1:]
+    if argv == ["help"]:
+        print(__doc__)
+        return 0
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n", 1)[0],
+                                     epilog="Example: script/install.py --check")
     parser.add_argument("-a", "--apply", action="store_true", help="make the changes")
     parser.add_argument("-c", "--check", action="store_true",
                         help="exit 1 when anything would change (drift)")

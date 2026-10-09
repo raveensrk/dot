@@ -80,6 +80,14 @@ class Installer(unittest.TestCase):
         links = [p for p in self.home.rglob("*") if p.is_symlink() and ".Trash" not in p.parts]
         self.assertEqual(links, [], "the installer never makes a symlink")
 
+    def test_help_writes_nothing(self):
+        for arg in ("-h", "--help", "help"):
+            with self.subTest(arg=arg):
+                done = self.run_script(arg)
+                self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+                self.assertNotIn("dry run:", done.stdout)
+                self.assertFalse((self.home / ".pi" / "agent" / "models.json").exists())
+
     def test_stow_link_is_replaced_by_a_real_file(self):
         live = self.home / ".pi" / "agent" / "settings.json"
         live.symlink_to(DOT / "config" / "pi" / "settings.json")
