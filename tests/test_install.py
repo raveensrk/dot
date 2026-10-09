@@ -74,6 +74,8 @@ class Installer(unittest.TestCase):
         agents = (DOT / "config" / "agents" / "AGENTS.md").read_text()
         self.assertEqual((self.home / ".claude" / "CLAUDE.md").read_text(), agents)
         self.assertEqual((self.home / ".pi" / "agent" / "AGENTS.md").read_text(), agents)
+        self.assertEqual((self.home / "AGENTS.md").read_text(),
+                         (DOT / "config" / "agents" / "home_AGENTS.md").read_text())
         mcp = json.loads((self.home / ".claude.json").read_text())["mcpServers"]["cua-driver"]
         self.assertEqual(mcp["command"], str(self.home / ".local/bin/cua-driver"))
         self.assertTrue((self.home / ".agents" / ".claude-plugin" / "plugin.json").is_file())

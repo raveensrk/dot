@@ -20,6 +20,8 @@ What goes where:
   config/claude/settings.json  keys merged into ~/.claude/settings.json
   config/agents/AGENTS.md      copied to ~/.pi/agent/AGENTS.md,
                                ~/.claude/CLAUDE.md, ~/.codex/AGENTS.md
+  config/agents/home_AGENTS.md copied to ~/AGENTS.md (machine-wide, any
+                               agent working under ~)
   config/agents/mcp.json       mcpServers merged into ~/.pi/agent/mcp.json
                                and ~/.claude.json
   config/agents/claude_plugin  copied to ~/.agents/.claude-plugin and
@@ -79,6 +81,7 @@ COPIES = [
     ("config/agents/AGENTS.md", "~/.pi/agent/AGENTS.md", PI),
     ("config/agents/AGENTS.md", "~/.claude/CLAUDE.md", CLAUDE),
     ("config/agents/AGENTS.md", "~/.codex/AGENTS.md", CODEX),
+    ("config/agents/home_AGENTS.md", "~/AGENTS.md", HOME),
     ("config/agents/claude_plugin/marketplace.json", "~/.agents/.claude-plugin/marketplace.json", CLAUDE),
     ("config/agents/claude_plugin/plugin.json", "~/.agents/.claude-plugin/plugin.json", CLAUDE),
     ("config/pi/extensions/powerline-footer/theme.json",
