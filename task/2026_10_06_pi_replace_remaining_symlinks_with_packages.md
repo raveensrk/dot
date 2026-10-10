@@ -22,3 +22,5 @@ Remaining symlinked loading paths to convert:
 
 Verify each step the way the agent1 package was verified: `timeout 120 pi -p "reply with just: ok"` clean, a positive load probe (session custom entries from the extensions), `pi list` resolves the package paths, and no skill-collision warnings at startup.
 Must land on both computers: volt and atlas. On each machine: run the same migration (dot package + agent1 skills into the package), then verify - timeout 120 pi -p "reply with just: ok" clean, pi list resolves both packages, no symlink left under ~/.pi/agent for loading, git status clean in both repos.
+
+Atlas verified 2026-10-10: dot extensions load from the ~/dot/config/pi package, agent1 skills from the agent1 package (pi.skills), ~/.pi/agent/extensions is a real dir, no symlinks under ~/.pi/agent; pi -p ok with no collision warnings; pi list resolves both packages; dot git clean. Remaining: volt - run the same checks there, then finish this task.
