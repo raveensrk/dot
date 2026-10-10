@@ -10,7 +10,8 @@
   "pi": {
     "extensions": [
       "extensions/*.ts",
-      "extensions/session-name/index.ts"
+      "extensions/session-name/index.ts",
+      "extensions/plan_mode/index.ts"
     ]
   }
 }
