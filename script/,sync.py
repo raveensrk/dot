@@ -36,6 +36,28 @@ Behaviour per repo:
                                  commits it moved (failure -> needs attention)
   - up to date                -> OK
   - ignored (via --ignore or 'ignore:' list lines) -> skipped silently
+
+Automatic mode follows each branch's configured upstream, not an assumed
+'origin' or matching branch name. Git commands are noninteractive and time out
+after 60 seconds. Exit status: 0 success, 1 failure, 2 manual attention needed.
+--list cannot be combined with --manual.
+
+Submodules are skipped because a superproject pins each one at a detached HEAD,
+which would read as 'needs attention' on every run. After a fast-forward the
+script runs `git submodule update --recursive`: `git merge` takes no
+--recurse-submodules and submodule.recurse does not cover merge, so a moved
+gitlink would otherwise never be checked out and the next run would report a
+change nobody made. No --init: uninitialized submodules stay that way.
+
+Sources: by default ~/dot_local/list_of_repos.txt plus a recursive scan of
+~/repos. Repeatable --file and --dir replace both defaults. List-file paths
+expand ~ and environment variables; relative paths resolve from the list file.
+
+Ignoring, three ways: --ignore/-i PATTERN (repeatable), 'ignore:' lines in a
+--file list, and ~/dot_local/list_of_ignores.txt (one path or glob per line,
+# comments and blank lines skipped), which applies always, even with --file
+or --dir. A plain path skips that repo and everything beneath it; a glob such
+as */build/_deps/* matches shell-style.
 """
 
 import argparse

@@ -1,3 +1,17 @@
+# Lazygit, the git TUI. A plain `lazygit` loads this file because
+# config/bashrc sets LG_CONFIG_FILE=$DOT/config/lazygit.yml; alias: lg.
+# LG_CONFIG_FILE may be a comma-separated list; later files override earlier.
+# Install: packages/lazygit.sh (Linux) or brew via packages/macos.sh.
+# Tests: tests/test_lazygit.py.
+#
+# `C` on the Files tab runs config/lazygit_pi_commit.sh: abort if nothing is
+# staged, pipe `git diff --cached` into `pi -p` (no tools, no session), then
+# open the git editor with that message so you can edit it before it lands.
+#
+# Config: https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+# Custom commands:
+#   https://github.com/jesseduffield/lazygit/blob/master/docs/Custom_Command_Keybindings.md
+
 customCommands:
   - key: "C"
     context: "files"

@@ -19,8 +19,43 @@ would sync it, drops every blob, and rewrites home paths as ~.
 
 Default FILE: ~/dot/config/iterm2/com.googlecode.iterm2.plist
 
-Wiring, per clone (see packages/iterm2.md):
-  git config --local include.path ../.gitconfig
+Wiring, per clone, or git stores the raw file:
+  git -C ~/dot config --local include.path ../.gitconfig
+
+Sync setup, once per machine:
+  1. Settings (Cmd-,) > General > Settings > tick "Load settings from a
+     custom folder or URL", path ~/dot/config/iterm2.
+  2. Save changes: "Save changes on quit". Never the Automatic option: it
+     writes on every change and widens the window for a conflict.
+  3. "Save Now" writes at once. Quit and relaunch so the folder is read.
+
+What git stores: only keys iTerm2 itself would sync
+(iTermRemotePreferencesKeyIsSyncable): NS/SU/NoSync/UK prefixed keys, Secure
+Input, AppVersion, PrefsCustomFolder and LoadPrefsFromCustomFolder are
+dropped. Every <data> blob is dropped, so saved AI prompts
+(CodeReviewSavedPrompts) and Workgroups stay per machine. /Users/<name> and
+/home/<name> become ~.
+
+Two machines:
+  1. Before launching iTerm2: git -C ~/dot pull --rebase
+  2. After quitting it: commit and push config/iterm2/com.googlecode.iterm2.plist
+  3. Never change settings on both machines at once: there is no merge, only
+     a readable conflict.
+
+Check:
+  iterm2_prefs_redact --check ~/dot/config/iterm2/com.googlecode.iterm2.plist
+  git show :config/iterm2/com.googlecode.iterm2.plist | rg -c "/Users/|<data>"
+  timeout 120 python3 -m pytest tests/test_iterm2_prefs_redact.py
+
+Layouts: Window > Save Window Arrangement stores it in the synced file; on
+another machine, Window > Arrangements > Restore Window Arrangement (as Tabs).
+
+Known traps:
+  1. The custom-folder box ticked with no folder set loads nothing and shows a
+     warning sign. Set the folder or untick it.
+  2. Profile Working Directory values arrive as ~, which iTerm2 expands. If a
+     tab opens in the wrong place, drop that key here instead of rewriting it.
+  3. A blob-backed setting is absent on a second machine until set there.
 """
 
 from __future__ import annotations

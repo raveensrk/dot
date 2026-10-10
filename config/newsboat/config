@@ -1,3 +1,43 @@
+# Newsboat, the RSS reader. Feeds live in config/newsboat/urls. Run it with
+# the newsboat2 alias (config/bashrc), which passes both files explicitly.
+# Install: build the latest release from https://newsboat.org/releases.
+# Tests: tests/test_newsboat.py. Manual: man newsboat,
+# https://newsboat.org/releases/2.43/docs/newsboat.html
+# 256-colour chart: https://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+#
+# Traps (none are in the man page):
+#   1. Feeds have unread_count, not unread: `highlight-feed "unread > 50"`
+#      parses, then fails at render and leaves the feed list empty. Valid
+#      feed attributes: unread_count, total_count, title, tags, feedurl,
+#      latest_article_age.
+#   2. Any highlight rule on a list view (highlight feedlist/articlelist,
+#      highlight-article, highlight-feed) paints over listfocus, so the
+#      selection bar only colours the padding. Use listnormal(_unread) and
+#      listfocus(_unread). highlight article (the body) is safe.
+#   3. hint-* elements sit on the info bar but don't inherit its background:
+#      give each one the info background or the bar looks patchy.
+#   4. `newsboat -x print-unread` checks syntax only; a filter naming a
+#      missing attribute still passes. Verify by rendering.
+#   5. With LANG unset newsboat aborts with iconv_open('', 'WCHAR_T') failed
+#      before the real error. Set LANG/LC_ALL when testing.
+#   6. No key deletes a feed. E (edit-urls) opens the urls file; Ctrl+R
+#      (reload-urls) re-reads it after an outside edit.
+#   7. Read and unread differ only by colour, so a partly read feed looks
+#      the same as an unread one (no (unread/total) counts).
+#
+# Screen element names: top bar = title + *-title-format; rows = listnormal,
+# listnormal_unread; highlighted row = listfocus, listfocus_unread; key bar =
+# info, hint-key, hint-description; article = article + highlight article;
+# ~ filler = end-of-text-marker. The reload progress line is not themable.
+# ? lists the keys for the current screen.
+#
+# Check a change: pytest tests/test_newsboat.py, then render against a copy
+# of the cache and assert the escape codes:
+#   cp ~/.newsboat/cache.db ~/tmp/vis.db
+#   tmux new-session -d -s nb -x 100 -y 20 'LANG=en_US.UTF-8 newsboat -C config/newsboat/config -u config/newsboat/urls -c ~/tmp/vis.db'
+#   tmux capture-pane -t nb -p -e | cat -v
+# The focused row must be one run with 48;5;23 set once and no [0m holes.
+
 refresh-on-startup yes
 save-path "/Users/raveenkumarwork/repos/work/reading_list/to_read"
 
