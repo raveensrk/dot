@@ -1,4 +1,13 @@
 #!/bin/bash
+# Install the macOS brew and MacPorts packages this machine uses.
+#
+# Reads nothing. Writes through brew and port. Needs a network, and sudo for port.
+# exit: 0 for help, otherwise the install command's status
+
+case "${1:-}" in
+	-h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0 ;;
+	help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0 ;;
+esac
 
 xcode-select --install
 
