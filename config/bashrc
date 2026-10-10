@@ -16,6 +16,9 @@ export COLORTERM="Yes"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH+="$HOME/dot_local/script:$PATH"
 export PATH="$DOT/script:$PATH"
+# ble.sh, interactive only, not attached yet. ble-attach is config/blesh.sh, after fzf.
+# shellcheck disable=1091
+[[ $- == *i* && -r $HOME/.local/share/blesh/ble.sh ]] && source -- "$HOME/.local/share/blesh/ble.sh" --attach=none
 # shellcheck disable=1091
 source "$DOT/script/header.sh"
 # shellcheck disable=1091

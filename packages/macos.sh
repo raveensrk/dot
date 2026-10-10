@@ -27,6 +27,7 @@ packages=(
 	gnuplot
 	graphicsmagick
 	grep
+	gawk
 	htop
 	iina
 	imagemagick
