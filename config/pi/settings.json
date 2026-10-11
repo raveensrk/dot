@@ -36,7 +36,7 @@
     "~/dot/config/pi",
     "~/repos/agent1"
   ],
-  "defaultThinkingLevel": "xhigh",
+  "defaultThinkingLevel": "low",
   "powerline": {
     "preset": "default",
     "placement": "above",
@@ -113,8 +113,6 @@
     "xai/grok-4.7",
     "opencode/deepseek-v4.1-flash",
     "opencode/glm-5.3-flash",
-    "openai-codex/gpt-6.1-sol",
-    "openai-codex/gpt-6-luna",
     "openrouter/anthropic/claude-opus-5.5",
     "opencode-go/deepseek-v4.1-flash",
     "opencode/gpt-6.1-sol",

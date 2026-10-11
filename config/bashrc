@@ -354,3 +354,5 @@ iterm-tab-name ()
 { 
     printf "\033]1;$@\007"
 }
+
+alias himalaya="RUST_LOG=error himalaya"

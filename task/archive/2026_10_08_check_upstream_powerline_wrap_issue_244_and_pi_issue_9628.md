@@ -1,7 +1,7 @@
 ---
 id: "ca9xxgb0es"
 title: "Check upstream powerline wrap issue 244 and pi issue 9628"
-state: "todo"
+state: "done"
 due: "2026-10-21"
 priority: "B"
 tag: []
@@ -9,7 +9,7 @@ repeat: ""
 effort: ""
 postpone: 0
 created: "2026-10-08"
-closed: ""
+closed: "2026-10-11T21:11"
 ---
 
 Two-week check on upstream items from 2026-10-07.

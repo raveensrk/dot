@@ -1,7 +1,7 @@
 ---
 id: "a8b2zhpend"
 title: "Follow up PR 247: unlimited powerline wrap with a wrap_compact setting"
-state: "todo"
+state: "done"
 due: "2026-10-12"
 priority: "A"
 tag: ["pi"]
@@ -9,7 +9,7 @@ repeat: ""
 effort: ""
 postpone: 0
 created: "2026-10-11"
-closed: ""
+closed: "2026-10-11T21:10"
 ---
 
 Follow-up to https://github.com/nicobailon/pi-powerline-footer/pull/247
@@ -26,7 +26,7 @@ ca9x (check upstream powerline wrap issue 244).
    space on the right side of each row. Fill each row to the right edge and
    break where the width runs out.
 4. Proposal: a new `secondaryOverflow` setting value, `wrap_compact`, so the
-   current wrap stays as it is for anyone who likes it.
+   current wrap stays as it is for anyone who likes it. 1,2,3 will go into a new option.
 
 ## Acceptance
 
@@ -34,3 +34,12 @@ ca9x (check upstream powerline wrap issue 244).
   secondary-row item shows, however many rows that takes.
 - Each row but the last reaches the right edge; no ragged gap.
 - `>` still separates items.
+
+## References
+
+1. `~/Desktop/Screen Recording 2026-10-11 at 8.55.16 PM.mov` (35 s) - current
+   `wrap` in pi: the secondary row breaks before `opencode`, leaving a gap on
+   the right of the first row, and the `>` at the break is gone.
+2. `~/Desktop/Screen Recording 2026-10-11 at 9.04.00 PM.mov` (15 s) - mock in
+   vim of the wanted `wrap_compact`: the row fills to the right edge, `>`
+   stays before `opencode`, and the break falls mid-text (`rese|ts`).
