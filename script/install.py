@@ -29,6 +29,9 @@ What goes where:
                                ~/.agents/skills (pi's Agent Skills dir) as the
                                plugin agents-dir@agents-dir
   powerline theme.json         copied to the fixed path pi-powerline-footer reads
+  script/*_go/                 each Go program is built with `go build` into
+                               ~/.local/bin (BUILDS); rebuilt when a source
+                               file is newer than the binary
 
 Merge rule: only keys present in the source are touched. A dict merges key
 by key, a list gains the items it lacks, anything else is replaced. Keys the
@@ -86,6 +89,11 @@ COPIES = [
     ("config/agents/claude_plugin/plugin.json", "~/.agents/.claude-plugin/plugin.json", CLAUDE),
     ("config/pi/extensions/powerline-footer/theme.json",
      "~/.pi/agent/extensions/powerline-footer/theme.json", PI),
+]
+
+# (Go source dir in this repo, installed binary); built by build_step.
+BUILDS = [
+    ("script/ai_model_bench_report_go", "~/.local/bin/ai-model-bench-report"),
 ]
 
 # Links the stow install made, now replaced by the package or by COPIES.
@@ -166,6 +174,24 @@ def copy_step(run, src, dest, home):
             writer.write(reader.read())
 
 
+def build_step(run, src, dest):
+    """Build a Go program into DEST when DEST is missing or older than its source."""
+    src, dest = os.path.join(DOT, src), os.path.expanduser(dest)
+    built = os.path.getmtime(dest) if os.path.isfile(dest) else 0
+    newest = max(os.path.getmtime(os.path.join(src, name)) for name in os.listdir(src)
+                 if name.endswith(".go") or name in ("go.mod", "go.sum"))
+    if newest <= built:
+        return run.say("ok", dest)
+    run.changes += 1
+    run.say("build", dest, "go build from %s" % tilde(src))
+    if not run.apply:
+        return
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    if subprocess.run(["go", "build", "-o", dest, "."], cwd=src).returncode:
+        run.conflicts += 1
+        run.say("conflict", dest, "go build failed")
+
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
@@ -188,6 +214,8 @@ def main(argv=None):
         merge_step(run, src, dest, home, absolute)
     for src, dest, home in COPIES:
         copy_step(run, src, dest, home)
+    for src, dest in BUILDS:
+        build_step(run, src, dest)
     install_lib.claude(run, AGENTS_DIR, False)
 
     print("\n== agent1", flush=True)
