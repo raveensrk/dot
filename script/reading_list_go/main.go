@@ -50,7 +50,8 @@ options:
 
 REF is any part of a URL, matching exactly one link across every repo.
 add writes to the reading_list.yaml of the git repo you are in, else
-~/repos/work. Lists are read from ~/dot and every ~/repos/*/reading_list.yaml.
+~/repos/work. Lists are found anywhere under ~, skipping hidden folders,
+~/Library, node_modules and other build folders (about 0.3 s per call).
 
 examples:
   ,reading_list list -t pi
@@ -164,14 +165,13 @@ func parseFlags(args []string) (options, []string, error) {
 	return o, words, nil
 }
 
-// allLists reads ~/dot and every ~/repos/*/reading_list.yaml, sorted by repo.
+// allLists reads every reading_list.yaml under ~, sorted by repo.
 func allLists() ([]*list, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return nil, err
 	}
-	paths, _ := filepath.Glob(filepath.Join(home, "repos", "*", fileName))
-	paths = append(paths, filepath.Join(home, "dot", fileName))
+	paths := findFiles(home)
 	var lists []*list
 	for _, p := range paths {
 		l, err := load(p)
@@ -456,4 +456,37 @@ func cmdFiles() error {
 		fmt.Println(strings.Replace(l.path, home, "~", 1))
 	}
 	return nil
+}
+
+// skipDirs never hold a reading list and are slow to walk. ~/Library alone took
+// a whole-home search from 0.6 s to 78.1 s (rg, 2026-10-11).
+var skipDirs = map[string]bool{
+	"Library": true, "node_modules": true, "target": true, "dist": true,
+	"vendor": true, "Applications": true, "Pictures": true, "Movies": true, "Music": true,
+}
+
+// findFiles walks HOME for reading_list.yaml, skipping hidden folders (.git,
+// .Trash, .cache, .build, ...) and skipDirs. Unreadable folders are skipped.
+func findFiles(home string) []string {
+	var paths []string
+	filepath.WalkDir(home, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			if d != nil && d.IsDir() {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if d.IsDir() {
+			name := d.Name()
+			if path != home && (strings.HasPrefix(name, ".") || skipDirs[name]) {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if d.Name() == fileName {
+			paths = append(paths, path)
+		}
+		return nil
+	})
+	return paths
 }
