@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""Run every repo's install.py under ~/repos and ~/dot, after one approval.
+
+1. Find every install.py under ~/repos and ~/dot (hidden, build and
+   dependency folders skipped) and list them, numbered.
+2. Run each one without flags, its dry run, and show its plan.
+3. Ask once: y applies all of them, anything else applies none.
+4. Run each with --apply, one after another, with no keyboard input, so an
+   installer that tries to ask a question fails instead of waiting. Stop at
+   the first failure and list the ones not run.
+
+Every installer follows one convention: a dry run with no flag, -a/--apply to
+change things. An installer that another one already runs is listed but not
+run twice (CHAINED below).
+
+usage:
+  ,install2            preview, ask, then apply
+  ,install2 -n         preview only; never asks, changes nothing
+  ,install2 -h | --help | help
+"""
+import os
+import subprocess
+import sys
+
+HOME = os.path.expanduser("~")
+ROOTS = [os.path.join(HOME, "repos"), os.path.join(HOME, "dot")]
+
+# Folders that never hold an installer of the user's: dependencies, build
+# output, and repos that are not the user's (odysseus).
+SKIP = {"node_modules", "target", "dist", "build", "vendor", "__pycache__",
+        "venv", "site-packages", "odysseus"}
+
+# installer -> the installer that already runs it. ~/dot/script/install.py
+# ends by running agent1's (see its docstring).
+CHAINED = {
+    os.path.join(HOME, "repos", "agent1", "install.py"): os.path.join(HOME, "dot", "script", "install.py"),
+}
+
+DRY_TIMEOUT = 120
+APPLY_TIMEOUT = 600
+
+
+def tilde(path):
+    return path.replace(HOME, "~", 1)
+
+
+def find():
+    """Every install.py under ROOTS, sorted; dot's first, since it is the base."""
+    found = []
+    for root in ROOTS:
+        for folder, dirs, files in os.walk(root):
+            dirs[:] = sorted(d for d in dirs if not d.startswith(".") and d not in SKIP)
+            if "install.py" in files:
+                found.append(os.path.join(folder, "install.py"))
+    dot = os.path.join(HOME, "dot")
+    return sorted(found, key=lambda p: (not p.startswith(dot + os.sep), p))
+
+
+def command(path, *flags):
+    """Run PATH by its own shebang when it is executable, else with python3."""
+    if os.access(path, os.X_OK):
+        return [path, *flags]
+    return ["python3", path, *flags]
+
+
+def run(path, flags, timeout, capture):
+    """Run one installer from its own folder with no keyboard input."""
+    return subprocess.run(command(path, *flags), cwd=os.path.dirname(path),
+                          stdin=subprocess.DEVNULL, timeout=timeout,
+                          capture_output=capture, text=True)
+
+
+def main(argv):
+    # Line by line, so the plans and the messages print in order when piped.
+    sys.stdout.reconfigure(line_buffering=True)
+    if argv[:1] in (["-h"], ["--help"], ["help"]):
+        print(__doc__.strip() if argv[0] == "help" else __doc__.split("\n\n")[0])
+        return 0
+    preview_only = argv[:1] in (["-n"], ["--dry-run"])
+    if argv and not preview_only:
+        print(f",install2: unknown argument {argv[0]}; try: ,install2 --help", file=sys.stderr)
+        return 2
+
+    installers = find()
+    runnable = [p for p in installers if p not in CHAINED]
+    print(f"{len(installers)} installers, {len(runnable)} to run:")
+    for n, path in enumerate(installers, 1):
+        note = f"   (run by {tilde(CHAINED[path])})" if path in CHAINED else ""
+        print(f"  {n}. {tilde(path)}{note}")
+
+    # Dry runs: every question an installer could raise shows up here,
+    # before anything is applied.
+    for path in runnable:
+        print(f"\n== {tilde(path)} (dry run)")
+        try:
+            result = run(path, [], DRY_TIMEOUT, capture=True)
+        except subprocess.TimeoutExpired:
+            print(f",install2: dry run timed out after {DRY_TIMEOUT} s; nothing applied", file=sys.stderr)
+            return 1
+        print((result.stdout + result.stderr).rstrip() or "(no output)")
+        if result.returncode != 0:
+            print(f",install2: dry run exited {result.returncode}; fix it, then run ,install2 again. Nothing applied.",
+                  file=sys.stderr)
+            return 1
+
+    if preview_only:
+        print("\npreview only (-n): nothing applied")
+        return 0
+    if not sys.stdin.isatty():
+        print(",install2: approval needs a terminal; run ,install2 in one. Nothing applied.", file=sys.stderr)
+        return 1
+    try:
+        answer = input(f"\nApply all {len(runnable)} with --apply? [y/N] ").strip().lower()
+    except EOFError:
+        answer = ""
+    if answer != "y":
+        print("nothing applied")
+        return 0
+
+    for done, path in enumerate(runnable):
+        print(f"\n== {tilde(path)} --apply", flush=True)
+        try:
+            result = run(path, ["--apply"], APPLY_TIMEOUT, capture=False)
+            code = result.returncode
+        except subprocess.TimeoutExpired:
+            code = f"timeout after {APPLY_TIMEOUT} s"
+        if code != 0:
+            print(f"\n,install2: {tilde(path)} failed ({code}); stopped.", file=sys.stderr)
+            left = runnable[done + 1:]
+            if left:
+                print("not run:", file=sys.stderr)
+                for path in left:
+                    print(f"  {tilde(path)}", file=sys.stderr)
+            return 1
+    print(f"\nall {len(runnable)} applied")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
