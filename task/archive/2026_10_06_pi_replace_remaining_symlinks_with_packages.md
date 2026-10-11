@@ -1,7 +1,7 @@
 ---
 id: "m9kaqhcv2x"
 title: "pi: replace remaining symlinks with packages"
-state: "todo"
+state: "done"
 due: ""
 priority: "C"
 tag: ["pi"]
@@ -9,7 +9,7 @@ repeat: ""
 effort: ""
 postpone: 0
 created: "2026-10-06"
-closed: ""
+closed: "2026-10-12T00:03"
 ---
 
 Finish the pi package migration: pi must load everything from packages, not from symlinked dirs. Done already (2026-10-06): agent1 is a live local package - `~/repos/agent1/package.json` declares `harness/extensions/*.ts`, `~/dot/config/pi/settings.json` lists `"~/repos/agent1"` in `packages`; the 8 installer symlinks in `config/pi/extensions/` were deleted and agent1's `install.py` lost its pi-extension target. Global rule: no git repo contains symlinks; live-state links outside repos are allowed but are being retired for pi too.
@@ -35,3 +35,7 @@ Atlas verified 2026-10-10: dot extensions load from the ~/dot/config/pi package,
 
 
 Retest same day: default `pi -p "reply with just: ok"` answered ok in 6 s; `--model xai/grok-4.7:low` in 7 s, with `-ne` in 8 s. The 120 s hang did not reproduce. Volt passes all four checks; Atlas remains.
+
+## Log
+
+- done 2026-10-12 00:03: Volt 2026-10-11 checks already in the note: 0 loading symlinks under ~/.pi/agent, pi list resolves ~/dot/config/pi and ~/repos/agent1, no skill-collision warnings. User closed on Volt evidence; Atlas not rechecked this session.
