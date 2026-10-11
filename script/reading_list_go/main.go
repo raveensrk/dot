@@ -36,6 +36,7 @@ Manage the links to read: one reading_list.yaml per repo, one line per link.
 
 commands:
   list [-s STATE] [-t TAG] [-r REPO]   show links (default: to_read, every repo)
+  files                                print the path of every reading_list.yaml
   add URL [TITLE...] [-t TAG]...       add a to_read link to this repo's list
   done REF [-r N]                      mark read, optionally rated 1-10
   tag REF TAG...                       set a link's tags (replaces them)
@@ -99,6 +100,8 @@ func run(args []string) error {
 	switch cmd {
 	case "list":
 		return cmdList(opts)
+	case "files":
+		return cmdFiles()
 	case "add":
 		return cmdAdd(words, opts)
 	case "done":
@@ -440,5 +443,17 @@ func cmdTag(words []string) error {
 		return err
 	}
 	fmt.Printf("tagged in %s: %s [%s]\n", l.repo, title(l.entries[i]), strings.Join(words[1:], ", "))
+	return nil
+}
+
+func cmdFiles() error {
+	lists, err := allLists()
+	if err != nil {
+		return err
+	}
+	home, _ := os.UserHomeDir()
+	for _, l := range lists {
+		fmt.Println(strings.Replace(l.path, home, "~", 1))
+	}
 	return nil
 }
