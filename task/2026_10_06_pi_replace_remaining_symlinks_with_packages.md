@@ -24,3 +24,14 @@ Verify each step the way the agent1 package was verified: `timeout 120 pi -p "re
 Must land on both computers: volt and atlas. On each machine: run the same migration (dot package + agent1 skills into the package), then verify - timeout 120 pi -p "reply with just: ok" clean, pi list resolves both packages, no symlink left under ~/.pi/agent for loading, git status clean in both repos.
 
 Atlas verified 2026-10-10: dot extensions load from the ~/dot/config/pi package, agent1 skills from the agent1 package (pi.skills), ~/.pi/agent/extensions is a real dir, no symlinks under ~/.pi/agent; pi -p ok with no collision warnings; pi list resolves both packages; dot git clean. Remaining: volt - run the same checks there, then finish this task.
+
+
+## Volt check, 2026-10-11
+
+1. Symlinks: pass. 0 under ~/.pi/agent outside npm's node_modules/.bin (those are npm's own), 0 in ~/.agents/skills.
+2. `pi list`: pass. Resolves ~/dot/config/pi and ~/repos/agent1 as local packages.
+3. `timeout 120 pi -p "reply with just: ok"`: FAIL. Exit 124 (timed out), no reply. Stderr: two warnings, `No models match pattern "openai-codex/gpt-6.1-sol"` and `"openai-codex/gpt-6-luna"` (from ~/dot/config/pi/settings.json:116-117).
+4. Skill-collision warnings: none seen.
+
+
+Retest same day: default `pi -p "reply with just: ok"` answered ok in 6 s; `--model xai/grok-4.7:low` in 7 s, with `-ne` in 8 s. The 120 s hang did not reproduce. Volt passes all four checks; Atlas remains.
