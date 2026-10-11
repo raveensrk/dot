@@ -9,7 +9,7 @@ export VIMINIT=":source $MYVIMRC"
 export LG_CONFIG_FILE=$DOT/config/lazygit.yml
 export ZELLIJ_CONFIG_DIR=$DOT/config/zellij
 # Machine-local: it names private repos, and this repo is public.
-export WAYPOINT_CONFIG=$HOME/dot_local/config/waypoint.toml
+export TASK_ROUTER_CONFIG=$HOME/dot_local/config/task_router.toml
 export TERM=xterm-256color
 export COLORTERM="Yes"
 # export DISPLAY=:0

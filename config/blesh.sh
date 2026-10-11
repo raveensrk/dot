@@ -2,4 +2,4 @@
 # config/bashrc already sourced ble.sh with --attach=none.
 [[ $- == *i* ]] || return 0
 [[ ${BLE_VERSION-} ]] && ble-attach
-command -v waypoint >/dev/null && eval "$(waypoint completion --bash)"
+command -v task-router >/dev/null && eval "$(task-router completion --bash)"
