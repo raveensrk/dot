@@ -2,3 +2,8 @@ git config --global user.name "Raveen Kumar"
 # git config --global user.email "user@mail"
 git config --global pull.rebase true
 # git config --global pull.rebase false
+# agent1's git hooks for every repo: commit-msg refuses an AI co-author
+# trailer (agent1 git.md). Only when agent1 is cloned on this machine.
+if [ -d "$HOME/repos/agent1/harness/githooks" ]; then
+	git config --global core.hooksPath "~/repos/agent1/harness/githooks"
+fi
