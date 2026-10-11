@@ -255,17 +255,27 @@ func cmdList(o options) error {
 	if err != nil {
 		return err
 	}
+	home, _ := os.UserHomeDir()
 	shown := 0
 	for _, l := range lists {
 		if o.repo != "" && l.repo != o.repo {
 			continue
 		}
+		header := false
 		for _, e := range l.entries {
 			if state != "all" && e.State != state {
 				continue
 			}
 			if !hasTags(e, o.tags) {
 				continue
+			}
+			// The file's path once, above its first shown entry.
+			if !header {
+				if shown > 0 {
+					fmt.Println()
+				}
+				fmt.Println(strings.Replace(l.path, home, "~", 1))
+				header = true
 			}
 			rating := "-"
 			if e.Rating != nil {
@@ -275,8 +285,7 @@ func cmdList(o options) error {
 			if tags == "" {
 				tags = "-"
 			}
-			fmt.Printf("%-7s %2s  %-16s %-14s %s\n", e.State, rating, l.repo, tags, title(e))
-			fmt.Printf("%30s%s\n", "", e.URL)
+			fmt.Printf("  %-7s %2s  %-14s %s  %s\n", e.State, rating, tags, title(e), e.URL)
 			shown++
 		}
 	}
