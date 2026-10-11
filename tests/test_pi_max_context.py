@@ -70,6 +70,11 @@ const context = () => ({
 const provider = maximize(base, message => warnings.push(message));
 const refresh = () => provider.refreshModels(context());
 const cap = id => provider.getModels().find(model => model.id === id).contextWindow;
+const coldCalls = calls;
+await provider.refreshModels({...context(), stored: undefined, allowNetwork: false});
+assert.equal(calls, coldCalls);
+assert.equal(warnings.length, 0, 'empty cache-only restore is the catalog fallback, not a warning');
+assert.equal(cap('sol'), 872000);
 assert.equal(provider.auth, base.auth);
 assert.equal(provider.stream, base.stream);
 assert.equal(provider.streamSimple, base.streamSimple);

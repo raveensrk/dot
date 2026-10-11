@@ -72,8 +72,15 @@ export function maximize(base: Provider, warn: (message: string) => void): Provi
 				if (!context.signal.aborted) warn("Codex catalog refresh failed; cached catalog retained. Retry with /reload.");
 			}
 			if (context.signal.aborted) return;
+			// Pi always restores from cache before its network phase. An empty cache
+			// there is the catalog fallback, not a failure, and a warning fires on
+			// every start. A later phase reports a real lookup or auth failure.
 			if (!context.allowNetwork) {
-				if (next.size === 0) warn("Codex maximum-context cache empty; catalog limits retained during cache-only refresh.");
+				if (next.size === 0) {
+					limits = next;
+					account = key;
+					return;
+				}
 			} else if (!id || credential?.type !== "oauth" || !credential.access) {
 				warn("Codex maximum-context lookup needs OAuth; catalog limits retained. Use /login openai-codex.");
 			} else {
