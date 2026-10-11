@@ -40,6 +40,7 @@ commands:
   add URL [TITLE...] [-t TAG]...       add a to_read link to this repo's list
   done REF [-r N]                      mark read, optionally rated 1-10
   tag REF TAG...                       set a link's tags (replaces them)
+  remove REF                           delete a link from its list
   help                                 this text
 
 options:
@@ -110,6 +111,8 @@ func run(args []string) error {
 		return cmdDone(words, opts)
 	case "tag":
 		return cmdTag(words)
+	case "remove":
+		return cmdRemove(words)
 	}
 	return fmt.Errorf("unknown command %q; try: ,reading_list help", cmd)
 }
@@ -461,5 +464,22 @@ func cmdFiles() error {
 	for _, l := range lists {
 		fmt.Println(strings.Replace(l.path, home, "~", 1))
 	}
+	return nil
+}
+
+func cmdRemove(words []string) error {
+	if len(words) != 1 {
+		return errors.New("remove needs one REF: ,reading_list remove REF")
+	}
+	l, i, err := find(words[0])
+	if err != nil {
+		return err
+	}
+	gone := l.entries[i]
+	l.entries = append(l.entries[:i], l.entries[i+1:]...)
+	if err := l.save(); err != nil {
+		return err
+	}
+	fmt.Printf("removed from %s: %s\n", l.repo, gone.URL)
 	return nil
 }
