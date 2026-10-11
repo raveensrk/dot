@@ -21,6 +21,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"text/tabwriter"
 
 	"gopkg.in/yaml.v3"
 )
@@ -256,10 +257,8 @@ func cmdList(o options) error {
 		return err
 	}
 	home, _ := os.UserHomeDir()
-	width := 0
-	for _, l := range lists {
-		width = max(width, len(strings.Replace(l.path, home, "~", 1)))
-	}
+	// tabwriter pads every column to its longest cell; nothing is cut.
+	out := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 	shown := 0
 	for _, l := range lists {
 		if o.repo != "" && l.repo != o.repo {
@@ -281,10 +280,11 @@ func cmdList(o options) error {
 			if tags == "" {
 				tags = "-"
 			}
-			fmt.Printf("%-*s  %-7s %2s  %-14s %s  %s\n", width, path, e.State, rating, tags, title(e), e.URL)
+			fmt.Fprintf(out, "%s\t%s\t%s\t%s\t%s\t%s\n", path, e.State, rating, tags, title(e), e.URL)
 			shown++
 		}
 	}
+	out.Flush()
 	fmt.Fprintf(os.Stderr, "%d links\n", shown)
 	return nil
 }
