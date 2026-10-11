@@ -256,6 +256,10 @@ func cmdList(o options) error {
 		return err
 	}
 	home, _ := os.UserHomeDir()
+	width := 0
+	for _, l := range lists {
+		width = max(width, len(strings.Replace(l.path, home, "~", 1)))
+	}
 	shown := 0
 	for _, l := range lists {
 		if o.repo != "" && l.repo != o.repo {
@@ -277,7 +281,7 @@ func cmdList(o options) error {
 			if tags == "" {
 				tags = "-"
 			}
-			fmt.Printf("%s  %-7s %2s  %-14s %s  %s\n", path, e.State, rating, tags, title(e), e.URL)
+			fmt.Printf("%-*s  %-7s %2s  %-14s %s  %s\n", width, path, e.State, rating, tags, title(e), e.URL)
 			shown++
 		}
 	}
