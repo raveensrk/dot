@@ -29,7 +29,8 @@ What goes where:
                                ~/.agents/skills (pi's Agent Skills dir) as the
                                plugin agents-dir@agents-dir
   powerline theme.json         copied to the fixed path pi-powerline-footer reads
-  script/*_go/                 each Go program is built with `go build` into
+  script/*_go/, script/*_rs/  each Go program (`go build`) and Rust crate
+                               (`cargo build --release`) is built into
                                ~/.local/bin (BUILDS); rebuilt when a source
                                file is newer than the binary
 
@@ -55,8 +56,10 @@ import argparse
 import filecmp
 import json
 import os
+import shutil
 import subprocess
 import sys
+import tomllib
 
 HOME = os.path.expanduser("~")
 DOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -91,9 +94,10 @@ COPIES = [
      "~/.pi/agent/extensions/powerline-footer/theme.json", PI),
 ]
 
-# (Go source dir in this repo, installed binary); built by build_step.
+# (Go or Rust source dir in this repo, installed binary); built by build_step.
 BUILDS = [
     ("script/ai_model_bench_report_go", "~/.local/bin/ai-model-bench-report"),
+    ("script/sync2_rs", "~/.local/bin/,sync2"),
 ]
 
 # Links the stow install made, now replaced by the package or by COPIES.
@@ -174,22 +178,44 @@ def copy_step(run, src, dest, home):
             writer.write(reader.read())
 
 
+def build_sources(src):
+    """Source files of a Go program or a Rust crate (Cargo.toml present)."""
+    if os.path.isfile(os.path.join(src, "Cargo.toml")):
+        found = [os.path.join(src, name) for name in ("Cargo.toml", "Cargo.lock")]
+        for root, _, names in os.walk(os.path.join(src, "src")):
+            found += [os.path.join(root, name) for name in names if name.endswith(".rs")]
+        return [path for path in found if os.path.isfile(path)]
+    return [os.path.join(src, name) for name in os.listdir(src)
+            if name.endswith(".go") or name in ("go.mod", "go.sum")]
+
+
 def build_step(run, src, dest):
-    """Build a Go program into DEST when DEST is missing or older than its source."""
+    """Build a Go program or Rust crate into DEST when DEST is missing or older than its source."""
     src, dest = os.path.join(DOT, src), os.path.expanduser(dest)
+    rust = os.path.isfile(os.path.join(src, "Cargo.toml"))
+    tool = "cargo build --release" if rust else "go build"
     built = os.path.getmtime(dest) if os.path.isfile(dest) else 0
-    newest = max(os.path.getmtime(os.path.join(src, name)) for name in os.listdir(src)
-                 if name.endswith(".go") or name in ("go.mod", "go.sum"))
-    if newest <= built:
+    if max(os.path.getmtime(path) for path in build_sources(src)) <= built:
         return run.say("ok", dest)
     run.changes += 1
-    run.say("build", dest, "go build from %s" % tilde(src))
+    run.say("build", dest, "%s from %s" % (tool, tilde(src)))
     if not run.apply:
         return
     os.makedirs(os.path.dirname(dest), exist_ok=True)
-    if subprocess.run(["go", "build", "-o", dest, "."], cwd=src).returncode:
+    if rust:
+        with open(os.path.join(src, "Cargo.toml"), "rb") as handle:
+            name = tomllib.load(handle)["package"]["name"]
+        ok = not subprocess.run(["cargo", "build", "--release", "--locked"], cwd=src).returncode
+        if ok:
+            # Copy, then rename: replacing a running binary in place can crash it.
+            tmp = dest + ".tmp"
+            shutil.copy2(os.path.join(src, "target", "release", name), tmp)
+            os.replace(tmp, dest)
+    else:
+        ok = not subprocess.run(["go", "build", "-o", dest, "."], cwd=src).returncode
+    if not ok:
         run.conflicts += 1
-        run.say("conflict", dest, "go build failed")
+        run.say("conflict", dest, "%s failed" % tool)
 
 
 def main(argv=None):

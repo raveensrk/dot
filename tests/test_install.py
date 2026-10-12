@@ -51,6 +51,10 @@ class Installer(unittest.TestCase):
         cli.write_text(FAKE_CLAUDE)
         cli.chmod(0o755)
         self.env = {**os.environ, "HOME": str(self.home), "AGENT1": str(AGENT1), "CLAUDE_BIN": str(cli)}
+        # Keep the real toolchains and caches: under the temp home, cargo
+        # would download every crate and rustup would find no toolchain.
+        for var, default in (("CARGO_HOME", ".cargo"), ("RUSTUP_HOME", ".rustup")):
+            self.env.setdefault(var, str(Path.home() / default))
 
     def run_script(self, *args):
         return subprocess.run([sys.executable, str(SCRIPT), *args], env=self.env,
