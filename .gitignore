@@ -39,3 +39,4 @@ script/pass.log
 script/run.log
 *.har
 /.org-index.db
+/plan.md
