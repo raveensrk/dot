@@ -329,6 +329,10 @@ if [[ $os == "Darwin" ]]; then
 	export PATH="/opt/homebrew/bin:$PATH"
 fi
 
+# Zig from the official tarball: Homebrew lagged at 0.16 when 0.17.0 shipped (2026-10-01).
+# Unpacked to ~/.local/opt/zig-<version>; brew's zig is unlinked so this one wins.
+[[ -d "$HOME/.local/opt/zig-0.17.0" ]] && export PATH="$HOME/.local/opt/zig-0.17.0:$PATH"
+
 # pi completions. Must run after the /opt/homebrew/bin PATH fix above: pi's
 # shebang is `#!/usr/bin/env node`, and /usr/local/bin/node (v16) shadows
 # homebrew's node earlier in the file, where the ESM bundle fails to parse.
