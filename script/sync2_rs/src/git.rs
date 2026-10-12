@@ -161,18 +161,39 @@ fn is_old_form_submodule(repo: &gix::Repository) -> bool {
 /// Number of changed paths, as `git status --porcelain` would list them
 /// (untracked included, untracked directories collapsed).
 pub fn dirty_count(repo: &gix::Repository) -> Result<usize, String> {
-    let iter = repo
-        .status(gix::progress::Discard)
-        .map_err(|e| e.to_string())?
-        .untracked_files(gix::status::UntrackedFiles::Collapsed)
-        .into_iter(None)
-        .map_err(|e| e.to_string())?;
+    let iter = status(repo, gix::status::UntrackedFiles::Collapsed, None)?;
     let mut count = 0;
     for item in iter {
-        item.map_err(|e| e.to_string())?;
+        let item = item.map_err(|e| e.to_string())?;
+        // gix collapses a directory holding only empty directories and
+        // ignored files into one untracked entry; git lists nothing for it.
+        // Count such a directory only if it holds an untracked file.
+        if let gix::status::Item::IndexWorktree(
+            gix::status::index_worktree::Item::DirectoryContents { entry, .. },
+        ) = &item
+            && entry.disk_kind == Some(gix::dir::entry::Kind::Directory)
+        {
+            let spec: gix::bstr::BString = format!("{}/", entry.rela_path).into();
+            let mut files = status(repo, gix::status::UntrackedFiles::Files, Some(spec))?;
+            if files.next().is_none() {
+                continue;
+            }
+        }
         count += 1;
     }
     Ok(count)
+}
+
+fn status(
+    repo: &gix::Repository,
+    untracked: gix::status::UntrackedFiles,
+    pathspec: Option<gix::bstr::BString>,
+) -> Result<gix::status::Iter, String> {
+    repo.status(gix::progress::Discard)
+        .map_err(|e| e.to_string())?
+        .untracked_files(untracked)
+        .into_iter(pathspec)
+        .map_err(|e| e.to_string())
 }
 
 pub struct Branch {

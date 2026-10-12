@@ -415,3 +415,30 @@ fn plain_output_off_a_tty_has_no_escape_codes() {
     assert!(!out.contains('\x1b'), "{out:?}");
     assert!(out.contains("Synced (1)"), "{out}");
 }
+
+#[test]
+fn dir_with_only_empty_dirs_and_ignored_files_is_clean() {
+    let f = Fixture::new();
+    let (clone, _) = f.clone("a");
+    fs::write(clone.join(".gitignore"), "node_modules/\n").unwrap();
+    f.git(&clone, &["add", ".gitignore"]);
+    f.git(&clone, &["commit", "-qm", "ignore"]);
+    f.git(&clone, &["push", "-q"]);
+    fs::create_dir_all(clone.join("site/empty/deeper")).unwrap();
+    fs::create_dir_all(clone.join("site/node_modules/pkg")).unwrap();
+    fs::write(clone.join("site/node_modules/pkg/index.js"), "x").unwrap();
+    let (code, out) = f.sync();
+    assert!(
+        row(&out, "a").contains("clean  Already up to date"),
+        "{out}"
+    );
+    assert_eq!(code, 0);
+
+    // A real untracked file under the same directory still counts, once.
+    fs::write(clone.join("site/empty/new.txt"), "x").unwrap();
+    let (_, out) = f.sync();
+    assert!(
+        row(&out, "a").contains("Uncommitted changes (1 file(s))"),
+        "{out}"
+    );
+}
