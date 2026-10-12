@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest import mock
 
 
-SCRIPT = Path(__file__).parents[1] / "script" / ",sync.py"
+SCRIPT = Path(__file__).parents[1] / "script" / "legacy" / ",sync.py"
 SPEC = importlib.util.spec_from_file_location("sync", SCRIPT)
 sync = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(sync)

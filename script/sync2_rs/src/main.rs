@@ -1,5 +1,5 @@
 //! `,sync2`: sync many git repositories in parallel. Rust rewrite of
-//! `script/,sync.py`, which stays as the legacy tool.
+//! `script/legacy/,sync.py`, which stays as the legacy tool.
 //!
 //! Output rows: `[TAG]  <path>  <state>  <message>`. Tags: OK, PUSH, SYNC
 //! (synced), WARN (needs attention), FAIL. State is clean, dirty or '-'.
