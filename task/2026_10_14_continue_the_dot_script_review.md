@@ -24,11 +24,11 @@ comma remain after it.
 1. Read the script, count uses in [.bash_history](~/.bash_history), search [dot](~/dot),
    [agent1](~/repos/agent1), [agent2](~/repos/agent2) and [work](~/repos/work)
    for callers.
-1. Describe it and ask one question: delete, rename, or keep.
-1. Kept scripts get a comma name, a header line, and -h/--help/help.
-1. A useful one-liner from a deleted script becomes a note in
+2. Describe it and ask one question: delete, rename, or keep.
+3. Kept scripts get a comma name, a header line, and -h/--help/help.
+4. A useful one-liner from a deleted script becomes a note in
    [work/deck](~/repos/work/deck) (one home per note).
-1. Commit per item; lint with [lint.py](~/repos/agent1/harness/lint.py).
+5. Commit per item; lint with [lint.py](~/repos/agent1/harness/lint.py).
 
 ## Naming rule
 
@@ -42,7 +42,7 @@ abbreviation only where people say it that way (pdf, csv, git).
    ,reg_offsets.py -> ,print_register_offsets; ,date_print_iso -> ,print_iso_date;
    ,claude_yolo -> ,claude_without_permission_checks; ,pi_bare -> ,pi_without_extras;
    ,append_date_loop.sh -> ,log_date_every_second; ,yt_watch_later -> ,youtube_watch_later.
-1. [unix.md](~/repos/work/deck/unix/unix.md) fails mdformat because of broken
+2. [unix.md](~/repos/work/deck/unix/unix.md) fails mdformat because of broken
    backticks around line 359; fix by hand (mdformat garbles them).
-1. Homebrew python3 3.15 lacks pytest and PyYAML; run tests with
+3. Homebrew python3 3.15 lacks pytest and PyYAML; run tests with
    `uv run --with pytest`.
