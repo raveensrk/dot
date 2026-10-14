@@ -231,6 +231,19 @@ export PYTHONPATH+=":$HOME/work/practice/python"
 [ -d "$HOME/.cargo/bin" ] && export PATH+=":$HOME/.cargo/bin"
 export PATH+=":$HOME/project/work/wallpapers"
 export PATH+=":$HOME/Library/Python/3.14/bin"
+# path_dedupe: drop repeated PATH entries, keeping each one's first (winning)
+# position. Called last in ~/.bash_profile and ~/.bashrc, after every line that
+# adds to PATH.
+path_dedupe() {
+	local entry out=""
+	local IFS=:
+	for entry in $PATH; do
+		[[ -z $entry || :$out: == *:"$entry":* ]] && continue
+		out+=${out:+:}$entry
+	done
+	PATH=$out
+	export PATH
+}
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
 # Grep for a specific line in a file and go to it
