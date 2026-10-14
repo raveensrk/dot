@@ -7,8 +7,8 @@ stop the rest. Exit 0 when nothing failed, 2 otherwise.
 To add an app, append its command to COMMANDS.
 
 Usage:
-  ,update.py                run every command
-  ,update.py -h, --help     this summary (full text: ,update.py help)
+  ,update_tools                run every command
+  ,update_tools -h, --help     this summary (full text: ,update_tools help)
 """
 
 import shutil

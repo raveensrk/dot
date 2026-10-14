@@ -1,6 +1,6 @@
 ---
 id: "8j63jzfqbc"
-title: "Run ,update.py"
+title: "Run ,update_tools"
 state: "todo"
 due: "2026-10-18T09:00"
 priority: "B"

@@ -6,13 +6,13 @@ IFS=$'\n\t'
 
 usage() {
 	cat <<'EOF'
-Usage: ,l [-h|--help|help]
+Usage: ,ls_comma_cmds [-h|--help|help]
 
 List every command that starts with a comma, sorted by path: executables on PATH,
 plus aliases and functions from an interactive Bash, with where each lives.
 
 Example:
-  ,l
+  ,ls_comma_cmds
 EOF
 }
 
