@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# ,mutt_spam_add_sender - add a piped email's sender to neomutt's spamrc, then open it.
+#
+# Usage:
+#   ,mutt_spam_add_sender < message
+#
+# Bound to X in the neomutt pager (~/dot/config/muttrc). Appends a
+# `spam '^From:.*<sender>.*' SPAM` rule to ~/iCloud/dot/config/mutt/spamrc and
+# opens it in $EDITOR. Restart neomutt for the rule to take effect.
+
+set -euo pipefail
+IFS=$'\n\t'
+# set -x
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+spamrc="$HOME/iCloud/dot/config/mutt/spamrc"
+# The sender address alone: "From: Name <a@b.c>" -> a@b.c, with . and + escaped
+# so neomutt's regex matches them literally.
+from=$(grep -i -m1 -e "^from:" /dev/stdin | sed -E 's/^[Ff][Rr][Oo][Mm]:[[:space:]]*//; s/.*<([^>]+)>.*/\1/; s/[[:space:]]+$//; s/[.+]/\\&/g')
+spamstring="spam '^From:.*$from.*' SPAM"
+echo "$spamstring" >> "$spamrc"
+echo -e "Added \e[31m$spamstring\e[0m to $spamrc. Restart neomutt for changes to take effect."
+"${EDITOR:-vim}" "$spamrc"
