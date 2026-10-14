@@ -2,7 +2,6 @@
 
 source "$DOT/script/colors.sh"
 source "$DOT/script/require.sh"
-source "$DOT/script/box.sh"
 
 pushd2() {
 	if [[ ! -d "$1" ]]; then
