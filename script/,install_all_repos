@@ -14,9 +14,9 @@ change things. An installer that another one already runs is listed but not
 run twice (CHAINED below).
 
 usage:
-  ,install2            preview, ask, then apply
-  ,install2 -n         preview only; never asks, changes nothing
-  ,install2 -h | --help | help
+  ,install_all_repos            preview, ask, then apply
+  ,install_all_repos -n         preview only; never asks, changes nothing
+  ,install_all_repos -h | --help | help
 """
 import os
 import subprocess
@@ -78,7 +78,7 @@ def main(argv):
         return 0
     preview_only = argv[:1] in (["-n"], ["--dry-run"])
     if argv and not preview_only:
-        print(f",install2: unknown argument {argv[0]}; try: ,install2 --help", file=sys.stderr)
+        print(f",install_all_repos: unknown argument {argv[0]}; try: ,install_all_repos --help", file=sys.stderr)
         return 2
 
     installers = find()
@@ -95,11 +95,11 @@ def main(argv):
         try:
             result = run(path, [], DRY_TIMEOUT, capture=True)
         except subprocess.TimeoutExpired:
-            print(f",install2: dry run timed out after {DRY_TIMEOUT} s; nothing applied", file=sys.stderr)
+            print(f",install_all_repos: dry run timed out after {DRY_TIMEOUT} s; nothing applied", file=sys.stderr)
             return 1
         print((result.stdout + result.stderr).rstrip() or "(no output)")
         if result.returncode != 0:
-            print(f",install2: dry run exited {result.returncode}; fix it, then run ,install2 again. Nothing applied.",
+            print(f",install_all_repos: dry run exited {result.returncode}; fix it, then run ,install_all_repos again. Nothing applied.",
                   file=sys.stderr)
             return 1
 
@@ -107,7 +107,7 @@ def main(argv):
         print("\npreview only (-n): nothing applied")
         return 0
     if not sys.stdin.isatty():
-        print(",install2: approval needs a terminal; run ,install2 in one. Nothing applied.", file=sys.stderr)
+        print(",install_all_repos: approval needs a terminal; run ,install_all_repos in one. Nothing applied.", file=sys.stderr)
         return 1
     try:
         answer = input(f"\nApply all {len(runnable)} with --apply? [y/N] ").strip().lower()
@@ -125,7 +125,7 @@ def main(argv):
         except subprocess.TimeoutExpired:
             code = f"timeout after {APPLY_TIMEOUT} s"
         if code != 0:
-            print(f"\n,install2: {tilde(path)} failed ({code}); stopped.", file=sys.stderr)
+            print(f"\n,install_all_repos: {tilde(path)} failed ({code}); stopped.", file=sys.stderr)
             left = runnable[done + 1:]
             if left:
                 print("not run:", file=sys.stderr)

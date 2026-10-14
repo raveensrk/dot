@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
+# ,fr - open Vim's fuzzy list of recently opened files (fzf.vim :History).
+#
+# Usage:
+#   ,fr
 
 set -euo pipefail
 IFS=$'\n\t'
 # set -x
 
-vim -c "History" 
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+vim -c "History"

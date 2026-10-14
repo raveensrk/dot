@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
+# ,f - open a command's source file in $EDITOR, e.g. ,f ,ls_comma_cmds.
+#
+# Usage:
+#   ,f COMMAND
+#
+# Follows symlinks to the real file. A command that is not a file on PATH
+# (an alias, a function, a builtin) cannot be opened: run `type COMMAND`.
 
-set -PCaeuo pipefail
+set -euo pipefail
 IFS=$'\n\t'
-# set -x
 
-path=$(realpath "$(which "$1")")
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
 
-[ -f "$path" ] && $EDITOR "$path" && exit 0
+if [ $# -ne 1 ]; then
+	echo ",f: needs one command name (see --help)" >&2
+	exit 2
+fi
 
-which "$path"
-# type "$path"
-# whereis "$path"
-exit 0
+if ! found=$(type -P -- "$1"); then
+	echo ",f: '$1' is not a file on PATH (alias, function or builtin? try: type $1)" >&2
+	exit 1
+fi
+
+exec "${EDITOR:-vim}" "$(realpath "$found")"

@@ -5,13 +5,13 @@ Default: dry-run. Builds a dark HTML report in ~/tmp and opens it in the browser
 Run with --delete to actually delete what the report lists.
 
 Usage:
-    python3 ai_data_scrub.py            # report only, deletes nothing
-    python3 ai_data_scrub.py --delete   # delete after report
-    python3 ai_data_scrub.py --be-gone  # interactive: pick harnesses, then per
-                                        #   harness tier: data / all incl configs
-                                        #   / uninstall app + everything
-    python3 ai_data_scrub.py --no-open  # report without opening browser
-    python3 ai_data_scrub.py --check    # tiny self-test
+    ,ai_data_scrub            # report only, deletes nothing
+    ,ai_data_scrub --delete   # delete after report
+    ,ai_data_scrub --be-gone  # interactive: pick harnesses, then per
+                              #   harness tier: data / all incl configs
+                              #   / uninstall app + everything
+    ,ai_data_scrub --no-open  # report without opening browser
+    ,ai_data_scrub --check    # tiny self-test
 
 --be-gone never touches ~/dot or ~/.dot (your dotfiles repo), in any tier.
 
@@ -826,6 +826,9 @@ def render(rows, delete_mode):
 
 
 def main():
+    if sys.argv[1:2] == ["help"]:
+        print(__doc__)
+        return
     ap = argparse.ArgumentParser(description="Scrub AI agent harness data (keeps configs). Dry-run by default.")
     ap.add_argument("--delete", action="store_true", help="Actually delete (default: report only)")
     ap.add_argument("--be-gone", dest="be_gone", action="store_true",

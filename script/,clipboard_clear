@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# ,clipboard_clear - empty the macOS clipboard, e.g. after copying a password.
+#
+# Usage:
+#   ,clipboard_clear
+
+set -euo pipefail
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+pbcopy </dev/null

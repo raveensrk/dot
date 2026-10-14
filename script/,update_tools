@@ -18,7 +18,8 @@ import sys
 COMMANDS = [
     "brew update",
     "brew upgrade",
-    "brew cleanup",
+    "brew autoremove",
+    "brew cleanup --prune=all",
     "pi update --all",
     "claude update",
 ]
