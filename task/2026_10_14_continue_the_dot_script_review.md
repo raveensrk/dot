@@ -1,0 +1,47 @@
+---
+id: "dencyfm9ca"
+title: "Continue the ~/dot/script review"
+state: "todo"
+due: ""
+priority: ""
+tag: ["maintenance"]
+repeat: ""
+effort: ""
+postpone: 0
+created: "2026-10-14"
+closed: ""
+---
+
+## Where we stopped (2026-10-14)
+
+One-by-one review of `~/dot/script`, alphabetical. Next item:
+`change_permissions_recursive.py` (recommended: delete; hard-coded 777 on a
+missing /Users/raveenkumarwork/tmp, not executable). About 94 scripts without a
+comma remain after it.
+
+## How each item goes
+
+1. Read the script, count uses in ~/.bash_history, search ~/dot, ~/repos/agent1,
+   ~/repos/agent2 and ~/repos/work for callers.
+2. Describe it and ask one question: delete, rename, or keep.
+3. Kept scripts get a comma name, a header line, and -h/--help/help.
+4. A useful one-liner from a deleted script becomes a note in
+   ~/repos/work/deck (one home per note).
+5. Commit per item; lint with ~/repos/agent1/harness/lint.py.
+
+## Naming rule
+
+~/repos/agent1/cli.md: grammatical English, easy to say, real words; an
+abbreviation only where people say it that way (pdf, csv, git).
+
+## Still pending
+
+1. Renames under the naming rule, ask one by one:
+   ,ls_comma_cmds -> ,list_comma_commands; ,ls_path_dirs -> ,list_path_folders;
+   ,reg_offsets.py -> ,print_register_offsets; ,date_print_iso -> ,print_iso_date;
+   ,claude_yolo -> ,claude_without_permission_checks; ,pi_bare -> ,pi_without_extras;
+   ,append_date_loop.sh -> ,log_date_every_second; ,yt_watch_later -> ,youtube_watch_later.
+2. deck/unix/unix.md in ~/repos/work fails mdformat because of broken
+   backticks around line 359; fix by hand (mdformat garbles them).
+3. Homebrew python3 3.15 lacks pytest and PyYAML; run tests with
+   `uv run --with pytest`.
