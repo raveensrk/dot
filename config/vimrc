@@ -5,6 +5,11 @@ set runtimepath^=~/dot/config/vim
 set runtimepath^=~/repos/work/config/vim
 set runtimepath^=~/dot_local/config/vim
 set runtimepath+=~/dot/config/vim/after
+" Machine-local settings, kept out of this repo: ~/dot_local/config/vimrc adds
+" runtimepaths of tools in ~/repos (each tool's install script writes its line).
+if filereadable(expand('~/dot_local/config/vimrc'))
+  source ~/dot_local/config/vimrc
+endif
 let g:pathogen_blacklist = ['Damian-Conway-s-Vim-Setup']
 if ($is_linux != "Darwin") 
     let g:pathogen_blacklist += ['vim-ai.git']
