@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# ,reading_list - run the reading_list Go tool (source: reading_list_go/ next
-# to this file), rebuilding it first when the source is newer than the binary,
-# as after a git pull or an edit. The binary lives outside the repo.
+# ,reading_list - run the reading_list Go tool, rebuilding it when its source changed.
+#
+# The source is reading_list_go/ next to this file. It is rebuilt first when
+# the source is newer than the binary, as after a git pull or an edit. The
+# binary lives outside the repo.
 #
 # A normal call costs ~11 ms over the binary (measured 2026-10-11: 15.1 ms vs
 # 4.1 ms, against 52.7 ms for the same job in Python). The first call after a

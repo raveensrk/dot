@@ -40,16 +40,23 @@ describe() {
 		echo "(compiled binary)"
 		return
 	fi
-	line=$(sed -n '2,20p' "$file" | awk '
+	# The header's first paragraph, joined into one line: comment lines, or a
+	# docstring's lines, up to a blank line or the first line of code.
+	line=$(sed -n '2,30p' "$file" | awk '
+		function add(s) { out = out (out == "" ? "" : " ") s }
+		function done() { if (out != "") { print out; exit } }
 		/^# \/\/\/|^# dependencies|^# requires-python/ { next }
 		/^#[[:space:]]*(set |shellcheck|-\*-|coding[:=])/ { next }
-		/^"""/ { sub(/^"""[[:space:]]*/, ""); if ($0 != "") { print; exit } ; doc = 1; next }
-		doc && NF { print; exit }
-		/^#/ { sub(/^#[[:space:]]*/, ""); if (NF) { print; exit } ; next }
-		NF { exit }
-	')
+		doc { sub(/"""[[:space:]]*$/, ""); if (!NF) done(); add($0); if (end) done(); next }
+		/^"""/ { sub(/^"""[[:space:]]*/, ""); end = sub(/"""[[:space:]]*$/, ""); doc = 1; if (NF) add($0); if (end) done(); next }
+		/^#/ { sub(/^#[[:space:]]*/, ""); if (!NF) done(); add($0); next }
+		{ done(); exit }
+		END { if (out != "") print out }
+	' | head -1)
 	line=${line#"$name - "}
-	line=${line%'"""'}
+	# Keep the first sentence: up to the first ". " (a period followed by a space).
+	line=${line%%. *}
+	line=${line%.}
 	echo "${line:-(no description)}"
 }
 
@@ -75,5 +82,9 @@ while IFS=$'\t' read -r name where detail; do
 	else
 		desc="($where)"
 	fi
-	printf '%-32s %-64.64s %s\n' "$name" "$desc" "$where"
-done <<<"$rows"
+	printf '%s\t%s\t%s\n' "$name" "$where" "$desc"
+done <<<"$rows" | awk -F'\t' '
+	{ n[NR] = $1; w[NR] = $2; d[NR] = $3
+	  if (length($1) > a) a = length($1); if (length($2) > b) b = length($2) }
+	END { for (i = 1; i <= NR; i++) printf "%-" a "s  %-" b "s  %s\n", n[i], w[i], d[i] }
+'
