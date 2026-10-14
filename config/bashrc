@@ -20,7 +20,7 @@ export PATH="$DOT/script:$PATH"
 # shellcheck disable=1091
 [[ $- == *i* && -r $HOME/.local/share/blesh/ble.sh ]] && source -- "$HOME/.local/share/blesh/ble.sh" --attach=none
 # shellcheck disable=1091
-source "$DOT/script/header.sh"
+source "$DOT/lib/header.sh"
 # shellcheck disable=1091
 source "$DOT/config/prompt"
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"

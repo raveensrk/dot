@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
+# ,progress_bar_until - draw an animated progress bar for SECONDS seconds, then exit.
+#
+# Usage:
+#   ,progress_bar_until SECONDS [LABEL]
+#   ,progress_bar_until 90 "tea is ready"
+#
+# The bar shows percent done and the minutes and seconds left.
 
 set -euo pipefail
-# set -x
 IFS=$'\n\t'
 
-source header.sh
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
 
-require_file "$runtime"
-echob "$progress_name"
-
-
-# exit 0
+if [[ ! "${1:-}" =~ ^[1-9][0-9]*$ ]]; then
+	echo ",progress_bar_until: needs a whole number of seconds (see --help)" >&2
+	exit 2
+fi
+finish_time=$1
+[ -n "${2:-}" ] && echo "$2"
 
 current_time=$SECONDS
 circles=("◐" "◓" "◑" "◒")
@@ -80,7 +87,6 @@ circles_length="${#circles[@]}"
 # count=$length
 count=0
 circles_count=0
-finish_time=$(<"$runtime")
 
 while [[ $current_time -lt $finish_time ]]; do
 	current_time=$SECONDS

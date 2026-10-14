@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
-
-source "$DOT/script/colors.sh"
-source "$DOT/script/require.sh"
+# header.sh - shell library, loaded with source; not a command.
+source "$DOT/lib/colors.sh"
+source "$DOT/lib/require.sh"
 
 pushd2() {
 	if [[ ! -d "$1" ]]; then

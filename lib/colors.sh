@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-
+# colors.sh - shell library, loaded with source; not a command.
 green() {
 	echo -ne "\e[38;5;2m"
 }

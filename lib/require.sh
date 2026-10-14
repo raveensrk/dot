@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-
+# require.sh - shell library, loaded with source; not a command.
 # echo "${BASH_VERSINFO[@]}"
 
 check_bash_version () {

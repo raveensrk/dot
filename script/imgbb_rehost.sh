@@ -3,8 +3,8 @@
 set -PCeuo pipefail
 IFS=$'\n\t'
 
-# shellcheck source=colors.sh
-source "${DOT:-$HOME/dot}/script/colors.sh"
+# shellcheck source=../lib/colors.sh
+source "${DOT:-$HOME/dot}/lib/colors.sh"
 
 usage() {
 	cat <<-HERE
@@ -31,7 +31,7 @@ if [[ $# -eq 0 ]]; then
 fi
 
 case "$1" in
-	-h|--help) usage ;;
+	-h|--help|help) usage ;;
 esac
 
 if [[ $# -ne 1 ]]; then
