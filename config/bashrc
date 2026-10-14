@@ -14,7 +14,7 @@ export TERM=xterm-256color
 export COLORTERM="Yes"
 # export DISPLAY=:0
 export PATH="$HOME/.local/bin:$PATH"
-export PATH+="$HOME/dot_local/script:$PATH"
+export PATH+=":$HOME/dot_local/script"
 export PATH="$DOT/script:$PATH"
 # ble.sh, interactive only, not attached yet. ble-attach is config/blesh.sh, after fzf.
 # shellcheck disable=1091
