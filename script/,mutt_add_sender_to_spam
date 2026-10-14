@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# ,mutt_spam_add_sender - add a piped email's sender to neomutt's spamrc, then open it.
+# ,mutt_add_sender_to_spam - add a piped email's sender to neomutt's spamrc, then open it.
 #
 # Usage:
-#   ,mutt_spam_add_sender < message
+#   ,mutt_add_sender_to_spam < message
 #
 # Bound to X in the neomutt pager (~/dot/config/muttrc). Appends a
 # `spam '^From:.*<sender>.*' SPAM` rule to ~/iCloud/dot/config/mutt/spamrc and
