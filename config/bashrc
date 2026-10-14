@@ -74,7 +74,6 @@ alias tree3="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://g
 # and more, with no warning and exit 0 — a backup can look fine while missing
 # your git history. Add it explicitly when you actually want that filter.
 alias rsync="rsync -azhPvu"
-alias ,edit_bashrc="vim \$DOT/config/bashrc"
 alias ,reload_bash="source ~/.bash_profile"
 alias q="exit"
 alias lg=lazygit
@@ -128,7 +127,6 @@ man() {
 }
 # }}}
 # {{{ VIM
-alias ,edit_vimrc="vim \$DOT/config/vimrc"
 alias v="vim"
 # Relaunch vim whenever it exits via :Restart (defined in config/vimrc),
 # restoring the session it saved on the way out.

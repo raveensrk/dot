@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# ,edit_bashrc - open ~/dot/config/bashrc in Vim.
+#
+# Usage:
+#   ,edit_bashrc
+#
+# Run ,reload_bash afterwards to apply the changes to the current shell.
+
+set -euo pipefail
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+exec vim "${DOT:-$HOME/dot}/config/bashrc"
