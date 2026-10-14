@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# ,himalaya_all_accounts - run a himalaya command for every account, one section per account.
+#
+# Usage: ,himalaya_all_accounts [command...] [flags]   (default command: envelope list)
+#   ,himalaya_all_accounts                     # envelope list for all accounts
+#   ,himalaya_all_accounts -s 20               # same as: ,himalaya_all_accounts envelope list -s 20
+#   ,himalaya_all_accounts folder list
+# `-a <account>` is appended per account. One failing account prints its error
+# and the rest still run; exit code is 1 if any failed.
+
+set -PCeuo pipefail
+IFS=$'\n\t'
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+# Hide harmless imap_codec "Rectified missing `text`" warnings.
+export RUST_LOG="${RUST_LOG:-error}"
+
+if [ "$#" -eq 0 ] || [[ "$1" == -* ]]; then
+  set -- envelope list "$@"
+fi
+
+status=0
+for account in $(himalaya account list --json | jq -r '.accounts[].name'); do
+  echo "== $account"
+  himalaya "$@" -a "$account" || status=1
+  echo
+done
+exit "$status"

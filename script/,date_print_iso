@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# ,date_print_iso - print today's date in an ISO 8601 style, for filenames and logs.
+#
+# Usage:
+#   ,date_print_iso               2026-10-14
+#   ,date_print_iso --compact     20261014163015              (date and time, no separators)
+#   ,date_print_iso --filename    2026-10-14T16-30-15+05-30   (date and time, ':' -> '-')
+#   ,date_print_iso --yesterday   2026-10-13
+
+set -euo pipefail
+
+case "${1:-}" in
+-h | --help) sed -n '2s/^# \{0,1\}//p' "$0" ;;
+help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0" ;;
+'') date +%F ;;
+--compact) date +%Y%m%d%H%M%S ;;
+--filename) date -Iseconds | tr ':' '-' ;;
+--yesterday) date -v-1d +%F ;;
+*)
+	echo ",date_print_iso: unknown option '$1' (see --help)" >&2
+	exit 2
+	;;
+esac

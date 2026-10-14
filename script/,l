@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -PCeuo pipefail
+# set -x
+IFS=$'\n\t'
+
+usage() {
+	cat <<'EOF'
+Usage: ,l [-h|--help|help]
+
+List every command that starts with a comma, sorted by path: executables on PATH,
+plus aliases and functions from an interactive Bash, with where each lives.
+
+Example:
+  ,l
+EOF
+}
+
+case "${1-}" in
+-h | --help | help)
+	usage
+	exit 0
+	;;
+'') ;;
+*)
+	usage >&2
+	exit 2
+	;;
+esac
+
+# Interactive Bash so aliases and functions from the profile are visible.
+bash -ic '
+	compgen -c -- , | sort -u | while IFS= read -r c; do
+		printf "%-32s %s\n" "$c" "$(type -P -- "$c" || type -t -- "$c")"
+	done | sort -b -k2,2 -k1,1
+' 2>/dev/null

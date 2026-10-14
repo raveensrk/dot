@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-# pi-clear - delete all pi data, keep pi configs. (Python, dry-run first.)
+# ,pi_data_wipe - move all pi data to the Trash, keep pi configs. (Dry-run first.)
 #
-# Deletes (everything regenerable):
+# Moves to the Trash (everything regenerable):
 #   ~/.pi/agent/sessions            session transcripts
 #   ~/.pi/agent/npm                 installed packages, pi reinstalls
 #                                   them from settings.json on start
@@ -12,8 +12,11 @@
 # Keeps: settings.json, AGENTS.md, auth.json, pi-accounts.json, extensions/,
 # bin/, git/, file-diff.json, missions/ (not confirmed regenerable, 40KB).
 #
-# Pass 1: dry-run, lists targets with sizes. Pass 2: delete after confirm.
-# Refuses to run while pi is running.
+# Pass 1: dry-run, lists targets with sizes. Pass 2: move to the Trash after
+# confirm (restore from Finder > Trash). Refuses to run while pi is running.
+#
+# Usage:
+#   ,pi_data_wipe
 
 import os
 import shutil
@@ -47,13 +50,30 @@ def size_mb(path):
     return total // (1024 * 1024)
 
 
+def usage(full):
+    lines = open(__file__).read().splitlines()[1:]
+    doc = []
+    for line in lines:
+        if not line.startswith("#"):
+            break
+        doc.append(line[2:] if line.startswith("# ") else line[1:])
+    print("\n".join(doc) if full else doc[0])
+
+
 def main():
+    if sys.argv[1:2] in (["-h"], ["--help"], ["help"]):
+        usage(sys.argv[1] == "help")
+        return
+    if shutil.which("trash") is None:
+        print(",pi_data_wipe: needs the trash command (brew install trash)", file=sys.stderr)
+        sys.exit(1)
+
     if subprocess.run(["pgrep", "-x", "pi"], capture_output=True).returncode == 0:
         print("pi is running - quit it first.", file=sys.stderr)
         sys.exit(1)
 
     # Pass 1: dry-run
-    print("Would delete:")
+    print("Would move to the Trash:")
     found = False
     for t in TARGETS:
         if os.path.exists(t):
@@ -66,28 +86,29 @@ def main():
     keep = os.path.join(AGENT, "*")  # configs: settings.json, AGENTS.md, auth, extensions/...
     print(f"Keeps:  {keep}")
     try:
-        answer = input("Delete these? [y/N] ").strip().lower()
+        answer = input("Move these to the Trash? [y/N] ").strip().lower()
     except (EOFError, KeyboardInterrupt):
         print()
         return
     if answer != "y":
-        print("Aborted, nothing deleted.")
+        print("Aborted, nothing moved.")
         return
 
-    # Pass 2: delete
-    freed = 0
+    # Pass 2: move to the Trash
+    moved = 0
+    failed = []
     for t in TARGETS:
-        if not os.path.exists(t):
+        if not os.path.lexists(t):
             continue
-        freed += size_mb(t)
-        if os.path.isdir(t) and not os.path.islink(t):
-            shutil.rmtree(t, ignore_errors=True)
+        mb = size_mb(t)
+        if subprocess.run(["trash", t]).returncode == 0:
+            moved += mb
         else:
-            try:
-                os.remove(t)
-            except OSError:
-                pass
-    print(f"pi-clear: freed {freed} MB (kept configs in {AGENT}).")
+            failed.append(t)
+    print(f",pi_data_wipe: moved {moved} MB to the Trash (kept configs in {AGENT}).")
+    if failed:
+        print("could not move: " + ", ".join(failed), file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

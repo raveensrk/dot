@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# ,terminal_tab_title - rename the current Terminal.app tab, optionally with a colored profile.
+# ,set_terminal_tab_title - rename the current Terminal.app tab, optionally with a colored profile.
 #
 # Usage:
-#   ,terminal_tab_title "my tab name"              # rename current tab
-#   ,terminal_tab_title -p Prod "prod - careful"   # rename AND switch to the "Prod" profile
-#   ,terminal_tab_title -p Dev                     # just switch profile, keep name
+#   ,set_terminal_tab_title "my tab name"              # rename current tab
+#   ,set_terminal_tab_title -p Prod "prod - careful"   # rename AND switch to the "Prod" profile
+#   ,set_terminal_tab_title -p Dev                     # just switch profile, keep name
 #
 # Notes:
 #   * Terminal.app cannot color individual tab titles. "Color" is achieved by
@@ -17,13 +17,14 @@
 
 set -euo pipefail
 
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
 profile=""
-while getopts ":p:h" opt; do
+while getopts ":p:" opt; do
   case "$opt" in
     p) profile="$OPTARG" ;;
-    h) grep '^#' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
-    \?) echo ",terminal_tab_title: unknown option -$OPTARG" >&2; exit 2 ;;
-    :)  echo ",terminal_tab_title: -$OPTARG needs an argument" >&2; exit 2 ;;
+    \?) echo ",set_terminal_tab_title: unknown option -$OPTARG" >&2; exit 2 ;;
+    :)  echo ",set_terminal_tab_title: -$OPTARG needs an argument" >&2; exit 2 ;;
   esac
 done
 shift $((OPTIND - 1))
@@ -38,5 +39,5 @@ fi
 # Switch the current tab to a colored profile via AppleScript.
 if [ -n "$profile" ]; then
   osascript -e "tell application \"Terminal\" to set current settings of selected tab of front window to settings set \"$profile\"" \
-    || { echo ",terminal_tab_title: no Terminal profile named '$profile' (create it in Settings > Profiles)" >&2; exit 1; }
+    || { echo ",set_terminal_tab_title: no Terminal profile named '$profile' (create it in Settings > Profiles)" >&2; exit 1; }
 fi

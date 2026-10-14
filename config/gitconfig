@@ -7,3 +7,7 @@ git config --global pull.rebase true
 if [ -d "$HOME/repos/agent1/harness/githooks" ]; then
 	git config --global core.hooksPath "~/repos/agent1/harness/githooks"
 fi
+# wdiff: word-level diff, whitespace ignored, renames followed
+git config --global alias.wdiff "diff --minimal -w -M --word-diff"
+# pickaxe-log <string>: commits that added or removed <string>, with patches
+git config --global alias.pickaxe-log "log -p -S"

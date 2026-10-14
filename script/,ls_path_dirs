@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# ,ls_path_dirs - print PATH, one directory per line, in search order.
+#
+# Usage:
+#   ,ls_path_dirs
+
+set -euo pipefail
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+tr ':' '\n' <<<"$PATH"

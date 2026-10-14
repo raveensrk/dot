@@ -64,10 +64,6 @@ alias untar="tar xvf"
 alias hcat="paste -s" # To concatenate the contents of a vertical file horizontally
 alias ..="cd .."
 alias top2='top -d 0.125'
-alias date2='date -I'
-alias date2_yesterday='/bin/date -I -v-1d'
-alias date2_long="date +%Y%m%d%H%M%S"
-alias date2_long_long='date -Iseconds | sed "s/:/-/g"'
 alias mkdir="mkdir -v"
 alias cp="cp -vi"
 alias mv="mv -vi"
@@ -78,18 +74,10 @@ alias tree3="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'" # https://g
 # and more, with no warning and exit 0 — a backup can look fine while missing
 # your git history. Add it explicitly when you actually want that filter.
 alias rsync="rsync -azhPvu"
-path () {
-	echo "----"
-	echo "PATH"
-	echo "----"
-	echo $PATH | tr ':' '\n'
-}
-alias bashrc="vim \$DOT/config/bashrc"
-alias ,source_bash_profile="source ~/.bash_profile"
+alias ,edit_bashrc="vim \$DOT/config/bashrc"
+alias ,reload_bash="source ~/.bash_profile"
 alias q="exit"
-alias git_diff='git diff --minimal -w -b -M --word-diff'
 alias lg=lazygit
-alias git_pickaxe="git log -p -S"
 alias grep="grep --color"
 alias tmux0="tmux -L SOCKET_0 attach || tmux -L SOCKET_0"
 alias tmux1="tmux -L SOCKET_1 attach || tmux -L SOCKET_1"
@@ -98,11 +86,9 @@ export HOWDOI_COLORIZE=1
 alias howdoi="howdoi -a"
 alias hexdump="hexdump -Cv"
 alias compress="tar -cvza -f "
-alias newsboat2='newsboat -C "$DOT/config/newsboat/config" -u "$DOT/config/newsboat/urls"'
-alias newsboat3='newsboat -C "$DOT/config/newsboat/config" -u "$HOME/dot_local/config/newsboat/urls"'
 alias ls=eza
 alias l="eza -lAh"
-alias claude2="claude --permission-mode bypassPermissions"
+alias ,claude_yolo="claude --permission-mode bypassPermissions"
 # agent1's public aliases (~/repos/agent1/config/bashrc.sh); skipped when absent.
 # shellcheck disable=1091
 [[ -r $HOME/repos/agent1/config/bashrc.sh ]] && source "$HOME/repos/agent1/config/bashrc.sh"
@@ -142,7 +128,7 @@ man() {
 }
 # }}}
 # {{{ VIM
-alias vimrc="vim \$DOT/config/vimrc"
+alias ,edit_vimrc="vim \$DOT/config/vimrc"
 alias v="vim"
 # Relaunch vim whenever it exits via :Restart (defined in config/vimrc),
 # restoring the session it saved on the way out.
@@ -249,20 +235,6 @@ export PATH+=":$HOME/project/work/wallpapers"
 export PATH+=":$HOME/Library/Python/3.14/bin"
 # }}}
 # FIND FILES AND DIRECTORIES FUNCTIONS{{{
-,goto_file_directory() {
-	# Change directory to the given path of file
-	if [ -f "$1" ]; then
-		dir="$(which "$1" | xargs dirname)"
-	else
-		dir="$1"
-	fi
-
-	if ! pushd "$dir"; then
-		echor "Unable to change directory = $dir"
-		return 2
-	fi
-}
-
 # Grep for a specific line in a file and go to it
 alias goto="vim -c 'Rg'"
 alias fixme="vim -c 'Rg fixme'"
@@ -272,19 +244,6 @@ alias fixme="vim -c 'Rg fixme'"
 export PYTHONSTARTUP="$DOT/config/pythonrc"
 export PYTHONIOENCODING=utf8
 
-pytest2() {
-	pytest
-	if command -v open >/dev/null; then
-		open ./tui_files/html_report.html
-	elif command -v xdg-open >/dev/null; then
-		xdg-open ./tui_files/html_report.html
-	else
-		# Anyother command
-		true
-	fi
-}
-
-alias pip_upgrade='pip install --upgrade pip'
 
 # }}}
 # GIT{{{
@@ -343,20 +302,8 @@ fi
 # shellcheck disable=1091
 source "$DOT/config/pi-completion.sh"
 
-alias pi-grok="pi --model xai/grok-4.7:xhigh"
-
-# `pi-update-and-run`: update packages first, then launch pi (auto version check on).
-pi-update-and-run() {
-	command pi update --all 2>/dev/null
-	command pi "$@"
-}
-alias pi-gpt="pi --model openai-codex/gpt-6.1-sol:max"
+alias ,pi_grok="pi --model xai/grok-4.7:xhigh"
+alias ,pi_gpt="pi --model openai-codex/gpt-6.1-sol:max"
 # bare pi: no tools, extensions, skills, templates, themes, context files, session
-alias pi-bare="pi -nt -nc -ne -np -ns --no-session --no-themes"
-alias pi-todo="pi '/skill:todo brief'"
-iterm-tab-name () 
-{ 
-    printf "\033]1;$@\007"
-}
-
+alias ,pi_bare="pi -nt -nc -ne -np -ns --no-session --no-themes"
 alias himalaya="RUST_LOG=error himalaya"

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# ,newsboat_private - open newsboat with the private feed list (~/dot_local, local only).
+#
+# Usage:
+#   ,newsboat_private
+#   ,newsboat_private -r          # other options pass through to newsboat
+#
+# Config comes from ~/dot/config/newsboat/config. Read state is shared with
+# ,newsboat_public (~/.newsboat/cache.db).
+
+set -euo pipefail
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+DOT_DIR="${DOT:-$HOME/dot}"
+exec newsboat -C "$DOT_DIR/config/newsboat/config" -u "$HOME/dot_local/config/newsboat/urls" "$@"

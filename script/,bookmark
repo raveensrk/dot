@@ -1,5 +1,8 @@
-#!/usr/bin/env python3
-"""bookmark - one writer for every self-describing bookmark file on this machine.
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = ["pyyaml"]
+# ///
+""",bookmark - one writer for every self-describing bookmark file on this machine.
 
 A file is a sink only if it describes itself: YAML front matter with a
 `bookmarks:` key. Nothing else is ever read or written, so a redirect stub or a
@@ -13,12 +16,12 @@ stray study note is invisible by construction.
     ---
 
 COMMANDS
-  bookmark URL             add a link
-  bookmark                 list every link; with a terminal, fzf-pick one and open it
-  bookmark list [--json]   the sinks, their scope, their counts
-  bookmark check           validate the protocol; exit 1 on findings
-  bookmark describe FILE   write or update that file's front matter
-  bookmark --help          this guide
+  ,bookmark URL             add a link
+  ,bookmark                 list every link; with a terminal, fzf-pick one and open it
+  ,bookmark list [--json]   the sinks, their scope, their counts
+  ,bookmark check           validate the protocol; exit 1 on findings
+  ,bookmark describe FILE   write or update that file's front matter
+  ,bookmark --help          this guide
 
 FINDING THE SINK, in order
   1. --to FILE, with --section NAME for the section
@@ -55,13 +58,13 @@ THE LINK TEXT
   otherwise                the last path segment of the url
 
 EXAMPLES
-  bookmark https://example.com/article
-  bookmark https://example.com/x --to "~/repos/work/bookmarks.md"
-  bookmark https://example.com/x --to "repos/work/bookmarks.md" --section FPGA
-  bookmark https://example.com/x --dry-run
-  bookmark --json | python3 -c "import json,sys; print(json.load(sys.stdin)[0])"
-  bookmark describe ~/repos/notes/Recipes.md --scope "recipes I actually cook"
-  bookmark check
+  ,bookmark https://example.com/article
+  ,bookmark https://example.com/x --to "~/repos/work/bookmarks.md"
+  ,bookmark https://example.com/x --to "repos/work/bookmarks.md" --section FPGA
+  ,bookmark https://example.com/x --dry-run
+  ,bookmark --json | python3 -c "import json,sys; print(json.load(sys.stdin)[0])"
+  ,bookmark describe ~/repos/notes/Recipes.md --scope "recipes I actually cook"
+  ,bookmark check
 
 IN A TERMINAL, AND INSIDE AN AGENT
   Same script, different terminals, and this was measured rather than assumed:
@@ -574,7 +577,7 @@ def cmd_open(sinks: list[Sink], as_json: bool = False) -> int:
 
 def add_open_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="bookmark", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+        prog=",bookmark", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument("url", nargs="?", help="the link to add; omit to browse every sink")
     parser.add_argument("--to", help="sink path or its tail, e.g. work/bookmarks.md")
@@ -590,21 +593,24 @@ def add_open_parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     argv = sys.argv[1:]
+    if argv[:1] == ["help"]:
+        print(__doc__)
+        return 0
     # dispatched by hand, not by add_subparsers: those reject a global flag after
-    # the subcommand, so `bookmark list --json` would fail
+    # the subcommand, so `,bookmark list --json` would fail
     if argv[:1] == ["list"]:
-        parser = argparse.ArgumentParser(prog="bookmark list", description="The sinks: their scope, their counts, their order.")
+        parser = argparse.ArgumentParser(prog=",bookmark list", description="The sinks: their scope, their counts, their order.")
         parser.add_argument("--json", action="store_true", help="link objects instead of the human table")
         return cmd_list(discover(), parser.parse_args(argv[1:]).json)
     if argv[:1] == ["check"]:
         argparse.ArgumentParser(
-            prog="bookmark check",
+            prog=",bookmark check",
             description="Validate the protocol across every sink: an empty scope, a bad order, a duplicate, a non-http link. Notes (a default section not created yet) do not fail it.",
         ).parse_args(argv[1:])
         return cmd_check(discover())
     if argv[:1] == ["describe"]:
         parser = argparse.ArgumentParser(
-            prog="bookmark describe",
+            prog=",bookmark describe",
             description="Write or update the bookmarks: front matter. This is how a file becomes a sink. Other front matter keys are kept byte for byte.",
         )
         parser.add_argument("files", nargs="+", help="one file per run when --scope is given")

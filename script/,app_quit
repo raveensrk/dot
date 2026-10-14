@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# ,app_quit - quit macOS apps cleanly by name, like Cmd-Q (not a force kill).
+#
+# Usage:
+#   ,app_quit Safari
+#   ,app_quit Safari Mail "Google Chrome"
+#
+# The app may still ask to save documents. Quitting an app that is not
+# running is a no-op.
+
+set -euo pipefail
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+if [ $# -eq 0 ]; then
+	echo ",app_quit: needs an app name (see --help)" >&2
+	exit 2
+fi
+
+for app in "$@"; do
+	osascript -e 'on run argv' -e 'if application (item 1 of argv) is running then tell application (item 1 of argv) to quit' -e 'end run' "$app"
+done
