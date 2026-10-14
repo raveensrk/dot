@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# ,ls_comma_cmds - list every comma command with a one-line description and where it lives.
 
 set -PCeuo pipefail
 # set -x
@@ -9,7 +10,11 @@ usage() {
 Usage: ,ls_comma_cmds [-h|--help|help]
 
 List every command that starts with a comma, sorted by path: executables on PATH,
-plus aliases and functions from an interactive Bash, with where each lives.
+plus aliases and functions from an interactive Bash, with a one-line description
+and where each lives.
+
+The description is read from the script's header (its first comment or docstring
+line), never by running it. For an alias it is what the alias runs.
 
 Example:
   ,ls_comma_cmds
@@ -28,9 +33,47 @@ case "${1-}" in
 	;;
 esac
 
+# describe NAME FILE: the first meaningful header line, without "NAME - ".
+describe() {
+	local name=$1 file=$2 line
+	if ! grep -Iq . "$file" 2>/dev/null; then
+		echo "(compiled binary)"
+		return
+	fi
+	line=$(sed -n '2,20p' "$file" | awk '
+		/^# \/\/\/|^# dependencies|^# requires-python/ { next }
+		/^#[[:space:]]*(set |shellcheck|-\*-|coding[:=])/ { next }
+		/^"""/ { sub(/^"""[[:space:]]*/, ""); if ($0 != "") { print; exit } ; doc = 1; next }
+		doc && NF { print; exit }
+		/^#/ { sub(/^#[[:space:]]*/, ""); if (NF) { print; exit } ; next }
+		NF { exit }
+	')
+	line=${line#"$name - "}
+	line=${line%'"""'}
+	echo "${line:-(no description)}"
+}
+
 # Interactive Bash so aliases and functions from the profile are visible.
-bash -ic '
+rows=$(bash -ic '
 	compgen -c -- , | sort -u | while IFS= read -r c; do
-		printf "%-32s %s\n" "$c" "$(type -P -- "$c" || type -t -- "$c")"
-	done | sort -b -k2,2 -k1,1
-' 2>/dev/null
+		if p=$(type -P -- "$c"); then
+			printf "%s\t%s\t\n" "$c" "$p"
+		elif [ "$(type -t -- "$c")" = alias ]; then
+			printf "%s\talias\t%s\n" "$c" "$(alias -- "$c" | sed "s/^[^=]*=//; s/^'"'"'//; s/'"'"'$//")"
+		else
+			printf "%s\t%s\t\n" "$c" "$(type -t -- "$c")"
+		fi
+	done
+' 2>/dev/null | sort -t $'\t' -k2,2 -k1,1)
+
+while IFS=$'\t' read -r name where detail; do
+	if [ -f "$where" ]; then
+		desc=$(describe "$name" "$where")
+		where=${where/#$HOME/\~}
+	elif [ "$where" = alias ]; then
+		desc="runs: $detail"
+	else
+		desc="($where)"
+	fi
+	printf '%-32s %-64.64s %s\n' "$name" "$desc" "$where"
+done <<<"$rows"
