@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-if command -v columns ; then 
-    columns -t -s "," "$1"
-else
-    column -t -s "," "$1"
-fi
