@@ -14,7 +14,9 @@ plus aliases and functions from an interactive Bash, with a one-line description
 and where each lives.
 
 The description is read from the script's header (its first comment or docstring
-line), never by running it. For an alias it is what the alias runs.
+sentence), never by running it. A compiled command has no header: those listed in
+HELP_SAFE_BINARIES (checked to have no side effects) give the first line of their
+--help instead, capped at 2 seconds. For an alias it is what the alias runs.
 
 Example:
   ,ls_comma_cmds
@@ -33,11 +35,21 @@ case "${1-}" in
 	;;
 esac
 
+# Compiled commands have no header to read. These are checked to answer --help
+# without side effects (clap prints help and exits before running anything), so
+# their description is the first line of `--help`, capped at 2 seconds. Add a
+# binary here only after checking that.
+HELP_SAFE_BINARIES=",sync2"
+
 # describe NAME FILE: the first meaningful header line, without "NAME - ".
 describe() {
 	local name=$1 file=$2 line
 	if ! grep -Iq . "$file" 2>/dev/null; then
-		echo "(compiled binary)"
+		if [[ " $HELP_SAFE_BINARIES " == *" $name "* ]]; then
+			line=$(timeout 2 "$file" --help </dev/null 2>/dev/null | awk 'NF { print; exit }') || true
+			line=${line%.}
+		fi
+		echo "${line:-(compiled binary)}"
 		return
 	fi
 	# The header's first paragraph, joined into one line: comment lines, or a
