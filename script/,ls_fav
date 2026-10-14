@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# ,ls_fav - list my favorite programs, commands, aliases and functions with a one-line description and where each lives.
+
+set -PCeuo pipefail
+# set -x
+IFS=$'\n\t'
+
+FAV_FILE=${FAV_FILE:-$HOME/dot_local/config/fav.txt}
+HIST_FILE=${HISTFILE:-$HOME/.bash_history}
+# Too common to be worth listing as "most used".
+HIST_SKIP=" cd ls l .. echo set type alias sudo rm mkdir cp mv cat q r exit clear man which history source export "
+
+usage() {
+	cat <<'USAGE'
+Usage: ,ls_fav [-n N] [-h|--help|help]
+       ,ls_fav edit
+
+List my favorites in two sections:
+  1. Favorites: the names in ~/dot_local/config/fav.txt (per machine), in that order.
+  2. Most used: the N most-run commands in ~/.bash_history that are not
+     favorites yet (default 15), skipping everyday ones like cd and ls.
+
+Each row shows the name, where it lives (a path, alias or function) and a
+one-line description, read the same way as ,ls_comma_cmds. Output is colored on
+a terminal; set NO_COLOR to turn it off. Names that no longer exist are dropped.
+
+`,ls_fav edit` opens the favorites file in Vim.
+
+Example:
+  ,ls_fav -n 30
+  ,ls_fav edit
+USAGE
+}
+
+top=15
+while [ $# -gt 0 ]; do
+	case $1 in
+	-h | --help | help)
+		usage
+		exit 0
+		;;
+	edit)
+		mkdir -p "$(dirname "$FAV_FILE")"
+		exec vim "$FAV_FILE"
+		;;
+	-n)
+		[[ ${2-} =~ ^[0-9]+$ ]] || { usage >&2; exit 2; }
+		top=$2
+		shift 2
+		;;
+	*)
+		usage >&2
+		exit 2
+		;;
+	esac
+done
+
+# shellcheck source=../lib/cmd_info.sh
+source "${DOT:-$HOME/dot}/lib/cmd_info.sh"
+
+# Favorites as "name<TAB>note" in file order.
+favs=$(awk -F'\t' '!/^[[:space:]]*(#|$)/ { sub(/[[:space:]]+$/, "", $1); print $1 "\t" $2 }' "$FAV_FILE" 2>/dev/null || true)
+
+# The command word of each history line, most-run first, minus favorites and skips.
+# Leading VAR=value assignments are not the command, so they are stepped over.
+used=$(awk -v skip="$HIST_SKIP" -v favs="$(cut -f1 <<<"$favs" | tr '\n' ' ')" '
+	/^#[0-9]+$/ { next }
+	{ for (i = 1; i <= NF && $i ~ /^[A-Za-z_][A-Za-z0-9_]*=/; i++) ;
+	  c = $i; if (c == "" || index(skip, " " c " ") || index(" " favs, " " c " ")) next
+	  n[c]++ }
+	END { for (c in n) print n[c] "\t" c }
+' "$HIST_FILE" 2>/dev/null | sort -t $'\t' -k1,1nr -k2,2 | cut -f2)
+
+{
+	if [ -n "$favs" ]; then
+		echo "## Favorites"
+		# Keep each favorite's note by joining it back onto its lookup row.
+		cut -f1 <<<"$favs" | cmd_lookup | awk -F'\t' -v OFS='\t' '
+			NR == FNR { note[$1] = $2; next }
+			{ print $1, $2, $3, note[$1] }
+		' <(printf '%s\n' "$favs") - | cmd_describe_rows
+	fi
+	if [ "$top" -gt 0 ] && [ -n "$used" ]; then
+		echo "## Most used"
+		# Look up more than needed, since some history words are not commands.
+		head -n $((top * 3)) <<<"$used" | cmd_lookup | head -n "$top" | cmd_describe_rows
+	fi
+} | cmd_table

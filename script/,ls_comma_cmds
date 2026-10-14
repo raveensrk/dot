@@ -12,6 +12,7 @@ Usage: ,ls_comma_cmds [-h|--help|help]
 List every command that starts with a comma, sorted by path: executables on PATH,
 plus aliases and functions from an interactive Bash, with a one-line description
 and where each lives.
+Output is colored on a terminal; set NO_COLOR to turn it off.
 
 The description is read from the script's header (its first comment or docstring
 sentence), never by running it. A compiled command has no header: those listed in
@@ -35,68 +36,9 @@ case "${1-}" in
 	;;
 esac
 
-# Compiled commands have no header to read. These are checked to answer --help
-# without side effects (clap prints help and exits before running anything), so
-# their description is the first line of `--help`, capped at 2 seconds. Add a
-# binary here only after checking that.
-HELP_SAFE_BINARIES=",sync2"
+# shellcheck source=../lib/cmd_info.sh
+source "${DOT:-$HOME/dot}/lib/cmd_info.sh"
 
-# describe NAME FILE: the first meaningful header line, without "NAME - ".
-describe() {
-	local name=$1 file=$2 line
-	if ! grep -Iq . "$file" 2>/dev/null; then
-		if [[ " $HELP_SAFE_BINARIES " == *" $name "* ]]; then
-			line=$(timeout 2 "$file" --help </dev/null 2>/dev/null | awk 'NF { print; exit }') || true
-			line=${line%.}
-		fi
-		echo "${line:-(compiled binary)}"
-		return
-	fi
-	# The header's first paragraph, joined into one line: comment lines, or a
-	# docstring's lines, up to a blank line or the first line of code.
-	line=$(sed -n '2,30p' "$file" | awk '
-		function add(s) { out = out (out == "" ? "" : " ") s }
-		function done() { if (out != "") { print out; exit } }
-		/^# \/\/\/|^# dependencies|^# requires-python/ { next }
-		/^#[[:space:]]*(set |shellcheck|-\*-|coding[:=])/ { next }
-		doc { sub(/"""[[:space:]]*$/, ""); if (!NF) done(); add($0); if (end) done(); next }
-		/^"""/ { sub(/^"""[[:space:]]*/, ""); end = sub(/"""[[:space:]]*$/, ""); doc = 1; if (NF) add($0); if (end) done(); next }
-		/^#/ { sub(/^#[[:space:]]*/, ""); if (!NF) done(); add($0); next }
-		{ done(); exit }
-		END { if (out != "") print out }
-	' | head -1)
-	line=${line#"$name - "}
-	# Keep the first sentence: up to the first ". " (a period followed by a space).
-	line=${line%%. *}
-	line=${line%.}
-	echo "${line:-(no description)}"
-}
-
-# Interactive Bash so aliases and functions from the profile are visible.
-rows=$(bash -ic '
-	compgen -c -- , | sort -u | while IFS= read -r c; do
-		if p=$(type -P -- "$c"); then
-			printf "%s\t%s\t\n" "$c" "$p"
-		elif [ "$(type -t -- "$c")" = alias ]; then
-			printf "%s\talias\t%s\n" "$c" "$(alias -- "$c" | sed "s/^[^=]*=//; s/^'"'"'//; s/'"'"'$//")"
-		else
-			printf "%s\t%s\t\n" "$c" "$(type -t -- "$c")"
-		fi
-	done
-' 2>/dev/null | sort -t $'\t' -k2,2 -k1,1)
-
-while IFS=$'\t' read -r name where detail; do
-	if [ -f "$where" ]; then
-		desc=$(describe "$name" "$where")
-		where=${where/#$HOME/\~}
-	elif [ "$where" = alias ]; then
-		desc="runs: $detail"
-	else
-		desc="($where)"
-	fi
-	printf '%s\t%s\t%s\n' "$name" "$where" "$desc"
-done <<<"$rows" | awk -F'\t' '
-	{ n[NR] = $1; w[NR] = $2; d[NR] = $3
-	  if (length($1) > a) a = length($1); if (length($2) > b) b = length($2) }
-	END { for (i = 1; i <= NR; i++) printf "%-" a "s  %-" b "s  %s\n", n[i], w[i], d[i] }
-'
+# Every comma name the interactive Bash can complete, sorted by where it lives.
+bash -ic 'compgen -c -- ,' 2>/dev/null | sort -u | cmd_lookup | sort -t $'\t' -k2,2 -k1,1 |
+	cmd_describe_rows | cmd_table
