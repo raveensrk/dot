@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+"""Calculate a display's pixel density (PPI) from its resolution and diagonal size.
+
+PPI = diagonal length in pixels / diagonal length in inches.
+
+Usage:
+  ,calculate_display_ppi RESOLUTION DIAGONAL_INCHES
+  ,calculate_display_ppi 4k 27              # 163.18 PPI
+  ,calculate_display_ppi 2560x1440 27       # 108.79 PPI
+  ,calculate_display_ppi -h, --help         this summary (full text: help)
+
+RESOLUTION is WIDTHxHEIGHT in pixels, or one of these names:
+  fhd 1920x1080   qhd 2560x1440   uwqhd 3440x1440   4k 3840x2160
+  5k 5120x2880    6k 6016x3384    8k 7680x4320
+"""
+
+import math
+import re
+import sys
+
+NAMES = {
+    "fhd": (1920, 1080),
+    "qhd": (2560, 1440),
+    "uwqhd": (3440, 1440),
+    "4k": (3840, 2160),
+    "5k": (5120, 2880),
+    "6k": (6016, 3384),
+    "8k": (7680, 4320),
+}
+
+
+def parse_resolution(text):
+    key = text.lower()
+    if key in NAMES:
+        return NAMES[key]
+    match = re.fullmatch(r"(\d+)[x×](\d+)", key)
+    if not match:
+        raise ValueError(f"unknown resolution {text!r}: use WIDTHxHEIGHT or one of {', '.join(NAMES)}")
+    return int(match[1]), int(match[2])
+
+
+def main():
+    args = sys.argv[1:]
+    if args[:1] in (["-h"], ["--help"], ["help"]):
+        print(__doc__ if args[0] == "help" else __doc__.split("\n\n")[0])
+        return 0
+    if len(args) != 2:
+        print(",calculate_display_ppi: needs RESOLUTION and DIAGONAL_INCHES (see --help)", file=sys.stderr)
+        return 2
+    try:
+        width, height = parse_resolution(args[0])
+        diagonal = float(args[1])
+        if diagonal <= 0:
+            raise ValueError("diagonal must be more than 0 inches")
+    except ValueError as err:
+        print(f",calculate_display_ppi: {err}", file=sys.stderr)
+        return 2
+    ppi = math.hypot(width, height) / diagonal
+    print(f"{width}x{height} at {diagonal:g} in: {ppi:.2f} PPI ({width * height:,} pixels)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
