@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Checks for script/yt-wl. No network: yt-dlp never runs here.
+"""Checks for script/,yt_watch_later. No network: yt-dlp never runs here.
 
     python3 -m pytest tests/test_yt_wl.py
 """
@@ -15,7 +15,7 @@ from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
-SCRIPT = Path(__file__).resolve().parent.parent / "script" / "yt-wl"
+SCRIPT = Path(__file__).resolve().parent.parent / "script" / ",yt_watch_later"
 spec = importlib.util.spec_from_loader(
     "yt_wl", importlib.machinery.SourceFileLoader("yt_wl", str(SCRIPT))
 )
@@ -114,7 +114,7 @@ class ViewLimitTest(unittest.TestCase):
 class HintTest(unittest.TestCase):
     def test_hint_is_the_delete_command_for_that_id(self) -> None:
         row = ytwl.normalize(PAYLOAD)[0]
-        self.assertEqual(ytwl.hint(row), "delete: yt-wl --rm aaa")
+        self.assertEqual(ytwl.hint(row), "delete: ,yt_watch_later --rm aaa")
 
 
 class PlaylistIdTest(unittest.TestCase):

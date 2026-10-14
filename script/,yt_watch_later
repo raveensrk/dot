@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""yt-wl - read and edit a private YouTube playlist (Watch Later) without a browser.
+""",yt_watch_later - read and edit a private YouTube playlist (Watch Later) without a browser.
 
 Watch Later (playlist id WL) is invisible to the YouTube Data API v3 since
 2016-09-12: playlistItems.list on WL returns no items, or 403
@@ -7,19 +7,19 @@ watchLaterNotAccessible. This reads it through yt-dlp with your browser
 cookies, lists it, plays it in mpv and deletes entries through YouTube's own
 InnerTube endpoint. No API key, no OAuth, no browser window.
 
-    yt-wl                       # the next entry only, plus the command that deletes it
-    yt-wl --all                 # the whole list, one numbered entry per line
-    yt-wl --urls                # just the URLs, to pipe into yt-dlp -a -
-    yt-wl --json                # full records
-    yt-wl --csv                 # spreadsheet
-    yt-wl -n 10                 # first 10 entries
-    yt-wl watch                 # play them one by one, offer to delete each
-    yt-wl watch --auto          # same, delete without asking
-    yt-wl watch --oldest        # start from the oldest entry
-    yt-wl rm 3 7 dQw4w9WgXcQ    # delete by table row number or video id
-    yt-wl -p :ytfav:            # any other playlist: liked videos
-    yt-wl -p :ythistory:        # watch history
-    yt-wl --cookies firefox:abc123.default-release
+    ,yt_watch_later                       # the next entry only, plus the command that deletes it
+    ,yt_watch_later --all                 # the whole list, one numbered entry per line
+    ,yt_watch_later --urls                # just the URLs, to pipe into yt-dlp -a -
+    ,yt_watch_later --json                # full records
+    ,yt_watch_later --csv                 # spreadsheet
+    ,yt_watch_later -n 10                 # first 10 entries
+    ,yt_watch_later watch                 # play them one by one, offer to delete each
+    ,yt_watch_later watch --auto          # same, delete without asking
+    ,yt_watch_later watch --oldest        # start from the oldest entry
+    ,yt_watch_later rm 3 7 dQw4w9WgXcQ    # delete by table row number or video id
+    ,yt_watch_later -p :ytfav:            # any other playlist: liked videos
+    ,yt_watch_later -p :ythistory:        # watch history
+    ,yt_watch_later --cookies firefox:abc123.default-release
 
 Firefox cookies are read straight from cookies.sqlite. Chrome cookies are
 encrypted with the login keychain and are not supported here; list-only with
@@ -53,7 +53,7 @@ PLAYLIST_IDS = {":ytwatchlater:": "WL", ":ytfav:": "LL", ":ythistory:": "HL"}
 def fetch(playlist: str, cookies: str, limit: int | None) -> list[dict]:
     """Run yt-dlp and return one flat record per playlist entry, in playlist order."""
     if shutil.which(YT_DLP) is None:
-        sys.exit("yt-wl needs yt-dlp on PATH. Install it: brew install yt-dlp")
+        sys.exit(",yt_watch_later needs yt-dlp on PATH. Install it: brew install yt-dlp")
 
     cmd = [
         YT_DLP,
@@ -129,7 +129,7 @@ def view_limit(args) -> int | None:
 
 def hint(row: dict) -> str:
     """The one-line command that deletes this entry."""
-    return f"delete: yt-wl --rm {row['id']}"
+    return f"delete: ,yt_watch_later --rm {row['id']}"
 
 
 def playlist_id(playlist: str) -> str:
