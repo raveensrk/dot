@@ -126,20 +126,3 @@ chsh -s /opt/homebrew/bin/bash
 ### Terminal
 
 > Settings -> Profiles -> Keyboard -> Enable "Use Option as Meta Key"
-
-## Test
-
-Some text for testing.
-aaaa
-
-[example.sh](script/example.sh) prints `example ok` and exits 0. On `PATH`.
-
-```sh
-example.sh
-```
-
-[hello_world.sh](script/hello_world.sh) prints `hello world` and exits 0. On `PATH`.
-
-```sh
-hello_world.sh
-```
