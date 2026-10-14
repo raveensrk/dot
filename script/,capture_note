@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# ,capture_note - add a quick note as a todo task in the central task folder.
+#
+# Usage:
+#   ,capture_note call the bank about the card
+#   ,capture_note                 # asks for the text
+#
+# Runs `task-router add` into ~/repos/notes/task, whatever folder you are in.
+# Due date, priority and tags can be added later with `task-router edit`.
+
+set -euo pipefail
+IFS=$'\n\t'
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+text=$(IFS=" "; echo "$*")
+if [ -z "$text" ]; then
+	read -r -e -p "note: " text || true
+fi
+if [ -z "${text// /}" ]; then
+	echo ",capture_note: empty note, nothing added" >&2
+	exit 2
+fi
+
+exec task-router add "$text" --dir "$HOME/repos/notes/task"
