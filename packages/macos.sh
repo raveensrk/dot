@@ -54,6 +54,7 @@ packages=(
 	pkg-config
 	python
 	ranger
+	steipete/tap/remindctl
 	ripgrep
 	rsync
 	shellcheck
