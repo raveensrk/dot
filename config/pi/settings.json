@@ -23,7 +23,6 @@
     "npm:@dietrichgebert/ponytail",
     "npm:pi-caveman",
     "npm:@injaneity/pi-computer-use",
-    "npm:pi-ask-user",
     "npm:@narumitw/pi-worktree",
     {
       "source": "npm:pi-subagents",
