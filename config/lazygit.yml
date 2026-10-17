@@ -5,7 +5,8 @@
 # Tests: tests/test_lazygit.py.
 #
 # `C` on the Files tab runs config/lazygit_pi_commit.sh: abort if nothing is
-# staged, pipe `git diff --cached` into `pi -p` (no tools, no session), then
+# staged, pipe `git diff --cached` into `claude -p` (Opus 5.5, low effort;
+# falls back to `pi -p` if claude fails), no tools, no session, then
 # open the git editor with that message so you can edit it before it lands.
 #
 # Config: https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md

@@ -34,6 +34,11 @@ class LazygitConfigTest(unittest.TestCase):
         self.assertIn("pi -p", text)
         self.assertIn("git diff --cached", text)
 
+    def test_script_prefers_claude(self):
+        text = SCRIPT.read_text(encoding="utf-8")
+        self.assertIn("claude -p", text)
+        self.assertLess(text.index("claude -p"), text.index("pi -p"))
+
     def test_script_is_executable(self):
         self.assertTrue(os.access(SCRIPT, os.X_OK))
 

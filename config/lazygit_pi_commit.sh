@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# lazygit's commit and push helper: asks the model for a conventional commit
-# message, then runs the commit (or push) the human asked for.
+# Commit staged changes with an AI-written conventional commit message.
+# lazygit's commit and push helper: asks the model for the message, then runs
+# the commit (or push) the human asked for.
+# Claude Code (Opus 5.5, low effort) writes the message; pi is the fallback
+# when claude is missing, fails or prints nothing.
+# Usage: lazygit_pi_commit.sh [push] [-y]
+#   push  run git push after the commit
+#   -y    commit without opening the editor
+
+case "${1:-}" in
+  -h|--help) sed -n '4s/^# \{0,1\}//p' "$0"; exit 0 ;;
+  help) sed -n '4,/^[^#]/{/^#/s/^# \{0,1\}//p;}' "$0"; exit 0 ;;
+esac
 
 d=$(git diff --cached)
 if [[ -z "$d" ]]; then
@@ -10,8 +21,17 @@ if [[ -z "$d" ]]; then
   exit 1
 fi
 
-msg=$(printf '%s' "$d" | pi -p -nt -nc --no-session --thinking off -- \
-  'Write a conventional commit message for this staged diff. Output only the message. No markdown fences. Only Plain Text.')
+prompt='Write a Conventional Commits message (type(scope): subject, e.g. feat: ..., fix: ...) for this staged diff. Output only the message. No markdown fences. Only Plain Text.'
+
+msg=
+if command -v claude >/dev/null; then
+  msg=$(printf '%s' "$d" | claude -p --no-session-persistence --tools "" \
+    --model claude-opus-5-5 --effort low "$prompt") || msg=
+fi
+if [[ -z $msg ]]; then
+  echo "claude failed, falling back to pi" >&2
+  msg=$(printf '%s' "$d" | pi -p -nt -nc --no-session --thinking off -- "$prompt")
+fi
 
 tmp=$(mktemp)
 trap 'rm -f "$tmp"' EXIT
