@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# ,combine_text_files_into_pdf - join every text file in a folder into one PDF, one section per file.
+#
+# Usage:
+#   ,combine_text_files_into_pdf FOLDER
+#   ,combine_text_files_into_pdf ~/notes/trip      # writes ~/notes/trip.pdf
+#
+# Files are taken in sorted path order, each under a heading with its name.
+# Binary files (images, PDFs, ...) are skipped. The PDF is written next to the
+# folder as FOLDER.pdf, replacing an older one, then opened. Needs pandoc and
+# tectonic.
+
+set -euo pipefail
+IFS=$'\n\t'
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+if [ $# -ne 1 ] || [ ! -d "$1" ]; then
+	echo ",combine_text_files_into_pdf: needs one folder (see --help)" >&2
+	exit 2
+fi
+
+folder=$(cd "$1" && pwd)
+pdf="$folder.pdf"
+work=$(mktemp -d "$HOME/tmp/combine_pdf.XXXXXX")
+trap 'rm -rf "$work"' EXIT
+combined="$work/combined.md"
+
+count=0
+while IFS= read -r -d '' file; do
+	grep -Iq . "$file" || continue
+	name=$(basename "$file")
+	{
+		printf '# %s\n\n' "${name%.*}"
+		cat "$file"
+		printf '\n\n'
+	} >>"$combined"
+	count=$((count + 1))
+done < <(find "$folder" -type f ! -name '.*' -print0 | sort -z)
+
+if [ "$count" -eq 0 ]; then
+	echo ",combine_text_files_into_pdf: no text files in $folder" >&2
+	exit 1
+fi
+
+pandoc "$combined" --pdf-engine=tectonic -o "$pdf"
+echo "Wrote $pdf ($count files)"
+open "$pdf"
