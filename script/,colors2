@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+# ,colors2 - print a reference sheet of ANSI terminal color codes, each in its color.
+#
+# Usage:
+#   ,colors2
+#
+# Opened by the :Colors command in Vim (config/vim/plugin/appearance.vim).
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
 
 cat <<HERE
 ------------------------------------------------------------------------------   
