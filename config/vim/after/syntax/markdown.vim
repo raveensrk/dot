@@ -68,3 +68,19 @@ augroup MarkdownRainbowHeadings
 	autocmd ColorScheme * call s:RainbowHeadings()
 	autocmd ColorScheme * call s:RainbowWordColors()
 augroup END
+
+" Horizontal rules (---, ***, ___) drawn as a dim gray ─ line. Reuses the
+" rule group of vim-markdown (mkdRule) or the built-in syntax (markdownRule),
+" which already skip setext H2 underlines and frontmatter fences. Each
+" character is concealed separately, so the rule is as wide as the source;
+" the cursor line shows the raw text (concealcursor empty).
+syntax match MarkdownRuleChar /[-*_]/ contained containedin=mkdRule,markdownRule conceal cchar=─
+
+function! s:RuleColors() abort
+	highlight Conceal ctermfg=242 ctermbg=NONE guifg=#6c6c6c guibg=NONE
+endfunction
+call s:RuleColors()
+augroup MarkdownRuleColors
+	autocmd!
+	autocmd ColorScheme * call s:RuleColors()
+augroup END
