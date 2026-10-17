@@ -4,8 +4,8 @@
 # Usage:
 #   ,colors
 #
-# Two sheets: color names with sample text in 16 and 256 colors, then the bare
-# codes as numbers (basic, 256 foreground, 256 background).
+# Two sheets: color names with sample text in 16 and 256 colors (white, black and
+# cyan text on each background), then the bare codes as numbers.
 #
 # Opened by the :Colors command in Vim (config/vim/plugin/appearance.vim).
 
@@ -98,3 +98,16 @@ for i in $(seq 0 255); do
 	echo -n -e "\e[38;5;255m\e[48;5;${i}m${i}\e[0m"
 done
 echo ""
+
+# Cyan text on every background.
+cat <<HERE
+------------------------------------------------------------------------------
+Cyan on color
+====================
+HERE
+
+{
+for ((i=0;i<256;i++)); do
+    echo -e "$i = \e[38;5;6m\e[48;5;${i}mCyan\e[0m"
+done
+} | column -x
