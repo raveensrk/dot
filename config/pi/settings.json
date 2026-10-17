@@ -63,9 +63,7 @@
       "right": [],
       "secondary": [
         "custom:usage",
-        "custom:openrouter",
-        "custom:grok",
-        "custom:opencode"
+        "custom:gemini"
       ]
     },
     "customItems": [
@@ -100,6 +98,13 @@
         "position": "secondary",
         "prefix": "opencode",
         "color": "#8fb8d8"
+      },
+      {
+        "id": "gemini",
+        "statusKey": "gemini-usage",
+        "position": "secondary",
+        "prefix": "gemini",
+        "color": "#8ab4f8"
       }
     ]
   },

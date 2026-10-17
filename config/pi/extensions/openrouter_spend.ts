@@ -9,10 +9,29 @@
  * "used" are this API key.
  * Self-check: node --experimental-strip-types openrouter-spend.ts
  */
+import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 const STATUS_KEY = "or-spend";
+const FLAG = join(homedir(), ".local/share/openrouter_spend/disabled");
 const INTERVAL_MS = 10 * 60 * 1000;
+
+function openrouterOn(): boolean {
+	return !existsSync(FLAG);
+}
+
+function setOpenrouterOn(value: boolean): void {
+	if (value) {
+		if (existsSync(FLAG)) {
+			unlinkSync(FLAG);
+		}
+		return;
+	}
+	mkdirSync(join(homedir(), ".local/share/openrouter_spend"), { recursive: true });
+	writeFileSync(FLAG, "");
+}
 
 function usd(n: number): string {
 	return `$${n.toFixed(2)}`;
@@ -69,7 +88,7 @@ export default function (pi: ExtensionAPI) {
 
 	async function refresh(ctx: ExtensionContext): Promise<void> {
 		if (!ctx.hasUI) return;
-		ctx.ui.setStatus(STATUS_KEY, await spendLine(ctx));
+		ctx.ui.setStatus(STATUS_KEY, openrouterOn() ? await spendLine(ctx) : undefined);
 	}
 
 	function start(ctx: ExtensionContext): void {
@@ -78,14 +97,47 @@ export default function (pi: ExtensionAPI) {
 		timer.unref?.();
 	}
 
+	function stop(): void {
+		if (!timer) return;
+		clearInterval(timer);
+		timer = undefined;
+	}
+
+	pi.registerCommand("openrouter-spend", {
+		description: "Enable or disable OpenRouter spend on the powerline",
+		getArgumentCompletions: (prefix) => {
+			return ["on", "off"]
+				.filter((value) => value.startsWith(prefix))
+				.map((value) => ({ value, label: value }));
+		},
+		handler: async (args, ctx) => {
+			const arg = args.trim().toLowerCase();
+			if (arg !== "on" && arg !== "off") {
+				ctx.ui.notify("Usage: /openrouter-spend on|off", "error");
+				return;
+			}
+			const on = arg === "on";
+			setOpenrouterOn(on);
+			await refresh(ctx);
+			if (on) {
+				start(ctx);
+				ctx.ui.notify("OpenRouter powerline on", "info");
+				return;
+			}
+			stop();
+			ctx.ui.notify("OpenRouter powerline off", "info");
+		},
+	});
+
 	pi.on("session_start", async (_event, ctx) => {
 		await refresh(ctx);
-		start(ctx);
+		if (openrouterOn()) {
+			start(ctx);
+		}
 	});
 
 	pi.on("session_shutdown", (_event, ctx) => {
-		if (timer) clearInterval(timer);
-		timer = undefined;
+		stop();
 		if (ctx.hasUI) ctx.ui.setStatus(STATUS_KEY, undefined);
 	});
 }

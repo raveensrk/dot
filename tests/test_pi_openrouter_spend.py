@@ -19,7 +19,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-EXT = ROOT / "config" / "pi" / "extensions" / "openrouter-spend.ts"
+EXT = ROOT / "config" / "pi" / "extensions" / "openrouter_spend.ts"
 NODE = shutil.which("node")
 
 PROBE = f"""
