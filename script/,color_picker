@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
+# ,color_picker - pick a terminal color with fzf and print its escape code to paste.
+#
+# Usage:
+#   ,color_picker
+#
+# Type to filter the 256 text colors and 256 background colors, then Enter.
+# A text color prints a ready-to-paste shell function; a background color
+# prints its code. Needs fzf.
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
 
 string="The Quick brown fox jumped over the lazy dog..."
 
 {
-# for ((i=30;i<=47;i++)); do
-#     echo -en "$i = \e[${i}m$string\e[0m"
-# 	echo ": \e[${i}mCode\e[0m"
-# done
-
 for ((i=0;i<256;i++)); do
     echo -en "$i = \e[38;5;${i}m$string\e[0m"
     cat <<-HERE
