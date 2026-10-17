@@ -1,7 +1,7 @@
 ---
 id: "5pd8wj30dw"
 title: "Add a TUI view for the sync2 CLI"
-state: "todo"
+state: "done"
 due: ""
 priority: ""
 tag: ["tui"]
@@ -9,7 +9,7 @@ repeat: ""
 effort: ""
 postpone: 0
 created: "2026-10-17"
-closed: ""
+closed: "2026-10-18T04:03"
 ---
 
 Goal locked 2026-10-18 (grill done). ,sync2 becomes a full TUI app.
