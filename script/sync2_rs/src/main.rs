@@ -237,7 +237,7 @@ fn run(cli: Cli) -> anyhow::Result<u8> {
     for r in &results {
         counts.add(r.status);
     }
-    let dirty_total = results.iter().filter(|r| r.dirty == Some(true)).count();
+    let mut dirty_total = results.iter().filter(|r| r.dirty == Some(true)).count();
 
     match mode {
         Mode::List => print_list(&results)?,
@@ -269,6 +269,7 @@ fn run(cli: Cli) -> anyhow::Result<u8> {
             for r in &results {
                 counts.add(r.status);
             }
+            dirty_total = results.iter().filter(|r| r.dirty == Some(true)).count();
             // After triage, show only what is still open.
             let open: Vec<&Outcome> = results
                 .iter()
