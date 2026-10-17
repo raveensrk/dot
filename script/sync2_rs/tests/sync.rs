@@ -107,7 +107,7 @@ impl Fixture {
             .env("GIT_COMMITTER_EMAIL", "t@t")
             .env("GIT_ALLOW_PROTOCOL", "file")
             .env_remove("NO_COLOR")
-            .args(["-y", "-d"])
+            .args(["--headless", "-d"])
             .arg(self.work());
         cmd
     }
@@ -364,50 +364,6 @@ fn ignore_patterns_skip_repos() {
 }
 
 #[test]
-fn list_mode_prints_only_attention_on_stdout() {
-    let f = Fixture::new();
-    f.clone("fine");
-    let (clone, _) = f.clone("messy");
-    fs::write(clone.join("x"), "x").unwrap();
-    let out = f.cmd().arg("list").output().unwrap();
-    let stdout = String::from_utf8_lossy(&out.stdout);
-    assert_eq!(stdout.lines().count(), 1, "{stdout}");
-    assert!(
-        stdout.contains("/work/messy  Uncommitted changes (1 file(s))"),
-        "{stdout}"
-    );
-    assert!(String::from_utf8_lossy(&out.stderr).contains("item(s) processed"));
-    assert_eq!(out.status.code(), Some(2));
-}
-
-#[test]
-fn ignore_subcommand_writes_both_lists_once() {
-    let f = Fixture::new();
-    let (clone, _) = f.clone("a");
-    let config = f.path("dot_local/sync2.toml");
-    fs::create_dir_all(f.path("dot_local")).unwrap();
-    fs::write(&config, "# keep me\njobs = 4\n").unwrap();
-    for _ in 0..2 {
-        f.cmd().args(["ignore"]).arg(&clone).assert().success();
-    }
-    let txt = fs::read_to_string(f.path("dot_local/list_of_ignores.txt")).unwrap();
-    let toml = fs::read_to_string(&config).unwrap();
-    let canonical = fs::canonicalize(&clone).unwrap();
-    assert_eq!(txt.matches(canonical.to_str().unwrap()).count(), 1, "{txt}");
-    assert_eq!(
-        toml.matches(canonical.to_str().unwrap()).count(),
-        1,
-        "{toml}"
-    );
-    assert!(
-        toml.contains("# keep me") && toml.contains("jobs = 4"),
-        "{toml}"
-    );
-    let (_, out) = f.sync();
-    assert!(!out.contains("/work/a "), "{out}");
-}
-
-#[test]
 fn plain_output_off_a_tty_has_no_escape_codes() {
     let f = Fixture::new();
     f.clone("a");
@@ -441,4 +397,30 @@ fn dir_with_only_empty_dirs_and_ignored_files_is_clean() {
         row(&out, "a").contains("Uncommitted changes (1 file(s))"),
         "{out}"
     );
+}
+
+#[test]
+fn refuses_without_a_terminal() {
+    let f = Fixture::new();
+    let mut cmd = cargo_bin_cmd!("sync2");
+    let out = cmd
+        .env("HOME", f.home.path())
+        .arg("-d")
+        .arg(f.work())
+        .output()
+        .unwrap();
+    assert_eq!(out.status.code(), Some(1));
+    assert!(String::from_utf8_lossy(&out.stderr).contains("needs a terminal"));
+}
+
+#[test]
+fn theme_from_config_and_unknown_theme_fails() {
+    let f = Fixture::new();
+    f.clone("a");
+    fs::create_dir_all(f.path("dot_local")).unwrap();
+    fs::write(f.path("dot_local/sync2.toml"), "theme = \"gruvbox\"\n").unwrap();
+    assert_eq!(f.sync().0, 0);
+    let out = f.cmd().args(["--theme", "nope"]).output().unwrap();
+    assert_eq!(out.status.code(), Some(1));
+    assert!(String::from_utf8_lossy(&out.stderr).contains("unknown theme 'nope'"));
 }

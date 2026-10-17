@@ -11,6 +11,7 @@ pub const TIMEOUT: Duration = Duration::from_secs(60);
 
 pub struct Output {
     pub ok: bool,
+    pub stdout: String,
     pub stderr: String,
 }
 
@@ -30,6 +31,7 @@ pub fn run(repo: &Path, args: &[&str]) -> Output {
         Err(e) => {
             return Output {
                 ok: false,
+                stdout: String::new(),
                 stderr: e.to_string(),
             };
         }
@@ -70,17 +72,53 @@ pub fn run(repo: &Path, args: &[&str]) -> Output {
             Err(_) => break None,
         }
     };
-    let _ = out.join();
+    let stdout = out.join().unwrap_or_default();
     let stderr = err.join().unwrap_or_default();
     match status {
         Some(status) => Output {
             ok: status.success(),
+            stdout,
             stderr,
         },
         None => Output {
             ok: false,
+            stdout: String::new(),
             stderr: format!("Git command timed out after {} seconds", TIMEOUT.as_secs()),
         },
+    }
+}
+
+/// What the TUI detail pane shows for one repo.
+#[derive(Clone, Default)]
+pub struct Detail {
+    /// `main...origin/main [ahead 1]` from `git status -b`.
+    pub branch: String,
+    /// `abc1234 subject (2 hours ago)`.
+    pub last_commit: String,
+    /// Porcelain status lines, at most DETAIL_FILES.
+    pub files: Vec<String>,
+    pub more_files: usize,
+}
+
+const DETAIL_FILES: usize = 30;
+
+/// Branch, last commit and changed files, read with plain `git`.
+pub fn detail(repo: &Path) -> Detail {
+    let status = run(repo, &["status", "--porcelain=v1", "-b"]);
+    let mut lines = status.stdout.lines();
+    let branch = lines
+        .next()
+        .map(|l| l.trim_start_matches("## ").to_string())
+        .unwrap_or_default();
+    let all: Vec<String> = lines.map(str::to_string).collect();
+    let more_files = all.len().saturating_sub(DETAIL_FILES);
+    let files = all.into_iter().take(DETAIL_FILES).collect();
+    let log = run(repo, &["log", "-1", "--format=%h %s (%cr)"]);
+    Detail {
+        branch,
+        last_commit: log.stdout,
+        files,
+        more_files,
     }
 }
 

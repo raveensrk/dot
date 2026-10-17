@@ -1,21 +1,15 @@
-//! Output rows, the live progress display and the summary.
+//! Report rows and the summary, printed after the TUI closes.
 //!
 //! A row is `[TAG]  <path>  <state>  <message>`: paths are '~'-shortened and
 //! padded to the longest path of the run, state is clean, dirty or '-'.
 
 use std::io::Write;
 use std::path::Path;
-use std::sync::Arc;
-use std::thread;
-use std::time::Duration;
-
-use indicatif::{MultiProgress, ProgressBar, ProgressDrawTarget, ProgressStyle};
 
 use crate::sync::{Outcome, Status};
 use crate::theme::{Role, Theme};
 
 pub const STATE_WIDTH: usize = 5;
-const COUNT_UP: Duration = Duration::from_millis(400);
 
 pub fn short(path: &Path) -> String {
     let path = path.to_string_lossy();
@@ -90,72 +84,11 @@ pub fn outcome_row(theme: &Theme, o: &Outcome, width: usize) -> String {
     )
 }
 
-/// Spinners per worker and an overall bar, cleared when the scan ends; the
-/// grouped report prints after. TTY only.
-pub struct Live {
-    multi: MultiProgress,
-    overall: ProgressBar,
-    theme: Theme,
-}
-
-impl Live {
-    pub fn new(theme: Theme, total: usize) -> Arc<Self> {
-        let multi = MultiProgress::with_draw_target(ProgressDrawTarget::stdout());
-        let style = ProgressStyle::with_template(&format!(
-            "{{bar:24.{bar}}}  {{pos:.{count}}}/{{len}}  {{elapsed}}  eta {{eta}}",
-            bar = theme.indicatif(Role::Count),
-            count = theme.indicatif(Role::Count),
-        ))
-        .expect("valid template")
-        .progress_chars("█▉▊▋▌▍▎▏░");
-        let overall = multi.add(ProgressBar::new(total as u64).with_style(style));
-        overall.enable_steady_tick(Duration::from_millis(100));
-        Arc::new(Live {
-            multi,
-            overall,
-            theme,
-        })
-    }
-
-    /// A spinner line for one worker.
-    pub fn spinner(&self) -> ProgressBar {
-        let style = ProgressStyle::with_template(&format!(
-            "{{spinner:.{}}} {{msg}}",
-            self.theme.indicatif(Role::Spinner)
-        ))
-        .expect("valid template")
-        .tick_chars("⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏ ");
-        let bar = self
-            .multi
-            .insert_before(&self.overall, ProgressBar::new_spinner().with_style(style));
-        bar.enable_steady_tick(Duration::from_millis(80));
-        bar
-    }
-
-    pub fn step(&self, bar: &ProgressBar, repo: &Path, what: &str) {
-        bar.set_message(format!(
-            "{}  {}",
-            self.theme.paint(Role::Dim, &short(repo)),
-            what
-        ));
-    }
-
-    pub fn finish(&self) {
-        self.overall.inc(1);
-    }
-
-    pub fn close(&self) {
-        self.overall.finish_and_clear();
-        let _ = self.multi.clear();
-    }
-}
-
 #[derive(Default, Clone, Copy)]
 pub struct Counts {
     pub ok: usize,
     pub pushed: usize,
     pub synced: usize,
-    pub manual: usize,
     pub attention: usize,
     pub failed: usize,
 }
@@ -172,20 +105,8 @@ impl Counts {
         }
     }
 
-    fn total(&self) -> usize {
-        self.ok + self.pushed + self.synced + self.manual + self.attention + self.failed
-    }
-
-    fn scaled(&self, f: f64) -> Counts {
-        let s = |n: usize| (n as f64 * f).round() as usize;
-        Counts {
-            ok: s(self.ok),
-            pushed: s(self.pushed),
-            synced: s(self.synced),
-            manual: s(self.manual),
-            attention: s(self.attention),
-            failed: s(self.failed),
-        }
+    pub fn total(&self) -> usize {
+        self.ok + self.pushed + self.synced + self.attention + self.failed
     }
 }
 
@@ -201,7 +122,6 @@ fn summary_line(
         format!("{} up-to-date", n(shown.ok)),
         format!("{} pushed", n(shown.pushed)),
         format!("{} synced", n(shown.synced)),
-        format!("{} handled manually", n(shown.manual)),
         format!("{} need attention", n(shown.attention)),
         format!("{} failed", n(shown.failed)),
     ];
@@ -226,34 +146,8 @@ fn summary_line(
     )
 }
 
-/// Print the summary; on a TTY the numbers count up first.
-pub fn summary(
-    theme: &Theme,
-    out: &mut dyn Write,
-    counts: &Counts,
-    dirty: Option<usize>,
-    animate: bool,
-) {
-    if animate {
-        const FRAMES: u32 = 8;
-        // Autowrap off while frames draw: a line wider than the terminal
-        // would wrap, and \r only rewinds its last row, leaving each frame
-        // behind. Unwrapped, a long frame is cut at the edge instead.
-        let _ = write!(out, "\x1b[?7l");
-        for frame in 1..FRAMES {
-            let f = frame as f64 / FRAMES as f64;
-            let shown = counts.scaled(f);
-            let d = dirty.map(|d| (d as f64 * f).round() as usize);
-            let _ = write!(
-                out,
-                "\r\x1b[2K{}",
-                summary_line(theme, &shown, counts, dirty, d)
-            );
-            let _ = out.flush();
-            thread::sleep(COUNT_UP / FRAMES);
-        }
-        let _ = write!(out, "\r\x1b[2K\x1b[?7h");
-    }
+/// Print the summary line.
+pub fn summary(theme: &Theme, out: &mut dyn Write, counts: &Counts, dirty: Option<usize>) {
     let _ = writeln!(out, "{}", summary_line(theme, counts, counts, dirty, dirty));
 }
 

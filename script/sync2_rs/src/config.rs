@@ -16,6 +16,8 @@ pub struct Config {
     pub repos: Vec<String>,
     pub dirs: Vec<String>,
     pub ignore: Vec<String>,
+    /// TUI theme: "ayu" (default) or "gruvbox".
+    pub theme: Option<String>,
 }
 
 pub fn home() -> PathBuf {
@@ -152,6 +154,20 @@ pub fn append_ignore_toml(path: &Path, repo: &str) -> Result<()> {
         .as_array_mut()
         .expect("ignore is an array")
         .push(repo);
+    if let Some(parent) = path.parent() {
+        fs::create_dir_all(parent)?;
+    }
+    fs::write(path, doc.to_string())?;
+    Ok(())
+}
+
+/// Set `theme = "<name>"` in the TOML config, keeping comments and order.
+pub fn set_theme(path: &Path, name: &str) -> Result<()> {
+    let text = fs::read_to_string(path).unwrap_or_default();
+    let mut doc: toml_edit::DocumentMut = text
+        .parse()
+        .with_context(|| format!("{}: invalid config", path.display()))?;
+    doc["theme"] = toml_edit::value(name);
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent)?;
     }

@@ -30,6 +30,7 @@ pub struct Outcome {
     pub dirty: Option<bool>,
 }
 
+#[derive(Clone, Copy)]
 pub struct Options {
     /// Fetch only the upstream remote (as `,sync.py` does) instead of all.
     pub fetch_upstream_only: bool,
