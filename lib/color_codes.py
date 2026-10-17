@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 This script / module contains all the color codes for printing
 Run command:
