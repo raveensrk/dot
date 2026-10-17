@@ -35,7 +35,7 @@
     "~/dot/config/pi",
     "~/repos/agent1"
   ],
-  "defaultThinkingLevel": "low",
+  "defaultThinkingLevel": "xhigh",
   "powerline": {
     "preset": "default",
     "placement": "above",
