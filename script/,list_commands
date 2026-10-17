@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# ,list_commands - list every command you can run, pick one with fzf, and show what it is.
+#
+# Usage:
+#   ,list_commands                 # fzf over all commands; Enter shows `type NAME`
+#   ,list_commands | rg git        # no terminal: print the full sorted list
+#
+# Covers aliases, functions, builtins, keywords and programs on PATH, read
+# from a fresh interactive Bash so your aliases and functions are included.
+# It only shows; it never runs the command.
+
+set -euo pipefail
+IFS=$'\n\t'
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+list=$(bash -ic 'compgen -A function -abck | sort -u' 2>/dev/null)
+
+if [ ! -t 1 ] || [ ! -t 0 ]; then
+	printf '%s\n' "$list"
+	exit 0
+fi
+
+pick=$(printf '%s\n' "$list" | fzf --prompt 'command> ') || exit 0
+bash -ic "type -- $(printf '%q' "$pick")" 2>/dev/null
