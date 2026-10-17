@@ -14,7 +14,7 @@ describe() {
 	local name=$1 file=$2 line
 	if ! grep -Iq . "$file" 2>/dev/null; then
 		if [[ " $HELP_SAFE_BINARIES " == *" $name "* ]]; then
-			line=$(timeout 2 "$file" --help </dev/null 2>/dev/null | awk 'NF { print; exit }') || true
+			line=$(timeout --foreground 2 "$file" --help </dev/null 2>/dev/null | awk 'NF { print; exit }') || true
 			line=${line%.}
 		fi
 		echo "${line:-(compiled binary)}"
@@ -43,10 +43,18 @@ describe() {
 # cmd_lookup: read names on stdin, one per line; print "name<TAB>where<TAB>detail"
 # for each one that exists. Runs an interactive Bash so aliases and functions
 # from the profile are visible. Unknown names are dropped.
+#
+# The inner Bash gets the names as arguments and /dev/null as stdin, never the
+# terminal or a pipe: an interactive Bash started from a script in a terminal
+# otherwise grabs the terminal and the caller is stopped ("Stopped" in jobs).
 cmd_lookup() {
-	bash -ic '
-		while IFS= read -r c; do
-			[ -n "$c" ] || continue
+	local names=() c
+	while IFS= read -r c; do
+		[ -n "$c" ] && names+=("$c")
+	done
+	[ ${#names[@]} -gt 0 ] || return 0
+	bash +m -ic '
+		for c in "$@"; do
 			if [ "$(type -t -- "$c")" = alias ]; then
 				printf "%s\talias\t%s\n" "$c" "$(alias -- "$c" | sed "s/^[^=]*=//; s/^'"'"'//; s/'"'"'$//")"
 			elif p=$(type -P -- "$c"); then
@@ -55,7 +63,7 @@ cmd_lookup() {
 				printf "%s\t%s\t\n" "$c" "$t"
 			fi
 		done
-	' 2>/dev/null
+	' cmd_lookup "${names[@]}" </dev/null 2>/dev/null
 }
 
 # cmd_describe_rows: read lookup rows on stdin, print "name<TAB>where<TAB>desc".

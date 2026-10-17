@@ -40,5 +40,5 @@ esac
 source "${DOT:-$HOME/dot}/lib/cmd_info.sh"
 
 # Every comma name the interactive Bash can complete, sorted by where it lives.
-bash -ic 'compgen -c -- ,' 2>/dev/null | sort -u | cmd_lookup | sort -t $'\t' -k2,2 -k1,1 |
+bash +m -ic 'compgen -c -- ,' </dev/null 2>/dev/null | sort -u | cmd_lookup | sort -t $'\t' -k2,2 -k1,1 |
 	cmd_describe_rows | cmd_table
