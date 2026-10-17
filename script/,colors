@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
-# ,colors2 - print a reference sheet of ANSI terminal color codes, each in its color.
+# ,colors - print reference sheets of ANSI terminal color codes, each in its color.
 #
 # Usage:
-#   ,colors2
+#   ,colors
+#
+# Two sheets: color names with sample text in 16 and 256 colors, then the bare
+# codes as numbers (basic, 256 foreground, 256 background).
 #
 # Opened by the :Colors command in Vim (config/vim/plugin/appearance.vim).
 
@@ -57,5 +60,41 @@ for ((i=0;i<256;i++)); do
 done
 } | column -x
 
-exit 0
-
+# Bare codes as numbers.
+echo -----------------------
+echo "\e[{i}m"
+echo -----------------------
+for i in $(seq 0 9) $(seq 21 47) $(seq 90 110); do
+	echo -n -e "\e[${i}m${i}\e[0m"
+done
+echo ""
+echo -----------------------
+echo "\e[38;5;{i}m{i}\e[0m"
+echo -----------------------
+for i in $(seq 0 255); do
+	if [ $((i % 2)) -eq 0 ]; then
+		echo -n -e "\e[4m"
+	fi
+	echo -n -e "\e[38;5;${i}m${i}\e[0m"
+done
+echo ""
+echo -----------------------
+echo "\e[38;5;0m\e[48;5;{i}m{i}\e[0m"
+echo -----------------------
+for i in $(seq 0 255); do
+	if [ $((i % 2)) -eq 0 ]; then
+		echo -n -e "\e[4m"
+	fi
+	echo -n -e "\e[38;5;0m\e[48;5;${i}m${i}\e[0m"
+done
+echo ""
+echo -----------------------
+echo "\e[38;5;255m\e[48;5;{i}m{i}\e[0m"
+echo -----------------------
+for i in $(seq 0 255); do
+	if [ $((i % 2)) -eq 0 ]; then
+		echo -n -e "\e[4m"
+	fi
+	echo -n -e "\e[38;5;255m\e[48;5;${i}m${i}\e[0m"
+done
+echo ""
