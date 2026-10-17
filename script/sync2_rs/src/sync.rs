@@ -21,6 +21,7 @@ impl Status {
     }
 }
 
+#[derive(Clone)]
 pub struct Outcome {
     pub repo: PathBuf,
     pub status: Status,

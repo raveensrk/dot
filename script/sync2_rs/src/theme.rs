@@ -27,6 +27,11 @@ const fn palette(role: Role) -> ((u8, u8, u8), u8) {
     }
 }
 
+/// Truecolor RGB of a role, for the TUI.
+pub const fn rgb(role: Role) -> (u8, u8, u8) {
+    palette(role).0
+}
+
 #[derive(Clone, Copy, PartialEq)]
 enum Depth {
     None,

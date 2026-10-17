@@ -12,8 +12,4 @@ created: "2026-10-17"
 closed: ""
 ---
 
-Goal not settled. Grill in progress.
-
-Current app: parallel git sync, indicatif live bars in ui.rs, grouped report, then a y/n/i/q prompt for attention repos (lazygit, leave, ignore, quit).
-
-Do not build until the grill locks the job the TUI does.
+Decided 2026-10-18: keep the CLI; the TUI only replaces the y/n/i/q prompt (triage of attention repos). Built in script/sync2_rs/src/tui.rs (ratatui 0.30): enter/y lazygit then re-sync, r re-sync, i ignore, q done. --plain or NO_COLOR keeps the old prompt. Left: try it on a real run, then commit.

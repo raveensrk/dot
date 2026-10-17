@@ -5,7 +5,9 @@
 //! (synced), WARN (needs attention), FAIL. State is clean, dirty or '-'.
 //!
 //! Subcommands:
-//!   ,sync2          sync, report, then prompt per repo needing attention:
+//!   ,sync2          sync, report, then a triage view (src/tui.rs) of repos
+//!                   needing attention: lazygit + re-sync, ignore, done.
+//!                   `--plain` or NO_COLOR: per-repo prompt instead:
 //!                   y = lazygit, n = leave it, i = ignore from now on, q = stop
 //!   ,sync2 list     non-interactive: stdout holds only '<path>  <reason>' lines
 //!                   for repos to open in lazygit; everything else on stderr
@@ -43,6 +45,7 @@ mod ignore;
 mod sources;
 mod sync;
 mod theme;
+mod tui;
 mod ui;
 
 use std::collections::VecDeque;
@@ -81,6 +84,9 @@ struct Cli {
     /// Report only; never prompt.
     #[arg(short = 'y', long, global = true)]
     no_prompt: bool,
+    /// Use the y/n/i/q line prompt instead of the triage view.
+    #[arg(long, global = true)]
+    plain: bool,
     /// Fetch only the upstream remote, like ,sync.py (for benchmarks).
     #[arg(long, hide = true, global = true)]
     fetch_upstream_only: bool,
@@ -227,7 +233,7 @@ fn run(cli: Cli) -> anyhow::Result<u8> {
         fetch_upstream_only: cli.fetch_upstream_only,
     };
     let live = mode == Mode::Sync && io::stdout().is_terminal() && report_theme.enabled();
-    let results = run_parallel(&repos, jobs, &opts, live.then_some(report_theme));
+    let mut results = run_parallel(&repos, jobs, &opts, live.then_some(report_theme));
     for r in &results {
         counts.add(r.status);
     }
@@ -239,7 +245,45 @@ fn run(cli: Cli) -> anyhow::Result<u8> {
     }
 
     let interactive = mode == Mode::Sync && !cli.no_prompt && io::stdin().is_terminal();
-    if interactive {
+    if interactive && !cli.plain && report_theme.enabled() {
+        let attention: Vec<Outcome> = results
+            .iter()
+            .filter(|r| r.status == Status::Attention)
+            .map(Outcome::clone)
+            .collect();
+        if !attention.is_empty() {
+            let triaged = tui::triage(
+                attention,
+                &opts,
+                &|repo| add_ignore(repo, &config_path),
+                &open_lazygit,
+            )?;
+            for t in triaged {
+                if let Some(r) = results.iter_mut().find(|r| r.repo == t.repo) {
+                    *r = t;
+                }
+            }
+            results.retain(|r| r.status != Status::Skip);
+            counts = Counts::default();
+            counts.failed = collected.errors.len();
+            for r in &results {
+                counts.add(r.status);
+            }
+            // After triage, show only what is still open.
+            let open: Vec<&Outcome> = results
+                .iter()
+                .filter(|r| matches!(r.status, Status::Attention | Status::Failed))
+                .collect();
+            let width = ui::column_width(open.iter().map(|r| r.repo.as_path()));
+            ui::section(
+                &mut report,
+                &report_theme,
+                "Still open after triage",
+                &open,
+                width,
+            )?;
+        }
+    } else if interactive {
         let failures = prompt_for_attention(&results, &report_theme, &config_path)?;
         counts.attention -= failures;
         counts.failed += failures;
