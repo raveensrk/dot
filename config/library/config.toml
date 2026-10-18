@@ -1,0 +1,21 @@
+# library's config: ~/.config/library/config.toml (or $LIBRARY_CONFIG), the
+# `library` binary from ~/repos/Library/sites/cli. script/install.py copies
+# this file there. Every setting has a default; this one lists them, as
+# sites/cli/config.example.toml does.
+
+# The TUI's effects, each with its own switch. `all` sets every one; a named
+# switch wins over it. Every effect is on by default. For one session,
+# `:effects on|off` and `:effect NAME on|off` change them in the TUI.
+[effects]
+all = true
+splash = true      # the startup splash; any key skips it
+slide = true       # the focused column slides in on h / l in Columns
+crossfade = true   # a crossfade when the screen or view changes
+poster = true      # a poster dissolves in once it has downloaded
+cascade = true     # the list cascades in on a filter, sort or search change
+sweep = true       # a sweep in the new colour across a row whose status changed
+pulse = true       # a colour pulse on a row whose rating changed
+burst = true       # a burst when a note is marked finished or done
+fill = true        # a season's progress bar fills smoothly on + = -
+background = true  # an animated background on the splash and empty views
+whichkey = true    # the which-key popup slides in

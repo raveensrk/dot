@@ -29,6 +29,8 @@ What goes where:
                                ~/.agents/skills (pi's Agent Skills dir) as the
                                plugin agents-dir@agents-dir
   powerline theme.json         copied to the fixed path pi-powerline-footer reads
+  config/library/config.toml   copied to ~/.config/library/config.toml (the
+                               library binary, ~/repos/Library/sites/cli)
   script/*_go/, script/*_rs/  each Go program (`go build`) and Rust crate
                                (`cargo build --release`) is built into
                                ~/.local/bin (BUILDS); rebuilt when a source
@@ -92,6 +94,7 @@ COPIES = [
     ("config/agents/claude_plugin/plugin.json", "~/.agents/.claude-plugin/plugin.json", CLAUDE),
     ("config/pi/extensions/powerline-footer/theme.json",
      "~/.pi/agent/extensions/powerline-footer/theme.json", PI),
+    ("config/library/config.toml", "~/.config/library/config.toml", HOME),
 ]
 
 # (Go or Rust source dir in this repo, installed binary); built by build_step.
