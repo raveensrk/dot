@@ -318,4 +318,6 @@ alias ,pi_grok="pi --model xai/grok-4.7:xhigh"
 alias ,pi_gpt="pi --model openai-codex/gpt-6.1-sol:max"
 # bare pi: no tools, extensions, skills, templates, themes, context files, session
 alias ,pi_bare="pi -nt -nc -ne -np -ns --no-session --no-themes"
-alias himalaya="RUST_LOG=error himalaya"
+alias ,himalaya="RUST_LOG=error himalaya"
+alias ,himalaya-tui-all="himalaya-tui && himalaya-tui -a icloud"
+export PATH="$HOME/go/bin:$PATH"
