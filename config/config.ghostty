@@ -2,3 +2,5 @@ unfocused-split-opacity = 0.25
 theme = Ayu
 font-family = "JetBrainsMono Nerd Font Mono"
 font-size = 40
+# Left Option sends Alt (e.g. Alt-A in fzf/hif); right Option still types å, é, ...
+macos-option-as-alt = left
