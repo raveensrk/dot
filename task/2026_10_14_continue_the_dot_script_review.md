@@ -57,3 +57,8 @@ abbreviation only where people say it that way (pdf, csv, git).
 - Next item: `convert_md_to_individual_pdf`.
 - Commit by path (`git commit -- <paths>`): other sessions stage changes in
   this repo, and a plain `git commit` sweeps them in.
+
+
+- convert_md_to_individual_pdf kept: now `,convert_markdown_to_pdfs`, pandoc
+  with typst (pdflatex is not installed), folders as arguments.
+- Next item: `convert_md_to_pdf_book` - same pdflatex failure, same fix.
