@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Install the Pi shell-tool timeout label patch.
 
 Pi's `pi` binary does not load dist/core/tools/renderers/bash.js. It loads a
@@ -6,10 +5,17 @@ minified copy inside dist/bundle/chunks/. This script patches every copy it
 finds, then drops Node's compile cache so the next Pi process reads the edit.
 
 Re-run after `brew upgrade` of pi. Already-patched files are left alone.
+Dry-run by default; pass --apply to write. ~/dot/install.sh runs it, and so
+can you after an upgrade:
+
+  python3 ~/dot/lib/pi_timeout_label.py            show the plan
+  python3 ~/dot/lib/pi_timeout_label.py --apply    patch pi
+  python3 ~/dot/lib/pi_timeout_label.py -h, --help short help; `help` long help
 """
 
 from __future__ import annotations
 
+import argparse
 import shutil
 import sys
 import tempfile
@@ -57,15 +63,16 @@ def apply(text: str) -> str:
     return out.replace(ANCHOR, fn + ANCHOR, 1)
 
 
-def pi_root() -> Path:
+def pi_root() -> Path | str:
+    """The Homebrew pi package dir, or why there is none to patch."""
     exe = shutil.which("pi")
     if not exe:
-        raise SystemExit("pi not on PATH")
+        return "pi not on PATH"
     path = Path(exe).resolve()
     # Homebrew pi -> .../pi-coding-agent/dist/bundle/cli.js
     if path.parent.name == "bundle" and path.parent.parent.name == "dist":
         return path.parent.parent.parent
-    raise SystemExit(f"pi is not the Homebrew package layout: {path}")
+    return f"pi is not the Homebrew package layout: {path}"
 
 
 def targets(root: Path) -> list[Path]:
@@ -86,7 +93,7 @@ def clear_cache() -> None:
         shutil.rmtree(cache)
 
 
-def install(root: Path) -> int:
+def install(root: Path, write: bool) -> int:
     changed = 0
     already = 0
     for path in targets(root):
@@ -97,21 +104,39 @@ def install(root: Path) -> int:
         out = apply(text)
         if out == text:
             continue
-        path.write_text(out)
         changed += 1
+        if not write:
+            print(f"would patch {path}")
+            continue
+        path.write_text(out)
         print(f"patched {path}")
 
     if changed == 0 and already == 0:
         print(f"no shell timeout label in {root}", file=sys.stderr)
         return 1
 
+    if not write:
+        print(f"dry run: {changed} to patch, already {already}; pass --apply to write")
+        return 0
     clear_cache()
     print(f"patched {changed}, already {already}")
     return 0
 
 
-def main() -> None:
-    raise SystemExit(install(pi_root()))
+def main(argv: list[str] | None = None) -> None:
+    argv = sys.argv[1:] if argv is None else argv
+    if argv == ["help"]:
+        print(__doc__)
+        raise SystemExit(0)
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("-a", "--apply", action="store_true", help="patch pi")
+    opts = parser.parse_args(argv)
+    root = pi_root()
+    if isinstance(root, str):
+        # Nothing to patch is not a failure: install.sh runs this on every machine.
+        print(f"skip: {root}")
+        raise SystemExit(0)
+    raise SystemExit(install(root, opts.apply))
 
 
 if __name__ == "__main__":

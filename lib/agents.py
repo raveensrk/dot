@@ -1,17 +1,17 @@
-#!/usr/bin/env python3
-"""Install the agent harness config for pi, Claude Code and Codex. Dry-run by default.
+"""Agent harness config for pi, Claude Code and Codex: one step of ~/dot/install.sh.
 
+Not a command of its own: install.sh and uninstall.sh run it. Dry-run by default.
 No symlinks: each harness reads this repo in place where it can, and gets a
 real file or a key merge where it cannot. Then ~/repos/agent1/install.py
 registers agent1 (skills, commands, guards) the same way.
 
 Examples:
-  script/install.py               # show the plan
-  script/install.py --apply       # write it
-  script/install.py --check       # exit 1 when a harness drifted from this repo
-  script/uninstall.py --apply     # remove the files this wrote
-  script/install.py -h, --help    # short help
-  script/install.py help          # long help
+  python3 lib/agents.py install            # show the plan
+  python3 lib/agents.py install --apply    # write it
+  python3 lib/agents.py install --check    # exit 1 when a harness drifted from this repo
+  python3 lib/agents.py uninstall --apply  # remove the files install wrote
+  python3 lib/agents.py -h, --help         # short help
+  python3 lib/agents.py help               # long help
 
 What goes where:
   config/pi/settings.json      keys merged into ~/.pi/agent/settings.json
@@ -45,11 +45,17 @@ is skipped.
 Migration: a target that is still a symlink into this repo (the old stow
 install) is moved to the Trash and replaced with a real file.
 
+Uninstall unregisters the ~/.agents plugin from Claude Code, moves the copied
+files to the Trash when they still match this repo (an edited copy stays and is
+reported), then runs ~/repos/agent1/uninstall.py. Merged keys and built
+binaries stay: the keys are the harness's live config now, and removing them
+could break it. Edit those files by hand if needed.
+
 Environment: HOME selects the destination root; AGENT1 overrides the agent1 repo.
 Exit codes: 0 success; 1 conflict, drift with --check, or agent1 failure;
 2 invalid arguments.
 
-Tests: timeout 60 python3 -m pytest tests/test_install.py
+Tests: timeout 60 python3 -m pytest tests/test_agents.py
 """
 
 from __future__ import annotations
@@ -64,7 +70,7 @@ import sys
 import tomllib
 
 HOME = os.path.expanduser("~")
-DOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+DOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))  # lib/ is one level down
 AGENT1 = os.environ.get("AGENT1") or os.path.join(HOME, "repos", "agent1")
 sys.path.insert(0, os.path.join(AGENT1, "harness"))
 import install_lib  # noqa: E402
@@ -221,23 +227,7 @@ def build_step(run, src, dest):
         run.say("conflict", dest, "%s failed" % tool)
 
 
-def main(argv=None):
-    if argv is None:
-        argv = sys.argv[1:]
-    if argv == ["help"]:
-        print(__doc__)
-        return 0
-    parser = argparse.ArgumentParser(description=__doc__.split("\n\n", 1)[0],
-                                     epilog="Example: script/install.py --check")
-    parser.add_argument("-a", "--apply", action="store_true", help="make the changes")
-    parser.add_argument("-c", "--check", action="store_true",
-                        help="exit 1 when anything would change (drift)")
-    opts = parser.parse_args(argv)
-
-    run = Run(opts.apply and not opts.check)
-    if not run.apply:
-        print("dry run: nothing will change; pass --apply to write")
-
+def install(run, check):
     migrate(run)
     for src, dest, home, absolute in MERGES:
         merge_step(run, src, dest, home, absolute)
@@ -248,16 +238,57 @@ def main(argv=None):
     install_lib.claude(run, AGENTS_DIR, False)
 
     print("\n== agent1", flush=True)
-    flags = ["--apply"] if run.apply else ["--check"] if opts.check else []
+    flags = ["--apply"] if run.apply else ["--check"] if check else []
     agent1 = subprocess.run([sys.executable, os.path.join(AGENT1, "install.py"), *flags])
 
     if run.conflicts or agent1.returncode:
         return 1
-    if opts.check and run.changes:
+    if check and run.changes:
         return 1
     if run.apply and run.changes:
         print("\nrestart pi and Claude Code to load the changes")
     return 0
+
+
+def uninstall(run):
+    # Unregister first: the CLI reads the marketplace files trashed below.
+    install_lib.claude(run, AGENTS_DIR, True)
+
+    for src, dest, _home in COPIES:
+        src, dest = os.path.join(DOT, src), os.path.expanduser(dest)
+        if not os.path.isfile(dest):
+            continue
+        if filecmp.cmp(src, dest, shallow=False):
+            run.trash(dest, "copy of %s" % tilde(src))
+        else:
+            run.say("keep", dest, "edited since install; differs from %s" % tilde(src))
+
+    print("\n== agent1", flush=True)
+    flags = ["--apply"] if run.apply else []
+    agent1 = subprocess.run([sys.executable, os.path.join(AGENT1, "uninstall.py"), *flags])
+    return 1 if run.conflicts or agent1.returncode else 0
+
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv[1:]
+    if argv == ["help"]:
+        print(__doc__)
+        return 0
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n", 1)[0],
+                                     epilog="Example: python3 lib/agents.py install --check")
+    parser.add_argument("action", choices=["install", "uninstall"])
+    parser.add_argument("-a", "--apply", action="store_true", help="make the changes")
+    parser.add_argument("-c", "--check", action="store_true",
+                        help="install only: exit 1 when anything would change (drift)")
+    opts = parser.parse_args(argv)
+
+    run = Run(opts.apply and not opts.check)
+    if not run.apply:
+        print("dry run: nothing will change; pass --apply to write")
+    if opts.action == "uninstall":
+        return uninstall(run)
+    return install(run, opts.check)
 
 
 if __name__ == "__main__":

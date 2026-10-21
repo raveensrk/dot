@@ -1,6 +1,6 @@
-"""Tests for script/install.py: the harness config installer, against a temp home.
+"""Tests for lib/agents.py: the harness config step of install.sh, against a temp home.
 
-    timeout 60 python3 -m pytest tests/test_install.py
+    timeout 60 python3 -m pytest tests/test_agents.py
 """
 
 from __future__ import annotations
@@ -14,11 +14,11 @@ import unittest
 from pathlib import Path
 
 DOT = Path(__file__).resolve().parent.parent
-SCRIPT = DOT / "script" / "install.py"
+SCRIPT = DOT / "lib" / "agents.py"
 AGENT1 = Path.home() / "repos" / "agent1"
-sys.path.insert(0, str(DOT / "script"))
+sys.path.insert(0, str(DOT / "lib"))
 
-import install  # noqa: E402
+import agents as install  # noqa: E402
 
 # Records nothing and changes nothing: the plugin registry is install_lib's
 # concern, tested in agent1. Here it only has to succeed.
@@ -57,6 +57,9 @@ class Installer(unittest.TestCase):
             self.env.setdefault(var, str(Path.home() / default))
 
     def run_script(self, *args):
+        # -h, --help and help stand alone; everything else is an install run.
+        if args[:1] not in (("-h",), ("--help",), ("help",)):
+            args = ("install", *args)
         return subprocess.run([sys.executable, str(SCRIPT), *args], env=self.env,
                               capture_output=True, text=True, timeout=60)
 
@@ -104,6 +107,16 @@ class Installer(unittest.TestCase):
         source = json.loads((DOT / "config" / "pi" / "settings.json").read_text())
         packages = json.loads(live.read_text())["packages"]
         self.assertEqual(packages[:len(source["packages"])], source["packages"])
+
+    def test_uninstall_trashes_copies_it_made(self):
+        self.assertEqual(self.run_script("--apply").returncode, 0)
+        claude_md = self.home / ".claude" / "CLAUDE.md"
+        self.assertTrue(claude_md.is_file())
+        done = subprocess.run([sys.executable, str(SCRIPT), "uninstall", "--apply"], env=self.env,
+                              capture_output=True, text=True, timeout=60)
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+        self.assertFalse(claude_md.exists())
+        self.assertTrue((self.home / ".pi" / "agent" / "settings.json").is_file(), "merged keys stay")
 
     def test_missing_harness_is_skipped(self):
         (self.home / ".claude").rmdir()

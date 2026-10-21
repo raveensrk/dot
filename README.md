@@ -41,51 +41,39 @@ gh auth login
 git clone git@github.com:raveensrk/dot
 ```
 
-## Install macOS-specific packages
+## Install
 
-Install MacPorts:
-
-```sh
-https://www.macports.org/install.php
-```
-
-Install all other packages:
+`install.sh` is the one entry point; `uninstall.sh` undoes it. Both dry-run
+first and change nothing until `--apply`. The steps and flags live in their
+headers: `~/dot/install.sh help`.
 
 ```sh
-bash ~/dot/packages/macos.sh
+~/dot/install.sh
+~/dot/install.sh --apply
+~/dot/uninstall.sh --apply
 ```
 
-The macOS shell configuration prepends Homebrew's GNU `coreutils` and `gawk`
+`install.sh` points Ghostty at this repo, runs
+[lib/agents.py](lib/agents.py) (pi, Claude Code and Codex config, no
+symlinks, then agent1), every other `install.py` under `~/repos`, and the pi
+timeout label patch. Registering the Claude plugins needs the `claude` CLI on
+`PATH`; the installer prints the install command when it is missing.
+
+### System packages
+
+A new machine also wants its packages and vim plugins. They need a network and
+sudo, so they run only when asked:
+
+```sh
+~/dot/install.sh --packages --apply
+```
+
+That runs [packages/macos.sh](packages/macos.sh) or, elsewhere,
+[packages/ubuntu.sh](packages/ubuntu.sh) (arm64/aarch64 only), then
+[config/vim/plugin/install_vim_plugins.sh](config/vim/plugin/install_vim_plugins.sh).
+On macOS install MacPorts first: https://www.macports.org/install.php. The
+macOS shell configuration prepends Homebrew's GNU `coreutils` and `gawk`
 command directories to `PATH`.
-
-## If you use Ubuntu, install this
-
-This script is for arm64/aarch64 only.
-
-```sh
-bash ~/dot/packages/ubuntu.sh
-```
-
-## Install vim plugins
-
-```sh
-bash ~/dot/config/vim/plugin/install_vim_plugins.sh
-```
-
-## Install the agent harness config
-
-pi, Claude Code and Codex config, no symlinks. Dry-run first, then apply.
-Setup docs live in [script/install.py](script/install.py) and
-`python3 ~/dot/script/install.py --help`.
-
-```sh
-python3 ~/dot/script/install.py
-python3 ~/dot/script/install.py --apply
-python3 ~/dot/script/install.py --check
-```
-
-Registering the Claude plugins needs the `claude` CLI on `PATH`; the
-installer prints the install command when it is missing.
 
 ## Other
 

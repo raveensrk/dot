@@ -6,13 +6,13 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPT = ROOT / "script" / "install_pi_timeout_label.py"
+SCRIPT = ROOT / "lib" / "pi_timeout_label.py"
 PATCH = ROOT / "config" / "pi" / "patches" / "timeout_label.patch"
 EXT = ROOT / "config" / "pi" / "extensions" / "timeout-label-patch.ts"
 
 
 def load():
-    spec = importlib.util.spec_from_file_location("install_pi_timeout_label", SCRIPT)
+    spec = importlib.util.spec_from_file_location("pi_timeout_label", SCRIPT)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
@@ -78,7 +78,7 @@ class TimeoutLabelTest(unittest.TestCase):
     def test_extension_looks_for_installer_marker(self):
         ext = EXT.read_text()
         self.assertIn("function formatTimeout(", ext)
-        self.assertIn("install_pi_timeout_label.py", ext)
+        self.assertIn("pi_timeout_label.py", ext)
 
 
 if __name__ == "__main__":

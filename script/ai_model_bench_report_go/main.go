@@ -5,7 +5,7 @@
 //	local  `llmfit recommend`: the models that fit this machine's hardware,
 //	       ranked by llmfit's fit/speed/quality score
 //
-// Build and install: ~/dot/script/install.py --apply, or by hand
+// Build and install: ~/dot/install.sh --apply, or by hand
 //
 //	cd ~/dot/script/ai_model_bench_report_go && go build -o ~/.local/bin/ai-model-bench-report .
 package main

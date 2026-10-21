@@ -1,5 +1,5 @@
 # library's config: ~/.config/library/config.toml (or $LIBRARY_CONFIG), the
-# `library` binary from ~/repos/Library/sites/cli. script/install.py copies
+# `library` binary from ~/repos/Library/sites/cli. install.sh (lib/agents.py) copies
 # this file there. Every setting has a default; this one lists them, as
 # sites/cli/config.example.toml does.
 

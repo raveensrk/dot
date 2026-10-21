@@ -5,7 +5,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 // Same marker the installer writes into the bundle chunk Pi actually loads.
 const MARK = "function formatTimeout(";
-const CMD = "python3 ~/dot/script/install_pi_timeout_label.py";
+const CMD = "python3 ~/dot/lib/pi_timeout_label.py --apply";
 
 function bundleHasPatch(): boolean {
 	let cli: string;
