@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# ,compress_pdf - shrink a PDF with ghostscript, keeping text selectable.
+#
+# Usage:
+#   ,compress_pdf IN.pdf [OUT.pdf] [--quality|-q screen|ebook|printer]
+#   ,compress_pdf scan.pdf                  # writes scan_compressed.pdf
+#   ,compress_pdf scan.pdf small.pdf -q screen
+#
+# Options:
+#   --quality, -q  screen (72 dpi images, smallest), ebook (150 dpi, the
+#                  default), printer (300 dpi, largest).
+#
+# OUT defaults to IN with _compressed before .pdf. An existing OUT is never
+# overwritten. Prints both sizes when done.
+#
+# Needs: gs (brew install ghostscript).
+# Exit codes: 0 done, 1 gs failed or OUT exists, 2 usage error.
+
+set -euo pipefail
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; ""|help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+usage_error() {
+	echo ",compress_pdf: $1 (see --help)" >&2
+	exit 2
+}
+
+quality=ebook
+positional=()
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--quality|-q)
+			[ $# -ge 2 ] || usage_error "$1 needs a value"
+			quality=$2
+			shift 2
+			;;
+		-*) usage_error "unknown option $1" ;;
+		*) positional+=("$1"); shift ;;
+	esac
+done
+
+case "$quality" in screen|ebook|printer) ;; *) usage_error "quality must be screen, ebook or printer, not $quality" ;; esac
+[ ${#positional[@]} -ge 1 ] || usage_error "needs an input PDF"
+[ ${#positional[@]} -le 2 ] || usage_error "takes at most IN and OUT"
+
+in=${positional[0]}
+out=${positional[1]:-${in%.pdf}_compressed.pdf}
+[ -f "$in" ] || usage_error "no such file: $in"
+if [ -e "$out" ]; then
+	echo ",compress_pdf: $out exists; pick another OUT or remove it" >&2
+	exit 1
+fi
+
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.5 -dPDFSETTINGS="/$quality" \
+	-dNOPAUSE -dQUIET -dBATCH -sOutputFile="$out" "$in"
+
+echo "$(du -h "$in" | cut -f1) -> $(du -h "$out" | cut -f1)  $out"

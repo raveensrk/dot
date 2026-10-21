@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-set -PCaeuo pipefail
-# set -x
-IFS=$'\n\t'
-
-
-convert "$1" "$2"
