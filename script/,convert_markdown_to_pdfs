@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# ,convert_markdown_to_pdfs - turn every .md file under a folder into its own PDF.
+#
+# Usage:
+#   ,convert_markdown_to_pdfs SOURCE_FOLDER DESTINATION_FOLDER
+#   ,convert_markdown_to_pdfs ~/repos/work/deck ~/tmp/deck_pdf
+#
+# Each PDF gets a table of contents down to level-2 headings. The folder
+# layout under SOURCE_FOLDER is kept under DESTINATION_FOLDER, so notes.md in
+# unix/ becomes DESTINATION_FOLDER/unix/notes.pdf. DESTINATION_FOLDER is
+# created if missing; PDFs already there with the same name are replaced and
+# nothing else is touched. A file that fails or takes longer than 60 s is
+# skipped, and the failures are listed at the end.
+#
+# Needs: pandoc and typst (brew install pandoc typst).
+# Exit codes: 0 all converted, 1 one or more failed, 2 usage error.
+
+set -euo pipefail
+
+case "${1:-}" in -h|--help) sed -n '2s/^# \{0,1\}//p' "$0"; exit 0;; ""|help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0;; esac
+
+usage_error() {
+	echo ",convert_markdown_to_pdfs: $1 (see --help)" >&2
+	exit 2
+}
+
+[ $# -eq 2 ] || usage_error "needs SOURCE_FOLDER and DESTINATION_FOLDER"
+source_folder=${1%/}
+destination_folder=${2%/}
+[ -d "$source_folder" ] || usage_error "no such folder: $source_folder"
+
+converted=0
+failed=()
+while IFS= read -r -d '' file; do
+	relative=${file#"$source_folder"/}
+	pdf=$destination_folder/${relative%.*}.pdf
+	mkdir -p "$(dirname "$pdf")"
+	if timeout 60 pandoc -s --toc --toc-depth=2 --pdf-engine=typst \
+		-f markdown "$file" -o "$pdf" 2>/dev/null; then
+		converted=$((converted + 1))
+		echo "ok      $relative"
+	else
+		failed+=("$relative")
+		echo "failed  $relative" >&2
+	fi
+done < <(find "$source_folder" -type f -iname '*.md' -print0 | sort -z)
+
+echo "$converted converted, ${#failed[@]} failed -> $destination_folder"
+if [ ${#failed[@]} -gt 0 ]; then
+	printf '  %s\n' "${failed[@]}" >&2
+	exit 1
+fi
