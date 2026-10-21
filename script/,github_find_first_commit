@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+"""Print a GitHub repository's first commit URL, API URL, and creation date.
+
+Accepts OWNER/REPO, a repository URL, or a URL to a file or commit in that
+repository. Uses GitHub's REST API last-page link, requiring at most three
+requests without cloning or estimating the commit count. A URL's branch or
+commit suffix is ignored: the repository's default branch is always used.
+For histories with multiple roots, this returns the API's oldest entry.
+Output has three lines: commit URL, repository API URL, and Created at
+with GitHub's UTC timestamp. Creation date refers to the repository on
+GitHub; imported commits may predate it.
+
+Environment: GH_TOKEN or GITHUB_TOKEN optionally authenticates requests for
+private repositories or a higher rate limit (GH_TOKEN takes precedence).
+Files: reads and writes none. Each request has a 20-second timeout.
+Exit codes: 0 success/help; 1 API/network error; 2 invalid arguments.
+
+Example:
+  ,github_find_first_commit labelle-toolkit/labelle-engine
+"""
+
+import argparse
+import json
+import os
+import re
+import sys
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
+from urllib.request import Request, urlopen
+
+
+def repository(value):
+    """Normalize input without allowing requests to a caller-supplied host."""
+    if "://" in value:
+        url = urlsplit(value)
+        if url.scheme != "https" or url.netloc.lower() != "github.com":
+            raise argparse.ArgumentTypeError("use an https://github.com/OWNER/REPO URL")
+        parts = url.path.strip("/").split("/")
+        value = "/".join(parts[:2])
+    value = value.removesuffix("/").removesuffix(".git")
+    if not re.fullmatch(r"[A-Za-z0-9-]+/[A-Za-z0-9_.-]+", value):
+        raise argparse.ArgumentTypeError("expected OWNER/REPO or a GitHub repository URL")
+    owner, repo = value.split("/")
+    if repo in (".", ".."):
+        raise argparse.ArgumentTypeError("invalid repository name")
+    return f"{owner}/{repo}"
+
+
+def fetch(endpoint):
+    headers = {"Accept": "application/vnd.github+json", "User-Agent": "git-find-first-commit"}
+    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    with urlopen(Request(endpoint, headers=headers), timeout=20) as response:
+        return json.load(response), response.headers.get("Link", "")
+
+
+def first(repo):
+    endpoint = f"https://api.github.com/repos/{repo}/commits?per_page=1"
+
+    # Follow only the last page, rather than downloading the entire history.
+    for page in range(2):
+        data, link = fetch(endpoint)
+        if not isinstance(data, list) or not data:
+            raise ValueError("repository has no commits")
+        last = re.search(r'<([^>]+)>;\s*rel="last"', link)
+        if page == 0 and last:
+            endpoint = last.group(1)
+            if urlsplit(endpoint).scheme != "https" or urlsplit(endpoint).netloc != "api.github.com":
+                raise ValueError("unexpected GitHub pagination URL")
+            continue
+        sha = data[0].get("sha", "")
+        if not re.fullmatch(r"[0-9a-f]{40}", sha):
+            raise ValueError("GitHub returned an invalid commit")
+        return f"https://github.com/{repo}/commit/{sha}"
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(
+        description=__doc__.split("\n\n", 1)[0],
+        epilog="Example: %(prog)s labelle-toolkit/labelle-engine. Run '%(prog)s help' for details.",
+    )
+    parser.add_argument("repository", type=repository, help="OWNER/REPO or a GitHub URL")
+    args = sys.argv[1:] if argv is None else argv
+    if args == ["help"]:
+        parser.print_help()
+        print("\n" + __doc__)
+        return 0
+    if not args:
+        parser.print_help()
+        return 0
+    opts = parser.parse_args(args)
+    try:
+        commit = first(opts.repository)
+        endpoint = f"https://api.github.com/repos/{opts.repository}"
+        data, _ = fetch(endpoint)
+        created = data.get("created_at") if isinstance(data, dict) else None
+        if not isinstance(created, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", created):
+            raise ValueError("GitHub returned an invalid repository creation date")
+        print(f"{commit}\n{endpoint}\nCreated at: {created}")
+    except HTTPError as err:
+        message = {
+            401: "authentication failed; check GH_TOKEN or GITHUB_TOKEN",
+            403: "access denied or API rate limit reached; check access and GH_TOKEN",
+            404: "repository not found or private; check the name and GH_TOKEN",
+            409: "repository has no commits",
+            429: "GitHub API rate limit reached; retry later",
+        }.get(err.code, f"GitHub API returned HTTP {err.code}")
+        print(f"{parser.prog}: {message}", file=sys.stderr)
+        return 1
+    except (URLError, OSError, ValueError) as err:
+        message = "network request failed" if isinstance(err, (URLError, OSError)) else str(err)
+        print(f"{parser.prog}: {message}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
