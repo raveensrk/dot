@@ -46,3 +46,14 @@ abbreviation only where people say it that way (pdf, csv, git).
    backticks around line 359; fix by hand (mdformat garbles them).
 3. Homebrew python3 3.15 lacks pytest and PyYAML; run tests with
    `uv run --with pytest`.
+
+
+## Progress 2026-10-21
+
+- change_permissions_recursive.py was already deleted (b1ade33a); the stop
+  point above was stale. Scripts through `combine_text` and `commands` were
+  done in later commits.
+- compress_pdf kept: now `,compress_pdf` on ghostscript, with help (dc7437e2).
+- Next item: `convert_md_to_individual_pdf`.
+- Commit by path (`git commit -- <paths>`): other sessions stage changes in
+  this repo, and a plain `git commit` sweeps them in.
