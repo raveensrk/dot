@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# Usage: install.sh [-a|--apply] [-p|--packages] [-h|--help|help]
+# Usage: install.sh [-a|--apply] [-f|--force] [-p|--packages] [-h|--help|help]
 # Install this machine's setup from ~/dot. Dry-run by default.
-# Options: -a, --apply make the changes; -p, --packages also install system packages; -h, --help short help; help long help.
+# Options: -a, --apply make the changes; -f, --force rebuild the Racket Markdown docs
+# even when present; -p, --packages also install system packages; -h, --help short
+# help; help long help.
 # Example: install.sh --apply
 #
 # The primary installer; uninstall.sh undoes it. Steps, in order:
@@ -11,14 +13,17 @@
 #   3. repos     every other install.py under ~/repos, sorted; hidden, build and
 #                dependency folders, agent1 (step 2 runs it) and odysseus skipped
 #   4. pi patch  lib/pi_timeout_label.py; skipped when pi is not Homebrew's
-#   5. packages  only with --packages: packages/macos.sh or packages/ubuntu.sh, then
+#   5. Racket    Markdown docs in ~/.local/share/doc/racket (lib/racket_docs.sh);
+#                skipped when present, unless --force, or when raco is missing
+#   6. packages  only with --packages: packages/macos.sh or packages/ubuntu.sh, then
 #                config/vim/plugin/install_vim_plugins.sh. These have no dry run,
 #                so a dry run only names them. They need a network, and sudo.
 # A dry run runs every step without --apply and prints its plan; an installer
 # that never mentions --apply has no dry run, so it is only named. Each installer
 # runs from its own folder with no keyboard input, so one that asks a question
 # fails instead of waiting. The first failure stops the run.
-# Env: HOME, XDG_CONFIG_HOME (Ghostty, default ~/.config), AGENT1 (agent1 repo).
+# Env: HOME, XDG_CONFIG_HOME (Ghostty, default ~/.config), XDG_DATA_HOME (Racket
+# docs, default ~/.local/share), AGENT1 (agent1 repo).
 # Exit: 0 done. 2 unknown argument. Otherwise the failing step's status.
 
 set -PCeuo pipefail
@@ -26,12 +31,14 @@ IFS=$'\n\t'
 
 dot=$(cd "$(dirname "$0")" && pwd -P)
 apply=0
+force=0
 packages=0
 while [ "$#" -ne 0 ]; do
 	case "$1" in
 		-h|--help) sed -n '2,/^#$/s/^# \{0,1\}//p' "$0"; exit 0 ;;
 		help) sed -n '2,/^[^#]/s/^# \{0,1\}//p' "$0"; exit 0 ;;
 		-a|--apply) apply=1 ;;
+		-f|--force) force=1 ;;
 		-p|--packages) packages=1 ;;
 		*) printf 'Unknown argument: %s\ninstall.sh -h\n' "$1" >&2; exit 2 ;;
 	esac
@@ -82,6 +89,11 @@ done
 
 step "pi timeout label patch"
 python3 "$dot/lib/pi_timeout_label.py" ${flags[@]+"${flags[@]}"} < /dev/null
+
+step "Racket Markdown docs"
+# shellcheck source=lib/racket_docs.sh
+. "$dot/lib/racket_docs.sh"
+racket_docs_install
 
 if [ "$packages" = 1 ]; then
 	case "$(uname -s)" in

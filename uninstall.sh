@@ -5,18 +5,20 @@
 # Example: uninstall.sh --apply
 #
 # Steps, the reverse of install.sh:
-#   1. repos     every uninstall.py under ~/repos, reverse sorted; the same folders
-#                install.sh skips, and agent1 (step 2 runs it), are skipped
-#   2. agents    lib/agents.py uninstall: trash the copied config files, unregister the
+#   1. Racket    remove the Markdown docs in ~/.local/share/doc/racket
+#   2. repos     every uninstall.py under ~/repos, reverse sorted; the same folders
+#                install.sh skips, and agent1 (step 3 runs it), are skipped
+#   3. agents    lib/agents.py uninstall: trash the copied config files, unregister the
 #                ~/.agents plugin, then ~/repos/agent1/uninstall.py. Keys merged
 #                into harness settings stay; see `python3 lib/agents.py help`
-#   3. Ghostty   remove the dot include from the Ghostty config files
+#   4. Ghostty   remove the dot include from the Ghostty config files
 # Not undone: the pi timeout label patch (`brew reinstall pi` drops it) and
 # system packages from install.sh --packages.
 # A dry run runs every step without --apply; an uninstaller that never mentions
 # --apply has no dry run, so it is only named. Each uninstaller runs from its own
 # folder with no keyboard input. The first failure stops the run.
-# Env: HOME, XDG_CONFIG_HOME (Ghostty, default ~/.config), AGENT1 (agent1 repo).
+# Env: HOME, XDG_CONFIG_HOME (Ghostty, default ~/.config), XDG_DATA_HOME (Racket
+# docs, default ~/.local/share), AGENT1 (agent1 repo).
 # Exit: 0 done. 2 unknown argument. Otherwise the failing step's status.
 
 set -PCeuo pipefail
@@ -62,6 +64,11 @@ repo_uninstallers() {
 		-o -type f -name uninstall.py -print \
 		| grep -vxF "${AGENT1:-$HOME/repos/agent1}/uninstall.py" | LC_ALL=C sort -r || true
 }
+
+step "Racket Markdown docs"
+# shellcheck source=lib/racket_docs.sh
+. "$dot/lib/racket_docs.sh"
+racket_docs_uninstall
 
 for uninstaller in $(repo_uninstallers); do
 	step "~${uninstaller#"$HOME"}"
