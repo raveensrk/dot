@@ -106,7 +106,6 @@ COPIES = [
 # (Go or Rust source dir in this repo, installed binary); built by build_step.
 BUILDS = [
     ("script/ai_model_bench_report_go", "~/.local/bin/ai-model-bench-report"),
-    ("script/sync2_rs", "~/.local/bin/,sync2"),
 ]
 
 # Links the stow install made, now replaced by the package or by COPIES.
