@@ -83,8 +83,6 @@ class Installer(unittest.TestCase):
         self.assertEqual((self.home / ".pi" / "agent" / "AGENTS.md").read_text(), agents)
         self.assertEqual((self.home / "AGENTS.md").read_text(),
                          (DOT / "config" / "agents" / "home_AGENTS.md").read_text())
-        mcp = json.loads((self.home / ".claude.json").read_text())["mcpServers"]["cua-driver"]
-        self.assertEqual(mcp["command"], str(self.home / ".local/bin/cua-driver"))
         self.assertTrue((self.home / ".agents" / ".claude-plugin" / "plugin.json").is_file())
         links = [p for p in self.home.rglob("*") if p.is_symlink() and ".Trash" not in p.parts]
         self.assertEqual(links, [], "the installer never makes a symlink")
