@@ -169,6 +169,3 @@ highlight article "\\b[A-Z][A-Z0-9_]{3,}\\b"                     color215  defau
 # the body has no focus bar to clobber.
 #
 
-
-browser "w3m %u"
-
