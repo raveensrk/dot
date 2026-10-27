@@ -5,8 +5,8 @@
 #   ,capture_note call the bank about the card
 #   ,capture_note                 # asks for the text
 #
-# Runs `task-router add` into ~/repos/notes/task, whatever folder you are in.
-# Due date, priority and tags can be added later with `task-router edit`.
+# Runs `task-router-2 add` into ~/repos/notes/task, whatever folder you are in.
+# Due date, priority and tags can be added later with `task-router-2 edit`.
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -22,4 +22,4 @@ if [ -z "${text// /}" ]; then
 	exit 2
 fi
 
-exec task-router add "$text" --dir "$HOME/repos/notes/task"
+exec task-router-2 add "$text" --dir "$HOME/repos/notes/task"

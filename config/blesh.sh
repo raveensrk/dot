@@ -3,3 +3,4 @@
 [[ $- == *i* ]] || return 0
 [[ ${BLE_VERSION-} ]] && ble-attach
 command -v task-router >/dev/null && eval "$(task-router completion --bash)"
+command -v task-router-2 >/dev/null && eval "$(task-router-2 completion --bash)"
