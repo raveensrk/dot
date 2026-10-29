@@ -23,8 +23,10 @@ fi
 packages=(
 	autoconf
 	automake
+	babashka
 	bash-completion@2
 	bat
+	clojure
 	cscope
 	curl
 	cyrus-sasl
@@ -34,6 +36,7 @@ packages=(
 	findutils
 	fortune
 	gnuplot
+	graalvm
 	graphicsmagick
 	grep
 	gawk
