@@ -2,12 +2,12 @@
 id: "hdde6bfsd9"
 title: "Try Bitmagnet securely and privately"
 state: "todo"
-due: ""
+due: "2026-10-30"
 priority: ""
 tag: ["search", "privacy"]
 repeat: ""
 effort: ""
-postpone: 0
+postpone: 1
 created: "2026-10-26"
 closed: ""
 ---

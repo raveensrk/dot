@@ -2,12 +2,12 @@
 id: "a1hzr82g3m"
 title: "Try marcosnils/bin for release-binary tools in dot"
 state: "todo"
-due: ""
+due: "2026-10-30"
 priority: ""
 tag: ["dot"]
 repeat: ""
 effort: ""
-postpone: 0
+postpone: 1
 created: "2026-10-18"
 closed: ""
 ---

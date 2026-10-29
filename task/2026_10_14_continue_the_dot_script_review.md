@@ -2,12 +2,12 @@
 id: "dencyfm9ca"
 title: "Continue the ~/dot/script review"
 state: "todo"
-due: ""
+due: "2026-10-30"
 priority: ""
 tag: ["maintenance"]
 repeat: ""
 effort: ""
-postpone: 0
+postpone: 1
 created: "2026-10-14"
 closed: ""
 ---
