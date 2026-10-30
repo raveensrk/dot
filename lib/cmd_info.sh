@@ -7,7 +7,7 @@
 # without side effects (clap prints help and exits before running anything), so
 # their description is the first line of `--help`, capped at 2 seconds. Add a
 # binary here only after checking that.
-HELP_SAFE_BINARIES=",sync2"
+HELP_SAFE_BINARIES=""
 
 # describe NAME FILE: the first meaningful header line, without "NAME - ".
 describe() {
