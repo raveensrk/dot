@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+"""Print each directory under ~/repos with its host and visibility.
+
+Visibility lives on the remote, so a folder name cannot say it: this asks.
+GitHub repos are looked up once through `gh repo list`, and the answer is
+`public` or `private`. Other labels: `forgejo` (a non-GitHub host, not
+queried), `unknown` (GitHub, not in the listing), `no remote`, `not git`.
+
+Environment: none. Files: reads each repo's git config, writes none.
+Needs `gh` signed in. Exit codes: 0 success/help; 1 `gh` failed.
+
+Example:
+  ,repo_visibility --only public
+"""
+
+import argparse
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+ROOT = Path.home() / "repos"
+LABELS = ["public", "private", "forgejo", "unknown", "no remote", "not git"]
+
+
+def parse_remote(url):
+    """Return (host, owner, name) for an scp-like or URL remote."""
+    match = re.match(r"(?:\w+://)?(?:[^@/]+@)?([^:/]+)(?::\d+)?[:/](.+)$", url)
+    if not match:
+        return None
+    parts = match.group(2).strip("/").removesuffix(".git").split("/")
+    if len(parts) < 2:
+        return None
+    return match.group(1).lower(), parts[-2], parts[-1]
+
+
+def origin(path):
+    """Return the origin URL, or "" when the repo has none."""
+    result = subprocess.run(
+        ["git", "-C", str(path), "remote", "get-url", "origin"],
+        capture_output=True, text=True,
+    )
+    return result.stdout.strip() if result.returncode == 0 else ""
+
+
+def github_visibility(owner):
+    """Return {name: "public"|"private"} for an owner's GitHub repos."""
+    result = subprocess.run(
+        ["gh", "repo", "list", owner, "--limit", "1000",
+         "--json", "name,visibility"],
+        capture_output=True, text=True, check=True,
+    )
+    return {r["name"]: r["visibility"].lower() for r in json.loads(result.stdout)}
+
+
+def classify(path, listings):
+    """Return (host, label) for one directory; listings caches per owner."""
+    if not (path / ".git").exists():
+        return "-", "not git"
+    url = origin(path)
+    if not url:
+        return "-", "no remote"
+    remote = parse_remote(url)
+    if not remote:
+        return "-", "unknown"
+    host, owner, name = remote
+    if host != "github.com":
+        return host, "forgejo"
+    if owner not in listings:
+        listings[owner] = github_visibility(owner)
+    return host, listings[owner].get(name, "unknown")
+
+
+def rows(root):
+    """Return sorted (name, host, label) rows for root's visible directories."""
+    listings = {}
+    found = []
+    for path in sorted(root.iterdir(), key=lambda p: p.name.lower()):
+        if path.is_dir() and not path.name.startswith("."):
+            found.append((path.name, *classify(path, listings)))
+    return found
+
+
+def parser():
+    app = argparse.ArgumentParser(
+        prog=",repo_visibility",
+        description="Print each directory under ~/repos with its host and visibility.",
+        epilog="example: ,repo_visibility --only public",
+    )
+    app.add_argument("--only", "-o", choices=LABELS, help="show one label only")
+    return app
+
+
+def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    if argv[:1] == ["help"]:
+        print(__doc__.strip())
+        return 0
+    args = parser().parse_args(argv)
+    try:
+        found = rows(ROOT)
+    except (subprocess.CalledProcessError, FileNotFoundError) as error:
+        detail = getattr(error, "stderr", "") or error
+        print(f",repo_visibility: gh failed: {detail}", file=sys.stderr)
+        print("Sign in with: gh auth login", file=sys.stderr)
+        return 1
+    if args.only:
+        found = [row for row in found if row[2] == args.only]
+    width = max((len(row[0]) for row in found), default=0)
+    for name, host, label in found:
+        print(f"{name:<{width}}  {label:<9}  {host}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
