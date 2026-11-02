@@ -7,6 +7,8 @@
 input=$(cat)
 cwd=$(jq -r '.workspace.current_dir // .cwd' <<<"$input")
 model=$(jq -r '.model.display_name // empty' <<<"$input")
+# Effort: shown only when the status JSON carries .effort.level.
+effort=$(jq -r '.effort.level // empty' <<<"$input")
 tilde='~'
 case "$cwd" in
   "$HOME") cwd=$tilde ;;
@@ -16,4 +18,5 @@ esac
 printf '[\033[34m%s\033[0m@\033[32m%s\033[0m|\033[33m%s\033[0m' \
   "$(whoami)" "$(hostname -s)" "$cwd"
 [ -n "$model" ] && printf '|%s' "$model"
+[ -n "$model" ] && [ -n "$effort" ] && printf '|%s' "$effort"
 printf ']'
