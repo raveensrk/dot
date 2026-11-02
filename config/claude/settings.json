@@ -4,5 +4,9 @@
     "pr": "",
     "sessionUrl": false
   },
-  "remoteControlAtStartup": true
+  "remoteControlAtStartup": true,
+  "statusLine": {
+    "type": "command",
+    "command": "~/dot/config/claude/statusline.sh"
+  }
 }
