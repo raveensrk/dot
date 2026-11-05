@@ -1,7 +1,8 @@
 #!/bin/bash
 # Install the macOS brew and MacPorts packages this machine uses.
 #
-# Reads nothing. Writes through brew and port. Needs a network, and sudo for port.
+# Reads nothing. Writes through brew, port and tlmgr. Needs a network, and
+# sudo for port, the BasicTeX installer and tlmgr.
 # exit: 0 for help, otherwise the install command's status
 
 case "${1:-}" in
@@ -77,6 +78,14 @@ packages=(
 )
 
 brew install ${packages[*]}
+
+# BasicTeX gives pdflatex for org-mode LaTeX export. Org's default header
+# needs wrapfig and capt-of, which BasicTeX leaves out. Do not use the PyPI
+# pdflatex package: it is only a wrapper and pins attrs<19.
+brew install --cask basictex
+eval "$(/usr/libexec/path_helper)"
+sudo tlmgr update --self
+sudo tlmgr install wrapfig capt-of
 
 # https://www.macports.org/install.php
 

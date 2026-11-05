@@ -4,6 +4,10 @@
 A command whose tool is not installed is skipped. A failed command does not
 stop the rest. Exit 0 when nothing failed, 2 otherwise.
 
+Before brew cleanup, old kegs of the formulas in ROOT_KEGS that hold
+root-owned files are removed with sudo (may ask for your password). Brew
+cannot delete those itself: `sudo brew services` leaves them behind.
+
 To add an app, append its command to COMMANDS.
 
 Usage:
@@ -11,6 +15,7 @@ Usage:
   ,update_tools -h, --help     this summary (full text: ,update_tools help)
 """
 
+import os
 import shutil
 import subprocess
 import sys
@@ -19,10 +24,42 @@ COMMANDS = [
     "brew update",
     "brew upgrade",
     "brew autoremove",
+    "remove_root_kegs",
     "brew cleanup --prune=all",
     "pi update --all",
     "claude update",
 ]
+
+# Formulas run as root daemons via `sudo brew services`.
+ROOT_KEGS = ["tailscale"]
+
+
+def has_root_file(path: str) -> bool:
+    for root, dirs, files in os.walk(path):
+        for name in [""] + dirs + files:
+            if os.lstat(os.path.join(root, name)).st_uid == 0:
+                return True
+    return False
+
+
+def remove_root_kegs() -> bool:
+    """Remove old, unlinked kegs of ROOT_KEGS that hold root-owned files."""
+    ok = True
+    for formula in ROOT_KEGS:
+        out = subprocess.run(["brew", "--cellar", formula], capture_output=True, text=True)
+        cellar = out.stdout.strip()
+        if out.returncode != 0 or not os.path.isdir(cellar):
+            continue
+        prefix = subprocess.run(["brew", "--prefix", formula], capture_output=True, text=True).stdout.strip()
+        current = os.path.realpath(prefix)
+        for name in sorted(os.listdir(cellar)):
+            keg = os.path.join(cellar, name)
+            if os.path.realpath(keg) == current or not os.path.isdir(keg) or not has_root_file(keg):
+                continue
+            print(f"sudo rm -rf {keg}", flush=True)
+            if subprocess.run(["sudo", "rm", "-rf", "--", keg]).returncode != 0:
+                ok = False
+    return ok
 
 
 def main() -> int:
@@ -32,6 +69,12 @@ def main() -> int:
 
     failed = []
     for cmd in COMMANDS:
+        if cmd == "remove_root_kegs":
+            if shutil.which("brew"):
+                print(f"\n==> {cmd}", flush=True)
+                if not remove_root_kegs():
+                    failed.append(cmd)
+            continue
         if not shutil.which(cmd.split()[0]):
             print(f"skip: {cmd} (not installed)", flush=True)
             continue
