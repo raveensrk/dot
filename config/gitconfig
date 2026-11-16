@@ -11,3 +11,6 @@ fi
 git config --global alias.wdiff "diff --minimal -w -M --word-diff"
 # pickaxe-log <string>: commits that added or removed <string>, with patches
 git config --global alias.pickaxe-log "log -p -S"
+# Private, per-machine git settings (hosts, emails) live outside this public
+# repo; git skips the include when the file is missing.
+git config --global include.path "~/dot_local/config/git.inc"
