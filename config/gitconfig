@@ -1,5 +1,5 @@
 git config --global user.name "Raveen Kumar"
-# git config --global user.email "user@mail"
+git config --global user.email "40625660+raveensrk@users.noreply.github.com"
 git config --global pull.rebase true
 # git config --global pull.rebase false
 # agent1's git hooks for every repo: commit-msg refuses an AI co-author
