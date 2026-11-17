@@ -2,7 +2,7 @@
 # Claude Code status line, run in place from this repo by the statusLine
 # key in config/claude/settings.json (merged into ~/.claude/settings.json).
 # Mirrors the PS1 in config/prompt:
-# [user@host|path|branch*↑N|model|effort|C:NN%|$cost|+added/-removed], blue user,
+# [user@host|path|branch*↑N|model|effort|C:NN%|$cost|S:+a/-r|U:+a/-r], blue user,
 # green host, yellow path, home shown as ~.
 # Input: Claude Code's status JSON on stdin. Needs jq.
 input=$(cat)
@@ -31,6 +31,10 @@ if [ -n "$branch" ]; then
   [ -n "$(git -C "$dir" --no-optional-locks status --porcelain --untracked-files=no 2>/dev/null | head -1)" ] && branch="$branch*"
   ahead=$(git -C "$dir" rev-list --count @{upstream}..HEAD 2>/dev/null)
   [ -n "$ahead" ] && [ "$ahead" -gt 0 ] && branch="$branch↑$ahead"
+  # Uncommitted lines, staged and not, in this repo: what /diff shows.
+  stat=$(git -C "$dir" --no-optional-locks diff HEAD --shortstat 2>/dev/null)
+  u_add=$(sed -n 's/.* \([0-9]*\) insertion.*/\1/p' <<<"$stat")
+  u_del=$(sed -n 's/.* \([0-9]*\) deletion.*/\1/p' <<<"$stat")
 fi
 
 printf '[\033[34m%s\033[0m@\033[32m%s\033[0m|\033[33m%s\033[0m' \
@@ -40,5 +44,8 @@ printf '[\033[34m%s\033[0m@\033[32m%s\033[0m|\033[33m%s\033[0m' \
 [ -n "$model" ] && [ -n "$effort" ] && printf '|%s' "$effort"
 [ -n "$used" ] && printf '|C:%.0f%%' "$used"
 [ -n "$cost" ] && printf '|$%.2f' "$cost"
-[ -n "$added" ] && printf '|\033[32m+%s\033[0m/\033[31m-%s\033[0m' "$added" "${removed:-0}"
+# S: lines Claude changed this session, all repos, committed or not.
+[ -n "$added" ] && printf '|S:\033[32m+%s\033[0m/\033[31m-%s\033[0m' "$added" "${removed:-0}"
+# U: uncommitted lines in this repo; left out when there are none.
+[ -n "$u_add$u_del" ] && printf '|U:\033[32m+%s\033[0m/\033[31m-%s\033[0m' "${u_add:-0}" "${u_del:-0}"
 printf ']'
