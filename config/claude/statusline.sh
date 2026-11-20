@@ -16,6 +16,19 @@ used=$(jq -r '.context_window.used_percentage // empty' <<<"$input")
 cost=$(jq -r '.cost.total_cost_usd // empty' <<<"$input")
 added=$(jq -r '.cost.total_lines_added // empty' <<<"$input")
 removed=$(jq -r '.cost.total_lines_removed // empty' <<<"$input")
+# Ant Eater (~/repos/agent1/skills/ishikari/scripts/anteater.py) fits dollars
+# per percent of the 5-hour limit from this log: time, session, session cost,
+# percent used, reset time. One line per change; nothing when the status JSON
+# carries no rate limit.
+sample=$(jq -r 'select(.rate_limits.five_hour.used_percentage != null and .session_id != null)
+  | [.session_id, (.cost.total_cost_usd // 0), .rate_limits.five_hour.used_percentage,
+     (.rate_limits.five_hour.resets_at // "-")] | @tsv' <<<"$input" 2>/dev/null)
+if [ -n "$sample" ]; then
+  limit_log=$HOME/.ishikari/anteater/limit.log
+  mkdir -p "${limit_log%/*}"
+  [ "$(tail -n 1 "$limit_log" 2>/dev/null | cut -f2-)" = "$sample" ] ||
+    printf '%s\t%s\n' "$(date +%s)" "$sample" >>"$limit_log"
+fi
 dir=$cwd
 tilde='~'
 case "$cwd" in
